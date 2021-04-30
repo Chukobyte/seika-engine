@@ -1,6 +1,17 @@
 #include <iostream>
+#include "core/game.h"
 
 int main(int argv, char** args) {
-    std::cout << "Hello World from Engine!" << std::endl;
+    static Game *gameEngine = new Game();
+    gameEngine->Initialize();
+
+    while (gameEngine->IsRunning()) {
+        gameEngine->ProcessInput();
+        gameEngine->Update();
+        gameEngine->Render();
+    }
+
+    gameEngine->Destroy();
+
     return 0;
 }
