@@ -53,6 +53,8 @@ void Game::InitializeRendering() {
     if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress)) {
         logger->Error("Couldn't initialize glad");
     }
+
+    renderContext->InitializeFont();
 }
 
 void Game::ProcessInput() {

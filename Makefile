@@ -1,19 +1,19 @@
 CC := gcc # C Compiler
 CXX := g++ # C++ compiler
 I_FLAGS := -I"./include" -I"${SDL2_HOME}/include"
-L_FLAGS := -lmingw32 -lSDL2main -lSDL2_mixer -lSDL2 -static-libgcc
+L_FLAGS := -lmingw32 -lSDL2main -lSDL2_mixer -lSDL2 -lfreetype -static-libgcc
 C_FLAGS := -w -std=c++14 -Wfatal-errors
-LIBRARIES := -L"${SDL2_HOME}/lib"
+LIBRARIES := -L"${SDL2_HOME}/lib" -L"${FREETYPE_HOME}/lib"
 BUILD_OBJECT := roll_back_engine.exe
 TEST_BUILD_OBJECT := test_roll_back_engine.exe
 
-SRC = $(wildcard src/main.cpp src/core/*.cpp src/core/utils/*.cpp src/core/rendering/*.cpp include/stb_image/*.cpp)
+SRC = $(wildcard src/main.cpp src/core/*.cpp src/math/*.cpp src/core/utils/*.cpp src/core/rendering/*.cpp include/stb_image/*.cpp)
 SRC_C = $(wildcard lib/glad.c)
 
 OBJ = $(SRC:.cpp=.o)
 OBJ_C = $(SRC_C:.c=.o)
 
-TEST_SRC = $(wildcard src/test/*.cpp src/test/unit/*.cpp src/core/*.cpp src/core/utils/*.cpp src/core/rendering/*.cpp include/stb_image/*.cpp)
+TEST_SRC = $(wildcard src/test/*.cpp src/test/unit/*.cpp src/core/*.cpp src/math/*.cpp src/core/utils/*.cpp src/core/rendering/*.cpp include/stb_image/*.cpp)
 TEST_OBJ = $(TEST_SRC:.cpp=.o)
 
 # MAIN
