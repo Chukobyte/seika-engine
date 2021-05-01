@@ -21,4 +21,11 @@ Must install make in order to run commands.
 ##### Format
 
 `make format`
+
 *Must have astyle installed.
+
+##### Package and Export Game
+
+`make package`
+
+*Must have 7zip installed and added to the `PATH`.

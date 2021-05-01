@@ -4,8 +4,10 @@ I_FLAGS := -I"./include" -I"${SDL2_HOME}/include"
 L_FLAGS := -lmingw32 -lSDL2main -lSDL2_mixer -lSDL2 -lfreetype -static-libgcc
 C_FLAGS := -w -std=c++14 -Wfatal-errors
 LIBRARIES := -L"${SDL2_HOME}/lib" -L"${FREETYPE_HOME}/lib"
-BUILD_OBJECT := roll_back_engine.exe
-TEST_BUILD_OBJECT := test_roll_back_engine.exe
+
+PROJECT_NAME := roll_back_engine
+BUILD_OBJECT := $(PROJECT_NAME).exe
+TEST_BUILD_OBJECT := test_$(PROJECT_NAME).exe
 
 SRC = $(wildcard src/main.cpp src/core/*.cpp src/math/*.cpp src/core/utils/*.cpp src/core/rendering/*.cpp include/stb_image/*.cpp)
 SRC_C = $(wildcard lib/glad.c)
@@ -15,6 +17,8 @@ OBJ_C = $(SRC_C:.c=.o)
 
 TEST_SRC = $(wildcard src/test/*.cpp src/test/unit/*.cpp src/core/*.cpp src/math/*.cpp src/core/utils/*.cpp src/core/rendering/*.cpp include/stb_image/*.cpp)
 TEST_OBJ = $(TEST_SRC:.cpp=.o)
+
+EXPORT_PACKAGE_DIR := export_package
 
 # MAIN
 
@@ -45,6 +49,17 @@ endif
 
 run:
 	./$(BUILD_OBJECT)
+
+package: clean build
+ifneq ($(wildcard $(EXPORT_PACKAGE_DIR)/.*),)
+	rd /S /Q $(EXPORT_PACKAGE_DIR)
+endif
+	mkdir $(EXPORT_PACKAGE_DIR)
+	copy $(BUILD_OBJECT) $(EXPORT_PACKAGE_DIR)
+	copy *.dll $(EXPORT_PACKAGE_DIR)
+	copy version.json $(EXPORT_PACKAGE_DIR)
+	cd $(EXPORT_PACKAGE_DIR) && echo %cd% && 7z a $(PROJECT_NAME).zip *
+
 
 # Tests
 test: build-test run-test
