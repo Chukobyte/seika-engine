@@ -41,6 +41,8 @@ class AssetManager {
     Mix_Chunk* GetSound(const std::string &soundId);
 
     std::map<std::string, Mix_Chunk*> GetAllSounds();
+
+    void LoadDefaultAssets();
 };
 
 #endif // ASSET_MANAGER_H

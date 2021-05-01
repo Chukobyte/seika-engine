@@ -59,7 +59,7 @@ class Renderer {
 
     void Initialize(int windowWidth, int windowHeight);
 
-    void DrawSprite(Texture2D *texture2D, Rect2 *sourceRectangle, Rect2 *destinationRectangle, int zIndex, float rotation = 0.0f, Color color = Color(1.0f, 1.0f, 1.0f, 1.0f));
+    void DrawSprite(Texture2D *texture2D, Rect2 *sourceRectangle, Rect2 *destinationRectangle, int zIndex = 0, float rotation = 0.0f, Color color = Color(1.0f, 1.0f, 1.0f, 1.0f));
 
     void DrawFont(Font *font, const std::string &text, float x, float y, float scale = 1.0f, Color color = Color(1.0f, 1.0f, 1.0f, 1.0f));
 };

@@ -10,12 +10,14 @@ Game::Game() {
     logger->SetLogLevel(LogLevel_DEBUG);
     engineContext = GD::GetContainer()->engineContext;
     renderContext = GD::GetContainer()->renderContext;
+    renderer = GD::GetContainer()->renderer;
 }
 
 void Game::Initialize() {
     logger->Debug("Roll Back Engine " + engineContext->GetEngineVersion() + " Started!");
     InitializeSDL();
     InitializeRendering();
+    GD::GetContainer()->assetManager->LoadDefaultAssets(); // TODO: clean up
     engineContext->SetRunning(true);
 }
 
@@ -55,6 +57,8 @@ void Game::InitializeRendering() {
     }
 
     renderContext->InitializeFont();
+
+    renderer->Initialize(projectProperties.windowWidth, projectProperties.windowHeight);
 }
 
 void Game::ProcessInput() {
@@ -85,6 +89,15 @@ void Game::Render() {
                  projectProperties.backgroundDrawColor.b,
                  projectProperties.backgroundDrawColor.a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+    // Test Rendering
+    static AssetManager *assetManager = GD::GetContainer()->assetManager;
+
+    Texture2D *blinkyTexture = assetManager->GetTexture("blinky");
+    Rect2 blinkyDrawSourceRect(0, 0, 16, 16);
+    Rect2 blinkyDrawDestinationRect(projectProperties.windowWidth / 2, projectProperties.windowHeight / 2, 32, 32);
+
+    renderer->DrawSprite(blinkyTexture, &blinkyDrawSourceRect, &blinkyDrawDestinationRect);
 
     SDL_GL_SwapWindow(renderContext->window);
 }

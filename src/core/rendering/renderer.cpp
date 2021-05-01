@@ -142,6 +142,11 @@ Renderer::~Renderer() {
 }
 
 void Renderer::Initialize(int windowWidth, int windowHeight) {
+    // OpenGL State
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(windowWidth), static_cast<float>(windowHeight), 0.0f, -1.0f, 1.0f);
     spriteRenderer = new SpriteRenderer(projection);
     fontRenderer = new FontRenderer(projection);

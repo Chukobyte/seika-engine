@@ -66,3 +66,10 @@ Mix_Chunk* AssetManager::GetSound(const std::string &soundId) {
 std::map<std::string, Mix_Chunk*> AssetManager::GetAllSounds() {
     return sounds;
 }
+
+void AssetManager::LoadDefaultAssets() {
+    LoadTexture("blinky", "assets/images/blinky.png");
+    LoadFont("emulogic", "assets/fonts/emulogic.ttf", 10);
+    LoadMusic("test_music", "assets/audio/music/test_music.wav");
+    LoadSound("test_sound", "assets/audio/sound/test_sound_effect.wav");
+}

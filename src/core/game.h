@@ -4,6 +4,7 @@
 #include "utils/logger.h"
 #include "engine_context.h"
 #include "rendering/render_context.h"
+#include "rendering/renderer.h"
 #include "project_properties.h"
 
 class Game {
@@ -11,6 +12,7 @@ class Game {
     Logger *logger = nullptr;
     EngineContext *engineContext = nullptr;
     RenderContext *renderContext = nullptr;
+    Renderer *renderer = nullptr;
     ProjectProperties projectProperties;
 
     void InitializeSDL();
