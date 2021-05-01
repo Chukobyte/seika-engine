@@ -7,13 +7,13 @@ LIBRARIES := -L"${SDL2_HOME}/lib"
 BUILD_OBJECT := roll_back_engine.exe
 TEST_BUILD_OBJECT := test_roll_back_engine.exe
 
-SRC = $(wildcard src/main.cpp src/core/*.cpp src/core/utils/*.cpp)
+SRC = $(wildcard src/main.cpp src/core/*.cpp src/core/utils/*.cpp src/core/rendering/*.cpp include/stb_image/*.cpp)
 SRC_C = $(wildcard lib/glad.c)
 
 OBJ = $(SRC:.cpp=.o)
 OBJ_C = $(SRC_C:.c=.o)
 
-TEST_SRC = $(wildcard src/test/*.cpp src/test/unit/*.cpp src/core/*.cpp src/core/utils/*.cpp)
+TEST_SRC = $(wildcard src/test/*.cpp src/test/unit/*.cpp src/core/*.cpp src/core/utils/*.cpp src/core/rendering/*.cpp include/stb_image/*.cpp)
 TEST_OBJ = $(TEST_SRC:.cpp=.o)
 
 # MAIN

@@ -36,6 +36,8 @@ class Logger {
     void Warn(const std::string &logMessage) const;
     void Info(const std::string &logMessage) const;
     void Error(const std::string &logMessage) const;
+
+    void LogOpenGLError(const std::string &context) const;
 };
 
 #endif //LOGGER_H

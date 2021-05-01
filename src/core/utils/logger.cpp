@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <bits/stdc++.h>
+#include <glad/glad.h>
 
 Logger *Logger::instance = nullptr;
 
@@ -57,4 +58,11 @@ void Logger::Error(const std::string &logMessage) const {
 
 void Logger::LogEntry(const std::string &logLevelPrefix, const std::string &logMessage) const {
     std::cout << logLevelPrefix << logMessage << std::endl;
+}
+
+void Logger::LogOpenGLError(const std::string &context) const {
+    GLuint err =glGetError();
+    if (err > 0) {
+        std::cout << "0x" << std::hex << err << " glGetError() in " << context << std::endl;
+    }
 }
