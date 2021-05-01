@@ -8,9 +8,11 @@ bool EngineContext::IsRunning() const {
     return running;
 }
 
-std::string EngineContext::GetEngineVersion() const {
-    const std::string &versionFilePath = "version.json";
-    nlohmann::json versionJson = JsonFileHelper::LoadJsonFile(versionFilePath);
-    const std::string &engineVersion = versionJson["version"].get<std::string>();
+std::string EngineContext::GetEngineVersion() {
+    if (engineVersion.empty()) {
+        const std::string &versionFilePath = "version.json";
+        nlohmann::json versionJson = JsonFileHelper::LoadJsonFile(versionFilePath);
+        engineVersion = versionJson["version"].get<std::string>();
+    }
     return engineVersion;
 }

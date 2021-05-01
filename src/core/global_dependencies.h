@@ -2,15 +2,17 @@
 #define GLOBAL_DEPENDENCIES_H
 
 #include "engine_context.h"
+#include "rendering/render_context.h"
 
 class GD {
     /* A singleton that holds global pointers...*/
   private:
-    static GD* instance;
+    static GD *instance;
 
     GD();
   public:
-    EngineContext* engineContext = nullptr;
+    EngineContext *engineContext = nullptr;
+    RenderContext *renderContext = nullptr;
 
     static GD* GetContainer();
 };

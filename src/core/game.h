@@ -3,11 +3,19 @@
 
 #include "utils/logger.h"
 #include "engine_context.h"
+#include "rendering/render_context.h"
+#include "project_properties.h"
 
 class Game {
   private:
     Logger *logger = nullptr;
     EngineContext *engineContext = nullptr;
+    RenderContext *renderContext = nullptr;
+    ProjectProperties projectProperties;
+
+    void InitializeSDL();
+
+    void InitializeRendering();
   public:
     Game();
 
