@@ -2,6 +2,14 @@
 
 An engine that's used for a work in progress fighting game.
 
+### Dependencies & Tools
+
+* [SDL2](https://www.libsdl.org/download-2.0.php)
+* [SDL2 mixer](https://libsdl.org/projects/SDL_mixer/)
+* [Freetype Library](https://www.freetype.org/download.html)
+* [GNU Make](http://gnuwin32.sourceforge.net/packages/make.htm)
+* [7Zip](https://www.7-zip.org/download.html)
+
 ### Instructions
 
 Must install make in order to run commands.
@@ -22,7 +30,7 @@ Must install make in order to run commands.
 
 `make format`
 
-*Must have astyle installed.
+*Must have astyle installed and added to `PATH`.
 
 ##### Package and Export Game
 
