@@ -1,5 +1,7 @@
 #include "renderer.h"
 
+#include "../project_properties.h"
+
 // Sprite Renderer
 SpriteRenderer::SpriteRenderer(const glm::mat4 &projection) {
     GLfloat vertices[] = {
@@ -78,9 +80,9 @@ void SpriteRenderer::UpdateProjection(const glm::mat4 &projection) {
 }
 
 // Font Renderer
-FontRenderer::FontRenderer(const glm::mat4 &projection) {
+FontRenderer::FontRenderer() {
     shader = Shader(OPENGL_SHADER_SOURCE_FONT);
-    UpdateProjection(projection);
+    UpdateProjection();
 }
 
 void FontRenderer::Draw(Font *font, const std::string &text, float x, float y, float scale, const Color color) {
@@ -90,8 +92,8 @@ void FontRenderer::Draw(Font *font, const std::string &text, float x, float y, f
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(font->VAO);
 
-//    y = ConvertMinMax(y, static_cast<float>(projectConfigurations->baseResolutionWidth), 0, 0, static_cast<float>(projectConfigurations->baseResolutionHeight));
-    y = ConvertMinMax(y, 800, 0, 0, 600);
+    ProjectProperties *projectProperties = ProjectProperties::GetInstance();
+    y = ConvertMinMax(y, static_cast<float>(projectProperties->windowWidth), 0, 0, static_cast<float>(projectProperties->windowHeight));
 
     // iterate through all characters
     std::string::const_iterator c;
@@ -129,7 +131,9 @@ void FontRenderer::Draw(Font *font, const std::string &text, float x, float y, f
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void FontRenderer::UpdateProjection(const glm::mat4 &projection) {
+void FontRenderer::UpdateProjection() {
+    ProjectProperties *projectProperties = ProjectProperties::GetInstance();
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(projectProperties->windowWidth), 0.0f, static_cast<float>(projectProperties->windowHeight));
     shader.Use();
     shader.SetMatrix4Float("projection", projection);
 }
@@ -141,15 +145,16 @@ Renderer::~Renderer() {
     delete fontRenderer;
 }
 
-void Renderer::Initialize(int windowWidth, int windowHeight) {
+void Renderer::Initialize() {
     // OpenGL State
     glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(windowWidth), static_cast<float>(windowHeight), 0.0f, -1.0f, 1.0f);
+    ProjectProperties *projectProperties = ProjectProperties::GetInstance();
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(projectProperties->windowWidth), static_cast<float>(projectProperties->windowHeight), 0.0f, -1.0f, 1.0f);
     spriteRenderer = new SpriteRenderer(projection);
-    fontRenderer = new FontRenderer(projection);
+    fontRenderer = new FontRenderer();
 }
 
 void Renderer::DrawSprite(Texture2D *texture2D, Rect2 *sourceRectangle, Rect2 *destinationRectangle, int zIndex, float rotation, Color color) {

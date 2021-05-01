@@ -8,6 +8,7 @@
 Game::Game() {
     logger = Logger::GetInstance();
     logger->SetLogLevel(LogLevel_DEBUG);
+    projectProperties = ProjectProperties::GetInstance();
     engineContext = GD::GetContainer()->engineContext;
     renderContext = GD::GetContainer()->renderContext;
     renderer = GD::GetContainer()->renderer;
@@ -44,11 +45,11 @@ void Game::InitializeRendering() {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
     renderContext->window = SDL_CreateWindow(
-                                projectProperties.gameTitle.c_str(),
+                                projectProperties->gameTitle.c_str(),
                                 SDL_WINDOWPOS_CENTERED,
                                 SDL_WINDOWPOS_CENTERED,
-                                projectProperties.windowWidth,
-                                projectProperties.windowHeight,
+                                projectProperties->windowWidth,
+                                projectProperties->windowHeight,
                                 renderContext->windowFlags);
     renderContext->gl_context = SDL_GL_CreateContext(renderContext->window);
 
@@ -58,7 +59,7 @@ void Game::InitializeRendering() {
 
     renderContext->InitializeFont();
 
-    renderer->Initialize(projectProperties.windowWidth, projectProperties.windowHeight);
+    renderer->Initialize();
 }
 
 void Game::ProcessInput() {
@@ -84,10 +85,10 @@ void Game::ProcessInput() {
 void Game::Update() {}
 
 void Game::Render() {
-    glClearColor(projectProperties.backgroundDrawColor.r,
-                 projectProperties.backgroundDrawColor.g,
-                 projectProperties.backgroundDrawColor.b,
-                 projectProperties.backgroundDrawColor.a);
+    glClearColor(projectProperties->backgroundDrawColor.r,
+                 projectProperties->backgroundDrawColor.g,
+                 projectProperties->backgroundDrawColor.b,
+                 projectProperties->backgroundDrawColor.a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
     // Test Rendering
@@ -95,9 +96,13 @@ void Game::Render() {
 
     Texture2D *blinkyTexture = assetManager->GetTexture("blinky");
     Rect2 blinkyDrawSourceRect(0, 0, 16, 16);
-    Rect2 blinkyDrawDestinationRect(projectProperties.windowWidth / 2, projectProperties.windowHeight / 2, 32, 32);
+    Rect2 blinkyDrawDestinationRect(projectProperties->windowWidth / 2, projectProperties->windowHeight / 2, 32, 32);
 
     renderer->DrawSprite(blinkyTexture, &blinkyDrawSourceRect, &blinkyDrawDestinationRect);
+
+    Font *font = assetManager->GetFont("emulogic");
+
+    renderer->DrawFont(font, "Roll Back Engine", 225, 100, 1.0f, Color(0.0f, 1.0f, 1.0f));
 
     SDL_GL_SwapWindow(renderContext->window);
 }

@@ -34,11 +34,11 @@ class FontRenderer {
         return (((input - inputLow) / (inputHigh - inputLow)) * (outputHigh - outputLow) + outputLow);
     }
   public:
-    FontRenderer(const glm::mat4 &projection);
+    FontRenderer();
 
     void Draw(Font *font, const std::string &text, float x, float y, float scale = 1.0f, const Color color = Color(1.0f, 1.0f, 1.0f, 1.0f));
 
-    void UpdateProjection(const glm::mat4 &projection);
+    void UpdateProjection();
 };
 
 struct RendererDrawTarget2D {
@@ -57,7 +57,7 @@ class Renderer {
 
     ~Renderer();
 
-    void Initialize(int windowWidth, int windowHeight);
+    void Initialize();
 
     void DrawSprite(Texture2D *texture2D, Rect2 *sourceRectangle, Rect2 *destinationRectangle, int zIndex = 0, float rotation = 0.0f, Color color = Color(1.0f, 1.0f, 1.0f, 1.0f));
 

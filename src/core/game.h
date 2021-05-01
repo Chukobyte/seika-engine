@@ -13,7 +13,7 @@ class Game {
     EngineContext *engineContext = nullptr;
     RenderContext *renderContext = nullptr;
     Renderer *renderer = nullptr;
-    ProjectProperties projectProperties;
+    ProjectProperties *projectProperties = nullptr;
 
     void InitializeSDL();
 
