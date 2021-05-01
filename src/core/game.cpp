@@ -1,8 +1,14 @@
 #include "game.h"
-#include <iostream>
+#include "global_dependencies.h"
+
+Game::Game() {
+    logger = Logger::GetInstance();
+    logger->SetLogLevel(LogLevel_DEBUG);
+    engineContext = GD::GetContainer()->engineContext;
+}
 
 void Game::Initialize() {
-    std::cout << "Roll Back Engine 0.0.1 Started!" << std::endl;
+    logger->Debug("Roll Back Engine " + engineContext->GetEngineVersion() + " Started!");
 }
 
 void Game::ProcessInput() {}
@@ -12,7 +18,7 @@ void Game::Update() {}
 void Game::Render() {}
 
 bool Game::IsRunning() {
-    return false;
+    return engineContext->IsRunning();
 }
 
 void Game::Destroy() {}

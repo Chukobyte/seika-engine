@@ -5,7 +5,7 @@ L_FLAGS := -lmingw32 -static-libgcc
 C_FLAGS := -w -std=c++14 -Wfatal-errors
 BUILD_OBJECT := roll_back_engine.exe
 
-SRC = $(wildcard src/main.cpp src/core/*.cpp)
+SRC = $(wildcard src/main.cpp src/core/*.cpp src/core/utils/*.cpp)
 OBJ = $(SRC:.cpp=.o)
 
 # MAIN
