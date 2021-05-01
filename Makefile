@@ -58,6 +58,7 @@ endif
 	copy $(BUILD_OBJECT) $(EXPORT_PACKAGE_DIR)
 	copy *.dll $(EXPORT_PACKAGE_DIR)
 	copy version.json $(EXPORT_PACKAGE_DIR)
+	Xcopy /E /I assets $(EXPORT_PACKAGE_DIR)\assets
 	cd $(EXPORT_PACKAGE_DIR) && echo %cd% && 7z a $(PROJECT_NAME).zip *
 
 
