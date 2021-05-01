@@ -3,6 +3,7 @@
 
 #include "engine_context.h"
 #include "rendering/render_context.h"
+#include "asset_manager.h"
 
 class GD {
     /* A singleton that holds global pointers...*/
@@ -13,8 +14,11 @@ class GD {
   public:
     EngineContext *engineContext = nullptr;
     RenderContext *renderContext = nullptr;
+    AssetManager *assetManager = nullptr;
 
     static GD* GetContainer();
+
+    void ResetDependencies();
 };
 
 #endif //GLOBAL_DEPENDENCIES_H

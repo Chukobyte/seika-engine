@@ -3,8 +3,7 @@
 GD* GD::instance = 0;
 
 GD::GD() {
-    engineContext = new EngineContext();
-    renderContext = new RenderContext();
+    ResetDependencies();
 }
 
 GD* GD::GetContainer() {
@@ -12,4 +11,13 @@ GD* GD::GetContainer() {
         instance = new GD();
     }
     return instance;
+}
+
+void GD::ResetDependencies() {
+    delete engineContext;
+    delete renderContext;
+    delete assetManager;
+    engineContext = new EngineContext();
+    renderContext = new RenderContext();
+    assetManager = new AssetManager();
 }
