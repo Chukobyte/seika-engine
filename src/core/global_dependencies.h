@@ -3,6 +3,7 @@
 
 #include "engine_context.h"
 #include "rendering/render_context.h"
+#include "rendering/renderer.h"
 #include "asset_manager.h"
 
 class GD {
@@ -14,6 +15,7 @@ class GD {
   public:
     EngineContext *engineContext = nullptr;
     RenderContext *renderContext = nullptr;
+    Renderer *renderer = nullptr;
     AssetManager *assetManager = nullptr;
 
     static GD* GetContainer();

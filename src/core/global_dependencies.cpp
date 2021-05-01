@@ -16,8 +16,10 @@ GD* GD::GetContainer() {
 void GD::ResetDependencies() {
     delete engineContext;
     delete renderContext;
+    delete renderer;
     delete assetManager;
     engineContext = new EngineContext();
     renderContext = new RenderContext();
+    renderer = new Renderer();
     assetManager = new AssetManager();
 }

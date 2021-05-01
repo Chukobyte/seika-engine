@@ -1,0 +1,156 @@
+#include "renderer.h"
+
+// Sprite Renderer
+SpriteRenderer::SpriteRenderer(const glm::mat4 &projection) {
+    GLfloat vertices[] = {
+        // positions // texture coordinates
+        0.0f, 1.0f, 0.0f, 1.0f,
+        1.0f, 0.0f, 1.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 0.0f,
+
+        0.0f, 1.0f, 0.0f, 1.0f,
+        1.0f, 1.0f, 1.0f, 1.0f,
+        1.0f, 0.0f, 1.0f, 0.0f
+    };
+
+    glGenVertexArrays(1, &quadVAO);
+    glGenBuffers(1, &quadVBO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glBindVertexArray(quadVAO);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*) nullptr);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+
+    shader = Shader(OPENGL_SHADER_SOURCE_SPRITE);
+    shader.Use();
+    shader.SetMatrix4Float("projection", projection);
+    shader.SetInt("sprite", 0);
+}
+
+void SpriteRenderer::Draw(Texture2D *texture2D, Rect2 *sourceRectangle, Rect2 *destinationRectangle, int zIndex, float rotation, Color color) {
+    glDepthMask(false);
+
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(destinationRectangle->x, destinationRectangle->y, 0.0f));  // first translate (transformations are: scale happens first, then rotation, and then final translation happens; reversed order)
+
+    model = glm::translate(model, glm::vec3(0.5f * destinationRectangle->w, 0.5f * destinationRectangle->h, 0.0f)); // move origin of rotation to center of quad
+    model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f)); // then rotate
+    model = glm::translate(model, glm::vec3(-0.5f * destinationRectangle->w, -0.5f * destinationRectangle->h, 0.0f)); // move origin back
+
+    model = glm::scale(model, glm::vec3(destinationRectangle->w, destinationRectangle->h, 1.0f)); // last scale
+
+    glBindVertexArray(quadVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+
+    shader.Use();
+    shader.SetMatrix4Float("model", model);
+    shader.SetVec4Float("spriteColor", color.r, color.g, color.b, color.a);
+
+    glActiveTexture(GL_TEXTURE0);
+    texture2D->Bind();
+
+    // render subimage based on source rectangle
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, texture2D->width);
+    glPixelStorei(GL_UNPACK_SKIP_PIXELS, sourceRectangle->x);
+    glPixelStorei(GL_UNPACK_SKIP_ROWS, sourceRectangle->y);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sourceRectangle->w, sourceRectangle->h, 0, texture2D->imageFormat, GL_UNSIGNED_BYTE, texture2D->data);
+
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+    glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
+    glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
+
+    // Render Container
+
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+
+    glBindVertexArray(0);
+    glDepthMask(true);
+}
+
+void SpriteRenderer::UpdateProjection(const glm::mat4 &projection) {
+    shader.Use();
+    shader.SetMatrix4Float("projection", projection);
+}
+
+// Font Renderer
+FontRenderer::FontRenderer(const glm::mat4 &projection) {
+    shader = Shader(OPENGL_SHADER_SOURCE_FONT);
+    UpdateProjection(projection);
+}
+
+void FontRenderer::Draw(Font *font, const std::string &text, float x, float y, float scale, const Color color) {
+    Vector2 currentScale = Vector2(scale, scale);
+    shader.Use();
+    shader.SetVec4Float("textColor", color);
+    glActiveTexture(GL_TEXTURE0);
+    glBindVertexArray(font->VAO);
+
+//    y = ConvertMinMax(y, static_cast<float>(projectConfigurations->baseResolutionWidth), 0, 0, static_cast<float>(projectConfigurations->baseResolutionHeight));
+    y = ConvertMinMax(y, 800, 0, 0, 600);
+
+    // iterate through all characters
+    std::string::const_iterator c;
+    for(c = text.begin(); c != text.end(); c++) {
+        Character ch = font->characters[*c];
+
+        float xPos = x + ch.bearing.x * currentScale.x;
+        float yPos = y - (ch.size.y) * currentScale.y;
+
+        float w = ch.size.x * currentScale.x;
+        float h = ch.size.y * currentScale.y;
+        // update VBO for each character
+        GLfloat vertices[6][4] = {
+            {xPos,     yPos + h, 0.0f, 0.0f},
+            {xPos,     yPos,     0.0f, 1.0f},
+            {xPos + w, yPos,     1.0f, 1.0f},
+
+            {xPos,     yPos + h, 0.0f, 0.0f},
+            {xPos + w, yPos,     1.0f, 1.0f},
+            {xPos + w, yPos + h, 1.0f, 0.0f}
+        };
+        // render glyph texture over quad
+        glBindTexture(GL_TEXTURE_2D, ch.textureID);
+        // update content of VBO memory
+        glBindBuffer(GL_ARRAY_BUFFER, font->VBO);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        // render quad
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        // advance cursor for next glyph (note that advance is number of 1/64 pixels)
+        x += (ch.advance >> 6) * currentScale.x; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+    }
+    glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void FontRenderer::UpdateProjection(const glm::mat4 &projection) {
+    shader.Use();
+    shader.SetMatrix4Float("projection", projection);
+}
+
+// Renderer
+
+Renderer::~Renderer() {
+    delete spriteRenderer;
+    delete fontRenderer;
+}
+
+void Renderer::Initialize(int windowWidth, int windowHeight) {
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(windowWidth), static_cast<float>(windowHeight), 0.0f, -1.0f, 1.0f);
+    spriteRenderer = new SpriteRenderer(projection);
+    fontRenderer = new FontRenderer(projection);
+}
+
+void Renderer::DrawSprite(Texture2D *texture2D, Rect2 *sourceRectangle, Rect2 *destinationRectangle, int zIndex, float rotation, Color color) {
+    spriteRenderer->Draw(texture2D, sourceRectangle, destinationRectangle, zIndex, rotation, color);
+}
+
+void Renderer::DrawFont(Font *font, const std::string &text, float x, float y, float scale, Color color) {
+    fontRenderer->Draw(font, text, x, y, scale, color);
+}

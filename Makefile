@@ -9,13 +9,13 @@ PROJECT_NAME := roll_back_engine
 BUILD_OBJECT := $(PROJECT_NAME).exe
 TEST_BUILD_OBJECT := test_$(PROJECT_NAME).exe
 
-SRC = $(wildcard src/main.cpp src/core/*.cpp src/math/*.cpp src/core/utils/*.cpp src/core/rendering/*.cpp include/stb_image/*.cpp)
+SRC = $(wildcard src/main.cpp src/core/*.cpp src/math/*.cpp src/core/utils/*.cpp src/core/rendering/*.cpp src/core/rendering/shader/*.cpp include/stb_image/*.cpp)
 SRC_C = $(wildcard lib/glad.c)
 
 OBJ = $(SRC:.cpp=.o)
 OBJ_C = $(SRC_C:.c=.o)
 
-TEST_SRC = $(wildcard src/test/*.cpp src/test/unit/*.cpp src/core/*.cpp src/math/*.cpp src/core/utils/*.cpp src/core/rendering/*.cpp include/stb_image/*.cpp)
+TEST_SRC = $(wildcard src/test/*.cpp src/test/unit/*.cpp src/core/*.cpp src/math/*.cpp src/core/utils/*.cpp src/core/rendering/*.cpp src/core/rendering/shader/*.cpp include/stb_image/*.cpp)
 TEST_OBJ = $(TEST_SRC:.cpp=.o)
 
 EXPORT_PACKAGE_DIR := export_package
