@@ -37,3 +37,26 @@ Must install make in order to run commands.
 `make package`
 
 *Must have 7zip installed and added to the `PATH`.
+
+##### Architecture
+
+Systems and their connections.
+
+```mermaid
+
+graph LR;
+    C[Audio]
+    D[Rendering]
+    E[Physics]
+    E-->D
+    F[Input]
+    F-->G
+    F-->E
+    G[Scripting]
+    G-->I
+    H[Assets]
+    H-->C
+    H-->D
+    H-->G
+    I[Timer]
+```
