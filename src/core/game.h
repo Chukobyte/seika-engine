@@ -6,6 +6,7 @@
 #include "rendering/render_context.h"
 #include "rendering/renderer.h"
 #include "project_properties.h"
+#include "input/input_manager.h"
 
 class Game {
   private:
@@ -14,6 +15,7 @@ class Game {
     RenderContext *renderContext = nullptr;
     Renderer *renderer = nullptr;
     ProjectProperties *projectProperties = nullptr;
+    InputManager *inputManager = nullptr;
 
     void InitializeSDL();
 

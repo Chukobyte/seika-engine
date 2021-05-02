@@ -1,0 +1,22 @@
+#ifndef ANIMATION_H
+#define ANIMATION_H
+
+#include <map>
+
+#include "../rendering/texture2d.h"
+#include "../math/rect2.h"
+
+struct AnimationFrame {
+    Texture2D *texture = nullptr;
+    Rect2 drawSource;
+    int frame;
+};
+
+struct Animation {
+    std::string name;
+    int speed;
+    std::map<int, AnimationFrame> animationFrames;
+    int frames; // Caches number of frames to system doesn't have to count elements of map
+};
+
+#endif //ANIMATION_H

@@ -56,11 +56,15 @@ graph LR;
     G-->C
     G-->I
     G-->J
+    G-->K
     H[Assets]
     H-->C
     H-->D
     H-->G
+    H-->K
     I[Timer]
     J[Networking]
     J-->D
+    K[Animations]
+    K-->D
 ```

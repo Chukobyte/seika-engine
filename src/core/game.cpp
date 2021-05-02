@@ -12,6 +12,7 @@ Game::Game() {
     engineContext = GD::GetContainer()->engineContext;
     renderContext = GD::GetContainer()->renderContext;
     renderer = GD::GetContainer()->renderer;
+    inputManager = InputManager::GetInstance();
 }
 
 void Game::Initialize() {
@@ -80,9 +81,12 @@ void Game::ProcessInput() {
             break;
         }
     }
+    inputManager->ProcessInputs(event);
 }
 
-void Game::Update() {}
+void Game::Update() {
+    inputManager->ClearInputFlags();
+}
 
 void Game::Render() {
     glClearColor(projectProperties->backgroundDrawColor.r,
