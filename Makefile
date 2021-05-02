@@ -1,7 +1,7 @@
 CC := gcc # C Compiler
 CXX := g++ # C++ compiler
 I_FLAGS := -I"./include" -I"${SDL2_HOME}/include"
-L_FLAGS := -lmingw32 -lSDL2main -lSDL2_mixer -lSDL2 -lfreetype -static-libgcc
+L_FLAGS := -lmingw32 -lSDL2main -lSDL2_mixer -lSDL2 -lfreetype -lws2_32 -static-libgcc -static-libstdc++
 C_FLAGS := -w -std=c++14 -Wfatal-errors
 LIBRARIES := -L"${SDL2_HOME}/lib" -L"${FREETYPE_HOME}/lib"
 

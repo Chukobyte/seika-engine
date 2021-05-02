@@ -1,5 +1,5 @@
-#include <iostream>
 #include "core/game.h"
+
 
 int main(int argv, char** args) {
     static Game *gameEngine = new Game();

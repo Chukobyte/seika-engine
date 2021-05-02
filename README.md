@@ -53,10 +53,14 @@ graph LR;
     F-->G
     F-->E
     G[Scripting]
+    G-->C
     G-->I
+    G-->J
     H[Assets]
     H-->C
     H-->D
     H-->G
     I[Timer]
+    J[Networking]
+    J-->D
 ```
