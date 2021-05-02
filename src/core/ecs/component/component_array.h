@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <cassert>
 
-#include "../entity.h"
+#include "../entity/entity.h"
 #include "component.h"
 
 class IComponentArray {

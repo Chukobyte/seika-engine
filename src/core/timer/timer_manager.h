@@ -3,10 +3,10 @@
 
 #include <map>
 
-#include "../entity.h"
+#include "../ecs/entity/entity.h"
 #include "timer.h"
-#include "../component/components/timer_component.h"
-#include "../component/component_manager.h"
+#include "../ecs/component/components/timer_component.h"
+#include "../ecs/component/component_manager.h"
 
 class TimerManager {
   private:

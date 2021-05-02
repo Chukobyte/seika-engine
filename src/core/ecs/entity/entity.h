@@ -1,7 +1,7 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include "component/component.h"
+#include "../component/component.h"
 
 using Entity = std::uint32_t;
 

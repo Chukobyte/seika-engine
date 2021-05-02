@@ -5,6 +5,8 @@
 
 #include "global_dependencies.h"
 
+#include "ecs/entity/system/sprite_rendering_entity_system.h"
+
 Game::Game() {
     logger = Logger::GetInstance();
     logger->SetLogLevel(LogLevel_DEBUG);

@@ -2,7 +2,7 @@
 #define TRANSFORM_COMPONENT_H
 
 #include "../component.h"
-#include "../../math/vector2.h"
+#include "../../../math/vector2.h"
 
 struct Transform2DComponent {
     Vector2 position = Vector2(0.0f, 0.0f);

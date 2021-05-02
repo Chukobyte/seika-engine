@@ -2,8 +2,8 @@
 #define COLLIDER_COMPONENT_H
 
 #include "../component.h"
-#include "../../math/vector2.h"
-#include "../../math/rect2.h"
+#include "../../../math/vector2.h"
+#include "../../../math/rect2.h"
 
 struct ColliderComponent {
   public:

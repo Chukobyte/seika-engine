@@ -1,7 +1,7 @@
 #ifndef TIMER_COMPONENT_H
 #define TIMER_COMPONENT_H
 
-#include "../../timer/timer.h"
+#include "../../../timer/timer.h"
 
 struct TimerComponent {
     Timer *timer = nullptr;

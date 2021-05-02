@@ -52,6 +52,10 @@ class EntityManager {
         entitiesToDelete.clear();
     }
 
+    unsigned int GetAliveEntities() {
+        return livingEntityCounter;
+    }
+
     void SetSignature(Entity entity, ComponentSignature signature) {
         assert(entity < MAX_ENTITIES && "Entity out of range!");
 

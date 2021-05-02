@@ -18,8 +18,15 @@ void GD::ResetDependencies() {
     delete renderContext;
     delete renderer;
     delete assetManager;
+    delete entityManager;
+    delete entitySystemManager;
+    delete componentManager;
     engineContext = new EngineContext();
     renderContext = new RenderContext();
     renderer = new Renderer();
     assetManager = new AssetManager();
+    entityManager = new EntityManager();
+    entitySystemManager = new EntitySystemManager();
+    componentManager = new ComponentManager();
+    entityComponentOrchestrator = new EntityComponentOrchestrator(entityManager, entitySystemManager, componentManager);
 }

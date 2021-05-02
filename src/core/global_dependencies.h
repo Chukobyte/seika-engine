@@ -5,6 +5,10 @@
 #include "rendering/render_context.h"
 #include "rendering/renderer.h"
 #include "asset_manager.h"
+#include "ecs/entity/entity_manager.h"
+#include "ecs/entity/system/entity_system_manager.h"
+#include "ecs/component/component_manager.h"
+#include "ecs/entity_component_orchestrator.h"
 
 class GD {
     /* A singleton that holds global pointers...*/
@@ -17,6 +21,10 @@ class GD {
     RenderContext *renderContext = nullptr;
     Renderer *renderer = nullptr;
     AssetManager *assetManager = nullptr;
+    EntityManager *entityManager = nullptr;
+    EntitySystemManager *entitySystemManager = nullptr;
+    ComponentManager *componentManager = nullptr;
+    EntityComponentOrchestrator *entityComponentOrchestrator = nullptr;
 
     static GD* GetContainer();
 

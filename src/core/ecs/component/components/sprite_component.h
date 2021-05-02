@@ -2,11 +2,11 @@
 #define SPRITE_COMPONENT_H
 
 #include "../component.h"
-#include "../../math/rect2.h"
-#include "../../rendering/texture.h"
+#include "../../../math/rect2.h"
+#include "../../../rendering/texture2d.h"
 
 struct SpriteComponent {
-    Texture* texture = nullptr;
+    Texture2D* texture = nullptr;
     Rect2 drawSource;
     Rect2 drawDestination; // Updated when drawing to position
 };
