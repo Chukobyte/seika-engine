@@ -64,31 +64,31 @@ void Game::InitializeECS() {
 
     // TEMP
     // Creates a Sprite Node
-    Entity blinkyEntity = entityComponentOrchestrator->CreateEntity();
-    Transform2DComponent blinkyTransform2DComponent{
+    Entity puncherEntity = entityComponentOrchestrator->CreateEntity();
+    Transform2DComponent puncherTransform2DComponent{
         .position = Vector2(projectProperties->windowWidth / 2, projectProperties->windowHeight / 2),
-        .scale = Vector2(2.0f, 2.0f)
+        .scale = Vector2(4.0f, 4.0f)
     };
-    entityComponentOrchestrator->AddComponent(blinkyEntity, blinkyTransform2DComponent);
+    entityComponentOrchestrator->AddComponent(puncherEntity, puncherTransform2DComponent);
 
-    Texture2D *blinkyTexture = GD::GetContainer()->assetManager->GetTexture("blinky");
-    Vector2 blinkySpriteSize = Vector2(16, 16);
-    SpriteComponent blinkySpriteComponent{
-        .texture = blinkyTexture,
-        .drawSource = Rect2(0, 0, blinkySpriteSize)
+    Texture2D *puncherTexture = GD::GetContainer()->assetManager->GetTexture("puncher");
+    Vector2 puncherSpriteSize = Vector2(12, 16);
+    SpriteComponent puncherSpriteComponent{
+        .texture = puncherTexture,
+        .drawSource = Rect2(0, 0, puncherSpriteSize)
     };
-    entityComponentOrchestrator->AddComponent(blinkyEntity, blinkySpriteComponent);
+    entityComponentOrchestrator->AddComponent(puncherEntity, puncherSpriteComponent);
 
     // Creates Text Label Node
     Entity titleEntity = entityComponentOrchestrator->CreateEntity();
     Transform2DComponent titleTransform2DComponent{
-        .position = Vector2(225, 100)
+        .position = Vector2(325, 100)
     };
     entityComponentOrchestrator->AddComponent(titleEntity, titleTransform2DComponent);
 
     TextLabelComponent textLabelComponent{
-        .text = "Roll Back Engine",
-        .font = GD::GetContainer()->assetManager->GetFont("emulogic"),
+        .text = "Puncher",
+        .font = GD::GetContainer()->assetManager->GetFont("bruh"),
         .color = Color(0.0f, 1.0f, 1.0f)
     };
     entityComponentOrchestrator->AddComponent(titleEntity, textLabelComponent);

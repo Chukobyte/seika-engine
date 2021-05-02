@@ -68,8 +68,8 @@ std::map<std::string, Mix_Chunk*> AssetManager::GetAllSounds() {
 }
 
 void AssetManager::LoadDefaultAssets() {
-    LoadTexture("blinky", "assets/images/blinky.png");
-    LoadFont("emulogic", "assets/fonts/emulogic.ttf", 20);
+    LoadTexture("puncher", "assets/images/puncher_idle.png");
+    LoadFont("bruh", "assets/fonts/bruh.ttf", 60);
     LoadMusic("test_music", "assets/audio/music/test_music.wav");
     LoadSound("test_sound", "assets/audio/sound/test_sound_effect.wav");
 }
