@@ -22,9 +22,9 @@ class EntitySystemManager {
     T* RegisterSystem() {
         const char *typeName = typeid(T).name();
 
-        assert(systems.find(typeName) == systems.end() && "Registering system more than once.");
+        assert(!HasSystem<T>() && "Registering system more than once.");
 
-        EntitySystem *system = new T();
+        auto *system = new T();
         system->Enable();
         systems.insert({typeName, system});
         return system;
@@ -33,8 +33,14 @@ class EntitySystemManager {
     template<typename T>
     T* GetSystem() {
         const char *typeName = typeid(T).name();
-        assert(systems.find(typeName) != systems.end() && "System used before registered.");
+        assert(HasSystem<T>() && "System used before registered.");
         return systems[typeName];
+    }
+
+    template<typename T>
+    bool HasSystem() {
+        const char *typeName = typeid(T).name();
+        return systems.find(typeName) != systems.end();
     }
 
     template<typename T>
@@ -61,7 +67,7 @@ class EntitySystemManager {
     void SetSignature(ComponentSignature signature) {
         const char* typeName = typeid(T).name();
 
-        assert(systems.find(typeName) != systems.end() && "System used before registered.");
+        assert(HasSystem<T>() && "System used before registered.");
 
         signatures.insert({typeName, signature});
     }
@@ -70,7 +76,7 @@ class EntitySystemManager {
     ComponentSignature GetSignature() {
         const char* typeName = typeid(T).name();
 
-        assert(systems.find(typeName) != systems.end() && "System hasn't been registered!");
+        assert(HasSystem<T>() && "System hasn't been registered!");
 
         return signatures[typeName];
     }

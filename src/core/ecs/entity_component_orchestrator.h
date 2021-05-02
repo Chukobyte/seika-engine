@@ -111,6 +111,11 @@ class EntityComponentOrchestrator {
     }
 
     template<typename T>
+    bool HasSystem() {
+        return entitySystemManager->HasSystem<T>();
+    }
+
+    template<typename T>
     void SetSystemSignature(ComponentSignature signature) {
         entitySystemManager->SetSignature<T>(signature);
     }
