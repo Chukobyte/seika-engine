@@ -13,6 +13,7 @@ class SpriteRenderingEntitySystem : public EntitySystem {
     SpriteRenderingEntitySystem() {
         renderer = GD::GetContainer()->renderer;
         componentManager = GD::GetContainer()->componentManager;
+        enabled = true;
     }
 
     void Enable() override {}

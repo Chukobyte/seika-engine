@@ -6,6 +6,9 @@
 #include "global_dependencies.h"
 
 #include "ecs/entity/system/sprite_rendering_entity_system.h"
+#include "ecs/entity/system/text_rendering_entity_system.h"
+
+#include "ecs/component/components/text_label_component.h"
 
 Game::Game() {
     logger = Logger::GetInstance();
@@ -22,6 +25,7 @@ void Game::Initialize() {
     InitializeSDL();
     InitializeRendering();
     GD::GetContainer()->assetManager->LoadDefaultAssets(); // TODO: clean up
+    InitializeECS();
     engineContext->SetRunning(true);
 }
 
@@ -35,6 +39,59 @@ void Game::InitializeSDL() {
         logger->Error("SDL_mixer could not initialized!");
         return;
     }
+}
+
+void Game::InitializeECS() {
+    EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+
+    // Components
+    entityComponentOrchestrator->RegisterComponent<Transform2DComponent>();
+    entityComponentOrchestrator->RegisterComponent<SpriteComponent>();
+    entityComponentOrchestrator->RegisterComponent<TextLabelComponent>();
+
+    // Systems
+    entityComponentOrchestrator->RegisterSystem<SpriteRenderingEntitySystem>();
+    ComponentSignature spriteRenderingSystemSignature;
+    spriteRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<Transform2DComponent>(), true);
+    spriteRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<SpriteComponent>(), true);
+    entityComponentOrchestrator->SetSystemSignature<SpriteRenderingEntitySystem>(spriteRenderingSystemSignature);
+
+    entityComponentOrchestrator->RegisterSystem<TextRenderingEntitySystem>();
+    ComponentSignature textRenderingSystemSignature;
+    textRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<Transform2DComponent>(), true);
+    textRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<TextLabelComponent>(), true);
+    entityComponentOrchestrator->SetSystemSignature<TextRenderingEntitySystem>(textRenderingSystemSignature);
+
+    // TEMP
+    // Creates a Sprite Node
+    Entity blinkyEntity = entityComponentOrchestrator->CreateEntity();
+    Transform2DComponent blinkyTransform2DComponent{
+        .position = Vector2(projectProperties->windowWidth / 2, projectProperties->windowHeight / 2),
+        .scale = Vector2(2.0f, 2.0f)
+    };
+    entityComponentOrchestrator->AddComponent(blinkyEntity, blinkyTransform2DComponent);
+
+    Texture2D *blinkyTexture = GD::GetContainer()->assetManager->GetTexture("blinky");
+    Vector2 blinkySpriteSize = Vector2(16, 16);
+    SpriteComponent blinkySpriteComponent{
+        .texture = blinkyTexture,
+        .drawSource = Rect2(0, 0, blinkySpriteSize)
+    };
+    entityComponentOrchestrator->AddComponent(blinkyEntity, blinkySpriteComponent);
+
+    // Creates Text Label Node
+    Entity titleEntity = entityComponentOrchestrator->CreateEntity();
+    Transform2DComponent titleTransform2DComponent{
+        .position = Vector2(225, 100)
+    };
+    entityComponentOrchestrator->AddComponent(titleEntity, titleTransform2DComponent);
+
+    TextLabelComponent textLabelComponent{
+        .text = "Roll Back Engine",
+        .font = GD::GetContainer()->assetManager->GetFont("emulogic"),
+        .color = Color(0.0f, 1.0f, 1.0f)
+    };
+    entityComponentOrchestrator->AddComponent(titleEntity, textLabelComponent);
 }
 
 void Game::InitializeRendering() {
@@ -102,18 +159,11 @@ void Game::Render() {
                  projectProperties->backgroundDrawColor.a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-    // Test Rendering
-    static AssetManager *assetManager = GD::GetContainer()->assetManager;
+    static SpriteRenderingEntitySystem *spriteRenderingEntitySystem = (SpriteRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<SpriteRenderingEntitySystem>();
+    spriteRenderingEntitySystem->Render();
 
-    Texture2D *blinkyTexture = assetManager->GetTexture("blinky");
-    Rect2 blinkyDrawSourceRect(0, 0, 16, 16);
-    Rect2 blinkyDrawDestinationRect(projectProperties->windowWidth / 2, projectProperties->windowHeight / 2, 32, 32);
-
-    renderer->DrawSprite(blinkyTexture, &blinkyDrawSourceRect, &blinkyDrawDestinationRect);
-
-    Font *font = assetManager->GetFont("emulogic");
-
-    renderer->DrawFont(font, "Roll Back Engine", 225, 100, 1.0f, Color(0.0f, 1.0f, 1.0f));
+    static TextRenderingEntitySystem *textRenderingEntitySystem = (TextRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<TextRenderingEntitySystem>();
+    textRenderingEntitySystem->Render();
 
     SDL_GL_SwapWindow(renderContext->window);
 }

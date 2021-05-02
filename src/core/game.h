@@ -20,6 +20,8 @@ class Game {
     void InitializeSDL();
 
     void InitializeRendering();
+
+    void InitializeECS();
   public:
     Game();
 

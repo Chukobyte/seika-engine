@@ -9,7 +9,7 @@
 const unsigned int MAX_SYSTEMS = 32;
 
 class EntitySystem {
-  private:
+  protected:
     bool enabled = false;
   public:
     std::set<Entity> entities;

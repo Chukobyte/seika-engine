@@ -13,6 +13,13 @@ class EntitySystemManager {
     std::unordered_map<const char*, ComponentSignature> signatures{};
     std::unordered_map<const char*, EntitySystem*> systems{};
     Logger *logger = nullptr;
+
+    template<typename T>
+    T* GetSystem() {
+        const char *typeName = typeid(T).name();
+        assert(HasSystem<T>() && "System used before registered.");
+        return systems[typeName];
+    }
   public:
     EntitySystemManager() {
         logger = Logger::GetInstance();
@@ -31,16 +38,16 @@ class EntitySystemManager {
     }
 
     template<typename T>
-    T* GetSystem() {
-        const char *typeName = typeid(T).name();
-        assert(HasSystem<T>() && "System used before registered.");
-        return systems[typeName];
-    }
-
-    template<typename T>
     bool HasSystem() {
         const char *typeName = typeid(T).name();
         return systems.find(typeName) != systems.end();
+    }
+
+    template<typename T>
+    EntitySystem* GetEntitySystem() {
+        const char *typeName = typeid(T).name();
+        assert(HasSystem<T>() && "System used before registered.");
+        return systems[typeName];
     }
 
     template<typename T>
