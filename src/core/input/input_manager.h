@@ -16,8 +16,12 @@ class InputManager {
 
     InputManager() {
         mouseInput = MouseInput::GetInstance();
+        // TODO: Clean up once configuration and scripting system is in place
+        AddAction(QUIT_DEFAULT_ACTION, KEYBOARD_KEY_ESC);
     }
   public:
+    const std::string QUIT_DEFAULT_ACTION = "quit";
+
     static InputManager* GetInstance() {
         if (!instance) {
             instance = new InputManager();

@@ -85,6 +85,11 @@ void Game::ProcessInput() {
 }
 
 void Game::Update() {
+    // TODO: Clean up temp quit with escape once scripting is implemented
+    if (inputManager->IsActionJustPressed(inputManager->QUIT_DEFAULT_ACTION)) {
+        engineContext->SetRunning(false);
+    }
+
     inputManager->ClearInputFlags();
 }
 
