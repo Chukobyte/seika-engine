@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include "input_event_state.h"
 #include "input_action.h"
 #include "mouse_input.h"
 #include "keyboard_input.h"
@@ -11,6 +12,7 @@
 class InputManager {
   private:
     static InputManager *instance;
+    InputEventState inputEventState;
     std::map<std::string, InputAction*> inputActions;
     MouseInput *mouseInput = nullptr;
 
