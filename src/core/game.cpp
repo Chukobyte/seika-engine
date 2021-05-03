@@ -217,19 +217,18 @@ void Game::ProcessInput() {
 }
 
 void Game::Update() {
-    const unsigned int FRAME_TARGET_TIME = projectProperties->GetMillisecondsPerTick() / projectProperties->GetTargetFPS();
-    static int ticksLastFrame = 0;
-
     // Sleep until FRAME_TARGET_TIME has elapsed since last frame
-    unsigned int timeToWait = FRAME_TARGET_TIME - (SDL_GetTicks() - ticksLastFrame);
+    static Uint32 lastFrameTime = 0;
+    const unsigned int FRAME_TARGET_TIME = projectProperties->GetMillisecondsPerTick() / projectProperties->GetTargetFPS();
+    unsigned int timeToWait = FRAME_TARGET_TIME - (SDL_GetTicks() - lastFrameTime);
     if (timeToWait > 0 && timeToWait <= FRAME_TARGET_TIME) {
         SDL_Delay(timeToWait);
     }
 
-    float deltaTime = (SDL_GetTicks() - ticksLastFrame) / projectProperties->GetMillisecondsPerTick();
-    deltaTime = (deltaTime > projectProperties->GetMaxDeltaTime()) ? projectProperties->GetMaxDeltaTime() : deltaTime;
+    FixedTimeStep();
 
-    ticksLastFrame = SDL_GetTicks();
+    VariableTimeStep(lastFrameTime);
+
 
     // TODO: Clean up temp quit with escape once scripting is implemented
     if (inputManager->IsActionJustPressed(inputManager->QUIT_DEFAULT_ACTION)) {
@@ -237,6 +236,39 @@ void Game::Update() {
     }
 
     inputManager->ClearInputFlags();
+
+    lastFrameTime = SDL_GetTicks();
+}
+
+void Game::FixedTimeStep() {
+    // Fixed time step
+    double time = 0.0f;
+    double physicsDeltaTime = 0.01f;
+    static Uint32 currentTime = SDL_GetTicks();
+    static double accumulator = 0.0f;
+
+    Uint32 newTime = SDL_GetTicks();
+    Uint32 frameTime = newTime - currentTime;
+    const Uint32 MAX_FRAME_TIME = 250;
+    if (frameTime > MAX_FRAME_TIME) {
+        frameTime = MAX_FRAME_TIME;
+    }
+    currentTime = newTime;
+
+    accumulator += frameTime / projectProperties->GetMillisecondsPerTick();
+
+    while (accumulator >= physicsDeltaTime) {
+        time += physicsDeltaTime;
+        accumulator -= physicsDeltaTime;
+    }
+
+    const double alpha = accumulator / physicsDeltaTime;
+}
+
+void Game::VariableTimeStep(Uint32 lastFrameTime) {
+    // Variable time step
+    float variableDeltaTime = (SDL_GetTicks() - lastFrameTime) / projectProperties->GetMillisecondsPerTick();
+    variableDeltaTime = (variableDeltaTime > projectProperties->GetMaxDeltaTime()) ? projectProperties->GetMaxDeltaTime() : variableDeltaTime;
 }
 
 void Game::Render() {

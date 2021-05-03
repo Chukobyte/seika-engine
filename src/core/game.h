@@ -22,6 +22,10 @@ class Game {
     void InitializeRendering();
 
     void InitializeECS();
+
+    void FixedTimeStep();
+
+    void VariableTimeStep(Uint32 lastFrameTime);
   public:
     Game();
 
