@@ -138,7 +138,7 @@ void Game::InitializeECS() {
 
     Animation puncherAnimation{
         .name = "Idle",
-        .speed = 200,
+        .speed = 100,
         .animationFrames = puncherIdleAnimationFrames,
         .frames = puncherIdleAnimationFrames.size()
     };
