@@ -8,9 +8,11 @@
 #include "ecs/entity/system/sprite_rendering_entity_system.h"
 #include "ecs/entity/system/animated_sprite_rendering_entity_system.h"
 #include "ecs/entity/system/text_rendering_entity_system.h"
+#include "ecs/entity/system/script_entity_system.h"
 
 #include "ecs/component/components/animated_sprite_component.h"
 #include "ecs/component/components/text_label_component.h"
+#include "ecs/component/components/scriptable_class_component.h"
 
 Game::Game() {
     logger = Logger::GetInstance();
@@ -51,6 +53,7 @@ void Game::InitializeECS() {
     entityComponentOrchestrator->RegisterComponent<SpriteComponent>();
     entityComponentOrchestrator->RegisterComponent<AnimatedSpriteComponent>();
     entityComponentOrchestrator->RegisterComponent<TextLabelComponent>();
+    entityComponentOrchestrator->RegisterComponent<ScriptableClassComponent>();
 
     // Systems
     entityComponentOrchestrator->RegisterSystem<SpriteRenderingEntitySystem>();
@@ -70,6 +73,11 @@ void Game::InitializeECS() {
     textRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<Transform2DComponent>(), true);
     textRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<TextLabelComponent>(), true);
     entityComponentOrchestrator->SetSystemSignature<TextRenderingEntitySystem>(textRenderingSystemSignature);
+
+    entityComponentOrchestrator->RegisterSystem<ScriptEntitySystem>();
+    ComponentSignature scriptSystemSignature;
+    scriptSystemSignature.set(entityComponentOrchestrator->GetComponentType<ScriptableClassComponent>(), true);
+    entityComponentOrchestrator->SetSystemSignature<ScriptEntitySystem>(scriptSystemSignature);
 
     // TEMP
     // Creates a Sprite Node
