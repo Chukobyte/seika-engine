@@ -14,6 +14,8 @@
 #include "ecs/component/components/text_label_component.h"
 #include "ecs/component/components/scriptable_class_component.h"
 
+#include "scripting/python/python_script_context.h"
+
 Game::Game() {
     logger = Logger::GetInstance();
     logger->SetLogLevel(LogLevel_DEBUG);
@@ -74,10 +76,13 @@ void Game::InitializeECS() {
     textRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<TextLabelComponent>(), true);
     entityComponentOrchestrator->SetSystemSignature<TextRenderingEntitySystem>(textRenderingSystemSignature);
 
-    entityComponentOrchestrator->RegisterSystem<ScriptEntitySystem>();
+    ScriptEntitySystem* scriptEntitySystem = entityComponentOrchestrator->RegisterSystem<ScriptEntitySystem>();
+    scriptEntitySystem->InstallScriptContext<PythonScriptContext>();
     ComponentSignature scriptSystemSignature;
     scriptSystemSignature.set(entityComponentOrchestrator->GetComponentType<ScriptableClassComponent>(), true);
     entityComponentOrchestrator->SetSystemSignature<ScriptEntitySystem>(scriptSystemSignature);
+
+    entityComponentOrchestrator->InitializeAllSystems();
 
     // TEMP
     // Creates a Sprite Node
@@ -265,9 +270,12 @@ void Game::FixedTimeStep() {
 
     accumulator += frameTime / projectProperties->GetMillisecondsPerTick();
 
+    static ScriptEntitySystem *scriptEntitySystem = (ScriptEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<ScriptEntitySystem>();
+
     while (accumulator >= PHYSICS_DELTA_TIME) {
         time += PHYSICS_DELTA_TIME;
         accumulator -= PHYSICS_DELTA_TIME;
+        scriptEntitySystem->PhysicsProcess(PHYSICS_DELTA_TIME);
     }
 
     const double alpha = accumulator / PHYSICS_DELTA_TIME;

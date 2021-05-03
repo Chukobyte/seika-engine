@@ -124,6 +124,10 @@ class EntityComponentOrchestrator {
     ComponentSignature GetSystemSignature() {
         return entitySystemManager->GetSignature<T>();
     }
+
+    void InitializeAllSystems() {
+        entitySystemManager->InitializeAllSystems();
+    }
 };
 
 #endif //ENTITY_COMPONENT_ORCHESTRATOR_H

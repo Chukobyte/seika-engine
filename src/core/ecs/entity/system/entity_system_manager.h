@@ -88,10 +88,16 @@ class EntitySystemManager {
         return signatures[typeName];
     }
 
+    void InitializeAllSystems() {
+        for (auto const& pair : systems) {
+            auto const& system = pair.second;
+            system->Initialize();
+        }
+    }
+
     void EntityDestroyed(Entity entity) {
         for (auto const& pair : systems) {
             auto const& system = pair.second;
-
             system->entities.erase(entity);
         }
     }

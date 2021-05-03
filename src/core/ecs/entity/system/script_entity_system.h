@@ -14,7 +14,16 @@ class ScriptEntitySystem : public EntitySystem {
         enabled = true;
     }
 
+    void Initialize() override {
+        for (auto const &pair : scriptContexts) {
+            auto const &type = pair.first;
+            auto const &scriptContext = pair.second;
+            scriptContext->Initialize();
+        }
+    }
+
     void Enable() override {}
+
     void Disable() override {}
 
     template<typename T>
@@ -30,14 +39,6 @@ class ScriptEntitySystem : public EntitySystem {
     bool HasScriptContext() {
         const char *typeName = typeid(T).name();
         return scriptContexts.find(typeName) == scriptContexts.end();
-    }
-
-    void Initialize() {
-        for (auto const &pair : scriptContexts) {
-            auto const &type = pair.first;
-            auto const &scriptContext = pair.second;
-            scriptContext->Initialize();
-        }
     }
 
     void CreateEntityInstance(Entity entity) {

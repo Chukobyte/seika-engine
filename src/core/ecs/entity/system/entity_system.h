@@ -18,9 +18,12 @@ class EntitySystem {
         return enabled;
     }
 
+    virtual void Initialize() = 0;
+
     virtual void Enable() {
         enabled = true;
     }
+
     virtual void Disable() {
         enabled = false;
     }

@@ -16,6 +16,7 @@ class TextRenderingEntitySystem : public EntitySystem {
         enabled = true;
     }
 
+    void Initialize() override {}
     void Enable() override {}
     void Disable() override {}
 

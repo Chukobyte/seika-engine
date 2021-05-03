@@ -30,7 +30,7 @@ class PythonScriptContext : public ScriptContext {
 
     void DeleteEntityInstance(Entity entity) override {}
 
-    void PhysicsProcess(Entity entity, float deltaTime) override {}
+    void PhysicsProcess(Entity entity, double deltaTime) override {}
 
     void ReceiveSubscribedSignal(Entity subscriberEntity, const std::string &subscriberFunctionName, SignalArguments args) override {}
 

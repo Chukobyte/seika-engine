@@ -5,20 +5,21 @@
 #include <Python.h>
 #include <iostream>
 
-#include "python_module_definitions.h"
+#include "python_source.h"
+#include "python_modules.h"
 
 class CPyInstance {
 public:
     CPyInstance() {
-        Py_SetProgramName(L"byte_engine_scripting");
+        Py_SetProgramName(L"roll_engine_scripting");
 //        PyImport_AppendInittab("seika_engine_api", &PyInit_seikaRenderer); // Load engine modules
         Py_Initialize();
         PyRun_SimpleString("import sys");
         PyRun_SimpleString("sys.path.append(\".\")");
 
-//        EnginePythonClasses enginePythonClasses;
-//        PyRun_SimpleString(enginePythonClasses.loadSourceImporterSource);
-//        PyRun_SimpleString(enginePythonClasses.importEngineModulesSource.c_str());
+        PyRun_SimpleString(PYTHON_SOURCE_LOAD_SOURCE_IMPORTER_SNIPPET.c_str());
+        PyRun_SimpleString(PYTHON_SOURCE_IMPORT_ENGINE_MODULE_SNIPPET.c_str());
+        PyRun_SimpleString("print(\"hello world!\")");
     }
 
     ~CPyInstance() {
