@@ -8,6 +8,8 @@
 
 #include "../math/vector2.h"
 
+#include "input_event_state.h"
+
 const std::string MOUSE_BUTTON_LEFT{"mb_left"};
 const std::string MOUSE_BUTTON_RIGHT{"mb_right"};
 const std::string MOUSE_BUTTON_MIDDLE{"mb_middle"};
@@ -54,30 +56,29 @@ class MouseInput {
         return mousePosition;
     }
 
-    void ProcessSDLEvent(SDL_Event &event) {
-        switch(event.type) {
+    void ProcessSDLEvent(InputEvent inputEvent) {
+        switch(inputEvent.sdlType) {
         // Mouse
         case SDL_MOUSEMOTION:
-            mousePosition.x = event.motion.x;
-            mousePosition.y = event.motion.y;
+            mousePosition = inputEvent.mouseMotion;
             break;
         case SDL_MOUSEWHEEL:
             break;
         case SDL_MOUSEBUTTONDOWN:
-            if(event.button.button == SDL_BUTTON_LEFT) {
+            if(inputEvent.mouseButton == SDL_BUTTON_LEFT) {
                 isMouseLeftButtonPressed = true;
                 isMouseLeftButtonJustPressed = true;
-            } else if(event.button.button == SDL_BUTTON_RIGHT) {
+            } else if(inputEvent.mouseButton == SDL_BUTTON_RIGHT) {
                 isMouseRightButtonPressed = true;
                 isMouseRightButtonJustPressed = true;
             }
             break;
         case SDL_MOUSEBUTTONUP:
-            if(event.button.button == SDL_BUTTON_LEFT) {
+            if(inputEvent.mouseButton == SDL_BUTTON_LEFT) {
                 isMouseLeftButtonPressed = false;
                 isMouseLeftButtonJustPressed = false;
                 isMouseLeftButtonJustReleased = true;
-            } else if(event.button.button == SDL_BUTTON_RIGHT) {
+            } else if(inputEvent.mouseButton == SDL_BUTTON_RIGHT) {
                 isMouseRightButtonPressed = false;
                 isMouseRightButtonJustPressed = false;
                 isMouseRightButtonJustReleased = true;

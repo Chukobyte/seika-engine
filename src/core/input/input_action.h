@@ -85,8 +85,8 @@ class InputAction {
         return false;
     }
 
-    void ProcessInputs(const Uint8* keyboardState) {
-        keyboardAction.ProcessInputs(keyboardState);
+    void ProcessInputs(InputEvent inputEvent) {
+        keyboardAction.ProcessInputs(inputEvent);
     }
 
     void ClearInputFlags() {

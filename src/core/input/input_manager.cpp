@@ -38,13 +38,17 @@ bool InputManager::IsActionJustReleased(const std::string &actionName) {
 }
 
 void InputManager::ProcessInputs(SDL_Event &event) {
-//    InputEvent inputEvent = inputEventState.ProcessSDLEvent(event);
-    const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
-    mouseInput->ProcessSDLEvent(event);
-    for (auto const &pair : inputActions) {
-        const std::string &actionName = pair.first;
-        InputAction *inputAction = pair.second;
-        inputAction->ProcessInputs(keyboardState);
+    InputEvent inputEvent = inputEventState.ProcessSDLEvent(event);
+    // TODO: send signal to subscribers for input events
+
+    if (inputEvent.type == InputEventType_MOUSE) {
+        mouseInput->ProcessSDLEvent(inputEvent);
+    } else if (inputEvent.type == InputEventType_KEYBOARD) {
+        for (auto const &pair : inputActions) {
+            const std::string &actionName = pair.first;
+            InputAction *inputAction = pair.second;
+            inputAction->ProcessInputs(inputEvent);
+        }
     }
 }
 
