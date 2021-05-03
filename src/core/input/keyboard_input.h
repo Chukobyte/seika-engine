@@ -91,8 +91,7 @@ class KeyboardAction {
         }
     }
 
-    void ProcessInputs() {
-        const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
+    void ProcessInputs(const Uint8* keyboardState) {
         for(SDL_Scancode scancodeValue : values) {
             bool isKeyboardValuePressed = keyboardState[scancodeValue];
             if (isKeyboardValuePressed && !isActionPressed) {
