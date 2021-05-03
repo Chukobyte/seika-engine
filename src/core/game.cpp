@@ -6,8 +6,10 @@
 #include "global_dependencies.h"
 
 #include "ecs/entity/system/sprite_rendering_entity_system.h"
+#include "ecs/entity/system/animated_sprite_rendering_entity_system.h"
 #include "ecs/entity/system/text_rendering_entity_system.h"
 
+#include "ecs/component/components/animated_sprite_component.h"
 #include "ecs/component/components/text_label_component.h"
 
 Game::Game() {
@@ -47,6 +49,7 @@ void Game::InitializeECS() {
     // Components
     entityComponentOrchestrator->RegisterComponent<Transform2DComponent>();
     entityComponentOrchestrator->RegisterComponent<SpriteComponent>();
+    entityComponentOrchestrator->RegisterComponent<AnimatedSpriteComponent>();
     entityComponentOrchestrator->RegisterComponent<TextLabelComponent>();
 
     // Systems
@@ -56,6 +59,12 @@ void Game::InitializeECS() {
     spriteRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<SpriteComponent>(), true);
     entityComponentOrchestrator->SetSystemSignature<SpriteRenderingEntitySystem>(spriteRenderingSystemSignature);
 
+    entityComponentOrchestrator->RegisterSystem<AnimatedSpriteRenderingEntitySystem>();
+    ComponentSignature animatedSpriteRenderingSystemSignature;
+    animatedSpriteRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<Transform2DComponent>(), true);
+    animatedSpriteRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<AnimatedSpriteComponent>(), true);
+    entityComponentOrchestrator->SetSystemSignature<AnimatedSpriteRenderingEntitySystem>(animatedSpriteRenderingSystemSignature);
+
     entityComponentOrchestrator->RegisterSystem<TextRenderingEntitySystem>();
     ComponentSignature textRenderingSystemSignature;
     textRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<Transform2DComponent>(), true);
@@ -64,6 +73,22 @@ void Game::InitializeECS() {
 
     // TEMP
     // Creates a Sprite Node
+//    Entity puncherEntity = entityComponentOrchestrator->CreateEntity();
+//    Transform2DComponent puncherTransform2DComponent{
+//        .position = Vector2(projectProperties->windowWidth / 2, projectProperties->windowHeight / 2),
+//        .scale = Vector2(4.0f, 4.0f)
+//    };
+//    entityComponentOrchestrator->AddComponent(puncherEntity, puncherTransform2DComponent);
+//
+//    Texture2D *puncherTexture = GD::GetContainer()->assetManager->GetTexture("puncher");
+//    Vector2 puncherSpriteSize = Vector2(12, 16);
+//    SpriteComponent puncherSpriteComponent{
+//        .texture = puncherTexture,
+//        .drawSource = Rect2(0, 0, puncherSpriteSize)
+//    };
+//    entityComponentOrchestrator->AddComponent(puncherEntity, puncherSpriteComponent);
+
+    // Creates an Animated Sprite Node
     Entity puncherEntity = entityComponentOrchestrator->CreateEntity();
     Transform2DComponent puncherTransform2DComponent{
         .position = Vector2(projectProperties->windowWidth / 2, projectProperties->windowHeight / 2),
@@ -73,11 +98,59 @@ void Game::InitializeECS() {
 
     Texture2D *puncherTexture = GD::GetContainer()->assetManager->GetTexture("puncher");
     Vector2 puncherSpriteSize = Vector2(12, 16);
-    SpriteComponent puncherSpriteComponent{
+    std::map<unsigned int, AnimationFrame> puncherIdleAnimationFrames;
+    AnimationFrame puncherIdleFrame0{
         .texture = puncherTexture,
-        .drawSource = Rect2(0, 0, puncherSpriteSize)
+        .drawSource = Rect2(0, 0, puncherSpriteSize),
+        .frame = 0
     };
-    entityComponentOrchestrator->AddComponent(puncherEntity, puncherSpriteComponent);
+    puncherIdleAnimationFrames.emplace(puncherIdleFrame0.frame, puncherIdleFrame0);
+    AnimationFrame puncherIdleFrame1{
+        .texture = puncherTexture,
+        .drawSource = Rect2(12, 0, puncherSpriteSize),
+        .frame = 1
+    };
+    puncherIdleAnimationFrames.emplace(puncherIdleFrame1.frame, puncherIdleFrame1);
+    AnimationFrame puncherIdleFrame2{
+        .texture = puncherTexture,
+        .drawSource = Rect2(24, 0, puncherSpriteSize),
+        .frame = 2
+    };
+    puncherIdleAnimationFrames.emplace(puncherIdleFrame2.frame, puncherIdleFrame2);
+    AnimationFrame puncherIdleFrame3{
+        .texture = puncherTexture,
+        .drawSource = Rect2(36, 0, puncherSpriteSize),
+        .frame = 3
+    };
+    puncherIdleAnimationFrames.emplace(puncherIdleFrame3.frame, puncherIdleFrame3);
+    AnimationFrame puncherIdleFrame4{
+        .texture = puncherTexture,
+        .drawSource = Rect2(48, 0, puncherSpriteSize),
+        .frame = 4
+    };
+    puncherIdleAnimationFrames.emplace(puncherIdleFrame4.frame, puncherIdleFrame4);
+    AnimationFrame puncherIdleFrame5{
+        .texture = puncherTexture,
+        .drawSource = Rect2(60, 0, puncherSpriteSize),
+        .frame = 5
+    };
+    puncherIdleAnimationFrames.emplace(puncherIdleFrame5.frame, puncherIdleFrame5);
+
+    Animation puncherAnimation{
+        .name = "Idle",
+        .speed = 200,
+        .animationFrames = puncherIdleAnimationFrames,
+        .frames = puncherIdleAnimationFrames.size()
+    };
+    std::map<std::string, Animation> puncherIdleAnimations;
+    puncherIdleAnimations.emplace(puncherAnimation.name, puncherAnimation);
+    AnimatedSpriteComponent puncherAnimatedSpriteComponent{
+        .animations = puncherIdleAnimations,
+        .currentAnimation = puncherIdleAnimations["Idle"],
+        .currentFrameIndex = 0,
+        .isPlaying = true
+    };
+    entityComponentOrchestrator->AddComponent(puncherEntity, puncherAnimatedSpriteComponent);
 
     // Creates Text Label Node
     Entity titleEntity = entityComponentOrchestrator->CreateEntity();
@@ -144,6 +217,20 @@ void Game::ProcessInput() {
 }
 
 void Game::Update() {
+    const unsigned int FRAME_TARGET_TIME = projectProperties->GetMillisecondsPerTick() / projectProperties->GetTargetFPS();
+    static int ticksLastFrame = 0;
+
+    // Sleep until FRAME_TARGET_TIME has elapsed since last frame
+    unsigned int timeToWait = FRAME_TARGET_TIME - (SDL_GetTicks() - ticksLastFrame);
+    if (timeToWait > 0 && timeToWait <= FRAME_TARGET_TIME) {
+        SDL_Delay(timeToWait);
+    }
+
+    float deltaTime = (SDL_GetTicks() - ticksLastFrame) / projectProperties->GetMillisecondsPerTick();
+    deltaTime = (deltaTime > projectProperties->GetMaxDeltaTime()) ? projectProperties->GetMaxDeltaTime() : deltaTime;
+
+    ticksLastFrame = SDL_GetTicks();
+
     // TODO: Clean up temp quit with escape once scripting is implemented
     if (inputManager->IsActionJustPressed(inputManager->QUIT_DEFAULT_ACTION)) {
         engineContext->SetRunning(false);
@@ -161,6 +248,9 @@ void Game::Render() {
 
     static SpriteRenderingEntitySystem *spriteRenderingEntitySystem = (SpriteRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<SpriteRenderingEntitySystem>();
     spriteRenderingEntitySystem->Render();
+
+    static AnimatedSpriteRenderingEntitySystem *animatedSpriteRenderingEntitySystem = (AnimatedSpriteRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<AnimatedSpriteRenderingEntitySystem>();
+    animatedSpriteRenderingEntitySystem->Render();
 
     static TextRenderingEntitySystem *textRenderingEntitySystem = (TextRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<TextRenderingEntitySystem>();
     textRenderingEntitySystem->Render();

@@ -15,8 +15,8 @@ struct AnimationFrame {
 struct Animation {
     std::string name;
     int speed;
-    std::map<int, AnimationFrame> animationFrames;
-    int frames; // Caches number of frames to system doesn't have to count elements of map
+    std::map<unsigned int, AnimationFrame> animationFrames;
+    unsigned int frames; // Caches number of frames to system doesn't have to count elements of map
 };
 
 #endif //ANIMATION_H

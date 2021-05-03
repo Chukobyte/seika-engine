@@ -6,7 +6,6 @@
 #include "../component.h"
 #include "../../../animation/animation.h"
 #include "../../../math/rect2.h"
-#include "../../rendering/texture.h"
 
 struct AnimatedSpriteComponent {
     std::map<std::string, Animation> animations;
