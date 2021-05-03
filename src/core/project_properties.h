@@ -9,8 +9,9 @@ class ProjectProperties {
   private:
     static ProjectProperties *instance;
     unsigned int targetFPS = 60;
-    float millisecondsPerTick = 1000.0f;
-    float maxDeltaTime = 0.5f;
+    double millisecondsPerTick = 1000.0f;
+    double maxDeltaTime = 0.5f;
+    double fixedPhysicsDeltaTime = 0.01f;
 
     ProjectProperties() = default;
   public:
@@ -25,12 +26,16 @@ class ProjectProperties {
         return targetFPS;
     }
 
-    float GetMillisecondsPerTick() {
+    double GetMillisecondsPerTick() {
         return millisecondsPerTick;
     }
 
-    float GetMaxDeltaTime() {
+    double GetMaxDeltaTime() {
         return maxDeltaTime;
+    }
+
+    double GetFixedPhysicsDeltaTime() {
+        return fixedPhysicsDeltaTime;
     }
 };
 

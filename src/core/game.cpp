@@ -242,8 +242,8 @@ void Game::Update() {
 
 void Game::FixedTimeStep() {
     // Fixed time step
-    double time = 0.0f;
-    double physicsDeltaTime = 0.01f;
+    static double time = 0.0f;
+    const double PHYSICS_DELTA_TIME = projectProperties->GetFixedPhysicsDeltaTime();
     static Uint32 currentTime = SDL_GetTicks();
     static double accumulator = 0.0f;
 
@@ -257,12 +257,12 @@ void Game::FixedTimeStep() {
 
     accumulator += frameTime / projectProperties->GetMillisecondsPerTick();
 
-    while (accumulator >= physicsDeltaTime) {
-        time += physicsDeltaTime;
-        accumulator -= physicsDeltaTime;
+    while (accumulator >= PHYSICS_DELTA_TIME) {
+        time += PHYSICS_DELTA_TIME;
+        accumulator -= PHYSICS_DELTA_TIME;
     }
 
-    const double alpha = accumulator / physicsDeltaTime;
+    const double alpha = accumulator / PHYSICS_DELTA_TIME;
 }
 
 void Game::VariableTimeStep(Uint32 lastFrameTime) {
