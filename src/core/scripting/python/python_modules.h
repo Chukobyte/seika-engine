@@ -21,15 +21,15 @@ class PythonModules {
 static struct PyMethodDef rollApiMethods[] = {
     // NODE2D
     {
-        "get_node2D_position", (PyCFunction) PythonModules::node2D_get_position,
+        "node2D_get_position", (PyCFunction) PythonModules::node2D_get_position,
         METH_VARARGS | METH_KEYWORDS, "Gets a nodes position."
     },
     {
-        "set_node2D_position", (PyCFunction) PythonModules::node2D_set_position,
+        "node2D_set_position", (PyCFunction) PythonModules::node2D_set_position,
         METH_VARARGS | METH_KEYWORDS, "Sets a nodes position."
     },
     {
-        "add_to_node2D_position", (PyCFunction) PythonModules::node2D_add_to_position,
+        "node2D_add_to_position", (PyCFunction) PythonModules::node2D_add_to_position,
         METH_VARARGS | METH_KEYWORDS, "Adds to a nodes position."
     },
     // INPUT
