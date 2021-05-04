@@ -5,6 +5,16 @@ using PythonSource = const std::string;
 
 static const PythonSource PYTHON_SOURCE_ROLL_MODULE = "";
 
+static const PythonSource  PYTHON_SOURCE_ENGINE_MODULE =
+    "import roll_engine_api\n"
+    "\n"
+    "class Engine:\n"
+    "   @staticmethod\n"
+    "   def exit(code: int = 0) -> None:\n"
+    "       roll_engine_api.engine_exit(code=code)\n"
+    "\n"
+    "";
+
 static const PythonSource PYTHON_SOURCE_MATH_MODULE =
     "class Vector2:\n"
     "   def __init__(self, x=0.0, y=0.0):\n"
@@ -226,6 +236,10 @@ static const PythonSource PYTHON_SOURCE_IMPORT_ENGINE_MODULE_SNIPPET =
 
     "\"roll\": \"\"\"\n"
     + PYTHON_SOURCE_ROLL_MODULE +
+    "\"\"\",\n"
+
+    "\"roll.engine\": \"\"\"\n"
+    + PYTHON_SOURCE_ENGINE_MODULE +
     "\"\"\",\n"
 
     "\"roll.math\": \"\"\"\n"

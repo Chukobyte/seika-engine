@@ -4,6 +4,17 @@
 #include "../../ecs/component/components/transform2D_component.h"
 #include "../../input/input_manager.h"
 
+// ENGINE
+PyObject* PythonModules::engine_exit(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EngineContext *engineContext = GD::GetContainer()->engineContext;
+    int exitCode;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", engineExitKWList, &exitCode)) {
+        engineContext->SetRunning(false);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
 // NODE2D
 PyObject* PythonModules::node2D_get_position(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;

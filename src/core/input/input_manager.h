@@ -16,11 +16,7 @@ class InputManager {
     std::map<std::string, InputAction*> inputActions;
     MouseInput *mouseInput = nullptr;
 
-    InputManager() {
-        mouseInput = MouseInput::GetInstance();
-        // TODO: Clean up once configuration and scripting system is in place
-        AddAction(QUIT_DEFAULT_ACTION, KEYBOARD_KEY_ESC);
-    }
+    InputManager();
   public:
     const std::string QUIT_DEFAULT_ACTION = "quit";
 

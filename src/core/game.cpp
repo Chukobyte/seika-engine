@@ -245,16 +245,9 @@ void Game::Update() {
         SDL_Delay(timeToWait);
     }
 
-    // TODO: Clean up temp quit with escape once scripting is implemented
-    if (inputManager->IsActionJustPressed(inputManager->QUIT_DEFAULT_ACTION)) {
-        engineContext->SetRunning(false);
-    }
-
     FixedTimeStep();
 
     VariableTimeStep(lastFrameTime);
-
-//    inputManager->ClearInputFlags();
 
     lastFrameTime = SDL_GetTicks();
 }

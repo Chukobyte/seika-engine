@@ -2,6 +2,10 @@
 
 InputManager *InputManager::instance = nullptr;
 
+InputManager::InputManager() {
+    mouseInput = MouseInput::GetInstance();
+}
+
 void InputManager::AddAction(const std::string &actionName, const std::string &actionValue) {
     if (inputActions.count(actionName) <= 0) {
         inputActions.emplace(actionName, new InputAction());
