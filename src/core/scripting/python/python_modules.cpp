@@ -83,7 +83,7 @@ PyObject* PythonModules::input_is_action_just_released(PyObject *self, PyObject 
     static InputManager *inputManager = InputManager::GetInstance();
     char *pyActionName;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "s", inputActionCheckKWList, &pyActionName)) {
-        if (inputManager->IsActionPressed(std::string(pyActionName))) {
+        if (inputManager->IsActionJustReleased(std::string(pyActionName))) {
             Py_RETURN_TRUE;
         }
         Py_RETURN_FALSE;

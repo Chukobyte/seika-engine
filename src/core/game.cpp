@@ -166,8 +166,8 @@ void Game::InitializeECS() {
     entityComponentOrchestrator->AddComponent(puncherEntity, puncherAnimatedSpriteComponent);
 
     ScriptableClassComponent puncherScriptableClassComponent{
-        .classPath = "assets.game_projects.test.src.test",
-        .className = "Test"
+        .classPath = "assets.game_projects.test.src.fighter",
+        .className = "Puncher"
     };
     entityComponentOrchestrator->AddComponent(puncherEntity, puncherScriptableClassComponent);
     scriptEntitySystem->CreateEntityInstance(puncherEntity);
@@ -245,17 +245,16 @@ void Game::Update() {
         SDL_Delay(timeToWait);
     }
 
-    FixedTimeStep();
-
-    VariableTimeStep(lastFrameTime);
-
-
     // TODO: Clean up temp quit with escape once scripting is implemented
     if (inputManager->IsActionJustPressed(inputManager->QUIT_DEFAULT_ACTION)) {
         engineContext->SetRunning(false);
     }
 
-    inputManager->ClearInputFlags();
+    FixedTimeStep();
+
+    VariableTimeStep(lastFrameTime);
+
+//    inputManager->ClearInputFlags();
 
     lastFrameTime = SDL_GetTicks();
 }
@@ -283,6 +282,7 @@ void Game::FixedTimeStep() {
         time += PHYSICS_DELTA_TIME;
         accumulator -= PHYSICS_DELTA_TIME;
         scriptEntitySystem->PhysicsProcess(PHYSICS_DELTA_TIME);
+        inputManager->ClearInputFlags();
     }
 
     const double alpha = accumulator / PHYSICS_DELTA_TIME;

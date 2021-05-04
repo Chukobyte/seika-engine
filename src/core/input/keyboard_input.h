@@ -91,9 +91,10 @@ class KeyboardAction {
         }
     }
 
-    void ProcessInputs(InputEvent inputEvent) {
+    void ProcessInputs(const Uint8* keyboardState) {
         for(SDL_Scancode scancodeValue : values) {
-            bool isKeyboardValuePressed = inputEvent.keyScancode == scancodeValue && inputEvent.keyPressed;
+//            bool isKeyboardValuePressed = inputEvent.keyScancode == scancodeValue && inputEvent.keyPressed;
+            bool isKeyboardValuePressed = keyboardState[scancodeValue];
             if (isKeyboardValuePressed && !isActionPressed) {
                 isActionPressed = true;
                 isActionJustPressed = true;

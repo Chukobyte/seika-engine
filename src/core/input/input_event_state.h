@@ -52,9 +52,11 @@ class InputEventState {
         // Keyboard
         case SDL_KEYDOWN:
         case SDL_KEYUP:
-            inputEvent.type = InputEventType_KEYBOARD;
-            inputEvent.keyPressed = event.key.state == SDL_PRESSED;
-            inputEvent.keyScancode = event.key.keysym.scancode;
+            if (!event.key.repeat) {
+                inputEvent.type = InputEventType_KEYBOARD;
+                inputEvent.keyPressed = event.key.state == SDL_PRESSED;
+                inputEvent.keyScancode = event.key.keysym.scancode;
+            }
             break;
         default:
             break;
