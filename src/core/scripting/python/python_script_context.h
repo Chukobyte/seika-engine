@@ -15,25 +15,6 @@ class PythonScriptContext : public ScriptContext {
     CPyObject physicsProcessFunctionName;
     CPyObject endFunctionName;
     ComponentManager *componentManager = nullptr;
-
-    CPyObject ExtractClassInstanceFromEntity(Entity entity) {
-        ScriptableClassComponent scriptableClassComponent = componentManager->GetComponent<ScriptableClassComponent>(entity);
-        // Import Module
-        CPyObject pName = PyUnicode_FromString(scriptableClassComponent.classPath.c_str());
-        CPyObject pModule = PyImport_Import(pName);
-        assert(pModule != nullptr && "Python module is NULL!");
-
-        // Class
-        CPyObject pModuleDict = PyModule_GetDict(pModule);
-        CPyObject pClass = PyDict_GetItemString(pModuleDict, scriptableClassComponent.className.c_str());
-        assert(pClass != nullptr && "Python class is NULL!");
-
-        // Instance
-        CPyObject argList = Py_BuildValue("(i)", entity);
-        CPyObject pClassInstance = PyObject_CallObject(pClass, argList);
-
-        return pClassInstance;
-    }
   public:
     ~PythonScriptContext() {
         delete pyInstance;
@@ -51,7 +32,7 @@ class PythonScriptContext : public ScriptContext {
         ScriptableClassComponent scriptableClassComponent = componentManager->GetComponent<ScriptableClassComponent>(entity);
 
         // Create Instance
-        CPyObject pClassInstance = ExtractClassInstanceFromEntity(entity);
+        CPyObject pClassInstance = PyHelper::CreateModuleEntityInstance(entity, scriptableClassComponent.classPath, scriptableClassComponent.className);
         pClassInstance.AddRef();
         activeClassInstances.emplace(entity, pClassInstance);
 
