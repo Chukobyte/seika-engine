@@ -165,6 +165,13 @@ void Game::InitializeECS() {
     };
     entityComponentOrchestrator->AddComponent(puncherEntity, puncherAnimatedSpriteComponent);
 
+    ScriptableClassComponent puncherScriptableClassComponent{
+        .classPath = "assets.game_projects.test.src.test",
+        .className = "Test"
+    };
+    entityComponentOrchestrator->AddComponent(puncherEntity, puncherScriptableClassComponent);
+    scriptEntitySystem->CreateEntityInstance(puncherEntity);
+
     // Creates Text Label Node
     Entity titleEntity = entityComponentOrchestrator->CreateEntity();
     Transform2DComponent titleTransform2DComponent{

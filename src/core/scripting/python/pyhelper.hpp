@@ -19,7 +19,6 @@ public:
 
         PyRun_SimpleString(PYTHON_SOURCE_LOAD_SOURCE_IMPORTER_SNIPPET.c_str());
         PyRun_SimpleString(PYTHON_SOURCE_IMPORT_ENGINE_MODULE_SNIPPET.c_str());
-        PyRun_SimpleString("print(\"hello world!\")");
     }
 
     ~CPyInstance() {

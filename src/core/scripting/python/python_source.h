@@ -67,6 +67,17 @@ static const PythonSource PYTHON_SOURCE_COLOR_MODULE =
     "       self.g = g\n"
     "       self.b = b\n"
     "       self.a = a\n"
+    "\n"
+    "";
+
+static const PythonSource PYTHON_SOURCE_NODE_MODULE =
+    "class Node:\n"
+    "   def __init__(self, entity_id: int) -> None:\n"
+    "       self.entity_id = entity_id\n"
+    "\n"
+    "class Node2D(Node):\n"
+    "   pass\n"
+    "\n"
     "";
 
 static const PythonSource PYTHON_SOURCE_LOAD_SOURCE_IMPORTER_SNIPPET =
@@ -118,6 +129,10 @@ static const PythonSource PYTHON_SOURCE_IMPORT_ENGINE_MODULE_SNIPPET =
 
     "\"roll.color\": \"\"\"\n"
     + PYTHON_SOURCE_COLOR_MODULE +
+    "\"\"\",\n"
+
+    "\"roll.node\": \"\"\"\n"
+    + PYTHON_SOURCE_NODE_MODULE +
     "\"\"\",\n"
 
     "}\n"
