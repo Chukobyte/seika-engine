@@ -1,0 +1,63 @@
+{
+   "game_title": "Fighting Game Proto",
+   "initial_scene": "",
+   "base_resolution": {
+      "width": 800,
+      "height": 600
+   },
+   "assets": [
+      {
+         "type": "texture",
+         "file_path": "assets/images/puncher_idle.png"
+      },
+      {
+         "type": "font",
+         "file_path": "assets/fonts/bruh.ttf",
+         "size": 60
+      },
+      {
+         "type": "music",
+         "file_path": "assets/audio/music/test_music.wav"
+      },
+      {
+         "type": "sound",
+         "file_path": "assets/audio/sound/test_sound_effect.wav"
+      }
+   ],
+   "input_actions": [
+      {
+         "name": "quit",
+         "values": [
+            "esc"
+         ]
+      },
+      {
+         "name": "left",
+         "values": [
+            "a",
+            "left"
+         ]
+      },
+      {
+         "name": "right",
+         "values": [
+            "d",
+            "right"
+         ]
+      },
+      {
+         "name": "up",
+         "values": [
+            "w",
+            "up"
+         ]
+      },
+      {
+         "name": "down",
+         "values": [
+            "s",
+            "down"
+         ]
+      }
+   ]
+}

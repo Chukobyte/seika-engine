@@ -34,6 +34,8 @@ class InputManager {
         }
     }
 
+    void LoadProjectInputActions();
+
     void AddAction(const std::string &actionName, const std::string &actionValue);
     void RemoveAction(const std::string &actionName);
 

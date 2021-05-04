@@ -1,9 +1,21 @@
 #include "input_manager.h"
+#include "../project_properties.h"
 
 InputManager *InputManager::instance = nullptr;
 
 InputManager::InputManager() {
     mouseInput = MouseInput::GetInstance();
+}
+
+void InputManager::LoadProjectInputActions() {
+    ProjectProperties *projectProperties = ProjectProperties::GetInstance();
+    InputActionsConfigurations inputActionsConfigurations = projectProperties->GetInputActionsConfigurations();
+
+    for (InputConfiguration inputConfiguration : inputActionsConfigurations.configurations) {
+        for (const std::string &inputActionValue : inputConfiguration.values) {
+            AddAction(inputConfiguration.name, inputActionValue);
+        }
+    }
 }
 
 void InputManager::AddAction(const std::string &actionName, const std::string &actionValue) {

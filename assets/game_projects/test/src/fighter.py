@@ -4,10 +4,10 @@ from roll.math import Vector2
 from roll.input import Input, Keyboard
 
 class Puncher(Node2D):
-    def _start(self) -> None:
-        Input.add_action(action_name="quit", value=Keyboard.ESC)
-        Input.add_action(action_name="right", value=Keyboard.RIGHT)
-        Input.add_action(action_name="left", value=Keyboard.LEFT)
+    # def _start(self) -> None:
+    #     Input.add_action(action_name="quit", value=Keyboard.ESC)
+    #     Input.add_action(action_name="right", value=Keyboard.RIGHT)
+    #     Input.add_action(action_name="left", value=Keyboard.LEFT)
 
     def _physics_process(self, delta_time: float) -> None:
         if Input.is_action_just_pressed(action_name="quit"):

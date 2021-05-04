@@ -42,7 +42,7 @@ class AssetManager {
 
     std::map<std::string, Mix_Chunk*> GetAllSounds();
 
-    void LoadDefaultAssets();
+    void LoadProjectAssets();
 };
 
 #endif // ASSET_MANAGER_H

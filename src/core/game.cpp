@@ -28,9 +28,11 @@ Game::Game() {
 
 void Game::Initialize() {
     logger->Debug("Roll Back Engine v" + engineContext->GetEngineVersion() + " started!");
+    projectProperties->LoadProjectConfigurations();
     InitializeSDL();
     InitializeRendering();
-    GD::GetContainer()->assetManager->LoadDefaultAssets(); // TODO: clean up
+    GD::GetContainer()->assetManager->LoadProjectAssets(); // TODO: clean up
+    inputManager->LoadProjectInputActions();
     InitializeECS();
     engineContext->SetRunning(true);
 }
@@ -85,22 +87,6 @@ void Game::InitializeECS() {
     entityComponentOrchestrator->InitializeAllSystems();
 
     // TEMP
-    // Creates a Sprite Node
-//    Entity puncherEntity = entityComponentOrchestrator->CreateEntity();
-//    Transform2DComponent puncherTransform2DComponent{
-//        .position = Vector2(projectProperties->windowWidth / 2, projectProperties->windowHeight / 2),
-//        .scale = Vector2(4.0f, 4.0f)
-//    };
-//    entityComponentOrchestrator->AddComponent(puncherEntity, puncherTransform2DComponent);
-//
-//    Texture2D *puncherTexture = GD::GetContainer()->assetManager->GetTexture("puncher");
-//    Vector2 puncherSpriteSize = Vector2(12, 16);
-//    SpriteComponent puncherSpriteComponent{
-//        .texture = puncherTexture,
-//        .drawSource = Rect2(0, 0, puncherSpriteSize)
-//    };
-//    entityComponentOrchestrator->AddComponent(puncherEntity, puncherSpriteComponent);
-
     // Creates an Animated Sprite Node
     Entity puncherEntity = entityComponentOrchestrator->CreateEntity();
     Transform2DComponent puncherTransform2DComponent{
@@ -109,7 +95,7 @@ void Game::InitializeECS() {
     };
     entityComponentOrchestrator->AddComponent(puncherEntity, puncherTransform2DComponent);
 
-    Texture2D *puncherTexture = GD::GetContainer()->assetManager->GetTexture("puncher");
+    Texture2D *puncherTexture = GD::GetContainer()->assetManager->GetTexture("assets/images/puncher_idle.png");
     Vector2 puncherSpriteSize = Vector2(12, 16);
     std::map<unsigned int, AnimationFrame> puncherIdleAnimationFrames;
     AnimationFrame puncherIdleFrame0{
@@ -181,7 +167,7 @@ void Game::InitializeECS() {
 
     TextLabelComponent textLabelComponent{
         .text = "Puncher",
-        .font = GD::GetContainer()->assetManager->GetFont("bruh"),
+        .font = GD::GetContainer()->assetManager->GetFont("assets/fonts/bruh.ttf"),
         .color = Color(0.0f, 1.0f, 1.0f)
     };
     entityComponentOrchestrator->AddComponent(titleEntity, textLabelComponent);

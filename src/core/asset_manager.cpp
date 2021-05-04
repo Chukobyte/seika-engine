@@ -4,6 +4,7 @@
 #include <cassert>
 
 #include "global_dependencies.h"
+#include "project_properties.h"
 
 AssetManager::AssetManager() {
     logger = Logger::GetInstance();
@@ -67,9 +68,23 @@ std::map<std::string, Mix_Chunk*> AssetManager::GetAllSounds() {
     return sounds;
 }
 
-void AssetManager::LoadDefaultAssets() {
-    LoadTexture("puncher", "assets/images/puncher_idle.png");
-    LoadFont("bruh", "assets/fonts/bruh.ttf", 60);
-    LoadMusic("test_music", "assets/audio/music/test_music.wav");
-    LoadSound("test_sound", "assets/audio/sound/test_sound_effect.wav");
+void AssetManager::LoadProjectAssets() {
+    ProjectProperties *projectProperties = ProjectProperties::GetInstance();
+    AssetConfigurations assetConfigurations = projectProperties->GetAssetConfigurations();
+
+    for (TextureConfiguration textureConfiguration : assetConfigurations.textureConfigurations) {
+        LoadTexture(textureConfiguration.filePath, textureConfiguration.filePath);
+    }
+
+    for (FontConfiguration fontConfiguration : assetConfigurations.fontConfigurations) {
+        LoadFont(fontConfiguration.filePath, fontConfiguration.filePath, fontConfiguration.size);
+    }
+
+    for (MusicConfiguration musicConfiguration : assetConfigurations.musicConfigurations) {
+        LoadMusic(musicConfiguration.filePath, musicConfiguration.filePath);
+    }
+
+    for (SoundConfiguration soundConfiguration : assetConfigurations.soundConfigurations) {
+        LoadMusic(soundConfiguration.filePath, soundConfiguration.filePath);
+    }
 }
