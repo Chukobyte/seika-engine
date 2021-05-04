@@ -38,7 +38,6 @@ class PythonScriptContext : public ScriptContext {
 
         // Call Start
         if (PyObject_HasAttr(pClassInstance, startFunctionName)) {
-            // TODO: Invoke in different phase
             PyObject_CallMethod(activeClassInstances[entity], "_start", nullptr);
         }
     }
@@ -46,7 +45,6 @@ class PythonScriptContext : public ScriptContext {
     void DeleteEntityInstance(Entity entity) override {
         assert(activeClassInstances.count(entity) > 0 && "Entity not registered to python script context!");
         if (PyObject_HasAttr(activeClassInstances[entity], startFunctionName)) {
-            // TODO: Invoke in different phase
             PyObject_CallMethod(activeClassInstances[entity], "_end", nullptr);
         }
     }

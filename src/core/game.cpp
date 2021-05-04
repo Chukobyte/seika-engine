@@ -27,7 +27,7 @@ Game::Game() {
 }
 
 void Game::Initialize() {
-    logger->Debug("Roll Back Engine " + engineContext->GetEngineVersion() + " Started!");
+    logger->Debug("Roll Back Engine v" + engineContext->GetEngineVersion() + " started!");
     InitializeSDL();
     InitializeRendering();
     GD::GetContainer()->assetManager->LoadDefaultAssets(); // TODO: clean up
@@ -321,5 +321,5 @@ void Game::Destroy() {
     SDL_GL_DeleteContext(renderContext->gl_context);
     SDL_DestroyWindow(renderContext->window);
     SDL_Quit();
-    logger->Debug("Engine exited!");
+    logger->Debug("Roll Back Engine stopped!");
 }
