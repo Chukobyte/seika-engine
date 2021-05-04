@@ -12,7 +12,7 @@ class CPyInstance {
 public:
     CPyInstance() {
         Py_SetProgramName(L"roll_engine_scripting");
-//        PyImport_AppendInittab("seika_engine_api", &PyInit_seikaRenderer); // Load engine modules
+        PyImport_AppendInittab("roll_engine_api", &PyInit_rollEngineAPI); // Load engine modules
         Py_Initialize();
         PyRun_SimpleString("import sys");
         PyRun_SimpleString("sys.path.append(\".\")");

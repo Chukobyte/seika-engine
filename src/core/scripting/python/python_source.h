@@ -71,12 +71,32 @@ static const PythonSource PYTHON_SOURCE_COLOR_MODULE =
     "";
 
 static const PythonSource PYTHON_SOURCE_NODE_MODULE =
+    "import roll_engine_api\n"
+    "from roll.math import Vector2\n"
+    "\n"
     "class Node:\n"
     "   def __init__(self, entity_id: int) -> None:\n"
     "       self.entity_id = entity_id\n"
     "\n"
     "class Node2D(Node):\n"
-    "   pass\n"
+    "   def set_position(self, value: Vector2) -> None:\n"
+    "       roll_engine_api.set_node2D_position(entity_id=self.entity_id, x=value.x, y=value.y)\n"
+    "\n"
+    "   def add_to_position(self, value: Vector2) -> None:\n"
+    "       roll_engine_api.add_to_node2D_position(entity_id=self.entity_id, x=value.x, y=value.y)\n"
+    "\n"
+    "   def get_position(self) -> Vector2:\n"
+    "       px, py = roll_engine_api.get_node2D_position(entity_id=self.entity_id)\n"
+    "       return Vector2(px, py)\n"
+    "\n"
+    "   @property\n"
+    "   def position(self) -> Vector2:\n"
+    "       px, py = roll_engine_api.get_node2D_position(entity_id=self.entity_id)\n"
+    "       return Vector2(px, py)\n"
+    "\n"
+    "   @position.setter\n"
+    "   def position(self, value: Vector2) -> None:\n"
+    "       roll_engine_api.set_node2D_position(entity_id=self.entity_id, x=value.x, y=value.y)\n"
     "\n"
     "";
 
