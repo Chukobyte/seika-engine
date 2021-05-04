@@ -43,7 +43,7 @@ PyObject* PythonModules::audio_set_music_volume(PyObject *self, PyObject *args, 
 PyObject* PythonModules::audio_play_sound(PyObject *self, PyObject *args, PyObject *kwargs) {
     char *soundId;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "s", audioPlaySoundKWList, &soundId)) {
-        AudioHelper::PlayMusic(std::string(soundId));
+        AudioHelper::PlaySound(std::string(soundId));
         Py_RETURN_NONE;
     }
     return nullptr;

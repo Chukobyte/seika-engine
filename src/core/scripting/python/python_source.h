@@ -32,7 +32,7 @@ static const PythonSource PYTHON_SOURCE_AUDIO_MODULE =
     "\n"
     "   @staticmethod\n"
     "   def play_sound(sound_id: str) -> None:\n"
-    "       roll_engine_api.audio_play_sound(sound_id=music_id)\n"
+    "       roll_engine_api.audio_play_sound(sound_id=sound_id)\n"
     "\n"
     "   @staticmethod\n"
     "   def set_sound_volume(volume: int) -> None:\n"

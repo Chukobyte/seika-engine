@@ -85,6 +85,6 @@ void AssetManager::LoadProjectAssets() {
     }
 
     for (SoundConfiguration soundConfiguration : assetConfigurations.soundConfigurations) {
-        LoadMusic(soundConfiguration.filePath, soundConfiguration.filePath);
+        LoadSound(soundConfiguration.filePath, soundConfiguration.filePath);
     }
 }
