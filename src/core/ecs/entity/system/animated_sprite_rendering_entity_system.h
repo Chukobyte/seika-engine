@@ -19,6 +19,7 @@ class AnimatedSpriteRenderingEntitySystem : public EntitySystem {
     void Initialize() override {}
     void Enable() override {}
     void Disable() override {}
+    void UnregisterEntity(Entity entity) override {}
 
     void Render() {
         static Logger *logger = Logger::GetInstance();

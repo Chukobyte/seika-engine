@@ -16,7 +16,6 @@ class ScriptEntitySystem : public EntitySystem {
 
     void Initialize() override {
         for (auto const &pair : scriptContexts) {
-            auto const &type = pair.first;
             auto const &scriptContext = pair.second;
             scriptContext->Initialize();
         }
@@ -25,6 +24,13 @@ class ScriptEntitySystem : public EntitySystem {
     void Enable() override {}
 
     void Disable() override {}
+
+    void UnregisterEntity(Entity entity) override {
+        for (auto const &pair : scriptContexts) {
+            auto const &scriptContext = pair.second;
+            scriptContext->DeleteEntityInstance(entity);
+        }
+    }
 
     template<typename T>
     T* InstallScriptContext() {

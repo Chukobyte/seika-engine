@@ -27,6 +27,8 @@ class EntitySystem {
     virtual void Disable() {
         enabled = false;
     }
+
+    virtual void UnregisterEntity(Entity entity) = 0;
 };
 
 #endif //ENTITY_SYSTEM_H

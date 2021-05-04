@@ -98,6 +98,7 @@ class EntitySystemManager {
     void EntityDestroyed(Entity entity) {
         for (auto const& pair : systems) {
             auto const& system = pair.second;
+            system->UnregisterEntity(entity);
             system->entities.erase(entity);
         }
     }
