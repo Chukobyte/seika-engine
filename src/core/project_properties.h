@@ -53,7 +53,7 @@ class ProjectProperties {
 
     ProjectProperties() = default;
 
-    AssetConfigurations LoadProjectAssets(nlohmann::json assetsJsonArray) {
+    void LoadProjectAssets(nlohmann::json assetsJsonArray) {
         AssetConfigurations loadedAssetConfigurations;
         for (nlohmann::json assetJson : assetsJsonArray) {
             std::string assetType = assetJson["type"];
@@ -78,11 +78,10 @@ class ProjectProperties {
                 });
             }
         }
-        this->assetConfigurations = loadedAssetConfigurations;
-        return loadedAssetConfigurations;
+        assetConfigurations = loadedAssetConfigurations;
     }
 
-    InputActionsConfigurations LoadProjectInputActions(nlohmann::json inputActionsJsonArray) {
+    void LoadProjectInputActions(nlohmann::json inputActionsJsonArray) {
         InputActionsConfigurations loadInputActionsConfigurations;
         for (nlohmann::json inputActionJson : inputActionsJsonArray) {
             const std::string &actionName = inputActionJson["name"].get<std::string>();
@@ -98,7 +97,6 @@ class ProjectProperties {
             loadInputActionsConfigurations.configurations.emplace_back(inputConfiguration);
         }
         inputActionsConfigurations = loadInputActionsConfigurations;
-        return loadInputActionsConfigurations;
     }
   public:
     std::string gameTitle = "Roll Back Engine";
@@ -135,6 +133,12 @@ class ProjectProperties {
 
     void LoadProjectConfigurations() {
         nlohmann::json projectConfigurationsJson = JsonFileHelper::LoadJsonFile("project.json");
+
+        gameTitle = projectConfigurationsJson["game_title"].get<std::string>();
+        initialScenePath = projectConfigurationsJson["initial_scene"].get<std::string>();
+        nlohmann::json baseResolutionJson = projectConfigurationsJson["base_resolution"].get<nlohmann::json>();
+        windowWidth = baseResolutionJson["width"].get<int>();
+        windowHeight = baseResolutionJson["height"].get<int>();
 
         nlohmann::json assetsJsonArray = projectConfigurationsJson["assets"].get<nlohmann::json>();
         LoadProjectAssets(assetsJsonArray);
