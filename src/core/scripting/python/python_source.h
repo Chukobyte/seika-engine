@@ -15,6 +15,35 @@ static const PythonSource  PYTHON_SOURCE_ENGINE_MODULE =
     "\n"
     "";
 
+static const PythonSource PYTHON_SOURCE_AUDIO_MODULE =
+    "import roll_engine_api\n"
+    "class Audio:\n"
+    "   @staticmethod\n"
+    "   def play_music(music_id: str) -> None:\n"
+    "       roll_engine_api.audio_play_music(music_id=music_id)\n"
+    "\n"
+    "   @staticmethod\n"
+    "   def stop_music() -> None:\n"
+    "       roll_engine_api.audio_stop_music()\n"
+    "\n"
+    "   @staticmethod\n"
+    "   def set_music_volume(volume: int) -> None:\n"
+    "       roll_engine_api.audio_set_music_volume(volume=volume)\n"
+    "\n"
+    "   @staticmethod\n"
+    "   def play_sound(sound_id: str) -> None:\n"
+    "       roll_engine_api.audio_play_sound(sound_id=music_id)\n"
+    "\n"
+    "   @staticmethod\n"
+    "   def set_sound_volume(volume: int) -> None:\n"
+    "       roll_engine_api.audio_set_sound_volume(volume=volume)\n"
+    "\n"
+    "   @staticmethod\n"
+    "   def set_all_volume(volume: int) -> None:\n"
+    "       roll_engine_api.audio_set_all_volume(volume=volume)\n"
+    "\n"
+    "";
+
 static const PythonSource PYTHON_SOURCE_MATH_MODULE =
     "class Vector2:\n"
     "   def __init__(self, x=0.0, y=0.0):\n"
@@ -240,6 +269,10 @@ static const PythonSource PYTHON_SOURCE_IMPORT_ENGINE_MODULE_SNIPPET =
 
     "\"roll.engine\": \"\"\"\n"
     + PYTHON_SOURCE_ENGINE_MODULE +
+    "\"\"\",\n"
+
+    "\"roll.audio\": \"\"\"\n"
+    + PYTHON_SOURCE_AUDIO_MODULE +
     "\"\"\",\n"
 
     "\"roll.math\": \"\"\"\n"

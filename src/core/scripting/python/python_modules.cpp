@@ -3,6 +3,7 @@
 #include "../../global_dependencies.h"
 #include "../../ecs/component/components/transform2D_component.h"
 #include "../../input/input_manager.h"
+#include "../../audio/audio_helper.h"
 
 // ENGINE
 PyObject* PythonModules::engine_exit(PyObject *self, PyObject *args, PyObject *kwargs) {
@@ -10,6 +11,57 @@ PyObject* PythonModules::engine_exit(PyObject *self, PyObject *args, PyObject *k
     int exitCode;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", engineExitKWList, &exitCode)) {
         engineContext->SetRunning(false);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+// AUDIO
+PyObject* PythonModules::audio_play_music(PyObject *self, PyObject *args, PyObject *kwargs) {
+    char *musicId;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "s", audioPlayMusicKWList, &musicId)) {
+        AudioHelper::PlayMusic(std::string(musicId));
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::audio_stop_music(PyObject *self, PyObject *args) {
+    AudioHelper::StopMusic();
+    Py_RETURN_NONE;
+}
+
+PyObject* PythonModules::audio_set_music_volume(PyObject *self, PyObject *args, PyObject *kwargs) {
+    int volume;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", audioSetVolumeKWList, &volume)) {
+        AudioHelper::SetMusicVolume(volume);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::audio_play_sound(PyObject *self, PyObject *args, PyObject *kwargs) {
+    char *soundId;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "s", audioPlaySoundKWList, &soundId)) {
+        AudioHelper::PlayMusic(std::string(soundId));
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::audio_set_sound_volume(PyObject *self, PyObject *args, PyObject *kwargs) {
+    int volume;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", audioSetVolumeKWList, &volume)) {
+        AudioHelper::SetSoundVolume(volume);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::audio_set_all_volume(PyObject *self, PyObject *args, PyObject *kwargs) {
+    int volume;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", audioSetVolumeKWList, &volume)) {
+        AudioHelper::SetAllVolume(volume);
         Py_RETURN_NONE;
     }
     return nullptr;

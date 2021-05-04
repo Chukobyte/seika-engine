@@ -10,6 +10,13 @@ class PythonModules {
   public:
     static PyObject* engine_exit(PyObject* self, PyObject* args, PyObject* kwargs);
 
+    static PyObject* audio_play_music(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* audio_stop_music(PyObject* self, PyObject* args);
+    static PyObject* audio_set_music_volume(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* audio_play_sound(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* audio_set_sound_volume(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* audio_set_all_volume(PyObject* self, PyObject* args, PyObject* kwargs);
+
     static PyObject* node2D_get_position(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node2D_set_position(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node2D_add_to_position(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -25,6 +32,31 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "engine_exit", (PyCFunction) PythonModules::engine_exit,
         METH_VARARGS | METH_KEYWORDS, "Exits the engine."
+    },
+    // AUDIO
+    {
+        "audio_play_music", (PyCFunction) PythonModules::audio_play_music,
+        METH_VARARGS | METH_KEYWORDS, "Plays music."
+    },
+    {
+        "audio_stop_music", PythonModules::audio_stop_music,
+        METH_VARARGS, "Stops music."
+    },
+    {
+        "audio_set_music_volume", (PyCFunction) PythonModules::audio_set_music_volume,
+        METH_VARARGS | METH_KEYWORDS, "Set music volume."
+    },
+    {
+        "audio_play_sound", (PyCFunction) PythonModules::audio_play_sound,
+        METH_VARARGS | METH_KEYWORDS, "Plays sound."
+    },
+    {
+        "audio_set_sound_volume", (PyCFunction) PythonModules::audio_set_sound_volume,
+        METH_VARARGS | METH_KEYWORDS, "Sets sound volume."
+    },
+    {
+        "audio_set_all_volume", (PyCFunction) PythonModules::audio_set_all_volume,
+        METH_VARARGS | METH_KEYWORDS, "Sets all sound volume."
     },
     // NODE2D
     {
@@ -66,6 +98,10 @@ static struct PyModuleDef rollEngineAPIModDef = {
 };
 
 static char *engineExitKWList[] = {"code", nullptr};
+
+static char *audioPlayMusicKWList[] = {"music_id", nullptr};
+static char *audioPlaySoundKWList[] = {"sound_id", nullptr};
+static char *audioSetVolumeKWList[] = {"volume", nullptr};
 
 static char *nodeGetEntityKWList[] = {"entity_id", nullptr};
 
