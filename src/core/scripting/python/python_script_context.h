@@ -54,6 +54,7 @@ class PythonScriptContext : public ScriptContext {
         if (PyObject_HasAttr(activeClassInstances[entity], physicsProcessFunctionName)) {
             CPyObject processCallValue = PyObject_CallMethod(activeClassInstances[entity], "_physics_process", "(f)", deltaTime);
         }
+        PyErr_Print();
     }
 
     void ReceiveSubscribedSignal(Entity subscriberEntity, const std::string &subscriberFunctionName, SignalArguments args) override {}
