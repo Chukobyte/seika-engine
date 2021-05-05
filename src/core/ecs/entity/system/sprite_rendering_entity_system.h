@@ -30,7 +30,8 @@ class SpriteRenderingEntitySystem : public EntitySystem {
                 SpriteComponent spriteComponent = componentManager->GetComponent<SpriteComponent>(entity);
                 Camera camera = cameraManager->GetCurrentCamera();
                 Vector2 drawDestinationPosition = transform2DComponent.position - (!transform2DComponent.ignoreCamera ? (camera.viewport + camera.offset) * camera.zoom : Vector2(0, 0));
-                Vector2 drawDestinationSize = Vector2(spriteComponent.drawSource.w * transform2DComponent.scale.x * camera.zoom.x, spriteComponent.drawSource.h * transform2DComponent.scale.y * camera.zoom.y);
+                Vector2 drawScale = !transform2DComponent.ignoreCamera ? transform2DComponent.scale * camera.zoom : transform2DComponent.scale;
+                Vector2 drawDestinationSize = Vector2(spriteComponent.drawSource.w * drawScale.x, spriteComponent.drawSource.h * drawScale.y);
                 spriteComponent.drawDestination = Rect2(drawDestinationPosition, drawDestinationSize);
                 renderer->DrawSprite(spriteComponent.texture, &spriteComponent.drawSource, &spriteComponent.drawDestination, transform2DComponent.zIndex);
             }

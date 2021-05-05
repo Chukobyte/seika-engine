@@ -161,7 +161,12 @@ void Game::InitializeECS() {
     // Creates Text Label Node
     Entity titleEntity = entityComponentOrchestrator->CreateEntity();
     Transform2DComponent titleTransform2DComponent{
-        .position = Vector2(325, 100)
+        .position = Vector2(325, 100),
+        .scale = Vector2(1.0f, 1.0f),
+        .rotation = 0.0f,
+        .zIndex = 0,
+        .isZIndexRelativeToParent = true,
+        .ignoreCamera = true
     };
     entityComponentOrchestrator->AddComponent(titleEntity, titleTransform2DComponent);
 

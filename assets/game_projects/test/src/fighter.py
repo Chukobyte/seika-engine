@@ -9,9 +9,7 @@ class Puncher(Node2D):
     def _start(self) -> None:
         self.viewport = Vector2(1, 1)
         self.zoom = Vector2(1, 1)
-        # Audio.play_music(music_id="assets/audio/music/test_music.wav")
-        # Camera.set_zoom(zoom=Vector2(1.0, 1.0))
-        # Camera.set_viewport_position(position=Vector2(100, 100))
+        Audio.play_music(music_id="assets/audio/music/test_music.wav")
 
     def _physics_process(self, delta_time: float) -> None:
         if Input.is_action_just_pressed(action_name="quit"):
@@ -24,12 +22,10 @@ class Puncher(Node2D):
             self.zoom += Vector2(0.1, 0.1)
             self.zoom = max(Vector2(0.1, 0.1), self.zoom)
             Camera.set_zoom(zoom=self.zoom)
-            print(f"zoom = {self.zoom}")
         elif Input.is_action_pressed("zoom_in"):
             self.zoom += Vector2(-0.1, -0.1)
             self.zoom = min(Vector2(10, 10), self.zoom)
             Camera.set_zoom(zoom=self.zoom)
-            print(f"zoom = {self.zoom}")
 
         if Input.is_action_pressed(action_name="up"):
             self.viewport.y -= 1

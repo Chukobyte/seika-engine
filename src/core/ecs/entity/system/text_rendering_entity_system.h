@@ -31,7 +31,8 @@ class TextRenderingEntitySystem : public EntitySystem {
                 // TODO: fix camera offset applied to textLabelPosition to align y
                 Vector2 textLabelPosition = transform2DComponent.position - (!transform2DComponent.ignoreCamera ? (camera.viewport + camera.offset) * camera.zoom * Vector2(1.0, 1.25) : Vector2(0, 0));
                 TextLabelComponent textLabelComponent = componentManager->GetComponent<TextLabelComponent>(entity);
-                renderer->DrawFont(textLabelComponent.font, textLabelComponent.text, textLabelPosition.x, textLabelPosition.y, transform2DComponent.scale.x * camera.zoom.x, textLabelComponent.color);
+                Vector2 textLabelScale = !transform2DComponent.ignoreCamera ? transform2DComponent.scale * camera.zoom : transform2DComponent.scale;
+                renderer->DrawFont(textLabelComponent.font, textLabelComponent.text, textLabelPosition.x, textLabelPosition.y, textLabelScale.x, textLabelComponent.color);
             }
         }
     }
