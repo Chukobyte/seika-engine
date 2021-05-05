@@ -78,3 +78,6 @@ endif
 
 run-test:
 	./$(TEST_BUILD_OBJECT) --success
+
+clean-and-run-test: clean-test build-test
+	./$(TEST_BUILD_OBJECT) --success

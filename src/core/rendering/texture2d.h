@@ -11,7 +11,7 @@ class Texture2D {
     static Logger *logger;
     std::string fileName;
   protected:
-    Texture() {}
+    Texture2D() {}
   public:
     GLuint ID = 0;
     unsigned char* data = nullptr;

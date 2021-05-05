@@ -5,6 +5,7 @@
 #include "entity/system/entity_system_manager.h"
 #include "component/component_manager.h"
 #include "../scene/scene.h"
+#include "entity/system/script_entity_system.h"
 
 class EntityComponentOrchestrator {
     /*
@@ -15,6 +16,18 @@ class EntityComponentOrchestrator {
     EntitySystemManager *entitySystemManager = nullptr;
     ComponentManager *componentManager = nullptr;
     SceneManager *sceneManager = nullptr;
+
+    // Will be the function to initialize stuff for a scene
+    void RegisterAllNodeSystemSignatures(SceneNode sceneNode) {
+        for (SceneNode childSceneNode : sceneNode.children) {
+            RegisterAllNodeSystemSignatures(childSceneNode);
+        }
+        AddChildToEntityScene(sceneNode.parent, sceneNode.entity);
+        if (componentManager->HasComponent<ScriptableClassComponent>(sceneNode.entity)) {
+            ScriptEntitySystem *scriptEntitySystem = (ScriptEntitySystem*) entitySystemManager->GetEntitySystem<ScriptEntitySystem>();
+            scriptEntitySystem->CreateEntityInstance(sceneNode.entity);
+        }
+    }
   public:
     EntityComponentOrchestrator(EntityManager *entityManagerP, EntitySystemManager *entitySystemManagerP, ComponentManager *componentManagerP, SceneManager *sceneManagerP)
         : entityManager(entityManagerP), entitySystemManager(entitySystemManagerP), componentManager(componentManagerP), sceneManager(sceneManagerP) {
@@ -26,11 +39,13 @@ class EntityComponentOrchestrator {
     }
 
     void DestroyEntity(Entity entity) {
-        entityManager->DestroyEntity(entity);
-
-        componentManager->EntityDestroyed(entity);
-
-        entitySystemManager->EntityDestroyed(entity);
+        sceneManager->RemoveNode(entity);
+        std::vector<Entity> entitiesRemovedFromScene = sceneManager->FlushRemovedEntities();
+        for (Entity entityToRemove : entitiesRemovedFromScene) {
+            entityManager->DestroyEntity(entity);
+            componentManager->EntityDestroyed(entity);
+            entitySystemManager->EntityDestroyed(entity);
+        }
     }
 
     ComponentSignature GetEntitySignature(Entity entity) {
@@ -56,11 +71,6 @@ class EntityComponentOrchestrator {
     }
 
     template<typename T>
-    void AddComponentWithoutEnabling(Entity entity, T component) {
-        componentManager->AddComponent<T>(entity, component);
-    }
-
-    template<typename T>
     void UpdateComponent(Entity entity, T component) {
         componentManager->UpdateComponent(entity, component);
     }
@@ -69,8 +79,9 @@ class EntityComponentOrchestrator {
     void RemoveComponent(Entity entity) {
         componentManager->RemoveComponent<T>(entity);
         auto signature = entityManager->GetSignature(entity);
-        signature.set(componentManager->GetComponentType<T>(), true);
+        signature.set(componentManager->GetComponentType<T>(), false);
         entityManager->SetSignature(entity, signature);
+        entitySystemManager->EntitySignatureChanged(entity, signature);
     }
 
     template<typename T>
@@ -136,9 +147,27 @@ class EntityComponentOrchestrator {
         entitySystemManager->InitializeAllSystems();
     }
     // SCENE METHODS
+    void ChangeSceneTo(const std::string &filePath) {
+        Scene scene = sceneManager->LoadSceneFromFile(filePath);
+        RegisterAllNodeSystemSignatures(scene.rootNode);
+    }
+
+    void ChangeSceneTo(Entity rootNodeEntity) {
+        sceneManager->ChangeToScene(rootNodeEntity);
+    }
+
     void AddChildToEntityScene(Entity parentEntity, Entity childEntity) {
         ComponentSignature signature = entityManager->GetSignature(childEntity);
         entitySystemManager->EntitySignatureChanged(childEntity, signature);
+        sceneManager->AddChild(parentEntity, childEntity);
+    }
+
+    bool IsEntityInCurrentScene(Entity entity) {
+        return sceneManager->IsEntityInScene(entity);
+    }
+
+    Entity GetSceneNodeParent(Entity entity) {
+        return sceneManager->GetParent(entity);
     }
 };
 

@@ -31,7 +31,7 @@ void GD::ResetDependencies() {
     entityManager = new EntityManager();
     entitySystemManager = new EntitySystemManager();
     componentManager = new ComponentManager();
-    sceneManager = new SceneManager();
+    sceneManager = new SceneManager(entityManager, componentManager, assetManager);
     entityComponentOrchestrator = new EntityComponentOrchestrator(entityManager, entitySystemManager, componentManager, sceneManager);
     cameraManager = new CameraManager();
 }

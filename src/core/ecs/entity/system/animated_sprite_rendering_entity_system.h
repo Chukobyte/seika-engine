@@ -24,7 +24,6 @@ class AnimatedSpriteRenderingEntitySystem : public EntitySystem {
     void UnregisterEntity(Entity entity) override {}
 
     void Render() {
-        static Logger *logger = Logger::GetInstance();
         if (IsEnabled()) {
             for (Entity entity : entities) {
                 Transform2DComponent transform2DComponent = componentManager->GetComponent<Transform2DComponent>(entity);
