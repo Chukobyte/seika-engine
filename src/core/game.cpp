@@ -158,6 +158,8 @@ void Game::InitializeECS() {
     entityComponentOrchestrator->AddComponent(puncherEntity, puncherScriptableClassComponent);
     scriptEntitySystem->CreateEntityInstance(puncherEntity);
 
+    entityComponentOrchestrator->AddChildToEntityScene(NO_ENTITY, puncherEntity);
+
     // Creates Text Label Node
     Entity titleEntity = entityComponentOrchestrator->CreateEntity();
     Transform2DComponent titleTransform2DComponent{
@@ -176,6 +178,8 @@ void Game::InitializeECS() {
         .color = Color(0.0f, 1.0f, 1.0f)
     };
     entityComponentOrchestrator->AddComponent(titleEntity, textLabelComponent);
+
+    entityComponentOrchestrator->AddChildToEntityScene(NO_ENTITY, titleEntity);
 }
 
 void Game::InitializeRendering() {

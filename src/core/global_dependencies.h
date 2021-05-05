@@ -8,6 +8,7 @@
 #include "ecs/entity/entity_manager.h"
 #include "ecs/entity/system/entity_system_manager.h"
 #include "ecs/component/component_manager.h"
+#include "scene/scene.h"
 #include "ecs/entity_component_orchestrator.h"
 #include "camera/camera_manager.h"
 
@@ -25,6 +26,7 @@ class GD {
     EntityManager *entityManager = nullptr;
     EntitySystemManager *entitySystemManager = nullptr;
     ComponentManager *componentManager = nullptr;
+    SceneManager *sceneManager = nullptr;
     EntityComponentOrchestrator *entityComponentOrchestrator = nullptr;
     CameraManager *cameraManager = nullptr;
 

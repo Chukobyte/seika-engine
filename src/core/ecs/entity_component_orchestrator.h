@@ -4,15 +4,20 @@
 #include "entity/entity_manager.h"
 #include "entity/system/entity_system_manager.h"
 #include "component/component_manager.h"
+#include "../scene/scene.h"
 
 class EntityComponentOrchestrator {
+    /*
+     * The interface between the engine's systems and ECS (entities and components).
+     */
   private:
     EntityManager *entityManager = nullptr;
     EntitySystemManager *entitySystemManager = nullptr;
     ComponentManager *componentManager = nullptr;
+    SceneManager *sceneManager = nullptr;
   public:
-    EntityComponentOrchestrator(EntityManager *entityManagerP, EntitySystemManager *entitySystemManagerP, ComponentManager *componentManagerP)
-        : entityManager(entityManagerP), entitySystemManager(entitySystemManagerP), componentManager(componentManagerP) {
+    EntityComponentOrchestrator(EntityManager *entityManagerP, EntitySystemManager *entitySystemManagerP, ComponentManager *componentManagerP, SceneManager *sceneManagerP)
+        : entityManager(entityManagerP), entitySystemManager(entitySystemManagerP), componentManager(componentManagerP), sceneManager(sceneManagerP) {
 
     }
     // ENTITY METHODS
@@ -45,7 +50,9 @@ class EntityComponentOrchestrator {
     template<typename T>
     void AddComponent(Entity entity, T component) {
         componentManager->AddComponent<T>(entity, component);
-        EnableComponent<T>(entity);
+        auto signature = entityManager->GetSignature(entity);
+        signature.set(componentManager->GetComponentType<T>(), true);
+        entityManager->SetSignature(entity, signature);
     }
 
     template<typename T>
@@ -61,22 +68,22 @@ class EntityComponentOrchestrator {
     template<typename T>
     void RemoveComponent(Entity entity) {
         componentManager->RemoveComponent<T>(entity);
-        DisableComponent<T>(entity);
+        auto signature = entityManager->GetSignature(entity);
+        signature.set(componentManager->GetComponentType<T>(), true);
+        entityManager->SetSignature(entity, signature);
     }
 
     template<typename T>
     void EnableComponent(Entity entity) {
         auto signature = entityManager->GetSignature(entity);
-        signature.set(componentManager->template GetComponentType<T>(), true);
-        entityManager->SetSignature(entity, signature);
+        signature.set(componentManager->GetComponentType<T>(), true);
         entitySystemManager->EntitySignatureChanged(entity, signature);
     }
 
     template<typename T>
     void DisableComponent(Entity entity) {
         auto signature = entityManager->GetSignature(entity);
-        signature.set(componentManager->template GetComponentType<T>(), false);
-        entityManager->SetSignature(entity, signature);
+        signature.set(componentManager->GetComponentType<T>(), false);
         entitySystemManager->EntitySignatureChanged(entity, signature);
     }
 
@@ -127,6 +134,11 @@ class EntityComponentOrchestrator {
 
     void InitializeAllSystems() {
         entitySystemManager->InitializeAllSystems();
+    }
+    // SCENE METHODS
+    void AddChildToEntityScene(Entity parentEntity, Entity childEntity) {
+        ComponentSignature signature = entityManager->GetSignature(childEntity);
+        entitySystemManager->EntitySignatureChanged(childEntity, signature);
     }
 };
 

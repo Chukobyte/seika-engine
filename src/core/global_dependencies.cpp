@@ -21,6 +21,8 @@ void GD::ResetDependencies() {
     delete entityManager;
     delete entitySystemManager;
     delete componentManager;
+    delete sceneManager;
+    delete entityComponentOrchestrator;
     delete cameraManager;
     engineContext = new EngineContext();
     renderContext = new RenderContext();
@@ -29,6 +31,7 @@ void GD::ResetDependencies() {
     entityManager = new EntityManager();
     entitySystemManager = new EntitySystemManager();
     componentManager = new ComponentManager();
-    entityComponentOrchestrator = new EntityComponentOrchestrator(entityManager, entitySystemManager, componentManager);
+    sceneManager = new SceneManager();
+    entityComponentOrchestrator = new EntityComponentOrchestrator(entityManager, entitySystemManager, componentManager, sceneManager);
     cameraManager = new CameraManager();
 }
