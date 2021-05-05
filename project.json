@@ -58,6 +58,14 @@
             "s",
             "down"
          ]
+      },
+      {
+         "name": "zoom_in",
+         "values": ["i"]
+      },
+      {
+         "name": "zoom_out",
+         "values": ["o"]
       }
    ]
 }

@@ -20,16 +20,23 @@ class Puncher(Node2D):
         # if Input.is_action_just_pressed(action_name="up") or Input.is_action_just_pressed(action_name="down"):
         #     Audio.play_sound(sound_id="assets/audio/sound/test_sound_effect.wav")
 
-        if Input.is_action_pressed(action_name="up"):
-            # self.viewport.y -= 1
-            # Camera.set_viewport_position(position=self.viewport)
+        if Input.is_action_pressed("zoom_out"):
             self.zoom += Vector2(0.1, 0.1)
+            self.zoom = max(Vector2(0.1, 0.1), self.zoom)
             Camera.set_zoom(zoom=self.zoom)
-        elif Input.is_action_pressed(action_name="down"):
-            # self.viewport.y += 1
-            # Camera.set_viewport_position(position=self.viewport)
+            print(f"zoom = {self.zoom}")
+        elif Input.is_action_pressed("zoom_in"):
             self.zoom += Vector2(-0.1, -0.1)
+            self.zoom = min(Vector2(10, 10), self.zoom)
             Camera.set_zoom(zoom=self.zoom)
+            print(f"zoom = {self.zoom}")
+
+        if Input.is_action_pressed(action_name="up"):
+            self.viewport.y -= 1
+            Camera.set_viewport_position(position=self.viewport)
+        elif Input.is_action_pressed(action_name="down"):
+            self.viewport.y += 1
+            Camera.set_viewport_position(position=self.viewport)
         if Input.is_action_pressed(action_name="left"):
             self.viewport.x -= 1
             Camera.set_viewport_position(position=self.viewport)
