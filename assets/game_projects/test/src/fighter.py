@@ -8,6 +8,7 @@ from roll.camera import Camera
 class Puncher(Node2D):
     def _start(self) -> None:
         self.viewport = Vector2(1, 1)
+        self.zoom = Vector2(1, 1)
         # Audio.play_music(music_id="assets/audio/music/test_music.wav")
         # Camera.set_zoom(zoom=Vector2(1.0, 1.0))
         # Camera.set_viewport_position(position=Vector2(100, 100))
@@ -20,11 +21,15 @@ class Puncher(Node2D):
         #     Audio.play_sound(sound_id="assets/audio/sound/test_sound_effect.wav")
 
         if Input.is_action_pressed(action_name="up"):
-            self.viewport.y -= 1
-            Camera.set_viewport_position(position=self.viewport)
+            # self.viewport.y -= 1
+            # Camera.set_viewport_position(position=self.viewport)
+            self.zoom += Vector2(0.1, 0.1)
+            Camera.set_zoom(zoom=self.zoom)
         elif Input.is_action_pressed(action_name="down"):
-            self.viewport.y += 1
-            Camera.set_viewport_position(position=self.viewport)
+            # self.viewport.y += 1
+            # Camera.set_viewport_position(position=self.viewport)
+            self.zoom += Vector2(-0.1, -0.1)
+            Camera.set_zoom(zoom=self.zoom)
         if Input.is_action_pressed(action_name="left"):
             self.viewport.x -= 1
             Camera.set_viewport_position(position=self.viewport)
