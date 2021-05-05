@@ -10,6 +10,7 @@ struct Transform2DComponent {
     float rotation = 0.0f;
     int zIndex = 0;
     bool isZIndexRelativeToParent = true;
+    bool ignoreCameraPosition = false; // TODO: Remove if UI component is added
 };
 
 #endif //TRANSFORM_COMPONENT_H

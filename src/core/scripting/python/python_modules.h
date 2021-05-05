@@ -17,6 +17,9 @@ class PythonModules {
     static PyObject* audio_set_sound_volume(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* audio_set_all_volume(PyObject* self, PyObject* args, PyObject* kwargs);
 
+    static PyObject* camera_set_zoom(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* camera_set_viewport_position(PyObject* self, PyObject* args, PyObject* kwargs);
+
     static PyObject* node2D_get_position(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node2D_set_position(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node2D_add_to_position(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -57,6 +60,15 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "audio_set_all_volume", (PyCFunction) PythonModules::audio_set_all_volume,
         METH_VARARGS | METH_KEYWORDS, "Sets all sound volume."
+    },
+    // CAMERA
+    {
+        "camera_set_zoom", (PyCFunction) PythonModules::camera_set_zoom,
+        METH_VARARGS | METH_KEYWORDS, "Sets camera zoom."
+    },
+    {
+        "camera_set_viewport_position", (PyCFunction) PythonModules::camera_set_viewport_position,
+        METH_VARARGS | METH_KEYWORDS, "Set viewport's position."
     },
     // NODE2D
     {
@@ -102,6 +114,8 @@ static char *engineExitKWList[] = {"code", nullptr};
 static char *audioPlayMusicKWList[] = {"music_id", nullptr};
 static char *audioPlaySoundKWList[] = {"sound_id", nullptr};
 static char *audioSetVolumeKWList[] = {"volume", nullptr};
+
+static char *cameraVector2SetKWList[] = {"x", "y", nullptr};
 
 static char *nodeGetEntityKWList[] = {"entity_id", nullptr};
 

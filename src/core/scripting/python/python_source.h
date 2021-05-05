@@ -194,6 +194,21 @@ static const PythonSource PYTHON_SOURCE_INPUT_MODULE =
     "   F12 = \"f12\"\n"
     "\n";
 
+static const PythonSource PYTHON_SOURCE_CAMERA_MODULE =
+    "import roll_engine_api\n"
+    "from roll.math import Vector2\n"
+    "\n"
+    "class Camera:\n"
+    "   @staticmethod\n"
+    "   def set_zoom(zoom: Vector2) -> None:\n"
+    "       roll_engine_api.camera_set_zoom(zoom.x, zoom.y)\n"
+    "\n"
+    "   @staticmethod\n"
+    "   def set_viewport_position(position: Vector2) -> None:\n"
+    "       roll_engine_api.camera_set_viewport_position(position.x, position.y)\n"
+    "\n"
+    "";
+
 static const PythonSource PYTHON_SOURCE_NODE_MODULE =
     "import roll_engine_api\n"
     "from roll.math import Vector2\n"
@@ -291,6 +306,10 @@ static const PythonSource PYTHON_SOURCE_IMPORT_ENGINE_MODULE_SNIPPET =
 
     "\"roll.input\": \"\"\"\n"
     + PYTHON_SOURCE_INPUT_MODULE +
+    "\"\"\",\n"
+
+    "\"roll.camera\": \"\"\"\n"
+    + PYTHON_SOURCE_CAMERA_MODULE +
     "\"\"\",\n"
 
     "\"roll.node\": \"\"\"\n"

@@ -67,6 +67,31 @@ PyObject* PythonModules::audio_set_all_volume(PyObject *self, PyObject *args, Py
     return nullptr;
 }
 
+// CAMERA
+PyObject* PythonModules::camera_set_zoom(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
+    float x, y;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ff", cameraVector2SetKWList, &x, &y)) {
+        Camera camera = cameraManager->GetCurrentCamera();
+        camera.zoom = Vector2(x, y);
+        cameraManager->UpdateCurrentCamera(camera);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::camera_set_viewport_position(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
+    float x, y;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ff", cameraVector2SetKWList, &x, &y)) {
+        Camera camera = cameraManager->GetCurrentCamera();
+        camera.viewport = Vector2(x, y);
+        cameraManager->UpdateCurrentCamera(camera);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
 // NODE2D
 PyObject* PythonModules::node2D_get_position(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
