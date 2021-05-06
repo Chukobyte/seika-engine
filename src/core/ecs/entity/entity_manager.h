@@ -40,7 +40,8 @@ class EntityManager {
 
         signatures[entity].reset();
 
-        availableEntityIds.push(entity);
+        // TODO: need to fix active id repopulation
+//        availableEntityIds.push(entity);
         entitiesToDelete.insert(entitiesToDelete.end(), 1, entity);
         livingEntityCounter--;
     }

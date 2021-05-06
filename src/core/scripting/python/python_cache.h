@@ -25,13 +25,14 @@ class PythonCache {
                 .classes = pClasses
             });
         }
+        cache[classPath].module.AddRef();
         if (cache[classPath].classes.count(className) <= 0) {
             CPyObject pModuleDict = PyModule_GetDict(cache[classPath].module);
             CPyObject pClass = PyDict_GetItemString(pModuleDict, className.c_str());
             assert(pClass != nullptr && "Python class is NULL!");
             cache[classPath].classes.emplace(className, pClass);
         }
-        std::cout << "classPath: " << classPath << ", className: " << className << std::endl;
+        cache[classPath].classes[className].AddRef();
         return cache[classPath].classes[className];
     }
 };

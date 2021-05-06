@@ -204,6 +204,7 @@ class SceneManager {
             parentNode.children.emplace_back(SceneNode{.entity = child});
             entityToSceneNodeMap[parent] = parentNode;
         }
+//        assert((entityToSceneNodeMap.count(child) <= 0) && "Child already exists!");
         SceneNode childNode = SceneNode{.entity = child, .parent = parent};
         entityToSceneNodeMap.emplace(childNode.entity, childNode);
     }
@@ -216,13 +217,12 @@ class SceneManager {
         return NO_ENTITY;
     }
 
-    void RemoveNode(Entity entity) {
-        SceneNode node = entityToSceneNodeMap[entity];
-        entityToSceneNodeMap.erase(entity);
-        entityToMainScenesMap.erase(entity);
-        entitiesRecentlyRemoved.emplace_back(entity);
-        for (SceneNode childNode : node.children) {
-            RemoveNode(childNode.entity);
+    void RemoveNode(SceneNode sceneNode) {
+        entityToSceneNodeMap.erase(sceneNode.entity);
+        entityToMainScenesMap.erase(sceneNode.entity);
+        entitiesRecentlyRemoved.emplace_back(sceneNode.entity);
+        for (SceneNode childNode : sceneNode.children) {
+            RemoveNode(childNode);
         }
     }
 

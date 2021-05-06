@@ -35,28 +35,25 @@ class PythonScriptContext : public ScriptContext {
 
         // Create Instance
         CPyObject pClass = pythonCache->GetClassObject(scriptableClassComponent.classPath, scriptableClassComponent.className);
-        // Instance
         CPyObject argList = Py_BuildValue("(i)", entity);
         CPyObject pClassInstance = PyObject_CallObject(pClass, argList);
         assert(pClassInstance != nullptr && "Python class instance is NULL on creation!");
         pClassInstance.AddRef();
-        pClassInstance.AddRef();
         activeClassInstances.emplace(entity, pClassInstance);
 
         // Call Start
-        if (PyObject_HasAttr(pClassInstance, startFunctionName)) {
+        if (PyObject_HasAttr(activeClassInstances[entity], startFunctionName)) {
             PyObject_CallMethod(activeClassInstances[entity], "_start", nullptr);
         }
     }
 
     void DeleteEntityInstance(Entity entity) override {
         if (activeClassInstances.count(entity) > 0) {
-            CPyObject classInstance = activeClassInstances[entity];
-            if (PyObject_HasAttr(classInstance, endFunctionName)) {
-                PyObject_CallMethod(classInstance, "_end", nullptr);
-                classInstance.Release();
-                activeClassInstances.erase(entity);
+            if (PyObject_HasAttr(activeClassInstances[entity], endFunctionName)) {
+                PyObject_CallMethod(activeClassInstances[entity], "_end", nullptr);
             }
+            activeClassInstances[entity].Release();
+            activeClassInstances.erase(entity);
         }
     }
 

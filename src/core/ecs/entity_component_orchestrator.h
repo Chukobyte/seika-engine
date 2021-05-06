@@ -41,8 +41,8 @@ class EntityComponentOrchestrator {
         return entityManager->CreateEntity();
     }
 
-    void DestroyEntity(Entity entity) {
-        sceneManager->RemoveNode(entity);
+    void DestroyEntity(SceneNode sceneNode) {
+        sceneManager->RemoveNode(sceneNode);
         std::vector<Entity> entitiesRemovedFromScene = sceneManager->FlushRemovedEntities();
         for (Entity entityToRemove : entitiesRemovedFromScene) {
             entityManager->DestroyEntity(entityToRemove);
@@ -172,7 +172,7 @@ class EntityComponentOrchestrator {
     void DestroyCurrentScene() {
         Scene currentScene = sceneManager->GetCurrentScene();
         if (currentScene.rootNode.entity != NO_ENTITY) {
-            DestroyEntity(currentScene.rootNode.entity);
+            DestroyEntity(currentScene.rootNode);
         }
         removeCurrentSceneAtEndOfUpdate = false;
     }
