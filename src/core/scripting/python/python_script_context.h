@@ -33,6 +33,7 @@ class PythonScriptContext : public ScriptContext {
 
         // Create Instance
         CPyObject pClassInstance = PyHelper::CreateModuleEntityInstance(entity, scriptableClassComponent.classPath, scriptableClassComponent.className);
+        assert(pClassInstance != nullptr && "Python class instance is NULL on creation!");
         pClassInstance.AddRef();
         activeClassInstances.emplace(entity, pClassInstance);
 

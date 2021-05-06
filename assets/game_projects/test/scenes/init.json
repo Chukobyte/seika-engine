@@ -1,0 +1,15 @@
+{
+    "name": "Init",
+    "type": "Node",
+    "tags": [],
+    "external_scene_source": "",
+    "components": [
+        {
+            "scriptable_class": {
+                "class_path": "assets.game_projects.test.src.init",
+                "class_name": "Init"
+            }
+        }
+    ],
+    "children": []
+}

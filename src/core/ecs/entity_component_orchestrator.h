@@ -165,8 +165,8 @@ class EntityComponentOrchestrator {
 
     void ChangeSceneTo() {
         Scene scene = sceneManager->LoadSceneFromFile(scenePathToSwitchTo);
-        RegisterAllNodeSystemSignatures(scene.rootNode);
         scenePathToSwitchTo.clear();
+        RegisterAllNodeSystemSignatures(scene.rootNode);
     }
 
     void DestroyCurrentScene() {
