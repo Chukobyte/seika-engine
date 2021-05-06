@@ -140,10 +140,6 @@ void Game::ProcessInput() {
 
 void Game::Update() {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
-    // Change Scene
-    if (entityComponentOrchestrator->HasSceneToSwitchTo()) {
-        entityComponentOrchestrator->ChangeSceneTo();
-    }
 
     // Sleep until FRAME_TARGET_TIME has elapsed since last frame
     static Uint32 lastFrameTime = 0;
@@ -160,6 +156,15 @@ void Game::Update() {
     // Remove Entities
     if (entityComponentOrchestrator->ShouldRemoveCurrentSceneAtEndOfUpdate()) {
         entityComponentOrchestrator->DestroyCurrentScene();
+    }
+
+    // Change Scene
+    if (entityComponentOrchestrator->HasSceneToSwitchTo()) {
+        CameraManager *cameraManager = GD::GetContainer()->cameraManager;
+        Camera currentCamera = cameraManager->GetCurrentCamera();
+        currentCamera.viewport = Vector2(0.0f, 0.0f);
+        cameraManager->UpdateCurrentCamera(currentCamera);
+        entityComponentOrchestrator->ChangeSceneTo();
     }
 
     lastFrameTime = SDL_GetTicks();

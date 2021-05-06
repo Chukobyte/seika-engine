@@ -45,9 +45,9 @@ class EntityComponentOrchestrator {
         sceneManager->RemoveNode(entity);
         std::vector<Entity> entitiesRemovedFromScene = sceneManager->FlushRemovedEntities();
         for (Entity entityToRemove : entitiesRemovedFromScene) {
-            entityManager->DestroyEntity(entity);
-            componentManager->EntityDestroyed(entity);
-            entitySystemManager->EntityDestroyed(entity);
+            entityManager->DestroyEntity(entityToRemove);
+            componentManager->EntityDestroyed(entityToRemove);
+            entitySystemManager->EntityDestroyed(entityToRemove);
         }
     }
 

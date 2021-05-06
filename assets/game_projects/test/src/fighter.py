@@ -4,6 +4,7 @@ from roll.math import Vector2
 from roll.input import Input
 from roll.audio import Audio
 from roll.camera import Camera
+from roll.scene import SceneTree
 
 class Puncher(Node2D):
     def _start(self) -> None:
@@ -13,7 +14,8 @@ class Puncher(Node2D):
 
     def _physics_process(self, delta_time: float) -> None:
         if Input.is_action_just_pressed(action_name="quit"):
-            Engine.exit()
+            # Engine.exit()
+            SceneTree.change_scene(scene_path="assets/game_projects/test/scenes/test2.json")
 
         # if Input.is_action_just_pressed(action_name="up") or Input.is_action_just_pressed(action_name="down"):
         #     Audio.play_sound(sound_id="assets/audio/sound/test_sound_effect.wav")
