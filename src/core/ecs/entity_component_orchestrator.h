@@ -17,6 +17,9 @@ class EntityComponentOrchestrator {
     ComponentManager *componentManager = nullptr;
     SceneManager *sceneManager = nullptr;
 
+    std::string scenePathToSwitchTo;
+    bool removeCurrentSceneAtEndOfUpdate = false;
+
     // Will be the function to initialize stuff for a scene
     void RegisterAllNodeSystemSignatures(SceneNode sceneNode) {
         for (SceneNode childSceneNode : sceneNode.children) {
@@ -147,16 +150,34 @@ class EntityComponentOrchestrator {
         entitySystemManager->InitializeAllSystems();
     }
     // SCENE METHODS
-    void ChangeSceneTo(const std::string &filePath) {
+    void PrepareSceneChange(const std::string &filePath) {
+        scenePathToSwitchTo = filePath;
+        removeCurrentSceneAtEndOfUpdate = true;
+    }
+
+    bool HasSceneToSwitchTo() {
+        return !scenePathToSwitchTo.empty();
+    }
+
+    bool ShouldRemoveCurrentSceneAtEndOfUpdate() {
+        return removeCurrentSceneAtEndOfUpdate;
+    }
+
+    void ChangeSceneTo() {
+        Scene scene = sceneManager->LoadSceneFromFile(scenePathToSwitchTo);
+        RegisterAllNodeSystemSignatures(scene.rootNode);
+        scenePathToSwitchTo.clear();
+    }
+
+    void DestroyCurrentScene() {
         Scene currentScene = sceneManager->GetCurrentScene();
         if (currentScene.rootNode.entity != NO_ENTITY) {
             DestroyEntity(currentScene.rootNode.entity);
         }
-        Scene scene = sceneManager->LoadSceneFromFile(filePath);
-        RegisterAllNodeSystemSignatures(scene.rootNode);
+        removeCurrentSceneAtEndOfUpdate = false;
     }
 
-//    void ChangeSceneTo(Entity rootNodeEntity) {
+//    void PrepareSceneChange(Entity rootNodeEntity) {
 //        sceneManager->ChangeToScene(rootNodeEntity);
 //    }
 

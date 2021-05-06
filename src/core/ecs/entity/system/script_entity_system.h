@@ -55,13 +55,13 @@ class ScriptEntitySystem : public EntitySystem {
         }
     }
 
-    void DeleteEntityInstance(Entity entity) {
-        for (auto const &pair : scriptContexts) {
-            auto const &type = pair.first;
-            auto const &scriptContext = pair.second;
-            scriptContext->DeleteEntityInstance(entity);
-        }
-    }
+//    void DeleteEntityInstance(Entity entity) {
+//        for (auto const &pair : scriptContexts) {
+//            auto const &type = pair.first;
+//            auto const &scriptContext = pair.second;
+//            scriptContext->DeleteEntityInstance(entity);
+//        }
+//    }
 
     void PhysicsProcess(double deltaTime) {
         for (auto const &pair : scriptContexts) {

@@ -28,6 +28,8 @@ class PythonModules {
     static PyObject* input_is_action_pressed(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* input_is_action_just_pressed(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* input_is_action_just_released(PyObject* self, PyObject* args, PyObject* kwargs);
+
+    static PyObject* scene_tree_change_scene(PyObject* self, PyObject* args, PyObject* kwargs);
 };
 
 static struct PyMethodDef rollApiMethods[] = {
@@ -100,6 +102,11 @@ static struct PyMethodDef rollApiMethods[] = {
         "input_is_action_just_released", (PyCFunction) PythonModules::input_is_action_just_released,
         METH_VARARGS | METH_KEYWORDS, "Checks if action has been just released."
     },
+    // SCENE
+    {
+        "scene_tree_change_scene", (PyCFunction) PythonModules::scene_tree_change_scene,
+        METH_VARARGS | METH_KEYWORDS, "Changes to a new scene."
+    },
 
     {nullptr, nullptr, 0,nullptr },
 };
@@ -123,6 +130,8 @@ static char *node2DUpdatePositionKWList[] = {"entity_id", "x", "y", nullptr};
 
 static char *inputAddActionKWList[] = {"action_name", "value", nullptr};
 static char *inputActionCheckKWList[] = {"action_name", nullptr};
+
+static char *sceneTreeChangeSceneKWList[] = {"scene_path", nullptr};
 
 static PyObject* PyInit_rollEngineAPI(void) {
     return PyModule_Create(&rollEngineAPIModDef);

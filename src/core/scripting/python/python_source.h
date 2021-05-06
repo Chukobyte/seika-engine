@@ -257,6 +257,14 @@ static const PythonSource PYTHON_SOURCE_NODE_MODULE =
     "\n"
     "";
 
+static const PythonSource PYTHON_SOURCE_SCENE_MODULE =
+    "import roll_engine_api\n"
+    "\n"
+    "class SceneTree:\n"
+    "   @staticmethod\n"
+    "   def change_scene(scene_path: str) -> None:\n"
+    "       roll_engine_api.scene_tree_change_scene(scene_path=scene_path)";
+
 static const PythonSource PYTHON_SOURCE_LOAD_SOURCE_IMPORTER_SNIPPET =
     "import sys\n"
     "import importlib\n"
@@ -326,6 +334,10 @@ static const PythonSource PYTHON_SOURCE_IMPORT_ENGINE_MODULE_SNIPPET =
 
     "\"roll.node\": \"\"\"\n"
     + PYTHON_SOURCE_NODE_MODULE +
+    "\"\"\",\n"
+
+    "\"roll.scene\": \"\"\"\n"
+    + PYTHON_SOURCE_SCENE_MODULE +
     "\"\"\",\n"
 
     "}\n"

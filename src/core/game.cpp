@@ -51,7 +51,6 @@ void Game::InitializeSDL() {
 
 void Game::InitializeECS() {
     EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
-
     // Components
     entityComponentOrchestrator->RegisterComponent<Transform2DComponent>();
     entityComponentOrchestrator->RegisterComponent<SpriteComponent>();
@@ -87,7 +86,7 @@ void Game::InitializeECS() {
     entityComponentOrchestrator->InitializeAllSystems();
 
     // Load initial scene
-    entityComponentOrchestrator->ChangeSceneTo(projectProperties->initialScenePath);
+    entityComponentOrchestrator->PrepareSceneChange(projectProperties->initialScenePath);
 }
 
 void Game::InitializeRendering() {
@@ -140,6 +139,12 @@ void Game::ProcessInput() {
 }
 
 void Game::Update() {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    // Change Scene
+    if (entityComponentOrchestrator->HasSceneToSwitchTo()) {
+        entityComponentOrchestrator->ChangeSceneTo();
+    }
+
     // Sleep until FRAME_TARGET_TIME has elapsed since last frame
     static Uint32 lastFrameTime = 0;
     const unsigned int FRAME_TARGET_TIME = projectProperties->GetMillisecondsPerTick() / projectProperties->GetTargetFPS();
@@ -151,6 +156,11 @@ void Game::Update() {
     FixedTimeStep();
 
     VariableTimeStep(lastFrameTime);
+
+    // Remove Entities
+    if (entityComponentOrchestrator->ShouldRemoveCurrentSceneAtEndOfUpdate()) {
+        entityComponentOrchestrator->DestroyCurrentScene();
+    }
 
     lastFrameTime = SDL_GetTicks();
 }

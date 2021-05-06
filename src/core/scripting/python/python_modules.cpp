@@ -178,3 +178,14 @@ PyObject* PythonModules::input_is_action_just_released(PyObject *self, PyObject 
     }
     return nullptr;
 }
+
+// SCENE
+PyObject* PythonModules::scene_tree_change_scene(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    char *pyScenePath;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "s", sceneTreeChangeSceneKWList, &pyScenePath)) {
+        entityComponentOrchestrator->PrepareSceneChange(std::string(pyScenePath));
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}

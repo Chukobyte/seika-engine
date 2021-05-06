@@ -43,9 +43,10 @@ class PythonScriptContext : public ScriptContext {
     }
 
     void DeleteEntityInstance(Entity entity) override {
-        assert(activeClassInstances.count(entity) > 0 && "Entity not registered to python script context!");
-        if (PyObject_HasAttr(activeClassInstances[entity], startFunctionName)) {
-            PyObject_CallMethod(activeClassInstances[entity], "_end", nullptr);
+        if (activeClassInstances.count(entity) > 0) {
+            if (PyObject_HasAttr(activeClassInstances[entity], startFunctionName)) {
+                PyObject_CallMethod(activeClassInstances[entity], "_end", nullptr);
+            }
         }
     }
 
