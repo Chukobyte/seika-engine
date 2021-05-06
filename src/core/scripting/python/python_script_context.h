@@ -10,7 +10,7 @@ class PythonScriptContext : public ScriptContext {
   private:
     CPyInstance *pyInstance = nullptr;
     std::map<Entity, CPyObject> activeClassInstances;
-    std::map<Entity, int> instanceScriptFunctionFlags;
+//    std::map<Entity, int> instanceScriptFunctionFlags;
     CPyObject startFunctionName;
     CPyObject physicsProcessFunctionName;
     CPyObject endFunctionName;
@@ -44,8 +44,11 @@ class PythonScriptContext : public ScriptContext {
 
     void DeleteEntityInstance(Entity entity) override {
         if (activeClassInstances.count(entity) > 0) {
-            if (PyObject_HasAttr(activeClassInstances[entity], startFunctionName)) {
-                PyObject_CallMethod(activeClassInstances[entity], "_end", nullptr);
+            CPyObject classInstance = activeClassInstances[entity];
+            if (PyObject_HasAttr(classInstance, endFunctionName)) {
+                PyObject_CallMethod(classInstance, "_end", nullptr);
+                classInstance.Release();
+                activeClassInstances.erase(entity);
             }
         }
     }
