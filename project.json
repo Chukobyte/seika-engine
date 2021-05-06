@@ -66,6 +66,10 @@
       {
          "name": "zoom_out",
          "values": ["o"]
+      },
+      {
+         "name": "confirm",
+         "values": ["return"]
       }
    ]
 }
