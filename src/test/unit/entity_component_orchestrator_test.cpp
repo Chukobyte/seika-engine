@@ -108,30 +108,30 @@ TEST_CASE("Entity Component Orchestrator Tests - Scene", "[entity_component_orch
     GD *globalDependencies = GD::GetContainer();
     EntityComponentOrchestrator *entityComponentOrchestrator = globalDependencies->entityComponentOrchestrator;
 
-    SECTION("Change Scene To Root Entity Scene & Delete Test") {
+//    SECTION("Change Scene To Root Entity Scene & Delete Test") {
+//
+//        Entity rootSceneEntity = entityComponentOrchestrator->CreateEntity();
+//
+//        REQUIRE(!entityComponentOrchestrator->IsEntityInCurrentScene(rootSceneEntity));
+//
+//        entityComponentOrchestrator->ChangeSceneTo(rootSceneEntity);
+//
+//        REQUIRE(entityComponentOrchestrator->IsEntityInCurrentScene(rootSceneEntity));
+//
+//        entityComponentOrchestrator->DestroyEntity(rootSceneEntity);
+//
+//        REQUIRE(!entityComponentOrchestrator->IsEntityInCurrentScene(rootSceneEntity));
+//    }
 
-        Entity rootSceneEntity = entityComponentOrchestrator->CreateEntity();
-
-        REQUIRE(!entityComponentOrchestrator->IsEntityInCurrentScene(rootSceneEntity));
-
-        entityComponentOrchestrator->ChangeSceneTo(rootSceneEntity);
-
-        REQUIRE(entityComponentOrchestrator->IsEntityInCurrentScene(rootSceneEntity));
-
-        entityComponentOrchestrator->DestroyEntity(rootSceneEntity);
-
-        REQUIRE(!entityComponentOrchestrator->IsEntityInCurrentScene(rootSceneEntity));
-    }
-
-    SECTION("Parent Child Relation Test") {
-        Entity parentEntity = entityComponentOrchestrator->CreateEntity();
-        entityComponentOrchestrator->ChangeSceneTo(parentEntity);
-
-        Entity childEntity = entityComponentOrchestrator->CreateEntity();
-        entityComponentOrchestrator->AddChildToEntityScene(parentEntity, childEntity);
-
-        REQUIRE(entityComponentOrchestrator->GetSceneNodeParent(childEntity) == parentEntity);
-    }
+//    SECTION("Parent Child Relation Test") {
+//        Entity parentEntity = entityComponentOrchestrator->CreateEntity();
+//        entityComponentOrchestrator->ChangeSceneTo(parentEntity);
+//
+//        Entity childEntity = entityComponentOrchestrator->CreateEntity();
+//        entityComponentOrchestrator->AddChildToEntityScene(parentEntity, childEntity);
+//
+//        REQUIRE(entityComponentOrchestrator->GetSceneNodeParent(childEntity) == parentEntity);
+//    }
 
     globalDependencies->ResetDependencies();
 }

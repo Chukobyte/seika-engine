@@ -88,26 +88,4 @@ public:
     }
 };
 
-class PyHelper {
-public:
-    static CPyObject CreateModuleEntityInstance(Entity entity, const std::string &classPath, const std::string &className) {
-        // Import Module
-        CPyObject pName = PyUnicode_FromString(classPath.c_str());
-        CPyObject pModule = PyImport_Import(pName);
-        assert(pModule != nullptr && "Python module is NULL!");
-
-        // Class
-        CPyObject pModuleDict = PyModule_GetDict(pModule);
-        CPyObject pClass = PyDict_GetItemString(pModuleDict, className.c_str());
-        assert(pClass != nullptr && "Python class is NULL!");
-
-        // Instance
-        CPyObject argList = Py_BuildValue("(i)", entity);
-        CPyObject pClassInstance = PyObject_CallObject(pClass, argList);
-        assert(pClassInstance != nullptr && "Python class instance is NULL!");
-
-        return pClassInstance;
-    }
-};
-
 #endif //PYHELPER_HPP

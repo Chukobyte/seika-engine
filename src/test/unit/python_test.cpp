@@ -1,13 +1,16 @@
 #include <catch.hpp>
 
 #include "../../core/ecs/entity/entity.h"
-#include "../../core/scripting/python/pyhelper.hpp"
+#include "../../core/scripting/python/python_cache.h"
 
 TEST_CASE("Python Tests", "[python_test]") {
     CPyInstance *pyInstance = new CPyInstance();
+    PythonCache *pythonCache = new PythonCache();
     SECTION("Node Class Test") {
         Entity entity = 1;
-        CPyObject classInstance = PyHelper::CreateModuleEntityInstance(entity, "src.test.resources.python.test_node", "TestNode");
+        CPyObject pClass = pythonCache->GetClassObject("src.test.resources.python.test_node", "TestNode");
+        CPyObject argList = Py_BuildValue("(i)", entity);
+        CPyObject classInstance = PyObject_CallObject(pClass, argList);
         classInstance.AddRef();
 
         CPyObject pStartFunctionName = PyUnicode_FromString("_start");

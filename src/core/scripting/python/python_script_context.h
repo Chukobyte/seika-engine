@@ -4,11 +4,12 @@
 #include <map>
 
 #include "../script_context.h"
-#include "pyhelper.hpp"
+#include "python_cache.h"
 
 class PythonScriptContext : public ScriptContext {
   private:
     CPyInstance *pyInstance = nullptr;
+    PythonCache *pythonCache = nullptr;
     std::map<Entity, CPyObject> activeClassInstances;
 //    std::map<Entity, int> instanceScriptFunctionFlags;
     CPyObject startFunctionName;
@@ -22,6 +23,7 @@ class PythonScriptContext : public ScriptContext {
 
     void Initialize() override {
         pyInstance = new CPyInstance();
+        pythonCache = new PythonCache();
         startFunctionName = PyUnicode_FromString("_start");
         physicsProcessFunctionName = PyUnicode_FromString("_physics_process");
         endFunctionName = PyUnicode_FromString("_end");
@@ -32,8 +34,12 @@ class PythonScriptContext : public ScriptContext {
         ScriptableClassComponent scriptableClassComponent = componentManager->GetComponent<ScriptableClassComponent>(entity);
 
         // Create Instance
-        CPyObject pClassInstance = PyHelper::CreateModuleEntityInstance(entity, scriptableClassComponent.classPath, scriptableClassComponent.className);
+        CPyObject pClass = pythonCache->GetClassObject(scriptableClassComponent.classPath, scriptableClassComponent.className);
+        // Instance
+        CPyObject argList = Py_BuildValue("(i)", entity);
+        CPyObject pClassInstance = PyObject_CallObject(pClass, argList);
         assert(pClassInstance != nullptr && "Python class instance is NULL on creation!");
+        pClassInstance.AddRef();
         pClassInstance.AddRef();
         activeClassInstances.emplace(entity, pClassInstance);
 
