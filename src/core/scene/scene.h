@@ -175,22 +175,23 @@ class SceneManager {
         entityManager(vEntityManager), componentManager(vComponentManager), assetManager(vAssetManager) {
     }
 
+    Scene GetCurrentScene() {
+        return currentScene;
+    }
+
     void AddSingletonScene(Entity singletonEntity) {
         SceneNode sceneNode = SceneNode{.entity = singletonEntity};
         Scene scene = Scene{.rootNode = sceneNode};
         entityToMainScenesMap.emplace(singletonEntity, scene);
     }
 
-    void ChangeToScene(Entity entity) {
-        SceneNode rootSceneNode = SceneNode{.entity = entity};
-        Scene scene = Scene{.rootNode = rootSceneNode};
-        ChangeToScene(scene);
-    }
+//    void ChangeToScene(Entity entity) {
+//        SceneNode rootSceneNode = SceneNode{.entity = entity};
+//        Scene scene = Scene{.rootNode = rootSceneNode};
+//        ChangeToScene(scene);
+//    }
 
     void ChangeToScene(Scene scene) {
-        if (currentScene.rootNode.entity != NO_ENTITY) {
-            RemoveNode(currentScene.rootNode.entity);
-        }
         currentScene = scene;
         entityToMainScenesMap.emplace(currentScene.rootNode.entity, currentScene);
         AddChild(NO_ENTITY, currentScene.rootNode.entity);

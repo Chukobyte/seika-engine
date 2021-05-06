@@ -148,13 +148,17 @@ class EntityComponentOrchestrator {
     }
     // SCENE METHODS
     void ChangeSceneTo(const std::string &filePath) {
+        Scene currentScene = sceneManager->GetCurrentScene();
+        if (currentScene.rootNode.entity != NO_ENTITY) {
+            DestroyEntity(currentScene.rootNode.entity);
+        }
         Scene scene = sceneManager->LoadSceneFromFile(filePath);
         RegisterAllNodeSystemSignatures(scene.rootNode);
     }
 
-    void ChangeSceneTo(Entity rootNodeEntity) {
-        sceneManager->ChangeToScene(rootNodeEntity);
-    }
+//    void ChangeSceneTo(Entity rootNodeEntity) {
+//        sceneManager->ChangeToScene(rootNodeEntity);
+//    }
 
     void AddChildToEntityScene(Entity parentEntity, Entity childEntity) {
         ComponentSignature signature = entityManager->GetSignature(childEntity);
