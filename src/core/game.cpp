@@ -9,6 +9,7 @@
 #include "ecs/entity/system/animated_sprite_rendering_entity_system.h"
 #include "ecs/entity/system/text_rendering_entity_system.h"
 #include "ecs/entity/system/script_entity_system.h"
+#include "ecs/entity/system/collision_entity_system.h"
 
 #include "ecs/component/components/animated_sprite_component.h"
 #include "ecs/component/components/text_label_component.h"
@@ -57,6 +58,7 @@ void Game::InitializeECS() {
     entityComponentOrchestrator->RegisterComponent<AnimatedSpriteComponent>();
     entityComponentOrchestrator->RegisterComponent<TextLabelComponent>();
     entityComponentOrchestrator->RegisterComponent<ScriptableClassComponent>();
+    entityComponentOrchestrator->RegisterComponent<ColliderComponent>();
 
     // Systems
     entityComponentOrchestrator->RegisterSystem<SpriteRenderingEntitySystem>();
@@ -82,6 +84,11 @@ void Game::InitializeECS() {
     ComponentSignature scriptSystemSignature;
     scriptSystemSignature.set(entityComponentOrchestrator->GetComponentType<ScriptableClassComponent>(), true);
     entityComponentOrchestrator->SetSystemSignature<ScriptEntitySystem>(scriptSystemSignature);
+
+    entityComponentOrchestrator->RegisterSystem<CollisionEntitySystem>();
+    ComponentSignature collisionSystemSignature;
+    collisionSystemSignature.set(entityComponentOrchestrator->GetComponentType<ColliderComponent>());
+    entityComponentOrchestrator->SetSystemSignature<CollisionEntitySystem>(collisionSystemSignature);
 
     entityComponentOrchestrator->InitializeAllSystems();
 
@@ -192,6 +199,11 @@ void Game::FixedTimeStep() {
     while (accumulator >= PHYSICS_DELTA_TIME) {
         time += PHYSICS_DELTA_TIME;
         accumulator -= PHYSICS_DELTA_TIME;
+
+        // Check Collisions
+        static CollisionEntitySystem *collisionEntitySystem = (CollisionEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<CollisionEntitySystem>();
+        collisionEntitySystem->ProcessCollisions();
+
         scriptEntitySystem->PhysicsProcess(PHYSICS_DELTA_TIME);
         inputManager->ClearInputFlags();
     }

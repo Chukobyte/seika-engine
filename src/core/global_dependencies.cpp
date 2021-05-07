@@ -16,6 +16,7 @@ GD* GD::GetContainer() {
 void GD::ResetDependencies() {
     delete engineContext;
     delete renderContext;
+    delete collisionContext;
     delete renderer;
     delete assetManager;
     delete entityManager;
@@ -26,6 +27,7 @@ void GD::ResetDependencies() {
     delete cameraManager;
     engineContext = new EngineContext();
     renderContext = new RenderContext();
+    collisionContext = new CollisionContext();
     renderer = new Renderer();
     assetManager = new AssetManager();
     entityManager = new EntityManager();

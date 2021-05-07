@@ -8,8 +8,9 @@
 #include "ecs/entity/entity_manager.h"
 #include "ecs/entity/system/entity_system_manager.h"
 #include "ecs/component/component_manager.h"
-#include "scene/scene.h"
 #include "ecs/entity_component_orchestrator.h"
+#include "physics/collision/collision_context.h"
+#include "scene/scene.h"
 #include "camera/camera_manager.h"
 
 class GD {
@@ -21,6 +22,7 @@ class GD {
   public:
     EngineContext *engineContext = nullptr;
     RenderContext *renderContext = nullptr;
+    CollisionContext *collisionContext = nullptr;
     Renderer *renderer = nullptr;
     AssetManager *assetManager = nullptr;
     EntityManager *entityManager = nullptr;
