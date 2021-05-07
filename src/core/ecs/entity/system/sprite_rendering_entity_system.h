@@ -4,6 +4,7 @@
 #include "entity_system.h"
 #include "../../component/components/transform2D_component.h"
 #include "../../component/components/sprite_component.h"
+#include "../../../math/space_handler.h"
 
 class SpriteRenderingEntitySystem : public EntitySystem {
   private:
@@ -29,7 +30,7 @@ class SpriteRenderingEntitySystem : public EntitySystem {
                 Transform2DComponent transform2DComponent = componentManager->GetComponent<Transform2DComponent>(entity);
                 SpriteComponent spriteComponent = componentManager->GetComponent<SpriteComponent>(entity);
                 Camera camera = cameraManager->GetCurrentCamera();
-                Vector2 drawDestinationPosition = transform2DComponent.position - (!transform2DComponent.ignoreCamera ? (camera.viewport + camera.offset) * camera.zoom : Vector2(0, 0));
+                Vector2 drawDestinationPosition = SpaceHandler::WorldToScreen(transform2DComponent.position, transform2DComponent.ignoreCamera);
                 Vector2 drawScale = !transform2DComponent.ignoreCamera ? transform2DComponent.scale * camera.zoom : transform2DComponent.scale;
                 Vector2 drawDestinationSize = Vector2(spriteComponent.drawSource.w * drawScale.x, spriteComponent.drawSource.h * drawScale.y);
                 spriteComponent.drawDestination = Rect2(drawDestinationPosition, drawDestinationSize);

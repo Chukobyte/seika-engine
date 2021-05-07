@@ -4,6 +4,7 @@
 #include "entity_system.h"
 #include "../../../physics/collision/collision_context.h"
 #include "../../component/components/collider_component.h"
+#include "../../../math/space_handler.h"
 
 class CollisionEntitySystem : public EntitySystem {
   private:
@@ -70,14 +71,15 @@ class CollisionEntitySystem : public EntitySystem {
         for (Entity entity : entities) {
             Transform2DComponent transform2DComponent = componentManager->GetComponent<Transform2DComponent>(entity);
             ColliderComponent colliderComponent = componentManager->GetComponent<ColliderComponent>(entity);
-            Rect2 colliderDrawDestination = Rect2(transform2DComponent.position.x + colliderComponent.collider.x,
-                                                  transform2DComponent.position.y + colliderComponent.collider.y,
-                                                  transform2DComponent.scale.x * colliderComponent.collider.w,
-                                                  transform2DComponent.scale.y * colliderComponent.collider.h);
+            Vector2 drawDestinationPosition = SpaceHandler::WorldToScreen(Vector2(
+                                                  transform2DComponent.position.x + colliderComponent.collider.x,
+                                                  transform2DComponent.position.y + colliderComponent.collider.y),
+                                              transform2DComponent.ignoreCamera);
+            Rect2 colliderDrawDestination = Rect2(drawDestinationPosition,
+                                                  Vector2(transform2DComponent.scale.x * colliderComponent.collider.w,
+                                                          transform2DComponent.scale.y * colliderComponent.collider.h));
             if (!transform2DComponent.ignoreCamera) {
                 Camera camera = cameraManager->GetCurrentCamera();
-                colliderDrawDestination.x -= ((camera.viewport.x + camera.offset.x) * camera.zoom.x) + (colliderComponent.collider.x - (colliderComponent.collider.x * camera.zoom.x));
-                colliderDrawDestination.y -= ((camera.viewport.y + camera.offset.y) * camera.zoom.y) + (colliderComponent.collider.y - (colliderComponent.collider.y * camera.zoom.y));
                 colliderDrawDestination.w *= camera.zoom.x;
                 colliderDrawDestination.h *= camera.zoom.y;
             }

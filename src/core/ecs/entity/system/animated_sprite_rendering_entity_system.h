@@ -4,6 +4,7 @@
 #include "entity_system.h"
 #include "../../component/components/transform2D_component.h"
 #include "../../component/components/animated_sprite_component.h"
+#include "../../../math/space_handler.h"
 
 class AnimatedSpriteRenderingEntitySystem : public EntitySystem {
   private:
@@ -43,7 +44,7 @@ class AnimatedSpriteRenderingEntitySystem : public EntitySystem {
                     }
                 }
                 Camera camera = cameraManager->GetCurrentCamera();
-                Vector2 drawDestinationPosition = transform2DComponent.position - (!transform2DComponent.ignoreCamera ? (camera.viewport + camera.offset) * camera.zoom : Vector2(0, 0));
+                Vector2 drawDestinationPosition = SpaceHandler::WorldToScreen(transform2DComponent.position, transform2DComponent.ignoreCamera);
                 Vector2 drawScale = !transform2DComponent.ignoreCamera ? transform2DComponent.scale * camera.zoom : transform2DComponent.scale;
                 Vector2 drawDestinationSize = Vector2(currentFrame.drawSource.w * drawScale.x, currentFrame.drawSource.h * drawScale.y);
                 Rect2 drawDestination = Rect2(drawDestinationPosition, drawDestinationSize);
