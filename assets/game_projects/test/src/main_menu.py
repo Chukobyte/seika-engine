@@ -9,5 +9,5 @@ class MainMenu(Node):
 
     def _physics_process(self, delta_time: float) -> None:
         if Input.is_action_just_pressed(action_name="confirm"):
-            SceneTree.change_scene(scene_path="assets/game_projects/test/scenes/test2.json")
+            SceneTree.change_scene(scene_path="assets/game_projects/test/scenes/test_battle.json")
             Audio.stop_music()
