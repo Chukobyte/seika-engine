@@ -36,18 +36,18 @@ class Puncher(Node2D):
             self.zoom = min(Vector2(10, 10), self.zoom)
             Camera.set_zoom(zoom=self.zoom)
 
-        # if Input.is_action_pressed(action_name="up"):
-        #     self.viewport.y -= 1
-        #     Camera.set_viewport_position(position=self.viewport)
-        # elif Input.is_action_pressed(action_name="down"):
-        #     self.viewport.y += 1
-        #     Camera.set_viewport_position(position=self.viewport)
-        # if Input.is_action_pressed(action_name="left"):
-        #     self.viewport.x -= 1
-        #     Camera.set_viewport_position(position=self.viewport)
-        # elif Input.is_action_pressed(action_name="right"):
-        #     self.viewport.x += 1
-        #     Camera.set_viewport_position(position=self.viewport)
+        if Input.is_action_pressed(action_name="camera_up"):
+            self.viewport.y -= 1
+            Camera.set_viewport_position(position=self.viewport)
+        elif Input.is_action_pressed(action_name="camera_down"):
+            self.viewport.y += 1
+            Camera.set_viewport_position(position=self.viewport)
+        if Input.is_action_pressed(action_name="camera_left"):
+            self.viewport.x -= 1
+            Camera.set_viewport_position(position=self.viewport)
+        elif Input.is_action_pressed(action_name="camera_right"):
+            self.viewport.x += 1
+            Camera.set_viewport_position(position=self.viewport)
 
     def _end(self) -> None:
         pass

@@ -35,29 +35,49 @@
       {
          "name": "left",
          "values": [
-            "a",
             "left"
          ]
       },
       {
          "name": "right",
          "values": [
-            "d",
             "right"
          ]
       },
       {
          "name": "up",
          "values": [
-            "w",
             "up"
          ]
       },
       {
          "name": "down",
          "values": [
-            "s",
             "down"
+         ]
+      },
+      {
+         "name": "camera_left",
+         "values": [
+            "a"
+         ]
+      },
+      {
+         "name": "camera_right",
+         "values": [
+            "d"
+         ]
+      },
+      {
+         "name": "camera_up",
+         "values": [
+            "w"
+         ]
+      },
+      {
+         "name": "camera_down",
+         "values": [
+            "s"
          ]
       },
       {
