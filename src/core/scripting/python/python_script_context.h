@@ -34,7 +34,7 @@ class PythonScriptContext : public ScriptContext {
         ScriptableClassComponent scriptableClassComponent = componentManager->GetComponent<ScriptableClassComponent>(entity);
 
         // Create Instance
-        CPyObject pClass = pythonCache->GetClassObject(scriptableClassComponent.classPath, scriptableClassComponent.className);
+        CPyObject pClass = pythonCache->GetClass(scriptableClassComponent.classPath, scriptableClassComponent.className);
         CPyObject argList = Py_BuildValue("(i)", entity);
         CPyObject pClassInstance = PyObject_CallObject(pClass, argList);
         assert(pClassInstance != nullptr && "Python class instance is NULL on creation!");

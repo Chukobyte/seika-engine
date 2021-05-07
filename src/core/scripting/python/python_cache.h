@@ -13,8 +13,9 @@ struct CachedPythonModule {
 class PythonCache {
   private:
     std::map<std::string, CachedPythonModule> cache;
+    std::map<Entity, CPyObject> activeClassInstances;
   public:
-    CPyObject GetClassObject(const std::string &classPath, const std::string &className) {
+    CPyObject GetClass(const std::string &classPath, const std::string &className) {
         if (cache.count(classPath) <= 0) {
             CPyObject pName = PyUnicode_FromString(classPath.c_str());
             CPyObject pModule = PyImport_Import(pName);
@@ -34,6 +35,30 @@ class PythonCache {
         }
         cache[classPath].classes[className].AddRef();
         return cache[classPath].classes[className];
+    }
+
+    CPyObject CreateClassInstance(const std::string &classPath, const std::string &className, Entity entity) {
+        assert(HasActiveInstance(entity) && "Entity not active!");
+        CPyObject argList = Py_BuildValue("(i)", entity);
+        CPyObject pClassInstance = PyObject_CallObject(GetClass(classPath, className), argList);
+        assert(pClassInstance != nullptr && "Python class instance is NULL on creation!");
+        activeClassInstances.emplace(entity, pClassInstance);
+        activeClassInstances[entity].AddRef();
+        return activeClassInstances[entity];
+    }
+
+    CPyObject GetClassInstance(Entity entity) {
+        assert(HasActiveInstance(entity) && "Entity not active!");
+        return activeClassInstances[entity];
+    }
+
+    bool HasActiveInstance(Entity entity) {
+        return activeClassInstances.count(entity) > 0;
+    }
+
+    void RemoveClassInstance(Entity entity) {
+        activeClassInstances[entity].Release();
+        activeClassInstances.erase(entity);
     }
 };
 
