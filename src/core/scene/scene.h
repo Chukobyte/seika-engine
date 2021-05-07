@@ -13,6 +13,7 @@
 #include "../animation/animation.h"
 #include "../ecs/component/components/animated_sprite_component.h"
 #include "../ecs/component/components/text_label_component.h"
+#include "../ecs/component/components/collider_component.h"
 #include "../ecs/component/components/scriptable_class_component.h"
 
 struct SceneNode {
@@ -148,6 +149,19 @@ class SceneManager {
                 });
                 auto signature = entityManager->GetSignature(sceneNode.entity);
                 signature.set(componentManager->GetComponentType<TextLabelComponent>(), true);
+                entityManager->SetSignature(sceneNode.entity, signature);
+            } else if (nodeComponentType == "collider") {
+                nlohmann::json nodeRectangleJson = nodeComponentObjectJson["rectangle"].get<nlohmann::json>();
+                float nodeX = nodeRectangleJson["x"].get<float>();
+                float nodeY = nodeRectangleJson["y"].get<float>();
+                float nodeWidth = nodeRectangleJson["width"].get<float>();
+                float nodeHeight = nodeRectangleJson["height"].get<float>();
+
+                componentManager->AddComponent(sceneNode.entity, ColliderComponent{
+                    .collider = Rect2(nodeX, nodeY, nodeWidth, nodeHeight)
+                });
+                auto signature = entityManager->GetSignature(sceneNode.entity);
+                signature.set(componentManager->GetComponentType<ColliderComponent>(), true);
                 entityManager->SetSignature(sceneNode.entity, signature);
             } else if (nodeComponentType == "scriptable_class") {
                 std::string nodeClassPath = nodeComponentObjectJson["class_path"].get<std::string>();

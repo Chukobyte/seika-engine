@@ -156,6 +156,16 @@
                     }
                 },
                 {
+                    "collider": {
+                        "rectangle": {
+                            "x": 30.0,
+                            "y": 30.0,
+                            "width": 4.0,
+                            "height": 4.0
+                        }
+                    }
+                },
+                {
                     "scriptable_class": {
                         "class_path": "assets.game_projects.test.src.fighter",
                         "class_name": "Puncher"

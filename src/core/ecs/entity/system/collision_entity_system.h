@@ -10,14 +10,31 @@ class CollisionEntitySystem : public EntitySystem {
     std::map<Entity, CollisionResult> collisionResultsMap;
     CollisionContext *collisionContext = nullptr;
     ComponentManager *componentManager = nullptr;
+    CameraManager *cameraManager = nullptr;
+    Renderer *renderer = nullptr;
+    Texture2D *colliderTexture = nullptr;
+    Rect2 colliderDrawSource = Rect2(0.0f, 0.0f, 4.0f, 4.0f);
+
+    Rect2 GetCollisionRectangle(Entity entity) {
+        Transform2DComponent transform2DComponent = componentManager->GetComponent<Transform2DComponent>(entity);
+        ColliderComponent colliderComponent = componentManager->GetComponent<ColliderComponent>(entity);
+        return Rect2(transform2DComponent.position.x + colliderComponent.collider.x,
+                     transform2DComponent.position.y + colliderComponent.collider.y,
+                     transform2DComponent.scale.x + colliderComponent.collider.w,
+                     transform2DComponent.scale.y + colliderComponent.collider.h);
+    }
   public:
     CollisionEntitySystem() {
         collisionContext = GD::GetContainer()->collisionContext;
         componentManager = GD::GetContainer()->componentManager;
+        cameraManager = GD::GetContainer()->cameraManager;
+        renderer = GD::GetContainer()->renderer;
         enabled = true;
     }
 
-    void Initialize() override {}
+    void Initialize() override {
+        colliderTexture = GD::GetContainer()->assetManager->GetTexture(DEFAULT_COLLIDER_ASSET_ID);
+    }
 
     void Enable() override {}
 
@@ -32,7 +49,9 @@ class CollisionEntitySystem : public EntitySystem {
             std::vector<Entity> collidedEntities;
             for (Entity targetEntity : entities) {
                 if (sourceEntity != targetEntity) {
-                    if (CollisionResolver::DoesRectanglesCollide(Rect2(), Rect2())) {
+                    Rect2 sourceCollisionRectangle = GetCollisionRectangle(sourceEntity);
+                    Rect2 targetCollisionRectangle = GetCollisionRectangle(targetEntity);
+                    if (CollisionResolver::DoesRectanglesCollide(sourceCollisionRectangle, targetCollisionRectangle)) {
                         collidedEntities.emplace_back(targetEntity);
                         // TODO: emit signal if Area2D like functionality for entering and exiting is required
                     }
@@ -48,7 +67,24 @@ class CollisionEntitySystem : public EntitySystem {
         }
     }
 
-    void Render() {}
+    void Render() {
+        for (Entity entity : entities) {
+            Transform2DComponent transform2DComponent = componentManager->GetComponent<Transform2DComponent>(entity);
+            ColliderComponent colliderComponent = componentManager->GetComponent<ColliderComponent>(entity);
+            Rect2 colliderDrawDestination = Rect2(transform2DComponent.position.x + colliderComponent.collider.x,
+                                                  transform2DComponent.position.y + colliderComponent.collider.y,
+                                                  transform2DComponent.scale.x * colliderComponent.collider.w,
+                                                  transform2DComponent.scale.y * colliderComponent.collider.h);
+            if (!transform2DComponent.ignoreCamera) {
+                Camera camera = cameraManager->GetCurrentCamera();
+                colliderDrawDestination.x -= ((camera.viewport.x + camera.offset.x) * camera.zoom.x) + (colliderComponent.collider.x - (colliderComponent.collider.x * camera.zoom.x));
+                colliderDrawDestination.y -= ((camera.viewport.y + camera.offset.y) * camera.zoom.y) + (colliderComponent.collider.y - (colliderComponent.collider.y * camera.zoom.y));
+                colliderDrawDestination.w *= camera.zoom.x;
+                colliderDrawDestination.h *= camera.zoom.y;
+            }
+            renderer->DrawSprite(colliderTexture, &colliderDrawSource, &colliderDrawDestination, transform2DComponent.zIndex);
+        }
+    }
 };
 
 #endif //COLLISION_ENTITY_SYSTEM_H

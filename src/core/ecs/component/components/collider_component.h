@@ -8,7 +8,6 @@
 struct ColliderComponent {
   public:
     Rect2 collider;
-    Vector2 offset;
 };
 
 #endif //COLLIDER_COMPONENT_H
