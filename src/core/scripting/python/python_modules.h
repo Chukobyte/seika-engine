@@ -89,8 +89,8 @@ static struct PyMethodDef rollApiMethods[] = {
     },
     // COLLISION
     {
-            "collision_check", (PyCFunction) PythonModules::collision_check,
-            METH_VARARGS | METH_KEYWORDS, "Checks if entity collided with others."
+        "collision_check", (PyCFunction) PythonModules::collision_check,
+        METH_VARARGS | METH_KEYWORDS, "Checks if entity collided with others."
     },
     // INPUT
     {

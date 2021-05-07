@@ -8,6 +8,8 @@
 struct SpriteComponent {
     Texture2D* texture = nullptr;
     Rect2 drawSource;
+    bool flipX = false;
+    bool flipY = false;
     Rect2 drawDestination; // Updated when drawing to position
 };
 

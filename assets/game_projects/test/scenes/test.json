@@ -89,7 +89,9 @@
                             "y": 0.0,
                             "width": 12.0,
                             "height": 16.0
-                        }
+                        },
+                        "flip_x": false,
+                        "flip_y": false,
                     }
                 },
                 {

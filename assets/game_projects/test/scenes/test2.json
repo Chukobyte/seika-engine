@@ -85,6 +85,8 @@
                     "animated_sprite": {
                         "current_animation": "Idle",
                         "is_playing": true,
+                        "flip_x": false,
+                        "flip_y": false,
                         "animations": [
                             {
                                 "name": "Idle",

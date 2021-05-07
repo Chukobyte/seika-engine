@@ -12,6 +12,8 @@ struct AnimatedSpriteComponent {
     Animation currentAnimation; // Preselects first added animation
     int currentFrameIndex;
     bool isPlaying;
+    bool flipX = false;
+    bool flipY = false;
 };
 
 #endif //ANIMATED_SPRITE_COMPONENT_H

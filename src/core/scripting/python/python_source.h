@@ -258,15 +258,15 @@ static PythonSource PYTHON_SOURCE_NODE_MODULE =
     "";
 
 static PythonSource PYTHON_SOURCE_PHYSICS_MODULE =
-        "import roll_engine_api\n"
-        "from roll.node import Node\n"
-        "\n"
-        "class Collision:\n"
-        "   @staticmethod\n"
-        "   def check(node: Node) -> bool:\n"
-        "       return roll_engine_api.collision_check(entity_id=node.entity_id)\n"
-        "\n"
-        "";
+    "import roll_engine_api\n"
+    "from roll.node import Node\n"
+    "\n"
+    "class Collision:\n"
+    "   @staticmethod\n"
+    "   def check(node: Node) -> bool:\n"
+    "       return roll_engine_api.collision_check(entity_id=node.entity_id)\n"
+    "\n"
+    "";
 
 static PythonSource PYTHON_SOURCE_SCENE_MODULE =
     "import roll_engine_api\n"

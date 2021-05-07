@@ -78,10 +78,14 @@ class SceneManager {
                 float nodeDrawSourceY = nodeDrawSourceJson["y"].get<float>();
                 float nodeDrawSourceWidth = nodeDrawSourceJson["width"].get<float>();
                 float nodeDrawSourceHeight = nodeDrawSourceJson["height"].get<float>();
+                bool nodeFlipX = nodeComponentObjectJson["flip_x"].get<bool>();
+                bool nodeFlipY = nodeComponentObjectJson["flip_y"].get<bool>();
 
                 componentManager->AddComponent(sceneNode.entity, SpriteComponent{
                     .texture = assetManager->GetTexture(nodeTexturePath),
-                    .drawSource = Rect2(nodeDrawSourceX, nodeDrawSourceY, nodeDrawSourceWidth, nodeDrawSourceHeight)
+                    .drawSource = Rect2(nodeDrawSourceX, nodeDrawSourceY, nodeDrawSourceWidth, nodeDrawSourceHeight),
+                    .flipX = nodeFlipX,
+                    .flipY = nodeFlipY
                 });
                 auto signature = entityManager->GetSignature(sceneNode.entity);
                 signature.set(componentManager->GetComponentType<SpriteComponent>(), true);
@@ -89,6 +93,8 @@ class SceneManager {
             } else if (nodeComponentType == "animated_sprite") {
                 std::string nodeCurrentAnimationName = nodeComponentObjectJson["current_animation"].get<std::string>();
                 bool nodeIsPlaying = nodeComponentObjectJson["is_playing"].get<bool>();
+                bool nodeFlipX = nodeComponentObjectJson["flip_x"].get<bool>();
+                bool nodeFlipY = nodeComponentObjectJson["flip_y"].get<bool>();
                 nlohmann::json nodeAnimationsJsonArray = nodeComponentObjectJson["animations"].get<nlohmann::json>();
                 std::map<std::string, Animation> nodeAnimations;
 
@@ -126,7 +132,9 @@ class SceneManager {
                     .animations = nodeAnimations,
                     .currentAnimation = !nodeCurrentAnimationName.empty() ? nodeAnimations[nodeCurrentAnimationName] : Animation{},
                     .currentFrameIndex = 0,
-                    .isPlaying = nodeIsPlaying
+                    .isPlaying = nodeIsPlaying,
+                    .flipX = nodeFlipX,
+                    .flipY = nodeFlipY
                 });
                 auto signature = entityManager->GetSignature(sceneNode.entity);
                 signature.set(componentManager->GetComponentType<AnimatedSpriteComponent>(), true);

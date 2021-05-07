@@ -33,7 +33,7 @@ SpriteRenderer::SpriteRenderer(const glm::mat4 &projection) {
     shader.SetInt("sprite", 0);
 }
 
-void SpriteRenderer::Draw(Texture2D *texture2D, Rect2 *sourceRectangle, Rect2 *destinationRectangle, int zIndex, float rotation, Color color) {
+void SpriteRenderer::Draw(Texture2D *texture2D, Rect2 *sourceRectangle, Rect2 *destinationRectangle, int zIndex, float rotation, Color color, bool flipX, bool flipY) {
     glDepthMask(false);
 
     glm::mat4 model = glm::mat4(1.0f);
@@ -67,7 +67,38 @@ void SpriteRenderer::Draw(Texture2D *texture2D, Rect2 *sourceRectangle, Rect2 *d
     glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
 
     // Render Container
+    GLfloat vertices[6][4] = {
+        // positions // texture coordinates
+        0.0f, 1.0f, 0.0f, 1.0f,
+        1.0f, 0.0f, 1.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 0.0f,
 
+        0.0f, 1.0f, 0.0f, 1.0f,
+        1.0f, 1.0f, 1.0f, 1.0f,
+        1.0f, 0.0f, 1.0f, 0.0f
+    };
+
+    static const int VERT_X = 2;
+    static const int VERT_Y = 3;
+    if (flipX) {
+        vertices[0][VERT_X] = 1.0f;
+        vertices[1][VERT_X] = 0.0f;
+        vertices[2][VERT_X] = 1.0f;
+        vertices[3][VERT_X] = 1.0f;
+        vertices[4][VERT_X] = 0.0f;
+        vertices[5][VERT_X] = 0.0f;
+    }
+
+    if (flipY) {
+        vertices[0][VERT_Y] = 0.0f;
+        vertices[1][VERT_Y] = 1.0f;
+        vertices[2][VERT_Y] = 1.0f;
+        vertices[3][VERT_Y] = 0.0f;
+        vertices[4][VERT_Y] = 0.0f;
+        vertices[5][VERT_Y] = 1.0f;
+    }
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
     glBindVertexArray(0);
@@ -157,8 +188,8 @@ void Renderer::Initialize() {
     fontRenderer = new FontRenderer();
 }
 
-void Renderer::DrawSprite(Texture2D *texture2D, Rect2 *sourceRectangle, Rect2 *destinationRectangle, int zIndex, float rotation, Color color) {
-    spriteRenderer->Draw(texture2D, sourceRectangle, destinationRectangle, zIndex, rotation, color);
+void Renderer::DrawSprite(Texture2D *texture2D, Rect2 *sourceRectangle, Rect2 *destinationRectangle, int zIndex, float rotation, Color color, bool flipX, bool flipY) {
+    spriteRenderer->Draw(texture2D, sourceRectangle, destinationRectangle, zIndex, rotation, color, flipX, flipY);
 }
 
 void Renderer::DrawFont(Font *font, const std::string &text, float x, float y, float scale, Color color) {

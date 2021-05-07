@@ -48,7 +48,14 @@ class AnimatedSpriteRenderingEntitySystem : public EntitySystem {
                 Vector2 drawDestinationSize = Vector2(currentFrame.drawSource.w * drawScale.x, currentFrame.drawSource.h * drawScale.y);
                 Rect2 drawDestination = Rect2(drawDestinationPosition, drawDestinationSize);
                 assert(currentFrame.texture != nullptr && "Current frame texture is null");
-                renderer->DrawSprite(currentFrame.texture, &currentFrame.drawSource, &drawDestination, transform2DComponent.zIndex, 0.0f, Color(1.0f, 1.0f, 1.0f, 1.0f));
+                renderer->DrawSprite(currentFrame.texture,
+                                     &currentFrame.drawSource,
+                                     &drawDestination,
+                                     transform2DComponent.zIndex,
+                                     0.0f,
+                                     Color(1.0f, 1.0f, 1.0f),
+                                     animatedSpriteComponent.flipX,
+                                     animatedSpriteComponent.flipY);
             }
         }
     }
