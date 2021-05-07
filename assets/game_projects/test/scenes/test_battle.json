@@ -160,8 +160,8 @@
                 {
                     "collider": {
                         "rectangle": {
-                            "x": 20.0,
-                            "y": 20.0,
+                            "x": 4.0,
+                            "y": 5.0,
                             "width": 4.0,
                             "height": 4.0
                         }
@@ -277,8 +277,8 @@
                 {
                     "collider": {
                         "rectangle": {
-                            "x": 20.0,
-                            "y": 20.0,
+                            "x": 4.0,
+                            "y": 5.0,
                             "width": 4.0,
                             "height": 4.0
                         }

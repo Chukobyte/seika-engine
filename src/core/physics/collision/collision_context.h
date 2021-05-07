@@ -13,12 +13,18 @@ struct CollisionResult {
 };
 
 class CollisionResolver {
+  private:
+    static constexpr float FLOAT_EPSILON = 0.001f;
+
+    static bool IsFloatGreaterOrEqual(float a, float b) {
+        return fabs(a - b) < FLOAT_EPSILON || a > b;
+    }
   public:
     static bool DoesRectanglesCollide(Rect2 sourceRect, Rect2 targetRect) {
-        return sourceRect.x + sourceRect.w >= targetRect.x &&
-               targetRect.x + targetRect.w >= sourceRect.x &&
-               sourceRect.y + sourceRect.h >= targetRect.y &&
-               targetRect.y + targetRect.h >= sourceRect.y;
+        return IsFloatGreaterOrEqual(sourceRect.x + sourceRect.w, targetRect.x) &&
+               IsFloatGreaterOrEqual(targetRect.x + targetRect.w, sourceRect.x) &&
+               IsFloatGreaterOrEqual(sourceRect.y + sourceRect.h, targetRect.y) &&
+               IsFloatGreaterOrEqual(targetRect.y + targetRect.h, sourceRect.y);
     }
 };
 

@@ -98,7 +98,7 @@ void SpriteRenderer::Draw(Texture2D *texture2D, Rect2 *sourceRectangle, Rect2 *d
         vertices[5][VERT_Y] = 1.0f;
     }
 
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
     glBindVertexArray(0);

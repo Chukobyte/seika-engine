@@ -18,8 +18,8 @@ class CollisionEntitySystem : public EntitySystem {
     Rect2 GetCollisionRectangle(Entity entity) {
         Transform2DComponent transform2DComponent = componentManager->GetComponent<Transform2DComponent>(entity);
         ColliderComponent colliderComponent = componentManager->GetComponent<ColliderComponent>(entity);
-        return Rect2(transform2DComponent.position.x + colliderComponent.collider.x,
-                     transform2DComponent.position.y + colliderComponent.collider.y,
+        return Rect2(transform2DComponent.position.x + (colliderComponent.collider.x * transform2DComponent.scale.x),
+                     transform2DComponent.position.y + (colliderComponent.collider.y * transform2DComponent.scale.y),
                      transform2DComponent.scale.x + colliderComponent.collider.w,
                      transform2DComponent.scale.y + colliderComponent.collider.h);
     }
@@ -72,8 +72,8 @@ class CollisionEntitySystem : public EntitySystem {
             Transform2DComponent transform2DComponent = componentManager->GetComponent<Transform2DComponent>(entity);
             ColliderComponent colliderComponent = componentManager->GetComponent<ColliderComponent>(entity);
             Vector2 drawDestinationPosition = SpaceHandler::WorldToScreen(Vector2(
-                                                  transform2DComponent.position.x + colliderComponent.collider.x,
-                                                  transform2DComponent.position.y + colliderComponent.collider.y),
+                                                  transform2DComponent.position.x + (colliderComponent.collider.x * transform2DComponent.scale.x),
+                                                  transform2DComponent.position.y + (colliderComponent.collider.y * transform2DComponent.scale.y)),
                                               transform2DComponent.ignoreCamera);
             Rect2 colliderDrawDestination = Rect2(drawDestinationPosition,
                                                   Vector2(transform2DComponent.scale.x * colliderComponent.collider.w,

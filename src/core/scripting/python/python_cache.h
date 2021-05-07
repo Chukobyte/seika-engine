@@ -38,9 +38,10 @@ class PythonCache {
     }
 
     CPyObject CreateClassInstance(const std::string &classPath, const std::string &className, Entity entity) {
-        assert(HasActiveInstance(entity) && "Entity not active!");
         CPyObject argList = Py_BuildValue("(i)", entity);
-        CPyObject pClassInstance = PyObject_CallObject(GetClass(classPath, className), argList);
+        CPyObject classRef = GetClass(classPath, className);
+        assert(classRef != nullptr && "Error with getting cached python class info!");
+        CPyObject pClassInstance = PyObject_CallObject(classRef, argList);
         assert(pClassInstance != nullptr && "Python class instance is NULL on creation!");
         activeClassInstances.emplace(entity, pClassInstance);
         activeClassInstances[entity].AddRef();
@@ -50,6 +51,11 @@ class PythonCache {
     CPyObject GetClassInstance(Entity entity) {
         assert(HasActiveInstance(entity) && "Entity not active!");
         return activeClassInstances[entity];
+    }
+
+    CPyObject RegisterActiveInstance(Entity entity, CPyObject pInstance) {
+        pInstance.AddRef();
+        activeClassInstances.emplace(entity, pInstance);
     }
 
     bool HasActiveInstance(Entity entity) {
