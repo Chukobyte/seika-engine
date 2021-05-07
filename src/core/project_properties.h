@@ -103,6 +103,7 @@ class ProjectProperties {
     int windowWidth = 800;
     int windowHeight = 600;
     Color backgroundDrawColor = Color(20.f / 255.0f, 20.f / 255.0f, 20.f / 255.0f);
+    bool areColliderVisible = false;
     std::string initialScenePath;
 
     static ProjectProperties* GetInstance();
@@ -139,6 +140,7 @@ class ProjectProperties {
         nlohmann::json baseResolutionJson = projectConfigurationsJson["base_resolution"].get<nlohmann::json>();
         windowWidth = baseResolutionJson["width"].get<int>();
         windowHeight = baseResolutionJson["height"].get<int>();
+        areColliderVisible = projectConfigurationsJson["colliders_visible"].get<bool>();
 
         nlohmann::json assetsJsonArray = projectConfigurationsJson["assets"].get<nlohmann::json>();
         LoadProjectAssets(assetsJsonArray);

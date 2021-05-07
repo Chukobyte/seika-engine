@@ -233,6 +233,11 @@ void Game::Render() {
     static TextRenderingEntitySystem *textRenderingEntitySystem = (TextRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<TextRenderingEntitySystem>();
     textRenderingEntitySystem->Render();
 
+    if (projectProperties->areColliderVisible) {
+        static CollisionEntitySystem *collisionEntitySystem = (CollisionEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<CollisionEntitySystem>();
+        collisionEntitySystem->Render();
+    }
+
     SDL_GL_SwapWindow(renderContext->window);
 }
 

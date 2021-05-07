@@ -5,6 +5,7 @@
       "width": 800,
       "height": 600
    },
+   "colliders_visible": false,
    "assets": [
       {
          "type": "texture",

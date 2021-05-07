@@ -69,6 +69,9 @@ std::map<std::string, Mix_Chunk*> AssetManager::GetAllSounds() {
 }
 
 void AssetManager::LoadProjectAssets() {
+    // Load Default assets first
+    LoadTexture(DEFAULT_COLLIDER_ASSET_ID, DEFAULT_COLLIDER_ASSET_ID);
+
     ProjectProperties *projectProperties = ProjectProperties::GetInstance();
     AssetConfigurations assetConfigurations = projectProperties->GetAssetConfigurations();
 

@@ -1,11 +1,11 @@
 #ifndef PYTHON_SOURCE_H
 #define PYTHON_SOURCE_H
 
-using PythonSource = const std::string;
+using PythonSource = const std::string&;
 
-static const PythonSource PYTHON_SOURCE_ROLL_MODULE = "";
+static PythonSource PYTHON_SOURCE_ROLL_MODULE = "";
 
-static const PythonSource  PYTHON_SOURCE_ENGINE_MODULE =
+static PythonSource  PYTHON_SOURCE_ENGINE_MODULE =
     "import roll_engine_api\n"
     "\n"
     "class Engine:\n"
@@ -15,7 +15,7 @@ static const PythonSource  PYTHON_SOURCE_ENGINE_MODULE =
     "\n"
     "";
 
-static const PythonSource PYTHON_SOURCE_AUDIO_MODULE =
+static PythonSource PYTHON_SOURCE_AUDIO_MODULE =
     "import roll_engine_api\n"
     "class Audio:\n"
     "   @staticmethod\n"
@@ -44,7 +44,7 @@ static const PythonSource PYTHON_SOURCE_AUDIO_MODULE =
     "\n"
     "";
 
-static const PythonSource PYTHON_SOURCE_MATH_MODULE =
+static PythonSource PYTHON_SOURCE_MATH_MODULE =
     "class Vector2:\n"
     "   def __init__(self, x=0.0, y=0.0):\n"
     "       self.x = x\n"
@@ -111,7 +111,7 @@ static const PythonSource PYTHON_SOURCE_MATH_MODULE =
     "\n"
     "";
 
-static const PythonSource PYTHON_SOURCE_COLOR_MODULE =
+static PythonSource PYTHON_SOURCE_COLOR_MODULE =
     "class Color:\n"
     "   def __init__(self, r=0.0, g=0.0, b=0.0, a=1.0):\n"
     "       self.r = r\n"
@@ -121,7 +121,7 @@ static const PythonSource PYTHON_SOURCE_COLOR_MODULE =
     "\n"
     "";
 
-static const PythonSource PYTHON_SOURCE_INPUT_MODULE =
+static PythonSource PYTHON_SOURCE_INPUT_MODULE =
     "import roll_engine_api\n"
     "\n"
     "class Input:\n"
@@ -206,7 +206,7 @@ static const PythonSource PYTHON_SOURCE_INPUT_MODULE =
     "   F12 = \"f12\"\n"
     "\n";
 
-static const PythonSource PYTHON_SOURCE_CAMERA_MODULE =
+static PythonSource PYTHON_SOURCE_CAMERA_MODULE =
     "import roll_engine_api\n"
     "from roll.math import Vector2\n"
     "\n"
@@ -221,7 +221,7 @@ static const PythonSource PYTHON_SOURCE_CAMERA_MODULE =
     "\n"
     "";
 
-static const PythonSource PYTHON_SOURCE_NODE_MODULE =
+static PythonSource PYTHON_SOURCE_NODE_MODULE =
     "import roll_engine_api\n"
     "from roll.math import Vector2\n"
     "\n"
@@ -257,7 +257,7 @@ static const PythonSource PYTHON_SOURCE_NODE_MODULE =
     "\n"
     "";
 
-static const PythonSource PYTHON_SOURCE_SCENE_MODULE =
+static PythonSource PYTHON_SOURCE_SCENE_MODULE =
     "import roll_engine_api\n"
     "\n"
     "class SceneTree:\n"
@@ -265,7 +265,7 @@ static const PythonSource PYTHON_SOURCE_SCENE_MODULE =
     "   def change_scene(scene_path: str) -> None:\n"
     "       roll_engine_api.scene_tree_change_scene(scene_path=scene_path)";
 
-static const PythonSource PYTHON_SOURCE_LOAD_SOURCE_IMPORTER_SNIPPET =
+static PythonSource PYTHON_SOURCE_LOAD_SOURCE_IMPORTER_SNIPPET =
     "import sys\n"
     "import importlib\n"
     "import importlib.util\n"
@@ -299,7 +299,7 @@ static const PythonSource PYTHON_SOURCE_LOAD_SOURCE_IMPORTER_SNIPPET =
     "sys.modules[module_name] = module\n"
     "";
 
-static const PythonSource PYTHON_SOURCE_IMPORT_ENGINE_MODULE_SNIPPET =
+static PythonSource PYTHON_SOURCE_IMPORT_ENGINE_MODULE_SNIPPET =
     "from source_importer import SourceImporter\n"
     "\n"
     "modules_to_import = {\n"

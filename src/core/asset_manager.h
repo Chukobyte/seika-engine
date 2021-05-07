@@ -9,6 +9,8 @@
 #include "rendering/texture2d.h"
 #include "rendering/font.h"
 
+static const std::string &DEFAULT_COLLIDER_ASSET_ID = "assets/images/collider_base.png";
+
 class AssetManager {
   private:
     std::map<std::string, Texture2D*> textures;

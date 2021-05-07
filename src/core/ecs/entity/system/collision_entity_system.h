@@ -47,6 +47,8 @@ class CollisionEntitySystem : public EntitySystem {
             }
         }
     }
+
+    void Render() {}
 };
 
 #endif //COLLISION_ENTITY_SYSTEM_H
