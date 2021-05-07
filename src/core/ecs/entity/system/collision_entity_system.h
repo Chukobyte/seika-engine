@@ -7,7 +7,6 @@
 
 class CollisionEntitySystem : public EntitySystem {
   private:
-    std::map<Entity, CollisionResult> collisionResultsMap;
     CollisionContext *collisionContext = nullptr;
     ComponentManager *componentManager = nullptr;
     CameraManager *cameraManager = nullptr;
@@ -43,7 +42,7 @@ class CollisionEntitySystem : public EntitySystem {
     void UnregisterEntity(Entity entity) override {}
 
     void ProcessCollisions() {
-        collisionResultsMap.clear();
+        collisionContext->ClearCollisionData();
         // TODO: Come up with a better more efficient solution
         for (Entity sourceEntity : entities) {
             std::vector<Entity> collidedEntities;

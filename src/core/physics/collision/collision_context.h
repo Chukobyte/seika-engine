@@ -33,6 +33,10 @@ class CollisionContext {
     void RegisterCollisionResult(CollisionResult collisionResult) {
         collisionResultsMap.emplace(collisionResult.sourceEntity, collisionResult);
     }
+
+    bool HasEntityCollided(Entity entity) {
+        return collisionResultsMap.count(entity) > 0;
+    }
 };
 
 #endif //COLLISION_CONTEXT_H

@@ -24,6 +24,8 @@ class PythonModules {
     static PyObject* node2D_set_position(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node2D_add_to_position(PyObject* self, PyObject* args, PyObject* kwargs);
 
+    static PyObject* collision_check(PyObject* self, PyObject* args, PyObject* kwargs);
+
     static PyObject* input_add_action(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* input_is_action_pressed(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* input_is_action_just_pressed(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -84,6 +86,11 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "node2D_add_to_position", (PyCFunction) PythonModules::node2D_add_to_position,
         METH_VARARGS | METH_KEYWORDS, "Adds to a nodes position."
+    },
+    // COLLISION
+    {
+            "collision_check", (PyCFunction) PythonModules::collision_check,
+            METH_VARARGS | METH_KEYWORDS, "Checks if entity collided with others."
     },
     // INPUT
     {

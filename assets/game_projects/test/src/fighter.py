@@ -3,6 +3,7 @@ from roll.node import Node2D
 from roll.math import Vector2
 from roll.input import Input
 from roll.camera import Camera
+from roll.physics import Collision
 
 class Puncher(Node2D):
     def _start(self) -> None:
@@ -34,6 +35,9 @@ class Puncher(Node2D):
         elif Input.is_action_pressed(action_name="right"):
             self.viewport.x += 1
             Camera.set_viewport_position(position=self.viewport)
+
+        if Collision.check(node=self):
+            print("Has collided!")
 
     def _end(self) -> None:
         pass

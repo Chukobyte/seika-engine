@@ -131,6 +131,19 @@ PyObject* PythonModules::node2D_add_to_position(PyObject *self, PyObject *args, 
     return nullptr;
 }
 
+// COLLISION
+PyObject* PythonModules::collision_check(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static CollisionContext *collisionContext = GD::GetContainer()->collisionContext;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        if (collisionContext->HasEntityCollided(entity)) {
+            Py_RETURN_TRUE;
+        }
+        Py_RETURN_FALSE;
+    }
+    return nullptr;
+}
+
 // INPUT
 PyObject* PythonModules::input_add_action(PyObject *self, PyObject *args, PyObject *kwargs) {
     static InputManager *inputManager = InputManager::GetInstance();
