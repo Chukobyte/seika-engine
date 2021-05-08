@@ -26,6 +26,9 @@ class PythonModules {
     static PyObject* node2D_set_position(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node2D_add_to_position(PyObject* self, PyObject* args, PyObject* kwargs);
 
+    static PyObject* text_label_get_text(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* text_label_set_text(PyObject* self, PyObject* args, PyObject* kwargs);
+
     static PyObject* collision_check(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* collision_get_collided_nodes(PyObject* self, PyObject* args, PyObject* kwargs);
 
@@ -86,15 +89,24 @@ static struct PyMethodDef rollApiMethods[] = {
     // NODE2D
     {
         "node2D_get_position", (PyCFunction) PythonModules::node2D_get_position,
-        METH_VARARGS | METH_KEYWORDS, "Gets a nodes position."
+        METH_VARARGS | METH_KEYWORDS, "Gets a node's position."
     },
     {
         "node2D_set_position", (PyCFunction) PythonModules::node2D_set_position,
-        METH_VARARGS | METH_KEYWORDS, "Sets a nodes position."
+        METH_VARARGS | METH_KEYWORDS, "Sets a node's position."
     },
     {
         "node2D_add_to_position", (PyCFunction) PythonModules::node2D_add_to_position,
-        METH_VARARGS | METH_KEYWORDS, "Adds to a nodes position."
+        METH_VARARGS | METH_KEYWORDS, "Adds to a node's position."
+    },
+    // TEXT_LABEL
+    {
+        "text_label_get_text", (PyCFunction) PythonModules::text_label_get_text,
+        METH_VARARGS | METH_KEYWORDS, "Gets a node's text."
+    },
+    {
+        "text_label_set_text", (PyCFunction) PythonModules::text_label_set_text,
+        METH_VARARGS | METH_KEYWORDS, "Sets a node's text."
     },
     // COLLISION
     {
@@ -151,6 +163,8 @@ static char *cameraVector2SetKWList[] = {"x", "y", nullptr};
 static char *nodeGetEntityKWList[] = {"entity_id", nullptr};
 
 static char *node2DUpdatePositionKWList[] = {"entity_id", "x", "y", nullptr};
+
+static char *textLabelSetTextKWList[] = {"entity_id", "text", nullptr};
 
 static char *inputAddActionKWList[] = {"action_name", "value", nullptr};
 static char *inputActionCheckKWList[] = {"action_name", nullptr};

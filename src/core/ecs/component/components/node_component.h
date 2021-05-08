@@ -12,6 +12,7 @@ enum _NodeType {
     NodeType_INVALID = 0,
     NodeType_NODE = 1,
     NodeType_NODE2D = 2,
+    NodeType_TEXT_LABEL = 3,
 };
 
 struct NodeComponent {

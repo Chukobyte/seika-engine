@@ -143,6 +143,30 @@ PyObject* PythonModules::node2D_add_to_position(PyObject *self, PyObject *args, 
     return nullptr;
 }
 
+// TEXT_LABEL
+PyObject* PythonModules::text_label_get_text(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        TextLabelComponent textLabelComponent = entityComponentOrchestrator->GetComponent<TextLabelComponent>(entity);
+        return Py_BuildValue("s", textLabelComponent.text.c_str());
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::text_label_set_text(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    char *text;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "is", textLabelSetTextKWList, &entity, &text)) {
+        TextLabelComponent textLabelComponent = entityComponentOrchestrator->GetComponent<TextLabelComponent>(entity);
+        textLabelComponent.text = std::string(text);
+        entityComponentOrchestrator->UpdateComponent<TextLabelComponent>(entity, textLabelComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
 // COLLISION
 PyObject* PythonModules::collision_check(PyObject *self, PyObject *args, PyObject *kwargs) {
     static CollisionContext *collisionContext = GD::GetContainer()->collisionContext;
