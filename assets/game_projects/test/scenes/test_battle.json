@@ -19,6 +19,12 @@
                 "z_index_relative_to_parent": false,
                 "ignore_camera": false
             }
+        },
+        {
+            "scriptable_class": {
+                "class_path": "assets.game_projects.test.src.test",
+                "class_name": "Test"
+            }
         }
     ],
     "children": [

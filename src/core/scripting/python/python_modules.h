@@ -32,6 +32,7 @@ class PythonModules {
     static PyObject* input_is_action_just_released(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* scene_tree_change_scene(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* scene_tree_get_current_scene_node(PyObject* self, PyObject* args);
 };
 
 static struct PyMethodDef rollApiMethods[] = {
@@ -113,6 +114,10 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "scene_tree_change_scene", (PyCFunction) PythonModules::scene_tree_change_scene,
         METH_VARARGS | METH_KEYWORDS, "Changes to a new scene."
+    },
+    {
+            "scene_tree_get_current_scene_node", PythonModules::scene_tree_get_current_scene_node,
+            METH_VARARGS, "Gets current active scene node."
     },
 
     {nullptr, nullptr, 0,nullptr },

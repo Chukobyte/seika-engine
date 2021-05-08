@@ -6,6 +6,7 @@
 #include "pyhelper.hpp"
 
 #include "../../ecs/entity/entity.h"
+#include "../../utils/logger.h"
 
 struct CachedPythonModule {
     CPyObject module;
@@ -55,7 +56,16 @@ class PythonCache {
         assert(pClassInstance != nullptr && "Python class instance is NULL on creation!");
         activeClassInstances.emplace(entity, pClassInstance);
         activeClassInstances[entity].AddRef();
+        Logger::GetInstance()->Debug("Create class instance for entity " + std::to_string(entity));
+        PrintActiveInstances();
         return activeClassInstances[entity];
+    }
+
+    void PrintActiveInstances() {
+        for (auto &pair : activeClassInstances) {
+            Entity entity = pair.first;
+            Logger::GetInstance()->Debug("Active entity: " + std::to_string(entity));
+        }
     }
 
     CPyObject& GetClassInstance(Entity entity) {

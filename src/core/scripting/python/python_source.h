@@ -270,11 +270,18 @@ static PythonSource PYTHON_SOURCE_PHYSICS_MODULE =
 
 static PythonSource PYTHON_SOURCE_SCENE_MODULE =
     "import roll_engine_api\n"
+    "from roll.node import Node\n"
     "\n"
     "class SceneTree:\n"
     "   @staticmethod\n"
     "   def change_scene(scene_path: str) -> None:\n"
-    "       roll_engine_api.scene_tree_change_scene(scene_path=scene_path)";
+    "       roll_engine_api.scene_tree_change_scene(scene_path=scene_path)\n"
+    "\n"
+    "   @staticmethod\n"
+    "   def get_current_scene_node() -> Node:\n"
+    "       return roll_engine_api.scene_tree_get_current_scene_node()\n"
+    "\n"
+    "";
 
 static PythonSource PYTHON_SOURCE_LOAD_SOURCE_IMPORTER_SNIPPET =
     "import sys\n"

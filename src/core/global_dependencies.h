@@ -11,6 +11,7 @@
 #include "ecs/entity_component_orchestrator.h"
 #include "physics/collision/collision_context.h"
 #include "scene/scene.h"
+#include "scene/scene_context.h"
 #include "camera/camera_manager.h"
 
 class GD {
@@ -29,6 +30,7 @@ class GD {
     EntitySystemManager *entitySystemManager = nullptr;
     ComponentManager *componentManager = nullptr;
     SceneManager *sceneManager = nullptr;
+    SceneContext *sceneContext = nullptr;
     EntityComponentOrchestrator *entityComponentOrchestrator = nullptr;
     CameraManager *cameraManager = nullptr;
 

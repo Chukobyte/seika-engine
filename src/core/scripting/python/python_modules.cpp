@@ -1,6 +1,7 @@
 #include "python_modules.h"
 
 #include "../../global_dependencies.h"
+#include "python_cache.h"
 #include "../../ecs/component/components/transform2D_component.h"
 #include "../../input/input_manager.h"
 #include "../../audio/audio_helper.h"
@@ -201,4 +202,15 @@ PyObject* PythonModules::scene_tree_change_scene(PyObject *self, PyObject *args,
         Py_RETURN_NONE;
     }
     return nullptr;
+}
+
+PyObject* PythonModules::scene_tree_get_current_scene_node(PyObject *self, PyObject *args) {
+    static PythonCache *pythonCache = PythonCache::GetInstance();
+    static SceneContext *sceneContext = GD::GetContainer()->sceneContext;
+    Logger::GetInstance()->Debug("Current scene entity = " + std::to_string(sceneContext->currentSceneEntity));
+    if (pythonCache->HasActiveInstance(sceneContext->currentSceneEntity)) {
+        Logger::GetInstance()->Debug("Entity found!");
+        return pythonCache->GetClassInstance(sceneContext->currentSceneEntity);
+    }
+    Py_RETURN_NONE;
 }

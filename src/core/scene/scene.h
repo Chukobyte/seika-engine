@@ -15,6 +15,7 @@
 #include "../ecs/component/components/text_label_component.h"
 #include "../ecs/component/components/collider_component.h"
 #include "../ecs/component/components/scriptable_class_component.h"
+#include "scene_context.h"
 
 struct SceneNode {
     Entity entity = NO_ENTITY;
@@ -33,6 +34,7 @@ class SceneManager {
     std::vector<Entity> entitiesRecentlyRemoved;
 
     Scene currentScene;
+    SceneContext *sceneContext = nullptr;
     EntityManager *entityManager = nullptr;
     ComponentManager *componentManager = nullptr;
     AssetManager *assetManager = nullptr;
@@ -190,11 +192,12 @@ class SceneManager {
             sceneNode.children.emplace_back(childNode);
         }
 
+        Logger::GetInstance()->Debug(nodeName + " entity id = " + std::to_string(sceneNode.entity));
         return sceneNode;
     }
   public:
-    SceneManager(EntityManager *vEntityManager, ComponentManager *vComponentManager, AssetManager *vAssetManager) :
-        entityManager(vEntityManager), componentManager(vComponentManager), assetManager(vAssetManager) {
+    SceneManager(SceneContext *vSceneContext, EntityManager *vEntityManager, ComponentManager *vComponentManager, AssetManager *vAssetManager) :
+        sceneContext(vSceneContext), entityManager(vEntityManager), componentManager(vComponentManager), assetManager(vAssetManager) {
     }
 
     Scene GetCurrentScene() {
@@ -215,6 +218,7 @@ class SceneManager {
 
     void ChangeToScene(Scene scene) {
         currentScene = scene;
+        sceneContext->currentSceneEntity = currentScene.rootNode.entity;
         entityToMainScenesMap.emplace(currentScene.rootNode.entity, currentScene);
         AddChild(NO_ENTITY, currentScene.rootNode.entity);
     }
