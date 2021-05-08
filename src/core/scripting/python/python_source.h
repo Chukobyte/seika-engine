@@ -257,20 +257,47 @@ static PythonSource PYTHON_SOURCE_NODE_MODULE =
     "\n"
     "";
 
+static PythonSource PYTHON_SOURCE_ENGINE_API_UTIL_MODULE =
+    "from roll.node import Node, Node2D\n"
+    "\n"
+    "class EngineApiUtil:\n"
+    "   @staticmethod\n"
+    "   def parse_scene_node_from_engine(scene_node) -> Node:\n"
+    "       if isinstance(scene_node, Node):\n"
+    "           return scene_node\n"
+    "       else:\n"
+    "           node_type = scene_node[0]\n"
+    "           entity_id = scene_node[1]\n"
+    "           node_class = globals()[node_type]\n"
+    "           instance = node_class(entity_id=entity_id)\n"
+    "           return instance\n"
+    "\n"
+    "";
+
 static PythonSource PYTHON_SOURCE_PHYSICS_MODULE =
     "import roll_engine_api\n"
-    "from roll.node import Node\n"
+    "from roll.node import Node, Node2D\n"
+    "from roll.engine_api_util import EngineApiUtil\n"
     "\n"
     "class Collision:\n"
     "   @staticmethod\n"
     "   def check(node: Node) -> bool:\n"
     "       return roll_engine_api.collision_check(entity_id=node.entity_id)\n"
     "\n"
+    "   @staticmethod\n"
+    "   def get_collided_nodes(node : Node) -> list:\n"
+    "       collided_nodes_from_engine = roll_engine_api.collision_get_collided_nodes(entity_id=node.entity_id)\n"
+    "       collided_nodes = []\n"
+    "       for collided_node in collided_nodes_from_engine:\n"
+    "           collided_nodes.append(EngineApiUtil.parse_scene_node_from_engine(scene_node=collided_node))\n"
+    "       return collided_nodes\n"
+    "\n"
     "";
 
 static PythonSource PYTHON_SOURCE_SCENE_MODULE =
     "import roll_engine_api\n"
     "from roll.node import Node, Node2D\n"
+    "from roll.engine_api_util import EngineApiUtil\n"
     "\n"
     "class SceneTree:\n"
     "   @staticmethod\n"
@@ -280,14 +307,7 @@ static PythonSource PYTHON_SOURCE_SCENE_MODULE =
     "   @staticmethod\n"
     "   def get_current_scene_node() -> Node:\n"
     "       current_scene_node = roll_engine_api.scene_tree_get_current_scene_node()\n"
-    "       if isinstance(current_scene_node, Node):\n"
-    "           return current_scene_node\n"
-    "       else:\n"
-    "           node_type = current_scene_node[0]\n"
-    "           entity_id = current_scene_node[1]\n"
-    "           node_class = globals()[node_type]\n"
-    "           instance = node_class(entity_id=entity_id)\n"
-    "           return instance\n"
+    "       return EngineApiUtil.parse_scene_node_from_engine(scene_node=current_scene_node)\n"
     "\n"
     "";
 
@@ -360,6 +380,10 @@ static PythonSource PYTHON_SOURCE_IMPORT_ENGINE_MODULE_SNIPPET =
 
     "\"roll.node\": \"\"\"\n"
     + PYTHON_SOURCE_NODE_MODULE +
+    "\"\"\",\n"
+
+    "\"roll.engine_api_util\": \"\"\"\n"
+    + PYTHON_SOURCE_ENGINE_API_UTIL_MODULE +
     "\"\"\",\n"
 
     "\"roll.physics\": \"\"\"\n"

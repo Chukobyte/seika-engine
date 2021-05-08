@@ -145,6 +145,30 @@ PyObject* PythonModules::collision_check(PyObject *self, PyObject *args, PyObjec
     return nullptr;
 }
 
+PyObject* PythonModules::collision_get_collided_nodes(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static CollisionContext *collisionContext = GD::GetContainer()->collisionContext;
+    static PythonCache *pythonCache = PythonCache::GetInstance();
+    static ComponentManager *componentManager = GD::GetContainer()->componentManager;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        CPyObject pCollidedNodesList = PyList_New(0);
+        assert(pCollidedNodesList != nullptr && "node list empty!");
+        for (Entity collidedEntity : collisionContext->GetEntitiesCollidedWith(entity)) {
+            if (pythonCache->HasActiveInstance(collidedEntity)) {
+                CPyObject pCollidedClassInstance = pythonCache->GetClassInstance(collidedEntity);
+                pCollidedClassInstance.AddRef();
+                PyList_Append(pCollidedNodesList, pCollidedClassInstance);
+            } else {
+                NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(collidedEntity);
+                const std::string &nodeTypeString = NodeTypeHelper::GetNodeTypeString(nodeComponent.type);
+                PyList_Append(pCollidedNodesList, Py_BuildValue("(si)", nodeTypeString.c_str(), collidedEntity));
+            }
+        }
+        return pCollidedNodesList;
+    }
+    return nullptr;
+}
+
 // INPUT
 PyObject* PythonModules::input_add_action(PyObject *self, PyObject *args, PyObject *kwargs) {
     static InputManager *inputManager = InputManager::GetInstance();

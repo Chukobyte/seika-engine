@@ -43,6 +43,14 @@ class CollisionContext {
     bool HasEntityCollided(Entity entity) {
         return collisionResultsMap.count(entity) > 0;
     }
+
+    std::vector<Entity> GetEntitiesCollidedWith(Entity entity) {
+        if (HasEntityCollided(entity)) {
+            return collisionResultsMap[entity].collidedEntities;
+        }
+        std::vector<Entity> entitiesColliderWith;
+        return entitiesColliderWith;
+    }
 };
 
 #endif //COLLISION_CONTEXT_H
