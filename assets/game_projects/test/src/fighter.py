@@ -16,8 +16,9 @@ class Puncher(Node2D):
             # Engine.exit()
             # SceneTree.change_scene(scene_path="assets/game_projects/test/scenes/test_battle.json")
             entity = SceneTree.get_current_scene_node()
-            # print(f"entity = {entity}")
             print(f"SceneTree.get_current_scene_node() = {entity.entity_id}")
+            entity.position += Vector2(5.0, 5.0)
+            print(f"SceneTree.get_current_scene_node() = {entity.position}")
 
         self.camera_controls()
         self.movement_controls()

@@ -75,7 +75,7 @@ static PythonSource PYTHON_SOURCE_MATH_MODULE =
     "       return Vector2(self.x - other.x, self.y - other.y)\n"
     "\n"
     "   def __add__(self, other):\n"
-    "       return Vector2(self.x - other.x, self.y - other.y)\n"
+    "       return Vector2(self.x + other.x, self.y + other.y)\n"
     "\n"
     "   def __str__(self):\n"
     "       return f\"({self.x}, {self.y})\"\n"
@@ -270,7 +270,7 @@ static PythonSource PYTHON_SOURCE_PHYSICS_MODULE =
 
 static PythonSource PYTHON_SOURCE_SCENE_MODULE =
     "import roll_engine_api\n"
-    "from roll.node import Node\n"
+    "from roll.node import Node, Node2D\n"
     "\n"
     "class SceneTree:\n"
     "   @staticmethod\n"
@@ -279,7 +279,15 @@ static PythonSource PYTHON_SOURCE_SCENE_MODULE =
     "\n"
     "   @staticmethod\n"
     "   def get_current_scene_node() -> Node:\n"
-    "       return roll_engine_api.scene_tree_get_current_scene_node()\n"
+    "       current_scene_node = roll_engine_api.scene_tree_get_current_scene_node()\n"
+    "       if isinstance(current_scene_node, Node):\n"
+    "           return current_scene_node\n"
+    "       else:\n"
+    "           node_type = current_scene_node[0]\n"
+    "           entity_id = current_scene_node[1]\n"
+    "           node_class = globals()[node_type]\n"
+    "           instance = node_class(entity_id=entity_id)\n"
+    "           return instance\n"
     "\n"
     "";
 

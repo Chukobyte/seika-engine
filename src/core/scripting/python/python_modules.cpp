@@ -212,5 +212,6 @@ PyObject* PythonModules::scene_tree_get_current_scene_node(PyObject *self, PyObj
         Logger::GetInstance()->Debug("Entity found!");
         return pythonCache->GetClassInstance(sceneContext->currentSceneEntity);
     }
-    Py_RETURN_NONE;
+    // Creates new instance on script side if active script instance of entity doesn't exist
+    return Py_BuildValue("(si)", "Node2D", sceneContext->currentSceneEntity);
 }
