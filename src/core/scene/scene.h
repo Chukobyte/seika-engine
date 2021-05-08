@@ -208,7 +208,6 @@ class SceneManager {
             sceneNode.children.emplace_back(childNode);
         }
 
-        Logger::GetInstance()->Debug(nodeName + " entity id = " + std::to_string(sceneNode.entity));
         return sceneNode;
     }
   public:

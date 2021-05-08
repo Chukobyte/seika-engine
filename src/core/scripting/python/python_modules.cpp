@@ -152,16 +152,22 @@ PyObject* PythonModules::collision_get_collided_nodes(PyObject *self, PyObject *
     Entity entity;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
         CPyObject pCollidedNodesList = PyList_New(0);
+        pCollidedNodesList.AddRef();
         assert(pCollidedNodesList != nullptr && "node list empty!");
         for (Entity collidedEntity : collisionContext->GetEntitiesCollidedWith(entity)) {
             if (pythonCache->HasActiveInstance(collidedEntity)) {
-                CPyObject pCollidedClassInstance = pythonCache->GetClassInstance(collidedEntity);
+                CPyObject &pCollidedClassInstance = pythonCache->GetClassInstance(collidedEntity);
                 pCollidedClassInstance.AddRef();
-                PyList_Append(pCollidedNodesList, pCollidedClassInstance);
+                if (PyList_Append(pCollidedNodesList, pCollidedClassInstance) == -1) {
+                    PyErr_Print();
+                }
             } else {
                 NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(collidedEntity);
                 const std::string &nodeTypeString = NodeTypeHelper::GetNodeTypeString(nodeComponent.type);
-                PyList_Append(pCollidedNodesList, Py_BuildValue("(si)", nodeTypeString.c_str(), collidedEntity));
+                if (PyList_Append(pCollidedNodesList, Py_BuildValue("(si)", nodeTypeString.c_str(), collidedEntity)) == -1) {
+                    Logger::GetInstance()->Error("Error appending list");
+                    PyErr_Print();
+                }
             }
         }
         return pCollidedNodesList;

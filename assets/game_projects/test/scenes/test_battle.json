@@ -184,7 +184,7 @@
         },
         {
             "name": "Puncher2",
-            "type": "AnimatedSprite",
+            "type": "Node2D",
             "tags": [],
             "external_scene_source": "",
             "components": [
