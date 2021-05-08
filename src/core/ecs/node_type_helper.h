@@ -13,13 +13,10 @@ class NodeTypeHelper {
         switch (nodeType) {
         case NodeType_NODE:
             return NODE_TYPE_NODE;
-            break;
         case NodeType_NODE2D:
             return NODE_TYPE_NODE2D;
-            break;
         default:
             return NODE_TYPE_INVALID;
-            break;
         }
     }
     static NodeType GetNodeTypeInt(const std::string &nodeTypeString) {
