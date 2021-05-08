@@ -157,6 +157,7 @@ PyObject* PythonModules::collision_check(PyObject *self, PyObject *args, PyObjec
 }
 
 PyObject* PythonModules::collision_get_collided_nodes(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     static CollisionContext *collisionContext = GD::GetContainer()->collisionContext;
     static PythonCache *pythonCache = PythonCache::GetInstance();
     static ComponentManager *componentManager = GD::GetContainer()->componentManager;
@@ -166,18 +167,20 @@ PyObject* PythonModules::collision_get_collided_nodes(PyObject *self, PyObject *
         pCollidedNodesList.AddRef();
         assert(pCollidedNodesList != nullptr && "node list empty!");
         for (Entity collidedEntity : collisionContext->GetEntitiesCollidedWith(entity)) {
-            if (pythonCache->HasActiveInstance(collidedEntity)) {
-                CPyObject &pCollidedClassInstance = pythonCache->GetClassInstance(collidedEntity);
-                pCollidedClassInstance.AddRef();
-                if (PyList_Append(pCollidedNodesList, pCollidedClassInstance) == -1) {
-                    PyErr_Print();
-                }
-            } else {
-                NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(collidedEntity);
-                const std::string &nodeTypeString = NodeTypeHelper::GetNodeTypeString(nodeComponent.type);
-                if (PyList_Append(pCollidedNodesList, Py_BuildValue("(si)", nodeTypeString.c_str(), collidedEntity)) == -1) {
-                    Logger::GetInstance()->Error("Error appending list");
-                    PyErr_Print();
+            if (!entityComponentOrchestrator->IsEntityQueuedForDeletion(collidedEntity)) {
+                if (pythonCache->HasActiveInstance(collidedEntity)) {
+                    CPyObject &pCollidedClassInstance = pythonCache->GetClassInstance(collidedEntity);
+                    pCollidedClassInstance.AddRef();
+                    if (PyList_Append(pCollidedNodesList, pCollidedClassInstance) == -1) {
+                        PyErr_Print();
+                    }
+                } else {
+                    NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(collidedEntity);
+                    const std::string &nodeTypeString = NodeTypeHelper::GetNodeTypeString(nodeComponent.type);
+                    if (PyList_Append(pCollidedNodesList, Py_BuildValue("(si)", nodeTypeString.c_str(), collidedEntity)) == -1) {
+                        Logger::GetInstance()->Error("Error appending list");
+                        PyErr_Print();
+                    }
                 }
             }
         }

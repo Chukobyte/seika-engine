@@ -13,7 +13,8 @@ class Puncher(Node2D):
 
     def _physics_process(self, delta_time: float) -> None:
         if Input.is_action_just_pressed(action_name="quit"):
-            Engine.exit()
+            # Engine.exit()
+            SceneTree.change_scene(scene_path="assets/game_projects/test/scenes/test_battle.json")
 
         self.camera_controls()
         self.movement_controls()

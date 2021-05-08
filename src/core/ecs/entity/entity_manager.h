@@ -28,7 +28,7 @@ class EntityManager {
   public:
 
     Entity CreateEntity() {
-        assert(livingEntityCounter < MAX_ENTITIES && "Too many entities to create!");
+//        assert(livingEntityCounter < MAX_ENTITIES && "Too many entities to create!");
 
         livingEntityCounter++;
 

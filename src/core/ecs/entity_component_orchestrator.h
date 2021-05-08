@@ -46,6 +46,10 @@ class EntityComponentOrchestrator {
         entitiesQueuedForDeletion.emplace_back(entity);
     }
 
+    bool IsEntityQueuedForDeletion(Entity entity) {
+        return std::find(entitiesQueuedForDeletion.begin(), entitiesQueuedForDeletion.end(), entity) != entitiesQueuedForDeletion.end();
+    }
+
     void DestroyQueuedEntities() {
         for (Entity entity : entitiesQueuedForDeletion) {
             if (sceneManager->HasEntitySceneNode(entity)) {
