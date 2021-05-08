@@ -5,6 +5,8 @@
 
 #include "pyhelper.hpp"
 
+#include "../../ecs/entity/entity.h"
+
 struct CachedPythonModule {
     CPyObject module;
     std::map<std::string, CPyObject> classes;
@@ -12,9 +14,17 @@ struct CachedPythonModule {
 
 class PythonCache {
   private:
+    static PythonCache *instance;
     std::map<std::string, CachedPythonModule> cache;
     std::map<Entity, CPyObject> activeClassInstances;
   public:
+    static PythonCache* GetInstance() {
+        if (!instance) {
+            instance = new PythonCache();
+        }
+        return instance;
+    }
+
     CPyObject GetClass(const std::string &classPath, const std::string &className) {
         if (cache.count(classPath) <= 0) {
             CPyObject pName = PyUnicode_FromString(classPath.c_str());
@@ -37,7 +47,7 @@ class PythonCache {
         return cache[classPath].classes[className];
     }
 
-    CPyObject CreateClassInstance(const std::string &classPath, const std::string &className, Entity entity) {
+    CPyObject& CreateClassInstance(const std::string &classPath, const std::string &className, Entity entity) {
         CPyObject argList = Py_BuildValue("(i)", entity);
         CPyObject classRef = GetClass(classPath, className);
         assert(classRef != nullptr && "Error with getting cached python class info!");
@@ -48,14 +58,9 @@ class PythonCache {
         return activeClassInstances[entity];
     }
 
-    CPyObject GetClassInstance(Entity entity) {
+    CPyObject& GetClassInstance(Entity entity) {
         assert(HasActiveInstance(entity) && "Entity not active!");
         return activeClassInstances[entity];
-    }
-
-    CPyObject RegisterActiveInstance(Entity entity, CPyObject pInstance) {
-        pInstance.AddRef();
-        activeClassInstances.emplace(entity, pInstance);
     }
 
     bool HasActiveInstance(Entity entity) {
