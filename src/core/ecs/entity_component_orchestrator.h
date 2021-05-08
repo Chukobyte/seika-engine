@@ -19,6 +19,7 @@ class EntityComponentOrchestrator {
 
     std::string scenePathToSwitchTo;
     bool removeCurrentSceneAtEndOfUpdate = false;
+    std::vector<Entity> entitiesQueuedForDeletion;
 
     // Will be the function to initialize stuff for a scene
     void RegisterAllNodeSystemSignatures(SceneNode sceneNode) {
@@ -39,6 +40,20 @@ class EntityComponentOrchestrator {
     // ENTITY METHODS
     Entity CreateEntity() {
         return entityManager->CreateEntity();
+    }
+
+    void QueueEntityForDeletion(Entity entity) {
+        entitiesQueuedForDeletion.emplace_back(entity);
+    }
+
+    void DestroyQueuedEntities() {
+        for (Entity entity : entitiesQueuedForDeletion) {
+            if (sceneManager->HasEntitySceneNode(entity)) {
+                SceneNode sceneNode = sceneManager->GetEntitySceneNode(entity);
+                DestroyEntity(sceneNode);
+            }
+        }
+        entitiesQueuedForDeletion.clear();
     }
 
     void DestroyEntity(SceneNode sceneNode) {

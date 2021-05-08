@@ -166,6 +166,8 @@ void Game::Update() {
         entityComponentOrchestrator->DestroyCurrentScene();
     }
 
+    entityComponentOrchestrator->DestroyQueuedEntities();
+
     // Change Scene
     if (entityComponentOrchestrator->HasSceneToSwitchTo()) {
         CameraManager *cameraManager = GD::GetContainer()->cameraManager;

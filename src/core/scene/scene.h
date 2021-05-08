@@ -219,6 +219,15 @@ class SceneManager {
         return currentScene;
     }
 
+    SceneNode GetEntitySceneNode(Entity entity) {
+        assert(HasEntitySceneNode(entity) && "Tried to get scene node that doesn't exist!");
+        return entityToSceneNodeMap[entity];
+    }
+
+    bool HasEntitySceneNode(Entity entity) {
+        return entityToSceneNodeMap.count(entity) > 0;
+    }
+
     void AddSingletonScene(Entity singletonEntity) {
         SceneNode sceneNode = SceneNode{.entity = singletonEntity};
         Scene scene = Scene{.rootNode = sceneNode};
@@ -264,6 +273,14 @@ class SceneManager {
         entitiesRecentlyRemoved.emplace_back(sceneNode.entity);
         for (SceneNode childNode : sceneNode.children) {
             RemoveNode(childNode);
+        }
+    }
+
+    void RemoveNode(Entity entity) {
+        if (entityToSceneNodeMap.count(entity) > 0) {
+            RemoveNode(entityToSceneNodeMap[entity]);
+        } else {
+            Logger::GetInstance()->Warn("Tried to remove non existent entity");
         }
     }
 

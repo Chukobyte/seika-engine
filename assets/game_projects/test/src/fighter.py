@@ -18,8 +18,9 @@ class Puncher(Node2D):
         self.camera_controls()
         self.movement_controls()
 
-        # for collided_node in Collision.get_collided_nodes(self):
-        #     print(f"collided_node = {collided_node}")
+        for collided_node in Collision.get_collided_nodes(self):
+            print(f"collided_node = {collided_node}")
+            collided_node.queue_deletion()
 
     def movement_controls(self) -> None:
         if Input.is_action_pressed(action_name="left"):

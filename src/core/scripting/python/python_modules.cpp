@@ -95,8 +95,10 @@ PyObject* PythonModules::camera_set_viewport_position(PyObject *self, PyObject *
 
 // NODE
 PyObject* PythonModules::node_queue_deletion(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     Entity entity;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        entityComponentOrchestrator->QueueEntityForDeletion(entity);
         Py_RETURN_NONE;
     }
     return nullptr;
