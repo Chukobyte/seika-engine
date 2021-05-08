@@ -20,11 +20,14 @@ class PythonModules {
     static PyObject* camera_set_zoom(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* camera_set_viewport_position(PyObject* self, PyObject* args, PyObject* kwargs);
 
+    static PyObject* node_queue_deletion(PyObject* self, PyObject* args, PyObject* kwargs);
+
     static PyObject* node2D_get_position(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node2D_set_position(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node2D_add_to_position(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* collision_check(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* collision_get_collided_nodes(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* input_add_action(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* input_is_action_pressed(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -32,6 +35,7 @@ class PythonModules {
     static PyObject* input_is_action_just_released(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* scene_tree_change_scene(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* scene_tree_get_current_scene_node(PyObject* self, PyObject* args);
 };
 
 static struct PyMethodDef rollApiMethods[] = {
@@ -74,6 +78,11 @@ static struct PyMethodDef rollApiMethods[] = {
         "camera_set_viewport_position", (PyCFunction) PythonModules::camera_set_viewport_position,
         METH_VARARGS | METH_KEYWORDS, "Set viewport's position."
     },
+    // NODE
+    {
+        "node_queue_deletion", (PyCFunction) PythonModules::node_queue_deletion,
+        METH_VARARGS | METH_KEYWORDS, "Queues node for deletion."
+    },
     // NODE2D
     {
         "node2D_get_position", (PyCFunction) PythonModules::node2D_get_position,
@@ -91,6 +100,10 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "collision_check", (PyCFunction) PythonModules::collision_check,
         METH_VARARGS | METH_KEYWORDS, "Checks if entity collided with others."
+    },
+    {
+        "collision_get_collided_nodes", (PyCFunction) PythonModules::collision_get_collided_nodes,
+        METH_VARARGS | METH_KEYWORDS, "Gets nodes entity collided with."
     },
     // INPUT
     {
@@ -113,6 +126,10 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "scene_tree_change_scene", (PyCFunction) PythonModules::scene_tree_change_scene,
         METH_VARARGS | METH_KEYWORDS, "Changes to a new scene."
+    },
+    {
+        "scene_tree_get_current_scene_node", PythonModules::scene_tree_get_current_scene_node,
+        METH_VARARGS, "Gets current active scene node."
     },
 
     {nullptr, nullptr, 0,nullptr },

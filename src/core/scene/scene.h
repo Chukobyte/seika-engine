@@ -15,6 +15,9 @@
 #include "../ecs/component/components/text_label_component.h"
 #include "../ecs/component/components/collider_component.h"
 #include "../ecs/component/components/scriptable_class_component.h"
+#include "scene_context.h"
+#include "../ecs/component/components/node_component.h"
+#include "../ecs/node_type_helper.h"
 
 struct SceneNode {
     Entity entity = NO_ENTITY;
@@ -33,6 +36,7 @@ class SceneManager {
     std::vector<Entity> entitiesRecentlyRemoved;
 
     Scene currentScene;
+    SceneContext *sceneContext = nullptr;
     EntityManager *entityManager = nullptr;
     ComponentManager *componentManager = nullptr;
     AssetManager *assetManager = nullptr;
@@ -46,6 +50,20 @@ class SceneManager {
         nlohmann::json nodeComponentJsonArray = nodeJson["components"].get<nlohmann::json>();
         nlohmann::json nodeChildrenJsonArray = nodeJson["children"].get<nlohmann::json>();
 
+        // Configure node type component
+        // TODO: Figure out if node type info should go into a component within scene json
+        std::vector<std::string> nodeTags;
+        for (const std::string &nodeTag : nodeTagsJsonArray) {
+            nodeTags.emplace_back(nodeTag);
+        }
+        componentManager->AddComponent(sceneNode.entity, NodeComponent{
+            .type = NodeTypeHelper::GetNodeTypeInt(nodeType),
+            .name = nodeName,
+            .tags = nodeTags
+        });
+
+
+        // Rest of components
         for (nlohmann::json nodeComponentJson : nodeComponentJsonArray) {
             nlohmann::json::iterator it = nodeComponentJson.begin();
             std::string nodeComponentType = it.key();
@@ -193,12 +211,21 @@ class SceneManager {
         return sceneNode;
     }
   public:
-    SceneManager(EntityManager *vEntityManager, ComponentManager *vComponentManager, AssetManager *vAssetManager) :
-        entityManager(vEntityManager), componentManager(vComponentManager), assetManager(vAssetManager) {
+    SceneManager(SceneContext *vSceneContext, EntityManager *vEntityManager, ComponentManager *vComponentManager, AssetManager *vAssetManager) :
+        sceneContext(vSceneContext), entityManager(vEntityManager), componentManager(vComponentManager), assetManager(vAssetManager) {
     }
 
     Scene GetCurrentScene() {
         return currentScene;
+    }
+
+    SceneNode GetEntitySceneNode(Entity entity) {
+        assert(HasEntitySceneNode(entity) && "Tried to get scene node that doesn't exist!");
+        return entityToSceneNodeMap[entity];
+    }
+
+    bool HasEntitySceneNode(Entity entity) {
+        return entityToSceneNodeMap.count(entity) > 0;
     }
 
     void AddSingletonScene(Entity singletonEntity) {
@@ -215,6 +242,7 @@ class SceneManager {
 
     void ChangeToScene(Scene scene) {
         currentScene = scene;
+        sceneContext->currentSceneEntity = currentScene.rootNode.entity;
         entityToMainScenesMap.emplace(currentScene.rootNode.entity, currentScene);
         AddChild(NO_ENTITY, currentScene.rootNode.entity);
     }
@@ -245,6 +273,14 @@ class SceneManager {
         entitiesRecentlyRemoved.emplace_back(sceneNode.entity);
         for (SceneNode childNode : sceneNode.children) {
             RemoveNode(childNode);
+        }
+    }
+
+    void RemoveNode(Entity entity) {
+        if (entityToSceneNodeMap.count(entity) > 0) {
+            RemoveNode(entityToSceneNodeMap[entity]);
+        } else {
+            Logger::GetInstance()->Warn("Tried to remove non existent entity");
         }
     }
 

@@ -53,6 +53,7 @@ void Game::InitializeSDL() {
 void Game::InitializeECS() {
     EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     // Components
+    entityComponentOrchestrator->RegisterComponent<NodeComponent>();
     entityComponentOrchestrator->RegisterComponent<Transform2DComponent>();
     entityComponentOrchestrator->RegisterComponent<SpriteComponent>();
     entityComponentOrchestrator->RegisterComponent<AnimatedSpriteComponent>();
@@ -164,6 +165,8 @@ void Game::Update() {
     if (entityComponentOrchestrator->ShouldRemoveCurrentSceneAtEndOfUpdate()) {
         entityComponentOrchestrator->DestroyCurrentScene();
     }
+
+    entityComponentOrchestrator->DestroyQueuedEntities();
 
     // Change Scene
     if (entityComponentOrchestrator->HasSceneToSwitchTo()) {

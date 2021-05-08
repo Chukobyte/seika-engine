@@ -1,6 +1,7 @@
 #include "python_modules.h"
 
 #include "../../global_dependencies.h"
+#include "python_cache.h"
 #include "../../ecs/component/components/transform2D_component.h"
 #include "../../input/input_manager.h"
 #include "../../audio/audio_helper.h"
@@ -92,6 +93,17 @@ PyObject* PythonModules::camera_set_viewport_position(PyObject *self, PyObject *
     return nullptr;
 }
 
+// NODE
+PyObject* PythonModules::node_queue_deletion(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        entityComponentOrchestrator->QueueEntityForDeletion(entity);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
 // NODE2D
 PyObject* PythonModules::node2D_get_position(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
@@ -140,6 +152,36 @@ PyObject* PythonModules::collision_check(PyObject *self, PyObject *args, PyObjec
             Py_RETURN_TRUE;
         }
         Py_RETURN_FALSE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::collision_get_collided_nodes(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static CollisionContext *collisionContext = GD::GetContainer()->collisionContext;
+    static PythonCache *pythonCache = PythonCache::GetInstance();
+    static ComponentManager *componentManager = GD::GetContainer()->componentManager;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        CPyObject pCollidedNodesList = PyList_New(0);
+        pCollidedNodesList.AddRef();
+        assert(pCollidedNodesList != nullptr && "node list empty!");
+        for (Entity collidedEntity : collisionContext->GetEntitiesCollidedWith(entity)) {
+            if (pythonCache->HasActiveInstance(collidedEntity)) {
+                CPyObject &pCollidedClassInstance = pythonCache->GetClassInstance(collidedEntity);
+                pCollidedClassInstance.AddRef();
+                if (PyList_Append(pCollidedNodesList, pCollidedClassInstance) == -1) {
+                    PyErr_Print();
+                }
+            } else {
+                NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(collidedEntity);
+                const std::string &nodeTypeString = NodeTypeHelper::GetNodeTypeString(nodeComponent.type);
+                if (PyList_Append(pCollidedNodesList, Py_BuildValue("(si)", nodeTypeString.c_str(), collidedEntity)) == -1) {
+                    Logger::GetInstance()->Error("Error appending list");
+                    PyErr_Print();
+                }
+            }
+        }
+        return pCollidedNodesList;
     }
     return nullptr;
 }
@@ -201,4 +243,21 @@ PyObject* PythonModules::scene_tree_change_scene(PyObject *self, PyObject *args,
         Py_RETURN_NONE;
     }
     return nullptr;
+}
+
+PyObject* PythonModules::scene_tree_get_current_scene_node(PyObject *self, PyObject *args) {
+    static PythonCache *pythonCache = PythonCache::GetInstance();
+    static SceneContext *sceneContext = GD::GetContainer()->sceneContext;
+    static ComponentManager *componentManager = GD::GetContainer()->componentManager;
+    Logger::GetInstance()->Debug("Current scene entity = " + std::to_string(sceneContext->currentSceneEntity));
+    if (pythonCache->HasActiveInstance(sceneContext->currentSceneEntity)) {
+        Logger::GetInstance()->Debug("Entity found!");
+        CPyObject &pClassInstance = pythonCache->GetClassInstance(sceneContext->currentSceneEntity);
+        pClassInstance.AddRef();
+        return pClassInstance;
+    }
+    // Creates new instance on script side if active script instance of entity doesn't exist
+    NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(sceneContext->currentSceneEntity);
+    const std::string &nodeTypeString = NodeTypeHelper::GetNodeTypeString(nodeComponent.type);
+    return Py_BuildValue("(si)", nodeTypeString.c_str(), sceneContext->currentSceneEntity);
 }

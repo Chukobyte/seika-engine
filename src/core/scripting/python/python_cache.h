@@ -6,6 +6,7 @@
 #include "pyhelper.hpp"
 
 #include "../../ecs/entity/entity.h"
+#include "../../utils/logger.h"
 
 struct CachedPythonModule {
     CPyObject module;
