@@ -4,10 +4,10 @@
 #include "../ecs/entity/entity.h"
 
 class SceneContext {
-    public:
-        Entity currentSceneEntity;
+  public:
+    Entity currentSceneEntity;
 
-        SceneContext() = default;
+    SceneContext() = default;
 };
 
 #endif //SCENE_CONTEXT_H

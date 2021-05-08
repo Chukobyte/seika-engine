@@ -116,8 +116,8 @@ static struct PyMethodDef rollApiMethods[] = {
         METH_VARARGS | METH_KEYWORDS, "Changes to a new scene."
     },
     {
-            "scene_tree_get_current_scene_node", PythonModules::scene_tree_get_current_scene_node,
-            METH_VARARGS, "Gets current active scene node."
+        "scene_tree_get_current_scene_node", PythonModules::scene_tree_get_current_scene_node,
+        METH_VARARGS, "Gets current active scene node."
     },
 
     {nullptr, nullptr, 0,nullptr },

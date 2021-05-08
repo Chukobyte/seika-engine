@@ -16,6 +16,8 @@
 #include "../ecs/component/components/collider_component.h"
 #include "../ecs/component/components/scriptable_class_component.h"
 #include "scene_context.h"
+#include "../ecs/component/components/node_component.h"
+#include "../ecs/node_type_helper.h"
 
 struct SceneNode {
     Entity entity = NO_ENTITY;
@@ -48,6 +50,20 @@ class SceneManager {
         nlohmann::json nodeComponentJsonArray = nodeJson["components"].get<nlohmann::json>();
         nlohmann::json nodeChildrenJsonArray = nodeJson["children"].get<nlohmann::json>();
 
+        // Configure node type component
+        // TODO: Figure out if node type info should go into a component within scene json
+        std::vector<std::string> nodeTags;
+        for (const std::string &nodeTag : nodeTagsJsonArray) {
+            nodeTags.emplace_back(nodeTag);
+        }
+        componentManager->AddComponent(sceneNode.entity, NodeComponent{
+            .type = NodeTypeHelper::GetNodeTypeInt(nodeType),
+            .name = nodeName,
+            .tags = nodeTags
+        });
+
+
+        // Rest of components
         for (nlohmann::json nodeComponentJson : nodeComponentJsonArray) {
             nlohmann::json::iterator it = nodeComponentJson.begin();
             std::string nodeComponentType = it.key();
