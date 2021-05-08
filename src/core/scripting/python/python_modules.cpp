@@ -210,7 +210,9 @@ PyObject* PythonModules::scene_tree_get_current_scene_node(PyObject *self, PyObj
     Logger::GetInstance()->Debug("Current scene entity = " + std::to_string(sceneContext->currentSceneEntity));
     if (pythonCache->HasActiveInstance(sceneContext->currentSceneEntity)) {
         Logger::GetInstance()->Debug("Entity found!");
-        return pythonCache->GetClassInstance(sceneContext->currentSceneEntity);
+        CPyObject &pClassInstance = pythonCache->GetClassInstance(sceneContext->currentSceneEntity);
+        pClassInstance.AddRef();
+        return pClassInstance;
     }
     // Creates new instance on script side if active script instance of entity doesn't exist
     return Py_BuildValue("(si)", "Node2D", sceneContext->currentSceneEntity);
