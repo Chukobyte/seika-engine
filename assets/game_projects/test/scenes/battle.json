@@ -1,5 +1,5 @@
 {
-    "name": "World",
+    "name": "Battle",
     "type": "Node2D",
     "tags": [],
     "external_scene_source": "",
@@ -22,14 +22,14 @@
         },
         {
             "scriptable_class": {
-                "class_path": "assets.game_projects.test.src.test",
-                "class_name": "Test"
+                "class_path": "assets.game_projects.test.src.battle",
+                "class_name": "Battle"
             }
         }
     ],
     "children": [
         {
-            "name": "PuncherText",
+            "name": "PlayerOneHealthText",
             "type": "TextLabel",
             "tags": [],
             "external_scene_source": "",
@@ -37,7 +37,7 @@
                 {
                     "transform2D": {
                         "position": {
-                            "x": 325.0,
+                            "x": 100.0,
                             "y": 100.0
                         },
                         "scale": {
@@ -52,11 +52,11 @@
                 },
                 {
                     "text_label": {
-                        "text": "Puncher",
+                        "text": "Player 1: 10 HP",
                         "font_path": "assets/fonts/bruh.ttf",
                         "color": {
-                            "red": 0.0,
-                            "green": 1.0,
+                            "red": 1.0,
+                            "green": 0.0,
                             "blue": 1.0,
                             "alpha": 1.0
                         }
@@ -66,7 +66,44 @@
             "children": []
         },
         {
-            "name": "Puncher",
+            "name": "PlayerTwoHealthText",
+            "type": "TextLabel",
+            "tags": [],
+            "external_scene_source": "",
+            "components": [
+                {
+                    "transform2D": {
+                        "position": {
+                            "x": 425.0,
+                            "y": 100.0
+                        },
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "rotation": 0.0,
+                        "z_index": 0,
+                        "z_index_relative_to_parent": true,
+                        "ignore_camera": true
+                    }
+                },
+                {
+                    "text_label": {
+                        "text": "Player 2: 10 HP",
+                        "font_path": "assets/fonts/bruh.ttf",
+                        "color": {
+                            "red": 1.0,
+                            "green": 0.0,
+                            "blue": 1.0,
+                            "alpha": 1.0
+                        }
+                    }
+                }
+            ],
+            "children": []
+        },
+        {
+            "name": "PlayerOne",
             "type": "AnimatedSprite",
             "tags": [],
             "external_scene_source": "",
@@ -183,7 +220,7 @@
             "children": []
         },
         {
-            "name": "Puncher2",
+            "name": "PlayerTwo",
             "type": "Node2D",
             "tags": [],
             "external_scene_source": "",
