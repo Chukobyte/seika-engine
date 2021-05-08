@@ -12,7 +12,9 @@ enum _NodeType {
     NodeType_INVALID = 0,
     NodeType_NODE = 1,
     NodeType_NODE2D = 2,
-    NodeType_TEXT_LABEL = 3,
+    NodeType_SPRITE = 3,
+    NodeType_ANIMATED_SPRITE = 4,
+    NodeType_TEXT_LABEL = 5,
 };
 
 struct NodeComponent {

@@ -30,10 +30,10 @@ class PythonScriptContext : public ScriptContext {
 
     void CreateEntityInstance(Entity entity) override {
         ScriptableClassComponent scriptableClassComponent = componentManager->GetComponent<ScriptableClassComponent>(entity);
-
         pythonCache->CreateClassInstance(scriptableClassComponent.classPath, scriptableClassComponent.className, entity);
+    }
 
-        // Call Start
+    void CallStartOnEntityInstance(Entity entity) override {
         if (PyObject_HasAttr(pythonCache->GetClassInstance(entity), startFunctionName)) {
             PyObject_CallMethod(pythonCache->GetClassInstance(entity), "_start", nullptr);
         }

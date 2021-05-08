@@ -10,6 +10,7 @@ class ScriptContext {
     virtual void Initialize() = 0;
     virtual void CreateEntityInstance(Entity entity) = 0;
     virtual void DeleteEntityInstance(Entity entity) = 0;
+    virtual void CallStartOnEntityInstance(Entity entity) = 0;
     virtual void PhysicsProcess(Entity entity, double deltaTime) = 0;
     virtual void ReceiveSubscribedSignal(Entity subscriberEntity, const std::string &subscriberFunctionName, SignalArguments args) = 0;
     virtual void Destroy() = 0;

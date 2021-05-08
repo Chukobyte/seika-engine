@@ -49,9 +49,15 @@ class ScriptEntitySystem : public EntitySystem {
 
     void CreateEntityInstance(Entity entity) {
         for (auto const &pair : scriptContexts) {
-            auto const &type = pair.first;
             auto const &scriptContext = pair.second;
             scriptContext->CreateEntityInstance(entity);
+        }
+    }
+
+    void CallStartOnEntityInstance(Entity entity) {
+        for (auto const &pair : scriptContexts) {
+            auto const &scriptContext = pair.second;
+            scriptContext->CallStartOnEntityInstance(entity);
         }
     }
 

@@ -8,6 +8,8 @@ class NodeTypeHelper {
     static const std::string NODE_TYPE_INVALID;
     static const std::string NODE_TYPE_NODE;
     static const std::string NODE_TYPE_NODE2D;
+    static const std::string NODE_TYPE_SPRITE;
+    static const std::string NODE_TYPE_ANIMATED_SPRITE;
     static const std::string NODE_TYPE_TEXT_LABEL;
   public:
     static std::string GetNodeTypeString(NodeType nodeType) {
@@ -16,6 +18,10 @@ class NodeTypeHelper {
             return NODE_TYPE_NODE;
         case NodeType_NODE2D:
             return NODE_TYPE_NODE2D;
+        case NodeType_SPRITE:
+            return NODE_TYPE_SPRITE;
+        case NodeType_ANIMATED_SPRITE:
+            return NODE_TYPE_ANIMATED_SPRITE;
         case NodeType_TEXT_LABEL:
             return NODE_TYPE_TEXT_LABEL;
         default:
@@ -27,9 +33,14 @@ class NodeTypeHelper {
             return  NodeType_NODE;
         } else if(nodeTypeString == NODE_TYPE_NODE2D) {
             return NodeType_NODE2D;
+        } else if(nodeTypeString == NODE_TYPE_SPRITE) {
+            return NodeType_SPRITE;
+        } else if(nodeTypeString == NODE_TYPE_ANIMATED_SPRITE) {
+            return NodeType_ANIMATED_SPRITE;
         } else if(nodeTypeString == NODE_TYPE_TEXT_LABEL) {
             return NodeType_TEXT_LABEL;
         }
+
         return NodeType_INVALID;
     }
 };

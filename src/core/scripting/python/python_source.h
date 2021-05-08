@@ -258,6 +258,12 @@ static PythonSource PYTHON_SOURCE_NODE_MODULE =
     "   def position(self, value: Vector2) -> None:\n"
     "       roll_engine_api.node2D_set_position(entity_id=self.entity_id, x=value.x, y=value.y)\n"
     "\n"
+    "class Sprite(Node2D):\n"
+    "   pass\n"
+    "\n"
+    "class AnimatedSprite(Node2D):\n"
+    "   pass\n"
+    "\n"
     "class TextLabel(Node2D):\n"
     "   @property\n"
     "   def text(self) -> str:\n"
@@ -276,7 +282,7 @@ static PythonSource PYTHON_SOURCE_NODE_MODULE =
     "";
 
 static PythonSource PYTHON_SOURCE_ENGINE_API_UTIL_MODULE =
-    "from roll.node import Node, Node2D, TextLabel\n"
+    "from roll.node import Node, Node2D, Sprite, AnimatedSprite, TextLabel\n"
     "\n"
     "class EngineApiUtil:\n"
     "   @staticmethod\n"
@@ -294,7 +300,7 @@ static PythonSource PYTHON_SOURCE_ENGINE_API_UTIL_MODULE =
 
 static PythonSource PYTHON_SOURCE_PHYSICS_MODULE =
     "import roll_engine_api\n"
-    "from roll.node import Node, Node2D, TextLabel\n"
+    "from roll.node import Node, Node2D, Sprite, AnimatedSprite, TextLabel\n"
     "from roll.engine_api_util import EngineApiUtil\n"
     "\n"
     "class Collision:\n"
@@ -314,7 +320,7 @@ static PythonSource PYTHON_SOURCE_PHYSICS_MODULE =
 
 static PythonSource PYTHON_SOURCE_SCENE_MODULE =
     "import roll_engine_api\n"
-    "from roll.node import Node, Node2D, TextLabel\n"
+    "from roll.node import Node, Node2D, Sprite, AnimatedSprite, TextLabel\n"
     "from roll.engine_api_util import EngineApiUtil\n"
     "\n"
     "class SceneTree:\n"

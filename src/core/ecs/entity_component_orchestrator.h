@@ -32,6 +32,16 @@ class EntityComponentOrchestrator {
             scriptEntitySystem->CreateEntityInstance(sceneNode.entity);
         }
     }
+
+    void CallStartOnScriptInstances(SceneNode sceneNode) {
+        for (SceneNode childSceneNode : sceneNode.children) {
+            CallStartOnScriptInstances(childSceneNode);
+        }
+        if (componentManager->HasComponent<ScriptableClassComponent>(sceneNode.entity)) {
+            ScriptEntitySystem *scriptEntitySystem = (ScriptEntitySystem*) entitySystemManager->GetEntitySystem<ScriptEntitySystem>();
+            scriptEntitySystem->CallStartOnEntityInstance(sceneNode.entity);
+        }
+    }
   public:
     EntityComponentOrchestrator(EntityManager *entityManagerP, EntitySystemManager *entitySystemManagerP, ComponentManager *componentManagerP, SceneManager *sceneManagerP)
         : entityManager(entityManagerP), entitySystemManager(entitySystemManagerP), componentManager(componentManagerP), sceneManager(sceneManagerP) {
@@ -186,6 +196,7 @@ class EntityComponentOrchestrator {
         Scene scene = sceneManager->LoadSceneFromFile(scenePathToSwitchTo);
         scenePathToSwitchTo.clear();
         RegisterAllNodeSystemSignatures(scene.rootNode);
+        CallStartOnScriptInstances(scene.rootNode);
     }
 
     void DestroyCurrentScene() {
