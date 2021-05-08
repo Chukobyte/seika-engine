@@ -93,6 +93,15 @@ PyObject* PythonModules::camera_set_viewport_position(PyObject *self, PyObject *
     return nullptr;
 }
 
+// NODE
+PyObject* PythonModules::node_queue_deletion(PyObject *self, PyObject *args, PyObject *kwargs) {
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
 // NODE2D
 PyObject* PythonModules::node2D_get_position(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;

@@ -13,24 +13,13 @@ class Puncher(Node2D):
 
     def _physics_process(self, delta_time: float) -> None:
         if Input.is_action_just_pressed(action_name="quit"):
-            # Engine.exit()
-            # SceneTree.change_scene(scene_path="assets/game_projects/test/scenes/test_battle.json")
-
-            # entity = SceneTree.get_current_scene_node()
-            # print(f"SceneTree.get_current_scene_node() = {entity.entity_id}")
-            # entity.position += Vector2(5.0, 5.0)
-            # print(f"SceneTree.get_current_scene_node() = {entity.position}")
-
-            collided_nodes = Collision.get_collided_nodes(self)
-            print(f"collided_nodes = {collided_nodes}")
-            # for collided_node in collided_nodes:
-            #     print(f"collided_node = {collided_node}")
+            Engine.exit()
 
         self.camera_controls()
         self.movement_controls()
 
-        # if Collision.check(node=self):
-        #     print("Has collided!")
+        # for collided_node in Collision.get_collided_nodes(self):
+        #     print(f"collided_node = {collided_node}")
 
     def movement_controls(self) -> None:
         if Input.is_action_pressed(action_name="left"):

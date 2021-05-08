@@ -20,6 +20,8 @@ class PythonModules {
     static PyObject* camera_set_zoom(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* camera_set_viewport_position(PyObject* self, PyObject* args, PyObject* kwargs);
 
+    static PyObject* node_queue_deletion(PyObject* self, PyObject* args, PyObject* kwargs);
+
     static PyObject* node2D_get_position(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node2D_set_position(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node2D_add_to_position(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -75,6 +77,11 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "camera_set_viewport_position", (PyCFunction) PythonModules::camera_set_viewport_position,
         METH_VARARGS | METH_KEYWORDS, "Set viewport's position."
+    },
+    // NODE
+    {
+        "node_queue_deletion", (PyCFunction) PythonModules::node_queue_deletion,
+        METH_VARARGS | METH_KEYWORDS, "Queues node for deletion."
     },
     // NODE2D
     {
