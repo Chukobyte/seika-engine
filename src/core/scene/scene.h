@@ -18,6 +18,7 @@
 #include "scene_context.h"
 #include "../ecs/component/components/node_component.h"
 #include "../ecs/node_type_helper.h"
+#include "../timer/timer_manager.h"
 
 struct SceneNode {
     Entity entity = NO_ENTITY;
@@ -40,6 +41,7 @@ class SceneManager {
     EntityManager *entityManager = nullptr;
     ComponentManager *componentManager = nullptr;
     AssetManager *assetManager = nullptr;
+    TimerManager *timerManager = nullptr;
 
     SceneNode ParseSceneJson(nlohmann::json nodeJson) {
         SceneNode sceneNode = SceneNode{.entity = entityManager->CreateEntity()};
@@ -89,6 +91,12 @@ class SceneManager {
                 auto signature = entityManager->GetSignature(sceneNode.entity);
                 signature.set(componentManager->GetComponentType<Transform2DComponent>(), true);
                 entityManager->SetSignature(sceneNode.entity, signature);
+            } else if (nodeComponentType == "timer") {
+                Uint32 nodeWaitTimeInMilliseconds = (Uint32) nodeComponentObjectJson["wait_time"].get<float>() * 1000;
+                bool nodeLoops = nodeComponentObjectJson["loops"].get<bool>();
+                componentManager->AddComponent(sceneNode.entity, TimerComponent{
+                    .timer = timerManager->GenerateTimer(sceneNode.entity, nodeWaitTimeInMilliseconds, nodeLoops)
+                });
             } else if (nodeComponentType == "sprite") {
                 std::string nodeTexturePath = nodeComponentObjectJson["texture_path"].get<std::string>();
                 nlohmann::json nodeDrawSourceJson = nodeComponentObjectJson["draw_source"].get<nlohmann::json>();
@@ -213,6 +221,7 @@ class SceneManager {
   public:
     SceneManager(SceneContext *vSceneContext, EntityManager *vEntityManager, ComponentManager *vComponentManager, AssetManager *vAssetManager) :
         sceneContext(vSceneContext), entityManager(vEntityManager), componentManager(vComponentManager), assetManager(vAssetManager) {
+        timerManager = TimerManager::GetInstance();
     }
 
     Scene GetCurrentScene() {

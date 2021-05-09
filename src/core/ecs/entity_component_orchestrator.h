@@ -16,6 +16,7 @@ class EntityComponentOrchestrator {
     EntitySystemManager *entitySystemManager = nullptr;
     ComponentManager *componentManager = nullptr;
     SceneManager *sceneManager = nullptr;
+    TimerManager *timerManager = nullptr;
 
     std::string scenePathToSwitchTo;
     bool removeCurrentSceneAtEndOfUpdate = false;
@@ -54,7 +55,7 @@ class EntityComponentOrchestrator {
   public:
     EntityComponentOrchestrator(EntityManager *entityManagerP, EntitySystemManager *entitySystemManagerP, ComponentManager *componentManagerP, SceneManager *sceneManagerP)
         : entityManager(entityManagerP), entitySystemManager(entitySystemManagerP), componentManager(componentManagerP), sceneManager(sceneManagerP) {
-
+        timerManager = TimerManager::GetInstance();
     }
     // ENTITY METHODS
     Entity CreateEntity() {
