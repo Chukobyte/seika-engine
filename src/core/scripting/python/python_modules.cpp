@@ -94,6 +94,30 @@ PyObject* PythonModules::camera_set_viewport_position(PyObject *self, PyObject *
 }
 
 // NODE
+PyObject* PythonModules::node_get_node(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    static PythonCache *pythonCache = PythonCache::GetInstance();
+    static ComponentManager *componentManager = GD::GetContainer()->componentManager;
+    char *pyNodeName;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "s", nodeGetNodeKWList, &pyNodeName)) {
+        Entity entity = entityComponentOrchestrator->GetEntityFromNodeName(std::string(pyNodeName));
+        if (entity != NO_ENTITY) {
+            if (pythonCache->HasActiveInstance(entity)) {
+                Logger::GetInstance()->Debug("Entity found!");
+                CPyObject &pClassInstance = pythonCache->GetClassInstance(entity);
+                pClassInstance.AddRef();
+                return pClassInstance;
+            }
+            // Creates new instance on script side if active script instance of entity doesn't exist
+            NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(entity);
+            const std::string &nodeTypeString = NodeTypeHelper::GetNodeTypeString(nodeComponent.type);
+            return Py_BuildValue("(si)", nodeTypeString.c_str(), entity);
+        }
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
 PyObject* PythonModules::node_queue_deletion(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     Entity entity;

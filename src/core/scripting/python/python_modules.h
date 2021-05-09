@@ -20,6 +20,7 @@ class PythonModules {
     static PyObject* camera_set_zoom(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* camera_set_viewport_position(PyObject* self, PyObject* args, PyObject* kwargs);
 
+    static PyObject* node_get_node(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_queue_deletion(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* node2D_get_position(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -82,6 +83,10 @@ static struct PyMethodDef rollApiMethods[] = {
         METH_VARARGS | METH_KEYWORDS, "Set viewport's position."
     },
     // NODE
+    {
+        "node_get_node", (PyCFunction) PythonModules::node_get_node,
+        METH_VARARGS | METH_KEYWORDS, "Gets a node if name exists."
+    },
     {
         "node_queue_deletion", (PyCFunction) PythonModules::node_queue_deletion,
         METH_VARARGS | METH_KEYWORDS, "Queues node for deletion."
@@ -161,6 +166,7 @@ static char *audioSetVolumeKWList[] = {"volume", nullptr};
 static char *cameraVector2SetKWList[] = {"x", "y", nullptr};
 
 static char *nodeGetEntityKWList[] = {"entity_id", nullptr};
+static char *nodeGetNodeKWList[] = {"name", nullptr};
 
 static char *node2DUpdatePositionKWList[] = {"entity_id", "x", "y", nullptr};
 
