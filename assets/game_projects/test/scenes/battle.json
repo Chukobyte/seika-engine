@@ -221,7 +221,7 @@
         },
         {
             "name": "PlayerTwo",
-            "type": "Node2D",
+            "type": "AnimatedSprite",
             "tags": [],
             "external_scene_source": "",
             "components": [

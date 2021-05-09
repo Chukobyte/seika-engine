@@ -103,7 +103,6 @@ PyObject* PythonModules::node_get_node(PyObject *self, PyObject *args, PyObject 
         Entity entity = entityComponentOrchestrator->GetEntityFromNodeName(std::string(pyNodeName));
         if (entity != NO_ENTITY) {
             if (pythonCache->HasActiveInstance(entity)) {
-                Logger::GetInstance()->Debug("Entity found!");
                 CPyObject &pClassInstance = pythonCache->GetClassInstance(entity);
                 pClassInstance.AddRef();
                 return pClassInstance;
@@ -300,9 +299,7 @@ PyObject* PythonModules::scene_tree_get_current_scene_node(PyObject *self, PyObj
     static PythonCache *pythonCache = PythonCache::GetInstance();
     static SceneContext *sceneContext = GD::GetContainer()->sceneContext;
     static ComponentManager *componentManager = GD::GetContainer()->componentManager;
-    Logger::GetInstance()->Debug("Current scene entity = " + std::to_string(sceneContext->currentSceneEntity));
     if (pythonCache->HasActiveInstance(sceneContext->currentSceneEntity)) {
-        Logger::GetInstance()->Debug("Entity found!");
         CPyObject &pClassInstance = pythonCache->GetClassInstance(sceneContext->currentSceneEntity);
         pClassInstance.AddRef();
         return pClassInstance;

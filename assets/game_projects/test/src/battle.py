@@ -1,5 +1,7 @@
-from roll.node import Node2D
+from roll.node import Node, Node2D
+from roll.math import Vector2
 from roll.physics import Collision
+from roll.input import Input
 
 
 class Player:
@@ -8,31 +10,51 @@ class Player:
 
 
 class PlayerState:
-    def __init__(self, player: int):
+    def __init__(self, player: int, health=10, position=Vector2(0, 0)):
         self.player = player
-        self.health = 10
-        self.attack = 5
+        self.health = health
+        self.position = position
+        self.frames_invincible_after_damage = 0
+
+    def __str__(self):
+        data = {
+            "player": self.player,
+            "health": self.health,
+            "position": self.position,
+            "frames_invincible_after_damage": self.frames_invincible_after_damage,
+
+        }
+        return f"{data}"
+
+    def __repr__(self):
+        data = {
+            "player": self.player,
+            "health": self.health,
+            "position": self.position,
+            "frames_invincible_after_damage": self.frames_invincible_after_damage,
+        }
+        return f"{data}"
 
 
 class FrameState:
-    def __init__(self, frame, player_one_health, player_two_health) -> None:
+    def __init__(self, frame, player_one_state: PlayerState, player_two_state: PlayerState) -> None:
         self.frame = frame
-        self.player_one_health = player_one_health
-        self.player_two_health = player_two_health
+        self.player_states = {
+            Player.ONE: player_one_state,
+            Player.TWO: player_two_state,
+        }
 
     def __str__(self):
         data = {
             "frame": self.frame,
-            "player_one_health": self.player_one_health,
-            "player_two_health": self.player_two_health,
+            "player_states": self.player_states
         }
         return f"{data}"
 
     def __repr__(self):
         data = {
             "frame": self.frame,
-            "player_one_health": self.player_one_health,
-            "player_two_health": self.player_two_health,
+            "player_states": self.player_states
         }
         return f"{data}"
 
@@ -51,11 +73,13 @@ class PlayState:
     def __repr__(self):
         return f"{self.frames}"
 
-    def save_state(self) -> None:
+    def save_state(self, player_one_node: Node2D, player_two_node: Node2D) -> None:
+        self.player_one.position = player_one_node.position
+        self.player_two.position = player_two_node.position
         self.frames[self.current_frame] = FrameState(
             frame=self.current_frame,
-            player_one_health=self.player_one.health,
-            player_two_health=self.player_two.health,
+            player_one_state=self.player_one,
+            player_two_state=self.player_two,
         )
         if self.current_frame - self.frame_retention in self.frames:
             del self.frames[self.current_frame - self.frame_retention]
@@ -85,12 +109,17 @@ class Battle(Node2D):
             )
 
     def _physics_process(self, delta_time: float) -> None:
-        for collided_node in Collision.get_collided_nodes(self.player_one):
-            if collided_node == self.player_two:
-                self.play_state.player_two.health -= 1
-                self._update_player_health_text(player=Player.TWO)
-
         # Update state
-        self.play_state.save_state()
+        self.play_state.player_two.frames_invincible_after_damage = max(0, self.play_state.player_two.frames_invincible_after_damage - 1)
+
+        for collided_node in Collision.get_collided_nodes(self.player_one):
+            if collided_node == self.player_two and self.play_state.player_two.frames_invincible_after_damage <= 0:
+                if Input.is_action_just_pressed(action_name="weak_punch"):
+                    self.play_state.player_two.health -= 1
+                    self.play_state.player_two.frames_invincible_after_damage = 60
+                    self._update_player_health_text(player=Player.TWO)
+
+        # Save state
+        self.play_state.save_state(player_one_node=self.player_one, player_two_node=self.player_two)
         self.play_state.current_frame += 1
         # print(self.play_state)
