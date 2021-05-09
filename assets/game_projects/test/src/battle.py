@@ -121,5 +121,7 @@ class Battle(Node2D):
 
         # Save state
         self.play_state.save_state(player_one_node=self.player_one, player_two_node=self.player_two)
+        if self.play_state.current_frame % 60 == 0:
+            print(f"seconds = {self.play_state.current_frame / 60}, frame = {self.play_state.current_frame}")
         self.play_state.current_frame += 1
         # print(self.play_state)
