@@ -16,7 +16,7 @@ void NetworkTCPServer::Start() {
     AcceptConnections();
 
     using namespace std::chrono_literals;
-    std::this_thread::sleep_for(20000ms);
+    std::this_thread::sleep_for(50000ms);
 
 
     context.stop();
@@ -27,19 +27,14 @@ void NetworkTCPServer::Start() {
 
 void NetworkTCPServer::AcceptConnections() {
     TCPConnection *tcpConnection = new TCPConnection(context);
-
-    auto acceptHandler = [](const asio::error_code& errorCode) {
+    auto handleAcceptFunction = [this, tcpConnection](const asio::error_code &errorCode) {
         if (!errorCode) {
-//            tcpConnection->Start();
-            std::cout << "New connection established" << std::endl;
+            logger->Debug("New connection established!");
+            tcpConnection->Start();
+            AcceptConnections();
+        } else {
+            logger->Error("Error establishing connection!");
         }
     };
-
-    acceptor.async_accept(tcpConnection->GetSocket(), acceptHandler);
-}
-
-void NetworkTCPServer::HandleAccept(const asio::error_code &errorCode) {
-    if (!errorCode) {
-        std::cout << "New connection established" << std::endl;
-    }
+    acceptor.async_accept(tcpConnection->GetSocket(), handleAcceptFunction);
 }

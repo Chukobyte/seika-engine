@@ -5,10 +5,11 @@
 
 class NetworkTCPClient {
   private:
+    asio::io_context &context;
     TCPConnection *connection = nullptr;
     asio::ip::tcp::socket socket;
   public:
-    NetworkTCPClient(asio::io_context &context, const std::string ipAddress, int port);
+    NetworkTCPClient(asio::io_context &context, const std::string &ipAddress, int port) : context(context), socket(context) {}
 
     ~NetworkTCPClient() {
         Disconnect();
@@ -16,7 +17,7 @@ class NetworkTCPClient {
 
     void Connect() {
         if (!connection) {
-            connection = new TCPConnection();
+            connection = new TCPConnection(context);
         }
     }
 
