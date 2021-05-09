@@ -16,6 +16,7 @@
 #include "ecs/component/components/scriptable_class_component.h"
 
 #include "scripting/python/python_script_context.h"
+#include "ecs/entity/system/timer_entity_system.h"
 
 Game::Game() {
     logger = Logger::GetInstance();
@@ -54,6 +55,7 @@ void Game::InitializeECS() {
     EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     // Components
     entityComponentOrchestrator->RegisterComponent<NodeComponent>();
+    entityComponentOrchestrator->RegisterComponent<TimerComponent>();
     entityComponentOrchestrator->RegisterComponent<Transform2DComponent>();
     entityComponentOrchestrator->RegisterComponent<SpriteComponent>();
     entityComponentOrchestrator->RegisterComponent<AnimatedSpriteComponent>();
@@ -62,6 +64,11 @@ void Game::InitializeECS() {
     entityComponentOrchestrator->RegisterComponent<ColliderComponent>();
 
     // Systems
+    entityComponentOrchestrator->RegisterSystem<TimerEntitySystem>();
+    ComponentSignature timerSystemSignature;
+    timerSystemSignature.set(entityComponentOrchestrator->GetComponentType<TimerComponent>(), true);
+    entityComponentOrchestrator->SetSystemSignature<TimerEntitySystem>(timerSystemSignature);
+
     entityComponentOrchestrator->RegisterSystem<SpriteRenderingEntitySystem>();
     ComponentSignature spriteRenderingSystemSignature;
     spriteRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<Transform2DComponent>(), true);
@@ -208,6 +215,10 @@ void Game::FixedTimeStep() {
         collisionEntitySystem->ProcessCollisions();
 
         scriptEntitySystem->PhysicsProcess(PHYSICS_DELTA_TIME);
+
+        static TimerEntitySystem *timerEntitySystem = (TimerEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<TimerEntitySystem>();
+        timerEntitySystem->Tick();
+
         inputManager->ClearInputFlags();
     }
 
