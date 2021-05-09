@@ -235,6 +235,23 @@ static PythonSource PYTHON_SOURCE_NODE_MODULE =
     "       else:\n"
     "           return False\n"
     "\n"
+    "   @staticmethod\n"
+    "   def parse_scene_node_from_engine(scene_node):\n"
+    "       if isinstance(scene_node, Node):\n"
+    "           return scene_node\n"
+    "       else:\n"
+    "           node_type = scene_node[0]\n"
+    "           entity_id = scene_node[1]\n"
+    "           node_class = globals()[node_type]\n"
+    "           instance = node_class(entity_id=entity_id)\n"
+    "           return instance\n"
+    "\n"
+    "   def get_node(self, name: str):\n"
+    "       node = roll_engine_api.node_get_node(name=name)\n"
+    "       if not node:\n"
+    "           return None\n"
+    "       return self.parse_scene_node_from_engine(scene_node=node)\n"
+    "\n"
     "   def queue_deletion(self) -> None:\n"
     "       roll_engine_api.node_queue_deletion(entity_id = self.entity_id)\n"
     "\n"
@@ -281,27 +298,9 @@ static PythonSource PYTHON_SOURCE_NODE_MODULE =
     "\n"
     "";
 
-static PythonSource PYTHON_SOURCE_ENGINE_API_UTIL_MODULE =
-    "from roll.node import Node, Node2D, Sprite, AnimatedSprite, TextLabel\n"
-    "\n"
-    "class EngineApiUtil:\n"
-    "   @staticmethod\n"
-    "   def parse_scene_node_from_engine(scene_node) -> Node:\n"
-    "       if isinstance(scene_node, Node):\n"
-    "           return scene_node\n"
-    "       else:\n"
-    "           node_type = scene_node[0]\n"
-    "           entity_id = scene_node[1]\n"
-    "           node_class = globals()[node_type]\n"
-    "           instance = node_class(entity_id=entity_id)\n"
-    "           return instance\n"
-    "\n"
-    "";
-
 static PythonSource PYTHON_SOURCE_PHYSICS_MODULE =
     "import roll_engine_api\n"
     "from roll.node import Node, Node2D, Sprite, AnimatedSprite, TextLabel\n"
-    "from roll.engine_api_util import EngineApiUtil\n"
     "\n"
     "class Collision:\n"
     "   @staticmethod\n"
@@ -313,7 +312,7 @@ static PythonSource PYTHON_SOURCE_PHYSICS_MODULE =
     "       collided_nodes_from_engine = roll_engine_api.collision_get_collided_nodes(entity_id=node.entity_id)\n"
     "       collided_nodes = []\n"
     "       for collided_node in collided_nodes_from_engine:\n"
-    "           collided_nodes.append(EngineApiUtil.parse_scene_node_from_engine(scene_node=collided_node))\n"
+    "           collided_nodes.append(Node.parse_scene_node_from_engine(scene_node=collided_node))\n"
     "       return collided_nodes\n"
     "\n"
     "";
@@ -321,7 +320,6 @@ static PythonSource PYTHON_SOURCE_PHYSICS_MODULE =
 static PythonSource PYTHON_SOURCE_SCENE_MODULE =
     "import roll_engine_api\n"
     "from roll.node import Node, Node2D, Sprite, AnimatedSprite, TextLabel\n"
-    "from roll.engine_api_util import EngineApiUtil\n"
     "\n"
     "class SceneTree:\n"
     "   @staticmethod\n"
@@ -331,7 +329,7 @@ static PythonSource PYTHON_SOURCE_SCENE_MODULE =
     "   @staticmethod\n"
     "   def get_current_scene_node() -> Node:\n"
     "       current_scene_node = roll_engine_api.scene_tree_get_current_scene_node()\n"
-    "       return EngineApiUtil.parse_scene_node_from_engine(scene_node=current_scene_node)\n"
+    "       return Node.parse_scene_node_from_engine(scene_node=current_scene_node)\n"
     "\n"
     "";
 
@@ -404,10 +402,6 @@ static PythonSource PYTHON_SOURCE_IMPORT_ENGINE_MODULE_SNIPPET =
 
     "\"roll.node\": \"\"\"\n"
     + PYTHON_SOURCE_NODE_MODULE +
-    "\"\"\",\n"
-
-    "\"roll.engine_api_util\": \"\"\"\n"
-    + PYTHON_SOURCE_ENGINE_API_UTIL_MODULE +
     "\"\"\",\n"
 
     "\"roll.physics\": \"\"\"\n"
