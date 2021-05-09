@@ -3,36 +3,11 @@
 
 #include <vector>
 
-#include "network_common.h"
+#include "network_connection.h"
 #include "../utils/logger.h"
-
-class TCPConnection {
-  private:
-    asio::ip::tcp::socket socket;
-  public:
-    TCPConnection(asio::io_context &context) : socket(context) {}
-
-    asio::ip::tcp::socket& GetSocket() {
-        return socket;
-    }
-
-    void HandleWrite(const asio::error_code& errorCode) {
-
-    }
-
-    static TCPConnection* Create(asio::io_context &context) {
-        return new TCPConnection(context);
-    }
-
-    void Start() {}
-};
 
 class NetworkTCPServer {
   private:
-//    asio::ip::tcp::endpoint endpoint;
-//    asio::ip::tcp::acceptor acceptor;
-//    asio::ip::tcp::socket socket;
-
     asio::io_context &context;
     asio::ip::tcp::acceptor acceptor;
     int port;
@@ -47,6 +22,8 @@ class NetworkTCPServer {
     void AcceptConnections();
 
     void HandleAccept(const asio::error_code& errorCode);
+
+    void Stop();
 
 };
 

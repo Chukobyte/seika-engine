@@ -26,7 +26,7 @@ void NetworkTCPServer::Start() {
 }
 
 void NetworkTCPServer::AcceptConnections() {
-    TCPConnection *tcpConnection = TCPConnection::Create(context);
+    TCPConnection *tcpConnection = new TCPConnection(context);
 
     auto acceptHandler = [](const asio::error_code& errorCode) {
         if (!errorCode) {
