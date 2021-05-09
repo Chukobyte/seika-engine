@@ -6,6 +6,7 @@ from roll.camera import Camera
 from roll.physics import Collision
 from roll.scene import SceneTree
 
+
 class Puncher(Node2D):
     def _start(self) -> None:
         self.viewport = Vector2(1, 1)
@@ -14,7 +15,9 @@ class Puncher(Node2D):
     def _physics_process(self, delta_time: float) -> None:
         if Input.is_action_just_pressed(action_name="quit"):
             # Engine.exit()
-            SceneTree.change_scene(scene_path="assets/game_projects/test/scenes/battle.json")
+            SceneTree.change_scene(
+                scene_path="assets/game_projects/test/scenes/battle.json"
+            )
 
         self.camera_controls()
         self.movement_controls()
