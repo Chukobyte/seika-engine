@@ -31,7 +31,7 @@ class NetworkConnection {
         return id;
     }
 
-    virtual void Start() = 0;
+    virtual void StartReadingNetworkMessages() = 0;
 };
 
 class TCPConnection : public NetworkConnection {
@@ -48,7 +48,7 @@ class TCPConnection : public NetworkConnection {
         asio::async_write(socket, asio::buffer(message), handleWriteFunction);
     }
 
-    void ReadNetworkMessages() {
+    void StartReadingNetworkMessages() override {
         auto handleReadFunction = [this] (const asio::error_code &errorCode, size_t bytes) {
             if (IsConnected()) {
                 std::string message;
@@ -56,18 +56,13 @@ class TCPConnection : public NetworkConnection {
                     message += networkBuffer[i];
                 }
                 networkQueue.PushBack(NetworkMessage{.message = message});
-                ReadNetworkMessages();
+                StartReadingNetworkMessages();
             } else {
                 logger->Warn("Connection closed!");
             }
         };
         socket.async_read_some(asio::buffer(networkBuffer.data(), networkBuffer.size()), handleReadFunction);
 
-    }
-
-    void Start() override {
-        SendNetworkMessage("[FROM SERVER] Hello from server!\n");
-        ReadNetworkMessages();
     }
 };
 

@@ -19,6 +19,7 @@ void NetworkTCPClient::Connect() {
 
         if (!errorCode) {
             TCPConnection *tcpConnection = networkContext->NewTCPConnection(context, networkQueue, 0);
+            tcpConnection->GetSocket();
         } else {
             logger->Error("Client failed to connect!\n" + errorCode.message());
         }

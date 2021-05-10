@@ -17,7 +17,7 @@ void NetworkTCPServer::Start() {
 
     // TODO: should be place in main loop (without sleep of course)
     using namespace std::chrono_literals;
-    std::this_thread::sleep_for(50000ms);
+    std::this_thread::sleep_for(10000ms);
 
     context.stop();
     if (threadContext.joinable()) {
@@ -31,7 +31,8 @@ void NetworkTCPServer::AcceptConnections() {
     auto handleAcceptFunction = [this, tcpConnection](const asio::error_code &errorCode) {
         if (!errorCode) {
             logger->Debug("New connection established!");
-            tcpConnection->Start();
+            tcpConnection->SendNetworkMessage("[FROM SERVER] Hello from server!\n");
+            tcpConnection->StartReadingNetworkMessages();
         } else {
             logger->Error("Error establishing connection: " + errorCode.message() + "\nError Code: " + std::to_string(errorCode.value()));
             networkContext->RemoveTCPConnection(tcpConnection);
