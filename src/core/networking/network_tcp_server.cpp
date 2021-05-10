@@ -1,4 +1,5 @@
 #include "network_tcp_server.h"
+#include "../global_dependencies.h"
 
 std::vector<char> NetworkTCPServer::networkBuffer(20 * 1024);
 
@@ -26,11 +27,11 @@ void NetworkTCPServer::Start() {
 }
 
 void NetworkTCPServer::AcceptConnections() {
-    TCPConnection *tcpConnection = new TCPConnection(context);
+    TCPConnection *tcpConnection = (TCPConnection*) GD::GetContainer()->networkContext->NewConnection<TCPConnection>(context, 0);
     auto handleAcceptFunction = [this, tcpConnection](const asio::error_code &errorCode) {
         if (!errorCode) {
             logger->Debug("New connection established!");
-            tcpConnection->Start();
+//            tcpConnection->Start();
             AcceptConnections();
         } else {
             logger->Error("Error establishing connection!");

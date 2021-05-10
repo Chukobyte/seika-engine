@@ -13,6 +13,7 @@
 #include "scene/scene.h"
 #include "scene/scene_context.h"
 #include "camera/camera_manager.h"
+#include "networking/network_context.h"
 
 class GD {
     /* A singleton that holds global pointers...*/
@@ -33,6 +34,7 @@ class GD {
     SceneContext *sceneContext = nullptr;
     EntityComponentOrchestrator *entityComponentOrchestrator = nullptr;
     CameraManager *cameraManager = nullptr;
+    NetworkContext *networkContext = nullptr;
 
     static GD* GetContainer();
 
