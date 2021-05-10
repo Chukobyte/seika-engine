@@ -9,8 +9,9 @@ class NetworkConnection {
   protected:
     Logger *logger = nullptr;
     asio::ip::tcp::socket socket;
+    NetworkConnectionId id;
   public:
-    explicit NetworkConnection(asio::io_context &context) : socket(context), logger(Logger::GetInstance()) {}
+    explicit NetworkConnection(asio::io_context &context, NetworkConnectionId connectionId) : socket(context), id(connectionId), logger(Logger::GetInstance()) {}
 
     bool IsConnected() {
         return socket.is_open();
@@ -24,6 +25,10 @@ class NetworkConnection {
         socket.close();
     }
 
+    int GetId() const {
+        return id;
+    }
+
     virtual void Start() = 0;
 };
 
@@ -32,7 +37,7 @@ class TCPConnection : public NetworkConnection {
     std::vector<char> networkBuffer;
     const unsigned int NETWORK_BUFFER_SIZE = 20 * 1024;
   public:
-    explicit TCPConnection(asio::io_context &context) : NetworkConnection(context) {
+    explicit TCPConnection(asio::io_context &context, NetworkConnectionId connectionId) : NetworkConnection(context, connectionId) {
         networkBuffer.resize(NETWORK_BUFFER_SIZE);
     }
 

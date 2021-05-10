@@ -28,15 +28,14 @@ void NetworkTCPServer::Start() {
 }
 
 void NetworkTCPServer::AcceptConnections() {
-//    TCPConnection *tcpConnection = networkContext->NewTCPConnection(context, 0);
-    TCPConnection *tcpConnection = new TCPConnection(context);
+    TCPConnection *tcpConnection = networkContext->NewTCPConnection(context, 0);
     auto handleAcceptFunction = [this, tcpConnection](const asio::error_code &errorCode) {
         if (!errorCode) {
             logger->Debug("New connection established!");
             tcpConnection->Start();
         } else {
             logger->Error("Error establishing connection: " + errorCode.message() + "\nError Code: " + std::to_string(errorCode.value()));
-            tcpConnection->Disconnect();
+            networkContext->RemoveTCPConnection(tcpConnection);
         }
         AcceptConnections();
     };

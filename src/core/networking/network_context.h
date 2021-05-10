@@ -6,24 +6,22 @@
 #include "network_connection.h"
 
 class NetworkContext {
-private:
+  private:
     std::mutex connectionsMutex;
     std::map<NetworkConnectionId, TCPConnection*> networkConnections;
-public:
+  public:
 
     TCPConnection* NewTCPConnection(asio::io_context &context, NetworkConnectionId connectionId) {
-        connectionsMutex.lock();
-        TCPConnection *tcpConnection = new TCPConnection(context);
+        TCPConnection *tcpConnection = new TCPConnection(context, connectionId);
         networkConnections.emplace(connectionId, tcpConnection);
-        connectionsMutex.unlock();
-        return GetTCPConnection(connectionId);
+        return tcpConnection;
     }
 
-    TCPConnection* GetTCPConnection(NetworkConnectionId connectionId) {
-        connectionsMutex.lock();
-        TCPConnection *tcpConnection = networkConnections[connectionId];
-        connectionsMutex.unlock();
-        return tcpConnection;
+    void RemoveTCPConnection(TCPConnection *tcpConnection) {
+        tcpConnection->Disconnect();
+        int networkId = tcpConnection->GetId();
+//        delete networkConnections[networkId]; // TODO: Figure out why deleting doesn't work
+        networkConnections.erase(networkId);
     }
 };
 

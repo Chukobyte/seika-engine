@@ -17,7 +17,7 @@ class NetworkTCPClient {
 
     void Connect() {
         if (!connection) {
-            connection = new TCPConnection(context);
+            connection = new TCPConnection(context, 1);
         }
     }
 
