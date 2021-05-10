@@ -6,24 +6,24 @@
 using NetworkConnectionId = int;
 
 class NetworkConnection {
-  protected:
-    Logger *logger = nullptr;
-public:
-    asio::ip::tcp::socket socket;
-    NetworkConnection(asio::io_context &context) : socket(context), logger(Logger::GetInstance()) {}
-
-    virtual asio::ip::tcp::socket& GetSocket() = 0;
-
-    virtual void SendNetworkMessage(const std::string &message) = 0;
-
-    virtual void ReadNetworkMessages() = 0;
-
-    virtual void Start() = 0;
-
-    virtual bool IsConnected() = 0;
+//  protected:
+//    Logger *logger = nullptr;
+//public:
+//    asio::ip::tcp::socket socket;
+//    NetworkConnection(asio::io_context &context) : socket(context), logger(Logger::GetInstance()) {}
+//
+//    virtual asio::ip::tcp::socket& GetSocket() = 0;
+//
+//    virtual void SendNetworkMessage(const std::string &message) = 0;
+//
+//    virtual void ReadNetworkMessages() = 0;
+//
+//    virtual void Start() = 0;
+//
+//    virtual bool IsConnected() = 0;
 };
 
-class TCPConnection {
+class TCPConnection : public NetworkConnection {
   private:
     asio::ip::tcp::socket socket;
     std::vector<char> networkBuffer;
