@@ -7,10 +7,10 @@ using NetworkConnectionId = int;
 
 class NetworkConnection {
   protected:
-    asio::ip::tcp::socket socket;
     Logger *logger = nullptr;
-  public:
-    NetworkConnection(asio::io_context &context) : socket(context) {}
+public:
+    asio::ip::tcp::socket socket;
+    NetworkConnection(asio::io_context &context) : socket(context), logger(Logger::GetInstance()) {}
 
     virtual asio::ip::tcp::socket& GetSocket() = 0;
 
@@ -23,27 +23,33 @@ class NetworkConnection {
     virtual bool IsConnected() = 0;
 };
 
-class TCPConnection : public NetworkConnection {
+class TCPConnection {
   private:
+    asio::ip::tcp::socket socket;
     std::vector<char> networkBuffer;
     const unsigned int NETWORK_BUFFER_SIZE = 20 * 1024;
+    Logger *logger = nullptr;
   public:
-    TCPConnection(asio::io_context &context) : NetworkConnection(context) {
+//    TCPConnection(asio::io_context &context) : NetworkConnection(context) {
+//        networkBuffer.resize(NETWORK_BUFFER_SIZE);
+//    }
+
+    TCPConnection(asio::io_context &context) : socket(context), logger(Logger::GetInstance()) {
         networkBuffer.resize(NETWORK_BUFFER_SIZE);
     }
 
-    asio::ip::tcp::socket& GetSocket() override {
+    asio::ip::tcp::socket& GetSocket() {
         return socket;
     }
 
-    void SendNetworkMessage(const std::string &message) override {
+    void SendNetworkMessage(const std::string &message)  {
         auto handleWriteFunction = [this] (const asio::error_code &errorCode, size_t bytes) {
             logger->Debug("Wrote stuff from connection!");
         };
         asio::async_write(socket, asio::buffer(message), handleWriteFunction);
     }
 
-    void ReadNetworkMessages() override {
+    void ReadNetworkMessages() {
         auto handleReadFunction = [this] (const asio::error_code &errorCode, size_t bytes) {
             if (IsConnected()) {
                 logger->Debug("Reading from connection!");
@@ -61,13 +67,12 @@ class TCPConnection : public NetworkConnection {
 
     }
 
-    void Start() override {
-        logger->Debug("NC Start");
+    void Start() {
         SendNetworkMessage("[FROM SERVER] Hello from server!\n");
         ReadNetworkMessages();
     }
 
-    bool IsConnected() override {
+    bool IsConnected() {
         return socket.is_open();
     }
 };

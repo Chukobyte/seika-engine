@@ -27,11 +27,12 @@ void NetworkTCPServer::Start() {
 }
 
 void NetworkTCPServer::AcceptConnections() {
-    TCPConnection *tcpConnection = (TCPConnection*) GD::GetContainer()->networkContext->NewConnection<TCPConnection>(context, 0);
+//    TCPConnection *tcpConnection = (TCPConnection*) GD::GetContainer()->networkContext->NewConnection<TCPConnection>(context, 0);
+    TCPConnection *tcpConnection = new TCPConnection(context);
     auto handleAcceptFunction = [this, tcpConnection](const asio::error_code &errorCode) {
         if (!errorCode) {
             logger->Debug("New connection established!");
-//            tcpConnection->Start();
+            tcpConnection->Start();
             AcceptConnections();
         } else {
             logger->Error("Error establishing connection!");
