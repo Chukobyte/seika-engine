@@ -33,10 +33,11 @@ void NetworkTCPServer::AcceptConnections() {
         if (!errorCode) {
             logger->Debug("New connection established!");
             tcpConnection->Start();
-            AcceptConnections();
         } else {
-            logger->Error("Error establishing connection!");
+            logger->Error("Error establishing connection: " + errorCode.message() + "\nError Code: " + std::to_string(errorCode.value()));
+            tcpConnection->Disconnect();
         }
+        AcceptConnections();
     };
     acceptor.async_accept(tcpConnection->GetSocket(), handleAcceptFunction);
 }

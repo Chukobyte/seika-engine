@@ -23,8 +23,6 @@ class NetworkTCPServer {
 
     void AcceptConnections();
 
-//    void HandleAccept(const asio::error_code& errorCode);
-
     void Stop();
 
 };

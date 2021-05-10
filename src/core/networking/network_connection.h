@@ -61,6 +61,10 @@ class TCPConnection : public NetworkConnection {
         SendNetworkMessage("[FROM SERVER] Hello from server!\n");
         ReadNetworkMessages();
     }
+
+    void Disconnect() {
+        socket.close();
+    }
 };
 
 #endif //NETWORK_CONNECTION_H
