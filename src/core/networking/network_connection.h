@@ -6,14 +6,25 @@
 
 using NetworkConnectionId = int;
 
+// TODO: check if I need this
+using NetworkConnectionHostType = unsigned int;
+
+enum _NetworkConnectionHostType {
+    NetworkConnectionHostType_SERVER = 0,
+    NetworkConnectionHostType_CLIENT = 1,
+};
+
 class NetworkConnection {
   protected:
     Logger *logger = nullptr;
     asio::ip::tcp::socket socket;
-    NetworkConnectionId id;
     NetworkQueue<NetworkMessage> &networkQueue;
+    NetworkConnectionHostType hostType;
+    NetworkConnectionId id;
   public:
-    explicit NetworkConnection(asio::io_context &context, NetworkQueue<NetworkMessage> &networkQueue, NetworkConnectionId connectionId) : socket(context), networkQueue(networkQueue), id(connectionId), logger(Logger::GetInstance()) {}
+    explicit NetworkConnection(asio::io_context &context, NetworkQueue<NetworkMessage> &networkQueue, NetworkConnectionHostType networkConnectionHostType, NetworkConnectionId connectionId)
+        : socket(context), networkQueue(networkQueue), hostType(networkConnectionHostType), id(connectionId), logger(Logger::GetInstance()) {
+    }
 
     bool IsConnected() {
         return socket.is_open();
@@ -39,7 +50,8 @@ class TCPConnection : public NetworkConnection {
     std::vector<char> networkBuffer;
     const unsigned int NETWORK_BUFFER_SIZE = 20 * 1024;
   public:
-    explicit TCPConnection(asio::io_context &context, NetworkQueue<NetworkMessage> &networkQueue, NetworkConnectionId connectionId) : NetworkConnection(context, networkQueue, connectionId) {
+    explicit TCPConnection(asio::io_context &context, NetworkQueue<NetworkMessage> &networkQueue, NetworkConnectionHostType networkConnectionHostType, NetworkConnectionId connectionId)
+        : NetworkConnection(context, networkQueue, networkConnectionHostType, connectionId) {
         networkBuffer.resize(NETWORK_BUFFER_SIZE);
     }
 
@@ -56,6 +68,10 @@ class TCPConnection : public NetworkConnection {
                     message += networkBuffer[i];
                 }
                 networkQueue.PushBack(NetworkMessage{.message = message});
+                if (!message.empty() && message != "\n" && message != "\r\n") {
+                    const std::string &HOST_NAME_STRING = hostType == NetworkConnectionHostType_CLIENT ? "[CLIENT]" : "[SERVER]";
+                    logger->Debug(HOST_NAME_STRING + " message = '" + message + "'");
+                }
                 StartReadingNetworkMessages();
             } else {
                 logger->Warn("Connection closed!");

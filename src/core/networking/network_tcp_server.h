@@ -14,6 +14,7 @@ class NetworkTCPServer {
     asio::ip::tcp::acceptor acceptor;
     int port;
     NetworkQueue<NetworkMessage> networkQueue;
+    std::thread threadContext;
     Logger *logger = nullptr;
   public:
     NetworkTCPServer(asio::io_context &context, int port);
@@ -24,7 +25,7 @@ class NetworkTCPServer {
 
     void Stop();
 
-    void ProcessMessageQueue();
+    void ProcessMessageQueue(unsigned int maxMessages = -1);
 
 };
 

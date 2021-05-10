@@ -12,14 +12,27 @@ NetworkTCPClient::~NetworkTCPClient() {
 
 void NetworkTCPClient::Connect() {
     if (!connection) {
-        connection = new TCPConnection(context, networkQueue, 1);
-
-        asio::error_code  errorCode;
+        asio::error_code errorCode;
         asio::ip::tcp::endpoint endpoint(asio::ip::make_address(ipAddress.c_str(), errorCode), port);
+        connection = networkContext->NewTCPConnection(context, networkQueue, NetworkConnectionHostType_CLIENT, 1);
+        connection->GetSocket().connect(endpoint, errorCode);
 
         if (!errorCode) {
-            TCPConnection *tcpConnection = networkContext->NewTCPConnection(context, networkQueue, 0);
-            tcpConnection->GetSocket();
+            logger->Debug("Connected to server successfully!");
+            std::thread threadContext = std::thread([&]() {
+                context.run();
+            });
+
+            connection->StartReadingNetworkMessages();
+
+            // TODO: should be place in main loop (without sleep of course)
+            using namespace std::chrono_literals;
+            std::this_thread::sleep_for(1000000ms);
+
+            context.stop();
+            if (threadContext.joinable()) {
+                threadContext.join();
+            }
         } else {
             logger->Error("Client failed to connect!\n" + errorCode.message());
         }
