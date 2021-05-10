@@ -396,6 +396,29 @@ static PythonSource PYTHON_SOURCE_SCENE_MODULE =
     "\n"
     "";
 
+static PythonSource PYTHON_SOURCE_NETWORK_MODULE =
+    "import roll_engine_api\n"
+    "\n"
+    "class Server:\n"
+    "   @staticmethod\n"
+    "   def start(port: int) -> None:\n"
+    "       roll_engine_api.server_start(port=port)\n"
+    "\n"
+    "   @staticmethod\n"
+    "   def stop() -> None:\n"
+    "       roll_engine_api.server_stop()\n"
+    "\n"
+    "class Client:\n"
+    "   @staticmethod\n"
+    "   def connect(endpoint: str, port: int) -> None:\n"
+    "       roll_engine_api.client_connect(endpoint=endpoint, port=port)\n"
+    "\n"
+    "   @staticmethod\n"
+    "   def disconnect() -> None:\n"
+    "       roll_engine_api.client_disconnect()\n"
+    "\n"
+    "";
+
 static PythonSource PYTHON_SOURCE_LOAD_SOURCE_IMPORTER_SNIPPET =
     "import sys\n"
     "import importlib\n"
@@ -473,6 +496,10 @@ static PythonSource PYTHON_SOURCE_IMPORT_ENGINE_MODULE_SNIPPET =
 
     "\"roll.scene\": \"\"\"\n"
     + PYTHON_SOURCE_SCENE_MODULE +
+    "\"\"\",\n"
+
+    "\"roll.network\": \"\"\"\n"
+    + PYTHON_SOURCE_NETWORK_MODULE +
     "\"\"\",\n"
 
     "}\n"

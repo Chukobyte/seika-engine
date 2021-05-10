@@ -309,3 +309,48 @@ PyObject* PythonModules::scene_tree_get_current_scene_node(PyObject *self, PyObj
     const std::string &nodeTypeString = NodeTypeHelper::GetNodeTypeString(nodeComponent.type);
     return Py_BuildValue("(si)", nodeTypeString.c_str(), sceneContext->currentSceneEntity);
 }
+
+// SERVER
+PyObject* PythonModules::server_start(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static NetworkContext *networkContext = GD::GetContainer()->networkContext;
+    int port;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", serverStartKWList, &port)) {
+        if (!networkContext->DoesServerExists()) {
+            networkContext->CreateServer(port);
+            networkContext->StartServer();
+        }
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::server_stop(PyObject *self, PyObject *args) {
+    static NetworkContext *networkContext = GD::GetContainer()->networkContext;
+    if (networkContext->DoesServerExists()) {
+        networkContext->RemoveServer();
+    }
+    Py_RETURN_NONE;
+}
+
+// CLIENT
+PyObject* PythonModules::client_connect(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static NetworkContext *networkContext = GD::GetContainer()->networkContext;
+    char *pyEndpoint;
+    int port;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "si", clientConnectKWList, &pyEndpoint, &port)) {
+        if (!networkContext->DoesClientExists()) {
+            networkContext->CreateClient(std::string(pyEndpoint), port);
+            networkContext->ConnectClient();
+        }
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::client_disconnect(PyObject *self, PyObject *args) {
+    static NetworkContext *networkContext = GD::GetContainer()->networkContext;
+    if (networkContext->DoesClientExists()) {
+        networkContext->RemoveClient();
+    }
+    Py_RETURN_NONE;
+}

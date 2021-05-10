@@ -40,6 +40,12 @@ class PythonModules {
 
     static PyObject* scene_tree_change_scene(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* scene_tree_get_current_scene_node(PyObject* self, PyObject* args);
+
+    static PyObject* server_start(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* server_stop(PyObject* self, PyObject* args);
+
+    static PyObject* client_connect(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* client_disconnect(PyObject* self, PyObject* args);
 };
 
 static struct PyMethodDef rollApiMethods[] = {
@@ -148,6 +154,24 @@ static struct PyMethodDef rollApiMethods[] = {
         "scene_tree_get_current_scene_node", PythonModules::scene_tree_get_current_scene_node,
         METH_VARARGS, "Gets current active scene node."
     },
+    // SERVER
+    {
+        "server_start", (PyCFunction) PythonModules::server_start,
+        METH_VARARGS | METH_KEYWORDS, "Starts a server."
+    },
+    {
+        "server_stop", PythonModules::server_stop,
+        METH_VARARGS, "Stops a server."
+    },
+    // CLIENT
+    {
+        "client_connect", (PyCFunction) PythonModules::client_connect,
+        METH_VARARGS | METH_KEYWORDS, "Connects a client to an endpoint."
+    },
+    {
+        "client_disconnect", PythonModules::client_disconnect,
+        METH_VARARGS, "Disconnects a client from an endpoint."
+    },
 
     {nullptr, nullptr, 0,nullptr },
 };
@@ -176,6 +200,10 @@ static char *inputAddActionKWList[] = {"action_name", "value", nullptr};
 static char *inputActionCheckKWList[] = {"action_name", nullptr};
 
 static char *sceneTreeChangeSceneKWList[] = {"scene_path", nullptr};
+
+static char *serverStartKWList[] = {"port", nullptr};
+
+static char *clientConnectKWList[] = {"endpoint", "port", nullptr};
 
 static PyObject* PyInit_rollEngineAPI(void) {
     return PyModule_Create(&rollEngineAPIModDef);

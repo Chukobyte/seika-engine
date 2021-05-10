@@ -41,6 +41,7 @@ class NetworkContext {
     void RemoveServer() {
         StopServer();
         delete server;
+        server = nullptr;
     }
 
     void CreateClient(const std::string &ipAddress, int port) {
@@ -70,14 +71,23 @@ class NetworkContext {
     void RemoveClient() {
         DisconnectClient();
         delete client;
+        client = nullptr;
     }
 
     void Poll() {
         if (server) {
             server->ProcessMessageQueue();
-        } else {
+        } else if (client) {
             client->ProcessMessageQueue();
         }
+    }
+
+    bool DoesServerExists() const {
+        return server != nullptr;
+    }
+
+    bool DoesClientExists() const {
+        return client != nullptr;
     }
 };
 

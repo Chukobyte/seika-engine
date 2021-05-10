@@ -15,6 +15,7 @@ void NetworkTCPServer::Start() {
 
 void NetworkTCPServer::Stop() {
     context.stop();
+    networkConnectionContext->RemoveAllConnection();
 }
 
 void NetworkTCPServer::ProcessMessageQueue() {

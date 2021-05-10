@@ -23,6 +23,14 @@ class NetworkConnectionContext {
 //        delete networkConnections[networkId]; // TODO: Figure out why deleting doesn't work
         networkConnections.erase(networkId);
     }
+
+    void RemoveAllConnection() {
+        for (auto &pair : networkConnections) {
+            TCPConnection *tcpConnection = pair.second;
+            networkConnections.erase(tcpConnection->GetId());
+            tcpConnection->Disconnect();
+        }
+    }
 };
 
 

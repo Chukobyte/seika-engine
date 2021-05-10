@@ -7,6 +7,7 @@
 #include "rendering/renderer.h"
 #include "project_properties.h"
 #include "input/input_manager.h"
+#include "networking/network_context.h"
 
 class Game {
   private:
@@ -16,6 +17,7 @@ class Game {
     Renderer *renderer = nullptr;
     ProjectProperties *projectProperties = nullptr;
     InputManager *inputManager = nullptr;
+    NetworkContext *networkContext = nullptr;
 
     void InitializeSDL();
 

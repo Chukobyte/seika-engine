@@ -2,6 +2,7 @@ from roll.node import Node, Node2D
 from roll.math import Vector2
 from roll.physics import Collision
 from roll.input import Input
+from roll.network import Server
 
 
 class Player:
@@ -98,6 +99,9 @@ class Battle(Node2D):
         self._update_player_health_text(player=Player.ONE)
         self._update_player_health_text(player=Player.TWO)
 
+        self.server_started = True
+        Server.start(port=55555)
+
     def _update_player_health_text(self, player: int) -> None:
         if player == Player.ONE:
             self.player_one_health_text_label.text = (
@@ -109,6 +113,14 @@ class Battle(Node2D):
             )
 
     def _physics_process(self, delta_time: float) -> None:
+        if Input.is_action_just_pressed(action_name="quit"):
+            if self.server_started:
+                Server.stop()
+                self.server_started = False
+            else:
+                Server.start(port=55555)
+                self.server_started = True
+
         # Update state
         self.play_state.player_two.frames_invincible_after_damage = max(0, self.play_state.player_two.frames_invincible_after_damage - 1)
 
