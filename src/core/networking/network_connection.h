@@ -19,6 +19,8 @@ class NetworkConnection {
     asio::ip::tcp::socket& GetSocket() {
         return socket;
     }
+
+    virtual void Start() = 0;
 };
 
 class TCPConnection : public NetworkConnection {
@@ -55,7 +57,7 @@ class TCPConnection : public NetworkConnection {
 
     }
 
-    void Start() {
+    void Start() override {
         SendNetworkMessage("[FROM SERVER] Hello from server!\n");
         ReadNetworkMessages();
     }

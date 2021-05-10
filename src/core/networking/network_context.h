@@ -7,13 +7,16 @@
 
 class NetworkContext {
   public:
-    std::map<NetworkConnectionId, NetworkConnection*> networkConnections;
+    std::map<NetworkConnectionId, TCPConnection*> networkConnections;
 
-    template<typename ConnectionType>
-    ConnectionType* NewConnection(asio::io_context &context, NetworkConnectionId connectionId) {
-        ConnectionType *networkConnection = new ConnectionType(context);
-        networkConnections.emplace(connectionId, networkConnection);
-        return &networkConnection[connectionId];
+    TCPConnection* NewTCPConnection(asio::io_context &context, NetworkConnectionId connectionId) {
+        TCPConnection *tcpConnection = new TCPConnection(context);
+        networkConnections.emplace(connectionId, tcpConnection);
+        return GetTCPConnection(connectionId);
+    }
+
+    TCPConnection* GetTCPConnection(NetworkConnectionId connectionId) {
+        return networkConnections[connectionId];
     }
 };
 
