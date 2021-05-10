@@ -10,9 +10,18 @@ int main() {
     NetworkTCPServer *server = new NetworkTCPServer(context, SERVER_PORT);
     server->Start();
 
+    while (true) {
+        server->ProcessMessageQueue();
+    }
+    server->Stop();
+
 //    NetworkTCPClient *client = new NetworkTCPClient(context, "127.0.0.1", SERVER_PORT);
 //    client->Connect();
-
+//
+//    while (true) {
+//        client->ProcessMessageQueue();
+//    }
+//    client->Disconnect();
 
     return 0;
 }

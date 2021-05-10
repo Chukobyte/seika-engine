@@ -19,20 +19,7 @@ void NetworkTCPClient::Connect() {
 
         if (!errorCode) {
             logger->Debug("Connected to server successfully!");
-            std::thread threadContext = std::thread([&]() {
-                context.run();
-            });
-
             connection->StartReadingNetworkMessages();
-
-            // TODO: should be place in main loop (without sleep of course)
-            using namespace std::chrono_literals;
-            std::this_thread::sleep_for(1000000ms);
-
-            context.stop();
-            if (threadContext.joinable()) {
-                threadContext.join();
-            }
         } else {
             logger->Error("Client failed to connect!\n" + errorCode.message());
         }
@@ -42,13 +29,19 @@ void NetworkTCPClient::Connect() {
 
 void NetworkTCPClient::Disconnect() {
     if (connection) {
+        context.stop();
         delete connection;
         connection = nullptr;
     }
 }
 
 void NetworkTCPClient::ProcessMessageQueue() {
+    context.poll();
+
     while (!networkQueue.IsEmpty()) {
         NetworkMessage networkMessage = networkQueue.PopFront();
+        if (!networkMessage.message.empty() && networkMessage.message != "\n" && networkMessage.message != "\r\n" && networkMessage.message != " ") {
+            std::cout << "[Client] Queued Message: \n'" << networkMessage.message << "'\n" << std::endl;
+        }
     }
 }

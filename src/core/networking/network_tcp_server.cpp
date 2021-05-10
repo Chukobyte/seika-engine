@@ -8,36 +8,23 @@ NetworkTCPServer::NetworkTCPServer(asio::io_context &context, int port) : contex
 
 void NetworkTCPServer::Start() {
     context.restart();
-    logger->Debug("Server accepting connections!");
+    logger->Debug("Server started!");
 
     AcceptConnections();
-
-    threadContext = std::thread([&]() {
-        context.run();
-    });
-
-    // TODO: should be place in main loop (without sleep of course)
-    using namespace std::chrono_literals;
-    std::this_thread::sleep_for(10000ms);
-
-    ProcessMessageQueue();
 }
 
-void NetworkTCPServer::Stop() {}
-
-void NetworkTCPServer::ProcessMessageQueue(unsigned int maxMessages) {
+void NetworkTCPServer::Stop() {
     context.stop();
-    if (threadContext.joinable()) {
-        threadContext.join();
-    }
+}
 
-    unsigned int messageCount = 0;
-    while (messageCount < maxMessages && !networkQueue.IsEmpty()) {
+void NetworkTCPServer::ProcessMessageQueue() {
+    context.poll();
+
+    while (!networkQueue.IsEmpty()) {
         NetworkMessage networkMessage = networkQueue.PopFront();
         if (!networkMessage.message.empty() && networkMessage.message != "\n" && networkMessage.message != "\r\n" && networkMessage.message != " ") {
-            std::cout << "Queued Message: \n'" << networkMessage.message << "'\n" << std::endl;
+            std::cout << "[SERVER] Queued Message: \n'" << networkMessage.message << "'\n" << std::endl;
         }
-        messageCount++;
     }
 }
 

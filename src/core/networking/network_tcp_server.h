@@ -25,7 +25,7 @@ class NetworkTCPServer {
 
     void Stop();
 
-    void ProcessMessageQueue(unsigned int maxMessages = -1);
+    void ProcessMessageQueue();
 
 };
 

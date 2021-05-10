@@ -68,10 +68,6 @@ class TCPConnection : public NetworkConnection {
                     message += networkBuffer[i];
                 }
                 networkQueue.PushBack(NetworkMessage{.message = message});
-                if (!message.empty() && message != "\n" && message != "\r\n") {
-                    const std::string &HOST_NAME_STRING = hostType == NetworkConnectionHostType_CLIENT ? "[CLIENT]" : "[SERVER]";
-                    logger->Debug(HOST_NAME_STRING + " message = '" + message + "'");
-                }
                 StartReadingNetworkMessages();
             } else {
                 logger->Warn("Connection closed!");
