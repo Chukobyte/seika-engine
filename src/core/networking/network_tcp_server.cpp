@@ -26,13 +26,15 @@ void NetworkTCPServer::ProcessMessageQueue() {
             std::cout << "[SERVER] Queued Message: '" << networkMessage.message << "'\n" << std::endl;
         }
     }
+
+    // Check client connections
 }
 
 void NetworkTCPServer::AcceptConnections() {
     TCPConnection *tcpConnection = networkContext->NewTCPConnection(context, networkQueue, NetworkConnectionHostType_SERVER, 0);
     auto handleAcceptFunction = [this, tcpConnection](const asio::error_code &errorCode) {
         if (!errorCode) {
-            // TODO: Emit signal for new connection
+            // TODO: Emit signal for new connection to all clients
             logger->Debug("New connection established!");
             tcpConnection->SendNetworkMessage("[FROM SERVER] Hello from server!");
             tcpConnection->StartReadingNetworkMessages();
