@@ -7,14 +7,12 @@ NetworkTCPServer::NetworkTCPServer(asio::io_context &context, int port) : contex
 }
 
 void NetworkTCPServer::Start() {
-    context.restart();
     logger->Debug("Server started!");
 
     AcceptConnections();
 }
 
 void NetworkTCPServer::Stop() {
-    context.stop();
     networkConnectionContext->RemoveAllConnection();
 }
 

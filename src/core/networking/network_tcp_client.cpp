@@ -29,7 +29,6 @@ void NetworkTCPClient::Connect() {
 
 void NetworkTCPClient::Disconnect() {
     if (connection) {
-        context.stop();
         delete connection;
         connection = nullptr;
     }
