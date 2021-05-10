@@ -26,7 +26,7 @@ void GD::ResetDependencies() {
     delete sceneManager;
     delete entityComponentOrchestrator;
     delete cameraManager;
-    delete networkContext;
+    delete networkConnectionContext;
     engineContext = new EngineContext();
     renderContext = new RenderContext();
     collisionContext = new CollisionContext();
@@ -39,5 +39,5 @@ void GD::ResetDependencies() {
     sceneManager = new SceneManager(sceneContext, entityManager, componentManager, assetManager);
     entityComponentOrchestrator = new EntityComponentOrchestrator(entityManager, entitySystemManager, componentManager, sceneManager);
     cameraManager = new CameraManager();
-    networkContext = new NetworkContext();
+    networkConnectionContext = new NetworkConnectionContext();
 }

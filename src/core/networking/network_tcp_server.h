@@ -3,13 +3,12 @@
 
 #include <vector>
 
-#include "network_connection.h"
-#include "network_context.h"
 #include "../utils/logger.h"
+#include "network_connection_context.h"
 
 class NetworkTCPServer {
   private:
-    NetworkContext *networkContext = nullptr;
+    NetworkConnectionContext *networkConnectionContext = nullptr;
     asio::io_context &context;
     asio::ip::tcp::acceptor acceptor;
     int port;

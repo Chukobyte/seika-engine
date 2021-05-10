@@ -3,7 +3,7 @@
 
 NetworkTCPServer::NetworkTCPServer(asio::io_context &context, int port) : context(context), acceptor(context, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port)) {
     logger = Logger::GetInstance();
-    networkContext = GD::GetContainer()->networkContext;
+    networkConnectionContext = GD::GetContainer()->networkConnectionContext;
 }
 
 void NetworkTCPServer::Start() {
@@ -31,7 +31,7 @@ void NetworkTCPServer::ProcessMessageQueue() {
 }
 
 void NetworkTCPServer::AcceptConnections() {
-    TCPConnection *tcpConnection = networkContext->NewTCPConnection(context, networkQueue, NetworkConnectionHostType_SERVER, 0);
+    TCPConnection *tcpConnection = networkConnectionContext->NewTCPConnection(context, networkQueue, NetworkConnectionHostType_SERVER, 0);
     auto handleAcceptFunction = [this, tcpConnection](const asio::error_code &errorCode) {
         if (!errorCode) {
             // TODO: Emit signal for new connection to all clients
@@ -40,7 +40,7 @@ void NetworkTCPServer::AcceptConnections() {
             tcpConnection->StartReadingNetworkMessages();
         } else {
             logger->Error("Error establishing connection: " + errorCode.message() + "\nError Code: " + std::to_string(errorCode.value()));
-            networkContext->RemoveTCPConnection(tcpConnection);
+            networkConnectionContext->RemoveTCPConnection(tcpConnection);
         }
         AcceptConnections();
     };

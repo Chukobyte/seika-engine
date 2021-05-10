@@ -1,29 +1,84 @@
 #ifndef NETWORK_CONTEXT_H
 #define NETWORK_CONTEXT_H
 
-#include <map>
-
-#include "network_connection.h"
+#include "network_tcp_server.h"
+#include "network_tcp_client.h"
 
 class NetworkContext {
   private:
-    std::mutex connectionsMutex;
-    std::map<NetworkConnectionId, TCPConnection*> networkConnections;
+    asio::io_context context;
+    Logger *logger = nullptr;
   public:
+    NetworkTCPServer *server = nullptr;
+    NetworkTCPClient *client = nullptr;
 
-    TCPConnection* NewTCPConnection(asio::io_context &context, NetworkQueue<NetworkMessage> &networkQueue, NetworkConnectionHostType hostType, NetworkConnectionId connectionId) {
-        TCPConnection *tcpConnection = new TCPConnection(context, networkQueue, hostType, connectionId);
-        networkConnections.emplace(connectionId, tcpConnection);
-        return tcpConnection;
+    NetworkContext() : logger(Logger::GetInstance()) {}
+
+    void CreateServer(int port) {
+        if (!server) {
+            server = new NetworkTCPServer(context, port);
+        } else {
+            logger->Error("Server already created!");
+        }
     }
 
-    void RemoveTCPConnection(TCPConnection *tcpConnection) {
-        tcpConnection->Disconnect();
-        int networkId = tcpConnection->GetId();
-//        delete networkConnections[networkId]; // TODO: Figure out why deleting doesn't work
-        networkConnections.erase(networkId);
+    void StartServer() {
+        if (server) {
+            server->Start();
+        } else {
+            logger->Error("Server hasn't been created!");
+        }
+    }
+
+    void StopServer() {
+        if (server) {
+            server->Stop();
+        } else {
+            logger->Error("Server hasn't been created!");
+        }
+    }
+
+    void RemoveServer() {
+        StopServer();
+        delete server;
+    }
+
+    void CreateClient(const std::string &ipAddress, int port) {
+        if (!client) {
+            client = new NetworkTCPClient(context, ipAddress, port);
+        } else {
+            logger->Error("Client already created!");
+        }
+    }
+
+    void ConnectClient() {
+        if (client) {
+            client->Connect();
+        } else {
+            logger->Error("Client hasn't been created!");
+        }
+    }
+
+    void DisconnectClient() {
+        if (client) {
+            client->Disconnect();
+        } else {
+            logger->Error("Client hasn't been created!");
+        }
+    }
+
+    void RemoveClient() {
+        DisconnectClient();
+        delete client;
+    }
+
+    void Poll() {
+        if (server) {
+            server->ProcessMessageQueue();
+        } else {
+            client->ProcessMessageQueue();
+        }
     }
 };
-
 
 #endif //NETWORK_CONTEXT_H

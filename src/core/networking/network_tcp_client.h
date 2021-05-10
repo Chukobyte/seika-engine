@@ -2,11 +2,11 @@
 #define NETWORK_TCP_CLIENT_H
 
 #include "network_connection.h"
-#include "network_context.h"
+#include "network_connection_context.h"
 
 class NetworkTCPClient {
   private:
-    NetworkContext *networkContext = nullptr;
+    NetworkConnectionContext *networkConnectionContext = nullptr;
     asio::io_context &context;
     TCPConnection *connection = nullptr;
     asio::ip::tcp::socket socket;

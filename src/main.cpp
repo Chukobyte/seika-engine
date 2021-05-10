@@ -1,27 +1,17 @@
-#include <asio.hpp>
-#include "core/networking/network_tcp_server.h"
-#include "core/networking/network_tcp_client.h"
+#include "core/game.h"
 
-const int SERVER_PORT = 55555;
 
-int main() {
-    asio::io_context context;
+int main(int argv, char** args) {
+    static Game *gameEngine = new Game();
+    gameEngine->Initialize();
 
-    NetworkTCPServer *server = new NetworkTCPServer(context, SERVER_PORT);
-    server->Start();
-
-    while (true) {
-        server->ProcessMessageQueue();
+    while (gameEngine->IsRunning()) {
+        gameEngine->ProcessInput();
+        gameEngine->Update();
+        gameEngine->Render();
     }
-    server->Stop();
 
-//    NetworkTCPClient *client = new NetworkTCPClient(context, "127.0.0.1", SERVER_PORT);
-//    client->Connect();
-//
-//    while (true) {
-//        client->ProcessMessageQueue();
-//    }
-//    client->Disconnect();
+    gameEngine->Destroy();
 
     return 0;
 }

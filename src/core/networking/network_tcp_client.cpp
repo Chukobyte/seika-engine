@@ -2,7 +2,7 @@
 #include "../global_dependencies.h"
 
 NetworkTCPClient::NetworkTCPClient(asio::io_context &context, const std::string &ipAddress, int port) : context(context), socket(context), ipAddress(ipAddress), port(port) {
-    networkContext = GD::GetContainer()->networkContext;
+    networkConnectionContext = GD::GetContainer()->networkConnectionContext;
     logger = Logger::GetInstance();
 }
 
@@ -14,7 +14,7 @@ void NetworkTCPClient::Connect() {
     if (!connection) {
         asio::error_code errorCode;
         asio::ip::tcp::endpoint endpoint(asio::ip::make_address(ipAddress.c_str(), errorCode), port);
-        connection = networkContext->NewTCPConnection(context, networkQueue, NetworkConnectionHostType_CLIENT, 1);
+        connection = networkConnectionContext->NewTCPConnection(context, networkQueue, NetworkConnectionHostType_CLIENT, 1);
         connection->GetSocket().connect(endpoint, errorCode);
 
         if (!errorCode) {
