@@ -1,7 +1,13 @@
 #ifndef NETWORK_QUEUE_H
 #define NETWORK_QUEUE_H
 
+#include <string>
+
 #include "network_common.h"
+
+struct NetworkMessage {
+    std::string message;
+};
 
 template <typename T>
 class NetworkQueue {
@@ -49,7 +55,7 @@ class NetworkQueue {
 
     void PushFront(const T& item) {
         queueMutex.lock();
-        queue.template emplace_front(std::move(item));
+        queue.emplace_front(std::move(item));
         queueMutex.unlock();
 
         std::unique_lock<std::mutex> uniqueLock(blockingMutex);
@@ -58,7 +64,7 @@ class NetworkQueue {
 
     void PushBack(const T& item) {
         queueMutex.lock();
-        queue.template emplace_back(std::move(item));
+        queue.emplace_back(std::move(item));
         queueMutex.unlock();
 
         std::unique_lock<std::mutex> uniqueLock(blockingMutex);

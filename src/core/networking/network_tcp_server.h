@@ -13,8 +13,8 @@ class NetworkTCPServer {
     asio::io_context &context;
     asio::ip::tcp::acceptor acceptor;
     int port;
-    static std::vector<char> networkBuffer;
-
+//    static std::vector<char> networkBuffer;
+    NetworkQueue<NetworkMessage> networkQueue;
     Logger *logger = nullptr;
   public:
     NetworkTCPServer(asio::io_context &context, int port);

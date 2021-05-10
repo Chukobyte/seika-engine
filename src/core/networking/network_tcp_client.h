@@ -8,6 +8,7 @@ class NetworkTCPClient {
     asio::io_context &context;
     TCPConnection *connection = nullptr;
     asio::ip::tcp::socket socket;
+    NetworkQueue<NetworkMessage> networkQueue;
   public:
     NetworkTCPClient(asio::io_context &context, const std::string &ipAddress, int port) : context(context), socket(context) {}
 
@@ -17,7 +18,7 @@ class NetworkTCPClient {
 
     void Connect() {
         if (!connection) {
-            connection = new TCPConnection(context, 1);
+            connection = new TCPConnection(context, networkQueue, 1);
         }
     }
 

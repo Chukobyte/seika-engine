@@ -2,6 +2,7 @@
 #define NETWORK_CONNECTION_H
 
 #include "network_common.h"
+#include "network_queue.h"
 
 using NetworkConnectionId = int;
 
@@ -10,8 +11,9 @@ class NetworkConnection {
     Logger *logger = nullptr;
     asio::ip::tcp::socket socket;
     NetworkConnectionId id;
+    NetworkQueue<NetworkMessage> &networkQueue;
   public:
-    explicit NetworkConnection(asio::io_context &context, NetworkConnectionId connectionId) : socket(context), id(connectionId), logger(Logger::GetInstance()) {}
+    explicit NetworkConnection(asio::io_context &context, NetworkQueue<NetworkMessage> &networkQueue, NetworkConnectionId connectionId) : socket(context), networkQueue(networkQueue), id(connectionId), logger(Logger::GetInstance()) {}
 
     bool IsConnected() {
         return socket.is_open();
@@ -37,7 +39,7 @@ class TCPConnection : public NetworkConnection {
     std::vector<char> networkBuffer;
     const unsigned int NETWORK_BUFFER_SIZE = 20 * 1024;
   public:
-    explicit TCPConnection(asio::io_context &context, NetworkConnectionId connectionId) : NetworkConnection(context, connectionId) {
+    explicit TCPConnection(asio::io_context &context, NetworkQueue<NetworkMessage> &networkQueue, NetworkConnectionId connectionId) : NetworkConnection(context, networkQueue, connectionId) {
         networkBuffer.resize(NETWORK_BUFFER_SIZE);
     }
 
@@ -52,11 +54,17 @@ class TCPConnection : public NetworkConnection {
         auto handleReadFunction = [this] (const asio::error_code &errorCode, size_t bytes) {
             if (IsConnected()) {
                 logger->Debug("Reading from connection!");
-                std::cout << "[FROM CLIENT] ";
+                std::string message = "[FROM CLIENT] ";
+//                std::cout << "[FROM CLIENT] ";
                 for (int i = 0; i < bytes; i++) {
-                    std::cout << networkBuffer[i];
+                    message += networkBuffer[i];
+//                    std::cout << networkBuffer[i];
                 }
-                std::cout << std::endl;
+                message += "\n";
+//                std::cout << std::endl;
+                NetworkMessage networkMessage{.message = message};
+                networkQueue.PushBack(networkMessage);
+                std::cout << "Pushed message to queue:\n" << networkMessage.message << std::endl;
                 ReadNetworkMessages();
             } else {
                 logger->Warn("Connection closed!");
