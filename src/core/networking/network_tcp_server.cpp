@@ -28,7 +28,8 @@ void NetworkTCPServer::Start() {
 }
 
 void NetworkTCPServer::AcceptConnections() {
-    TCPConnection *tcpConnection = networkContext->NewTCPConnection(context, 0);
+//    TCPConnection *tcpConnection = networkContext->NewTCPConnection(context, 0);
+    TCPConnection *tcpConnection = new TCPConnection(context);
     auto handleAcceptFunction = [this, tcpConnection](const asio::error_code &errorCode) {
         if (!errorCode) {
             logger->Debug("New connection established!");

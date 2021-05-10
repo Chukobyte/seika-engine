@@ -10,7 +10,7 @@ class NetworkConnection {
     Logger *logger = nullptr;
     asio::ip::tcp::socket socket;
   public:
-    NetworkConnection(asio::io_context &context) : socket(context), logger(Logger::GetInstance()) {}
+    explicit NetworkConnection(asio::io_context &context) : socket(context), logger(Logger::GetInstance()) {}
 
     bool IsConnected() {
         return socket.is_open();
@@ -18,6 +18,10 @@ class NetworkConnection {
 
     asio::ip::tcp::socket& GetSocket() {
         return socket;
+    }
+
+    void Disconnect() {
+        socket.close();
     }
 
     virtual void Start() = 0;
@@ -28,7 +32,7 @@ class TCPConnection : public NetworkConnection {
     std::vector<char> networkBuffer;
     const unsigned int NETWORK_BUFFER_SIZE = 20 * 1024;
   public:
-    TCPConnection(asio::io_context &context) : NetworkConnection(context) {
+    explicit TCPConnection(asio::io_context &context) : NetworkConnection(context) {
         networkBuffer.resize(NETWORK_BUFFER_SIZE);
     }
 
@@ -60,10 +64,6 @@ class TCPConnection : public NetworkConnection {
     void Start() override {
         SendNetworkMessage("[FROM SERVER] Hello from server!\n");
         ReadNetworkMessages();
-    }
-
-    void Disconnect() {
-        socket.close();
     }
 };
 
