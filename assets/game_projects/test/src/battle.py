@@ -2,7 +2,7 @@ from roll.node import Node, Node2D
 from roll.math import Vector2
 from roll.physics import Collision
 from roll.input import Input
-from roll.network import Server
+from roll.network import Server, Client
 
 
 class Player:
@@ -101,6 +101,7 @@ class Battle(Node2D):
 
         self.server_started = True
         Server.start(port=55555)
+        # Client.connect(endpoint="127.0.0.1", port=55555)
 
     def _update_player_health_text(self, player: int) -> None:
         if player == Player.ONE:
@@ -113,13 +114,13 @@ class Battle(Node2D):
             )
 
     def _physics_process(self, delta_time: float) -> None:
-        if Input.is_action_just_pressed(action_name="quit"):
-            if self.server_started:
-                Server.stop()
-                self.server_started = False
-            else:
-                Server.start(port=55555)
-                self.server_started = True
+        # if Input.is_action_just_pressed(action_name="quit"):
+        #     if self.server_started:
+        #         Server.stop()
+        #         self.server_started = False
+        #     else:
+        #         Server.start(port=55555)
+        #         self.server_started = True
 
         # Update state
         self.play_state.player_two.frames_invincible_after_damage = max(0, self.play_state.player_two.frames_invincible_after_damage - 1)
@@ -133,7 +134,7 @@ class Battle(Node2D):
 
         # Save state
         self.play_state.save_state(player_one_node=self.player_one, player_two_node=self.player_two)
-        if self.play_state.current_frame % 60 == 0:
-            print(f"seconds = {self.play_state.current_frame / 60}, frame = {self.play_state.current_frame}")
+        # if self.play_state.current_frame % 60 == 0:
+        #     print(f"seconds = {self.play_state.current_frame / 60}, frame = {self.play_state.current_frame}")
         self.play_state.current_frame += 1
         # print(self.play_state)
