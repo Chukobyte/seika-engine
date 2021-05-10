@@ -1,8 +1,6 @@
 #include "network_tcp_server.h"
 #include "../global_dependencies.h"
 
-//std::vector<char> NetworkTCPServer::networkBuffer(20 * 1024);
-
 NetworkTCPServer::NetworkTCPServer(asio::io_context &context, int port) : context(context), acceptor(context, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port)) {
     logger = Logger::GetInstance();
     networkContext = GD::GetContainer()->networkContext;
@@ -19,7 +17,7 @@ void NetworkTCPServer::Start() {
 
     // TODO: should be place in main loop (without sleep of course)
     using namespace std::chrono_literals;
-    std::this_thread::sleep_for(10000ms);
+    std::this_thread::sleep_for(50000ms);
 
     context.stop();
     if (threadContext.joinable()) {
