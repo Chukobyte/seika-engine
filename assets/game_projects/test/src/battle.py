@@ -102,6 +102,7 @@ class Battle(Node2D):
         self.server_started = True
         Server.start(port=55555)
         # Client.connect(endpoint="127.0.0.1", port=55555)
+        self.time = 0
 
     def _update_player_health_text(self, player: int) -> None:
         if player == Player.ONE:
@@ -114,6 +115,9 @@ class Battle(Node2D):
             )
 
     def _physics_process(self, delta_time: float) -> None:
+        # if self.time % 60 == 0:
+        #     Client.send_message_to_server(message="Message from client!")
+        # self.time += 1
         # if Input.is_action_just_pressed(action_name="quit"):
         #     if self.server_started:
         #         Server.stop()

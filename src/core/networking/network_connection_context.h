@@ -31,6 +31,13 @@ class NetworkConnectionContext {
             tcpConnection->Disconnect();
         }
     }
+
+    void SendMessageToAllConnections(const std::string &message) {
+        for (auto &pair : networkConnections) {
+            TCPConnection *tcpConnection = pair.second;
+            tcpConnection->SendNetworkMessage(message);
+        }
+    }
 };
 
 

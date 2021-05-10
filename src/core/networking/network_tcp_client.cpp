@@ -44,3 +44,9 @@ void NetworkTCPClient::ProcessMessageQueue() {
         }
     }
 }
+
+void NetworkTCPClient::SendMessageToServer(const std::string &message) {
+    if (connection) {
+        connection->SendNetworkMessage(message);
+    }
+}

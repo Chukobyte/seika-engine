@@ -408,6 +408,10 @@ static PythonSource PYTHON_SOURCE_NETWORK_MODULE =
     "   def stop() -> None:\n"
     "       roll_engine_api.server_stop()\n"
     "\n"
+    "   @staticmethod\n"
+    "   def send_message_to_all_clients(message: str) -> None:\n"
+    "       roll_engine_api.server_send_message_to_all_clients(message=message)\n"
+    "\n"
     "class Client:\n"
     "   @staticmethod\n"
     "   def connect(endpoint: str, port: int) -> None:\n"
@@ -416,6 +420,10 @@ static PythonSource PYTHON_SOURCE_NETWORK_MODULE =
     "   @staticmethod\n"
     "   def disconnect() -> None:\n"
     "       roll_engine_api.client_disconnect()\n"
+    "\n"
+    "   @staticmethod\n"
+    "   def send_message_to_server(message: str) -> None:\n"
+    "       roll_engine_api.client_send_message_to_server(message=message)\n"
     "\n"
     "";
 

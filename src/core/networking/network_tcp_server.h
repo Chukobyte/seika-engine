@@ -26,6 +26,7 @@ class NetworkTCPServer {
 
     void ProcessMessageQueue();
 
+    void SendMessageToAllClients(const std::string &message);
 };
 
 #endif //NETWORK_TCP_SERVER_H

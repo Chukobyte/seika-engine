@@ -45,3 +45,6 @@ void NetworkTCPServer::AcceptConnections() {
     };
     acceptor.async_accept(tcpConnection->GetSocket(), handleAcceptFunction);
 }
+void NetworkTCPServer::SendMessageToAllClients(const std::string &message) {
+    networkConnectionContext->SendMessageToAllConnections(message);
+}

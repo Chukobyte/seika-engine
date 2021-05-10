@@ -44,6 +44,12 @@ class NetworkContext {
         server = nullptr;
     }
 
+    void ServerSendMessageToAllClients(const std::string &message) {
+        if (server) {
+            server->SendMessageToAllClients(message);
+        }
+    }
+
     void CreateClient(const std::string &ipAddress, int port) {
         if (!client) {
             client = new NetworkTCPClient(context, ipAddress, port);
@@ -72,6 +78,12 @@ class NetworkContext {
         DisconnectClient();
         delete client;
         client = nullptr;
+    }
+
+    void ClientSendMessageToServer(const std::string &message) {
+        if (client) {
+            client->SendMessageToServer(message);
+        }
     }
 
     void Poll() {

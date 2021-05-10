@@ -43,9 +43,11 @@ class PythonModules {
 
     static PyObject* server_start(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* server_stop(PyObject* self, PyObject* args);
+    static PyObject* server_send_message_to_all_clients(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* client_connect(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* client_disconnect(PyObject* self, PyObject* args);
+    static PyObject* client_send_message_to_server(PyObject* self, PyObject* args, PyObject* kwargs);
 };
 
 static struct PyMethodDef rollApiMethods[] = {
@@ -163,6 +165,10 @@ static struct PyMethodDef rollApiMethods[] = {
         "server_stop", PythonModules::server_stop,
         METH_VARARGS, "Stops a server."
     },
+    {
+            "server_send_message_to_all_clients", (PyCFunction) PythonModules::server_send_message_to_all_clients,
+            METH_VARARGS | METH_KEYWORDS, "Sends a message through the network to all clients."
+    },
     // CLIENT
     {
         "client_connect", (PyCFunction) PythonModules::client_connect,
@@ -171,6 +177,10 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "client_disconnect", PythonModules::client_disconnect,
         METH_VARARGS, "Disconnects a client from an endpoint."
+    },
+    {
+            "client_send_message_to_server", (PyCFunction) PythonModules::client_send_message_to_server,
+            METH_VARARGS | METH_KEYWORDS, "Sends a message through the network to the server."
     },
 
     {nullptr, nullptr, 0,nullptr },
@@ -204,6 +214,8 @@ static char *sceneTreeChangeSceneKWList[] = {"scene_path", nullptr};
 static char *serverStartKWList[] = {"port", nullptr};
 
 static char *clientConnectKWList[] = {"endpoint", "port", nullptr};
+
+static char *networkSendMessageKWList[] = {"message", nullptr};
 
 static PyObject* PyInit_rollEngineAPI(void) {
     return PyModule_Create(&rollEngineAPIModDef);

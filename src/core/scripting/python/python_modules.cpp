@@ -332,6 +332,16 @@ PyObject* PythonModules::server_stop(PyObject *self, PyObject *args) {
     Py_RETURN_NONE;
 }
 
+PyObject* PythonModules::server_send_message_to_all_clients(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static NetworkContext *networkContext = GD::GetContainer()->networkContext;
+    char *pyMessage;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "s", networkSendMessageKWList, &pyMessage)) {
+        networkContext->ServerSendMessageToAllClients(std::string(pyMessage));
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
 // CLIENT
 PyObject* PythonModules::client_connect(PyObject *self, PyObject *args, PyObject *kwargs) {
     static NetworkContext *networkContext = GD::GetContainer()->networkContext;
@@ -353,4 +363,14 @@ PyObject* PythonModules::client_disconnect(PyObject *self, PyObject *args) {
         networkContext->RemoveClient();
     }
     Py_RETURN_NONE;
+}
+
+PyObject* PythonModules::client_send_message_to_server(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static NetworkContext *networkContext = GD::GetContainer()->networkContext;
+    char *pyMessage;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "s", networkSendMessageKWList, &pyMessage)) {
+        networkContext->ClientSendMessageToServer(std::string(pyMessage));
+        Py_RETURN_NONE;
+    }
+    return nullptr;
 }

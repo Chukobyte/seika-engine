@@ -24,6 +24,8 @@ class NetworkTCPClient {
     void Disconnect();
 
     void ProcessMessageQueue();
+
+    void SendMessageToServer(const std::string &message);
 };
 
 
