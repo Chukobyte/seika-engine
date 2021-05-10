@@ -44,27 +44,18 @@ class TCPConnection : public NetworkConnection {
     }
 
     void SendNetworkMessage(const std::string &message)  {
-        auto handleWriteFunction = [this] (const asio::error_code &errorCode, size_t bytes) {
-            logger->Debug("Wrote stuff from connection!");
-        };
+        auto handleWriteFunction = [this] (const asio::error_code &errorCode, size_t bytes) {};
         asio::async_write(socket, asio::buffer(message), handleWriteFunction);
     }
 
     void ReadNetworkMessages() {
         auto handleReadFunction = [this] (const asio::error_code &errorCode, size_t bytes) {
             if (IsConnected()) {
-                logger->Debug("Reading from connection!");
-                std::string message = "[FROM CLIENT] ";
-//                std::cout << "[FROM CLIENT] ";
+                std::string message;
                 for (int i = 0; i < bytes; i++) {
                     message += networkBuffer[i];
-//                    std::cout << networkBuffer[i];
                 }
-                message += "\n";
-//                std::cout << std::endl;
-                NetworkMessage networkMessage{.message = message};
-                networkQueue.PushBack(networkMessage);
-                std::cout << "Pushed message to queue:\n" << networkMessage.message << std::endl;
+                networkQueue.PushBack(NetworkMessage{.message = message});
                 ReadNetworkMessages();
             } else {
                 logger->Warn("Connection closed!");

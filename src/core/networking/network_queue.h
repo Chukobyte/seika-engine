@@ -39,7 +39,7 @@ class NetworkQueue {
 
     T PopFront() {
         queueMutex.lock();
-        auto t = std::move(queue.back());
+        auto t = std::move(queue.front());
         queue.pop_front();
         queueMutex.unlock();
         return t;

@@ -28,6 +28,12 @@ class NetworkTCPClient {
             connection = nullptr;
         }
     }
+
+    void ProcessMessageQueue() {
+        while (!networkQueue.IsEmpty()) {
+            NetworkMessage networkMessage = networkQueue.PopFront();
+        }
+    }
 };
 
 

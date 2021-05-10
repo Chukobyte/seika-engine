@@ -25,6 +25,8 @@ class NetworkTCPServer {
 
     void Stop();
 
+    void ProcessMessageQueue();
+
 };
 
 #endif //NETWORK_TCP_SERVER_H

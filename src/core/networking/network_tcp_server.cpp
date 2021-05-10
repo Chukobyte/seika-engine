@@ -17,18 +17,15 @@ void NetworkTCPServer::Start() {
 
     AcceptConnections();
 
+    // TODO: should be place in main loop (without sleep of course)
     using namespace std::chrono_literals;
     std::this_thread::sleep_for(10000ms);
-
-    while (!networkQueue.IsEmpty()) {
-        NetworkMessage networkMessage = networkQueue.PopFront();
-        std::cout << "Queue Messages: \n" << networkMessage.message << std::endl;
-    }
 
     context.stop();
     if (threadContext.joinable()) {
         threadContext.join();
     }
+    ProcessMessageQueue();
 }
 
 void NetworkTCPServer::AcceptConnections() {
@@ -44,4 +41,13 @@ void NetworkTCPServer::AcceptConnections() {
         AcceptConnections();
     };
     acceptor.async_accept(tcpConnection->GetSocket(), handleAcceptFunction);
+}
+
+void NetworkTCPServer::ProcessMessageQueue() {
+    while (!networkQueue.IsEmpty()) {
+        NetworkMessage networkMessage = networkQueue.PopFront();
+        if (!networkMessage.message.empty() && networkMessage.message != "\n" && networkMessage.message != "\r\n" && networkMessage.message != " ") {
+            std::cout << "Queued Message: \n'" << networkMessage.message << "'\n" << std::endl;
+        }
+    }
 }
