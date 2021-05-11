@@ -8,7 +8,7 @@ NetworkTCPServer::NetworkTCPServer(asio::io_context &context, int port) : contex
 }
 
 void NetworkTCPServer::Start() {
-    logger->Debug("Server started!");
+//    logger->Debug("Server started!");
 
     AcceptConnections();
 }
