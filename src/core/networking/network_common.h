@@ -21,4 +21,6 @@
 #include <asio/ts/buffer.hpp>
 #include <asio/ts/internet.hpp>
 
+#include "../utils/logger.h"
+
 #endif //NETWORK_COMMON_H

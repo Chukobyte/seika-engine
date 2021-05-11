@@ -2,7 +2,7 @@
 #define SCRIPT_CONTEXT_H
 
 #include "../ecs/entity/entity.h"
-#include "../signal.h"
+#include "../signal_arguments.h"
 
 class ScriptContext {
   public:

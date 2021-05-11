@@ -1,6 +1,6 @@
 {
    "game_title": "Fighting Game Proto",
-   "initial_scene": "assets/game_projects/test/scenes/init.json",
+   "initial_scene": "assets/game_projects/network_test/scenes/init.json",
    "base_resolution": {
       "width": 800,
       "height": 600

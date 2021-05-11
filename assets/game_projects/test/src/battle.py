@@ -2,6 +2,7 @@ from roll.node import Node, Node2D
 from roll.math import Vector2
 from roll.physics import Collision
 from roll.input import Input
+from roll.network import Server, Client
 
 
 class Player:
@@ -22,7 +23,6 @@ class PlayerState:
             "health": self.health,
             "position": self.position,
             "frames_invincible_after_damage": self.frames_invincible_after_damage,
-
         }
         return f"{data}"
 
@@ -37,7 +37,9 @@ class PlayerState:
 
 
 class FrameState:
-    def __init__(self, frame, player_one_state: PlayerState, player_two_state: PlayerState) -> None:
+    def __init__(
+        self, frame, player_one_state: PlayerState, player_two_state: PlayerState
+    ) -> None:
         self.frame = frame
         self.player_states = {
             Player.ONE: player_one_state,
@@ -45,17 +47,11 @@ class FrameState:
         }
 
     def __str__(self):
-        data = {
-            "frame": self.frame,
-            "player_states": self.player_states
-        }
+        data = {"frame": self.frame, "player_states": self.player_states}
         return f"{data}"
 
     def __repr__(self):
-        data = {
-            "frame": self.frame,
-            "player_states": self.player_states
-        }
+        data = {"frame": self.frame, "player_states": self.player_states}
         return f"{data}"
 
 
@@ -98,6 +94,11 @@ class Battle(Node2D):
         self._update_player_health_text(player=Player.ONE)
         self._update_player_health_text(player=Player.TWO)
 
+        self.server_started = True
+        Server.start(port=55555)
+        # Client.connect(endpoint="127.0.0.1", port=55555)
+        self.time = 0
+
     def _update_player_health_text(self, player: int) -> None:
         if player == Player.ONE:
             self.player_one_health_text_label.text = (
@@ -109,17 +110,37 @@ class Battle(Node2D):
             )
 
     def _physics_process(self, delta_time: float) -> None:
+        # if self.time % 60 == 0:
+        #     Client.send_message_to_server(message="Message from client!")
+        # self.time += 1
+        # if Input.is_action_just_pressed(action_name="quit"):
+        #     if self.server_started:
+        #         Server.stop()
+        #         self.server_started = False
+        #     else:
+        #         Server.start(port=55555)
+        #         self.server_started = True
+
         # Update state
-        self.play_state.player_two.frames_invincible_after_damage = max(0, self.play_state.player_two.frames_invincible_after_damage - 1)
+        self.play_state.player_two.frames_invincible_after_damage = max(
+            0, self.play_state.player_two.frames_invincible_after_damage - 1
+        )
 
         for collided_node in Collision.get_collided_nodes(self.player_one):
-            if collided_node == self.player_two and self.play_state.player_two.frames_invincible_after_damage <= 0:
+            if (
+                collided_node == self.player_two
+                and self.play_state.player_two.frames_invincible_after_damage <= 0
+            ):
                 if Input.is_action_just_pressed(action_name="weak_punch"):
                     self.play_state.player_two.health -= 1
                     self.play_state.player_two.frames_invincible_after_damage = 60
                     self._update_player_health_text(player=Player.TWO)
 
         # Save state
-        self.play_state.save_state(player_one_node=self.player_one, player_two_node=self.player_two)
+        self.play_state.save_state(
+            player_one_node=self.player_one, player_two_node=self.player_two
+        )
+        # if self.play_state.current_frame % 60 == 0:
+        #     print(f"seconds = {self.play_state.current_frame / 60}, frame = {self.play_state.current_frame}")
         self.play_state.current_frame += 1
         # print(self.play_state)

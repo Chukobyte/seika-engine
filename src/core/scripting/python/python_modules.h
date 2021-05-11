@@ -22,6 +22,9 @@ class PythonModules {
 
     static PyObject* node_get_node(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_queue_deletion(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* node_signal_create(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* node_signal_connect(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* node_signal_emit(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* node2D_get_position(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node2D_set_position(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -40,6 +43,16 @@ class PythonModules {
 
     static PyObject* scene_tree_change_scene(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* scene_tree_get_current_scene_node(PyObject* self, PyObject* args);
+
+    static PyObject* network_is_server(PyObject* self, PyObject* args);
+
+    static PyObject* server_start(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* server_stop(PyObject* self, PyObject* args);
+    static PyObject* server_send_message_to_all_clients(PyObject* self, PyObject* args, PyObject* kwargs);
+
+    static PyObject* client_connect(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* client_disconnect(PyObject* self, PyObject* args);
+    static PyObject* client_send_message_to_server(PyObject* self, PyObject* args, PyObject* kwargs);
 };
 
 static struct PyMethodDef rollApiMethods[] = {
@@ -90,6 +103,18 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "node_queue_deletion", (PyCFunction) PythonModules::node_queue_deletion,
         METH_VARARGS | METH_KEYWORDS, "Queues node for deletion."
+    },
+    {
+        "node_signal_create", (PyCFunction) PythonModules::node_signal_create,
+        METH_VARARGS | METH_KEYWORDS, "Creates a signal."
+    },
+    {
+        "node_signal_connect", (PyCFunction) PythonModules::node_signal_connect,
+        METH_VARARGS | METH_KEYWORDS, "Connects to a signal."
+    },
+    {
+        "node_signal_emit", (PyCFunction) PythonModules::node_signal_emit,
+        METH_VARARGS | METH_KEYWORDS, "Emits a signal."
     },
     // NODE2D
     {
@@ -148,6 +173,37 @@ static struct PyMethodDef rollApiMethods[] = {
         "scene_tree_get_current_scene_node", PythonModules::scene_tree_get_current_scene_node,
         METH_VARARGS, "Gets current active scene node."
     },
+    // NETWORK
+    {
+        "network_is_server", PythonModules::network_is_server,
+        METH_VARARGS, "Checks if network is initialized as a server."
+    },
+    // SERVER
+    {
+        "server_start", (PyCFunction) PythonModules::server_start,
+        METH_VARARGS | METH_KEYWORDS, "Starts a server."
+    },
+    {
+        "server_stop", PythonModules::server_stop,
+        METH_VARARGS, "Stops a server."
+    },
+    {
+        "server_send_message_to_all_clients", (PyCFunction) PythonModules::server_send_message_to_all_clients,
+        METH_VARARGS | METH_KEYWORDS, "Sends a message through the network to all clients."
+    },
+    // CLIENT
+    {
+        "client_connect", (PyCFunction) PythonModules::client_connect,
+        METH_VARARGS | METH_KEYWORDS, "Connects a client to an endpoint."
+    },
+    {
+        "client_disconnect", PythonModules::client_disconnect,
+        METH_VARARGS, "Disconnects a client from an endpoint."
+    },
+    {
+        "client_send_message_to_server", (PyCFunction) PythonModules::client_send_message_to_server,
+        METH_VARARGS | METH_KEYWORDS, "Sends a message through the network to the server."
+    },
 
     {nullptr, nullptr, 0,nullptr },
 };
@@ -167,6 +223,9 @@ static char *cameraVector2SetKWList[] = {"x", "y", nullptr};
 
 static char *nodeGetEntityKWList[] = {"entity_id", nullptr};
 static char *nodeGetNodeKWList[] = {"name", nullptr};
+static char *nodeSignalCreateKWList[] = {"entity_id", "signal_id", nullptr};
+static char *nodeSignalConnectKWList[] = {"entity_id", "signal_id", "listener_entity_id", "function_name", nullptr};
+static char *nodeSignalEmitKWList[] = {"entity_id", "signal_id", "args", nullptr};
 
 static char *node2DUpdatePositionKWList[] = {"entity_id", "x", "y", nullptr};
 
@@ -176,6 +235,12 @@ static char *inputAddActionKWList[] = {"action_name", "value", nullptr};
 static char *inputActionCheckKWList[] = {"action_name", nullptr};
 
 static char *sceneTreeChangeSceneKWList[] = {"scene_path", nullptr};
+
+static char *serverStartKWList[] = {"port", nullptr};
+
+static char *clientConnectKWList[] = {"endpoint", "port", nullptr};
+
+static char *networkSendMessageKWList[] = {"message", nullptr};
 
 static PyObject* PyInit_rollEngineAPI(void) {
     return PyModule_Create(&rollEngineAPIModDef);

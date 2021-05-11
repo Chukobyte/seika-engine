@@ -26,6 +26,7 @@ Game::Game() {
     renderContext = GD::GetContainer()->renderContext;
     renderer = GD::GetContainer()->renderer;
     inputManager = InputManager::GetInstance();
+    networkContext = GD::GetContainer()->networkContext;
 }
 
 void Game::Initialize() {
@@ -37,6 +38,10 @@ void Game::Initialize() {
     inputManager->LoadProjectInputActions();
     InitializeECS();
     engineContext->SetRunning(true);
+
+    // TODO: temp server
+//    networkContext->CreateServer(55555);
+//    networkContext->StartServer();
 }
 
 void Game::InitializeSDL() {
@@ -163,6 +168,8 @@ void Game::Update() {
     if (timeToWait > 0 && timeToWait <= FRAME_TARGET_TIME) {
         SDL_Delay(timeToWait);
     }
+
+    networkContext->Poll();
 
     FixedTimeStep();
 

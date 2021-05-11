@@ -5,6 +5,7 @@
 #include "../../ecs/component/components/transform2D_component.h"
 #include "../../input/input_manager.h"
 #include "../../audio/audio_helper.h"
+#include "../../signal_manager.h"
 
 // ENGINE
 PyObject* PythonModules::engine_exit(PyObject *self, PyObject *args, PyObject *kwargs) {
@@ -122,6 +123,42 @@ PyObject* PythonModules::node_queue_deletion(PyObject *self, PyObject *args, PyO
     Entity entity;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
         entityComponentOrchestrator->QueueEntityForDeletion(entity);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::node_signal_connect(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static SignalManager *signalManager = SignalManager::GetInstance();
+    Entity entity;
+    char *pySignalId;
+    Entity subscriberEntity;
+    char *pyFunctionName;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "isis", nodeSignalConnectKWList, &entity, &pySignalId, &subscriberEntity, &pyFunctionName)) {
+        signalManager->SubscribeToSignal(entity, std::string(pySignalId), subscriberEntity, std::string(pyFunctionName));
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::node_signal_create(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static SignalManager *signalManager = SignalManager::GetInstance();
+    Entity entity;
+    char *pySignalId;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "is", nodeSignalCreateKWList, &entity, &pySignalId)) {
+        signalManager->CreateSignal(entity, std::string(pySignalId));
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::node_signal_emit(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static SignalManager *signalManager = SignalManager::GetInstance();
+    Entity entity;
+    char *pySignalId;
+    PyObject *pyObject = nullptr;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "isO", nodeSignalEmitKWList, &entity, &pySignalId, &pyObject)) {
+        signalManager->EmitSignal(entity, std::string(pySignalId), SignalArguments{.pyArgs = pyObject});
         Py_RETURN_NONE;
     }
     return nullptr;
@@ -308,4 +345,78 @@ PyObject* PythonModules::scene_tree_get_current_scene_node(PyObject *self, PyObj
     NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(sceneContext->currentSceneEntity);
     const std::string &nodeTypeString = NodeTypeHelper::GetNodeTypeString(nodeComponent.type);
     return Py_BuildValue("(si)", nodeTypeString.c_str(), sceneContext->currentSceneEntity);
+}
+
+// NETWORK
+PyObject* PythonModules::network_is_server(PyObject *self, PyObject *args) {
+    static NetworkContext *networkContext = GD::GetContainer()->networkContext;
+    if (networkContext->DoesServerExists()) {
+        Py_RETURN_TRUE;
+    }
+    Py_RETURN_FALSE;
+}
+
+// SERVER
+PyObject* PythonModules::server_start(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static NetworkContext *networkContext = GD::GetContainer()->networkContext;
+    int port;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", serverStartKWList, &port)) {
+        if (!networkContext->DoesServerExists()) {
+            networkContext->CreateServer(port);
+            networkContext->StartServer();
+        }
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::server_stop(PyObject *self, PyObject *args) {
+    static NetworkContext *networkContext = GD::GetContainer()->networkContext;
+    if (networkContext->DoesServerExists()) {
+        networkContext->RemoveServer();
+    }
+    Py_RETURN_NONE;
+}
+
+PyObject* PythonModules::server_send_message_to_all_clients(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static NetworkContext *networkContext = GD::GetContainer()->networkContext;
+    char *pyMessage;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "s", networkSendMessageKWList, &pyMessage)) {
+        networkContext->ServerSendMessageToAllClients(std::string(pyMessage));
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+// CLIENT
+PyObject* PythonModules::client_connect(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static NetworkContext *networkContext = GD::GetContainer()->networkContext;
+    char *pyEndpoint;
+    int port;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "si", clientConnectKWList, &pyEndpoint, &port)) {
+        if (!networkContext->DoesClientExists()) {
+            networkContext->CreateClient(std::string(pyEndpoint), port);
+            networkContext->ConnectClient();
+        }
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::client_disconnect(PyObject *self, PyObject *args) {
+    static NetworkContext *networkContext = GD::GetContainer()->networkContext;
+    if (networkContext->DoesClientExists()) {
+        networkContext->RemoveClient();
+    }
+    Py_RETURN_NONE;
+}
+
+PyObject* PythonModules::client_send_message_to_server(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static NetworkContext *networkContext = GD::GetContainer()->networkContext;
+    char *pyMessage;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "s", networkSendMessageKWList, &pyMessage)) {
+        networkContext->ClientSendMessageToServer(std::string(pyMessage));
+        Py_RETURN_NONE;
+    }
+    return nullptr;
 }

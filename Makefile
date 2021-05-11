@@ -1,7 +1,7 @@
 CC := gcc # C Compiler
 CXX := g++ # C++ compiler
 I_FLAGS := -I"./include" -I"${SDL2_HOME}/include" -I"${PYTHON_HOME}/include"
-L_FLAGS := -lmingw32 -lSDL2main -lSDL2_mixer -lSDL2 -lpython37 -lfreetype -lws2_32 -static-libgcc -static-libstdc++
+L_FLAGS := -lmingw32 -lSDL2main -lSDL2_mixer -lSDL2 -lpython37 -lfreetype -lwsock32 -lws2_32 -static-libgcc -static-libstdc++
 C_FLAGS := -w -std=c++14 -Wfatal-errors
 LIBRARIES := -L"${SDL2_HOME}/lib" -L"${PYTHON_HOME}/libs" -L"${FREETYPE_HOME}/lib"
 
@@ -9,13 +9,13 @@ PROJECT_NAME := roll_back_engine
 BUILD_OBJECT := $(PROJECT_NAME).exe
 TEST_BUILD_OBJECT := test_$(PROJECT_NAME).exe
 
-SRC = $(wildcard src/main.cpp src/core/*.cpp src/math/*.cpp src/core/utils/*.cpp src/core/rendering/*.cpp src/core/rendering/shader/*.cpp src/core/input/*.cpp src/core/timer/*.cpp src/core/scripting/python/*.cpp src/core/ecs/*.cpp include/stb_image/*.cpp)
+SRC = $(wildcard src/main.cpp src/core/*.cpp src/math/*.cpp src/core/utils/*.cpp src/core/rendering/*.cpp src/core/rendering/shader/*.cpp src/core/input/*.cpp src/core/timer/*.cpp src/core/scripting/python/*.cpp src/core/ecs/*.cpp src/core/networking/*.cpp include/stb_image/*.cpp)
 SRC_C = $(wildcard lib/glad.c)
 
 OBJ = $(SRC:.cpp=.o)
 OBJ_C = $(SRC_C:.c=.o)
 
-TEST_SRC = $(wildcard src/test/*.cpp src/test/unit/*.cpp src/core/*.cpp src/math/*.cpp src/core/utils/*.cpp src/core/rendering/*.cpp src/core/rendering/shader/*.cpp src/core/input/*.cpp src/core/timer/*.cpp src/core/scripting/python/*.cpp src/core/ecs/*.cpp include/stb_image/*.cpp)
+TEST_SRC = $(wildcard src/test/*.cpp src/test/unit/*.cpp src/core/*.cpp src/math/*.cpp src/core/utils/*.cpp src/core/rendering/*.cpp src/core/rendering/shader/*.cpp src/core/input/*.cpp src/core/timer/*.cpp src/core/scripting/python/*.cpp src/core/ecs/*.cpp src/core/networking/*.cpp include/stb_image/*.cpp)
 TEST_OBJ = $(TEST_SRC:.cpp=.o)
 
 EXPORT_PACKAGE_DIR := export_package
@@ -28,11 +28,11 @@ all: clean format build
 
 %.o: %.cpp
 	@echo "Compiling " $< " into " $@
-	@$(CXX) -c $(C_FLAGS) $< -o $@ $(I_FLAGS)
+	@$(CXX) -c $(C_FLAGS) $< -o $@ $(I_FLAGS) -DHAVE_SNPRINTF=1
 
 %.o: %.c
 	@echo "Compiling " $< " into " $@
-	@$(CC) -c $(C_FLAGS) $< -o $@ $(I_FLAGS)
+	@$(CC) -c $(C_FLAGS) $< -o $@ $(I_FLAGS) -DHAVE_SNPRINTF=1
 
 build: $(OBJ) $(OBJ_C)
 	@echo "Linking " $@
