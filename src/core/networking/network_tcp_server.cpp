@@ -30,11 +30,10 @@ void NetworkTCPServer::ProcessMessageQueue() {
 }
 
 void NetworkTCPServer::AcceptConnections() {
-    TCPConnection *tcpConnection = networkConnectionContext->NewTCPConnection(context, networkQueue, NetworkConnectionHostType_SERVER, 0);
+    static int connectionId = 0;
+    TCPConnection *tcpConnection = networkConnectionContext->NewTCPConnection(context, networkQueue, NetworkConnectionHostType_SERVER, connectionId++);
     auto handleAcceptFunction = [this, tcpConnection](const asio::error_code &errorCode) {
         if (!errorCode) {
-//            logger->Debug("New connection established!");
-//            tcpConnection->SendNetworkMessage("[FROM SERVER] Hello from server!");
             tcpConnection->StartReadingNetworkMessages();
             SignalManager::GetInstance()->EmitSignal(NO_ENTITY, "peer_connected");
         } else {

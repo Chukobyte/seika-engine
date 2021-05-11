@@ -1,5 +1,6 @@
 #include "network_tcp_client.h"
 #include "../global_dependencies.h"
+#include "../signal_manager.h"
 
 NetworkTCPClient::NetworkTCPClient(asio::io_context &context, const std::string &ipAddress, int port) : context(context), socket(context), ipAddress(ipAddress), port(port) {
     networkConnectionContext = GD::GetContainer()->networkConnectionContext;
@@ -18,10 +19,12 @@ void NetworkTCPClient::Connect() {
         connection->GetSocket().connect(endpoint, errorCode);
 
         if (!errorCode) {
-            logger->Debug("Connected to server successfully!");
+//            logger->Debug("Connected to server successfully!");
+            SignalManager::GetInstance()->EmitSignal(NO_ENTITY, "connected_to_server");
             connection->StartReadingNetworkMessages();
         } else {
-            logger->Error("Client failed to connect!\n" + errorCode.message());
+            SignalManager::GetInstance()->EmitSignal(NO_ENTITY, "connection_to_server_failed");
+//            logger->Error("Client failed to connect!\n" + errorCode.message());
         }
 
     }
