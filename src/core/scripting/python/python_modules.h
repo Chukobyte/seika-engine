@@ -22,6 +22,9 @@ class PythonModules {
 
     static PyObject* node_get_node(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_queue_deletion(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* node_signal_create(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* node_signal_connect(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* node_signal_emit(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* node2D_get_position(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node2D_set_position(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -98,6 +101,18 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "node_queue_deletion", (PyCFunction) PythonModules::node_queue_deletion,
         METH_VARARGS | METH_KEYWORDS, "Queues node for deletion."
+    },
+    {
+        "node_signal_create", (PyCFunction) PythonModules::node_signal_create,
+        METH_VARARGS | METH_KEYWORDS, "Creates a signal."
+    },
+    {
+        "node_signal_connect", (PyCFunction) PythonModules::node_signal_connect,
+        METH_VARARGS | METH_KEYWORDS, "Connects to a signal."
+    },
+    {
+        "node_signal_emit", (PyCFunction) PythonModules::node_signal_emit,
+        METH_VARARGS | METH_KEYWORDS, "Emits a signal."
     },
     // NODE2D
     {
@@ -201,6 +216,9 @@ static char *cameraVector2SetKWList[] = {"x", "y", nullptr};
 
 static char *nodeGetEntityKWList[] = {"entity_id", nullptr};
 static char *nodeGetNodeKWList[] = {"name", nullptr};
+static char *nodeSignalCreateKWList[] = {"entity_id", "signal_id", nullptr};
+static char *nodeSignalConnectKWList[] = {"entity_id", "signal_id", "listener_entity_id", "function_name", nullptr};
+static char *nodeSignalEmitKWList[] = {"entity_id", "signal_id", "args", nullptr};
 
 static char *node2DUpdatePositionKWList[] = {"entity_id", "x", "y", nullptr};
 

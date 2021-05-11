@@ -5,7 +5,7 @@
 #include "../../ecs/component/components/transform2D_component.h"
 #include "../../input/input_manager.h"
 #include "../../audio/audio_helper.h"
-//#include "../../signal_manager.h"
+#include "../../signal_manager.h"
 
 // ENGINE
 PyObject* PythonModules::engine_exit(PyObject *self, PyObject *args, PyObject *kwargs) {
@@ -123,6 +123,42 @@ PyObject* PythonModules::node_queue_deletion(PyObject *self, PyObject *args, PyO
     Entity entity;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
         entityComponentOrchestrator->QueueEntityForDeletion(entity);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::node_signal_create(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static SignalManager *signalManager = SignalManager::GetInstance();
+    Entity entity;
+    char *pySignalId;
+    PyObject *pyObject = nullptr;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "isO", nodeSignalCreateKWList, &entity, &pySignalId, &pyObject)) {
+        signalManager->EmitSignal(entity, std::string(pySignalId), SignalArguments{.pyArgs = pyObject});
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::node_signal_connect(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static SignalManager *signalManager = SignalManager::GetInstance();
+    Entity entity;
+    char *pySignalId;
+    Entity subscriberEntity;
+    char *pyFunctionName;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "isis", nodeSignalConnectKWList, &entity, &pySignalId, &subscriberEntity, &pyFunctionName)) {
+        signalManager->SubscribeToSignal(entity, std::string(pySignalId), subscriberEntity, std::string(pyFunctionName));
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::node_signal_emit(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static SignalManager *signalManager = SignalManager::GetInstance();
+    Entity entity;
+    char *pySignalId;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "is", nodeSignalEmitKWList, &entity, &pySignalId)) {
+        signalManager->CreateSignal(entity, std::string(pySignalId));
         Py_RETURN_NONE;
     }
     return nullptr;

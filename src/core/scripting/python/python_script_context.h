@@ -55,7 +55,12 @@ class PythonScriptContext : public ScriptContext {
         PyErr_Print();
     }
 
-    void ReceiveSubscribedSignal(Entity subscriberEntity, const std::string &subscriberFunctionName, SignalArguments args) override {}
+    void ReceiveSubscribedSignal(Entity subscriberEntity, const std::string &subscriberFunctionName, SignalArguments args) override {
+        if (!args.pyArgs) {
+            args.pyArgs = Py_BuildValue("[]");
+        }
+        CPyObject processCallValue = PyObject_CallMethod(pythonCache->GetClassInstance(subscriberEntity), subscriberFunctionName.c_str(), "O", args.pyArgs);
+    }
 
     void Destroy() override {}
 };
