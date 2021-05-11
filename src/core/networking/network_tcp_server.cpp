@@ -24,7 +24,7 @@ void NetworkTCPServer::ProcessMessageQueue() {
         NetworkMessage networkMessage = networkQueue.PopFront();
         if (!networkMessage.message.empty() && networkMessage.message != "\n" && networkMessage.message != "\r\n" && networkMessage.message != " ") {
 //            std::cout << "[SERVER] Queued Message: '" << networkMessage.message << "'\n" << std::endl;
-            SignalManager::GetInstance()->EmitSignal(NO_ENTITY, "network_message_received", PythonSignalArguments::GetStringSignalArgument(networkMessage.message));
+            SignalManager::GetInstance()->EmitSignal(NO_ENTITY, "message_received", PythonSignalArguments::GetStringSignalArgument(networkMessage.message));
         }
     }
 
@@ -38,7 +38,7 @@ void NetworkTCPServer::AcceptConnections() {
 //            logger->Debug("New connection established!");
 //            tcpConnection->SendNetworkMessage("[FROM SERVER] Hello from server!");
             tcpConnection->StartReadingNetworkMessages();
-            SignalManager::GetInstance()->EmitSignal(NO_ENTITY, "network_peer_connected");
+            SignalManager::GetInstance()->EmitSignal(NO_ENTITY, "peer_connected");
         } else {
             logger->Error("Error establishing connection: " + errorCode.message() + "\nError Code: " + std::to_string(errorCode.value()));
             networkConnectionContext->RemoveTCPConnection(tcpConnection);
