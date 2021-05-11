@@ -28,11 +28,11 @@ all: clean format build
 
 %.o: %.cpp
 	@echo "Compiling " $< " into " $@
-	@$(CXX) -c $(C_FLAGS) $< -o $@ $(I_FLAGS)
+	@$(CXX) -c $(C_FLAGS) $< -o $@ $(I_FLAGS) -DHAVE_SNPRINTF=1
 
 %.o: %.c
 	@echo "Compiling " $< " into " $@
-	@$(CC) -c $(C_FLAGS) $< -o $@ $(I_FLAGS)
+	@$(CC) -c $(C_FLAGS) $< -o $@ $(I_FLAGS) -DHAVE_SNPRINTF=1
 
 build: $(OBJ) $(OBJ_C)
 	@echo "Linking " $@

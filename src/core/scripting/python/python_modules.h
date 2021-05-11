@@ -166,8 +166,8 @@ static struct PyMethodDef rollApiMethods[] = {
         METH_VARARGS, "Stops a server."
     },
     {
-            "server_send_message_to_all_clients", (PyCFunction) PythonModules::server_send_message_to_all_clients,
-            METH_VARARGS | METH_KEYWORDS, "Sends a message through the network to all clients."
+        "server_send_message_to_all_clients", (PyCFunction) PythonModules::server_send_message_to_all_clients,
+        METH_VARARGS | METH_KEYWORDS, "Sends a message through the network to all clients."
     },
     // CLIENT
     {
@@ -179,8 +179,8 @@ static struct PyMethodDef rollApiMethods[] = {
         METH_VARARGS, "Disconnects a client from an endpoint."
     },
     {
-            "client_send_message_to_server", (PyCFunction) PythonModules::client_send_message_to_server,
-            METH_VARARGS | METH_KEYWORDS, "Sends a message through the network to the server."
+        "client_send_message_to_server", (PyCFunction) PythonModules::client_send_message_to_server,
+        METH_VARARGS | METH_KEYWORDS, "Sends a message through the network to the server."
     },
 
     {nullptr, nullptr, 0,nullptr },
