@@ -1,6 +1,6 @@
 # Roll Back Engine
 
-An engine that's used for a work in progress fighting game.
+A 2D game engine that's used for a work in progress fighting game.  Windows only for now, but may support other platforms in the future.  Documentation can be found [here](https://chukobyte.github.io/roll-back-engine/).
 
 ### Dependencies & Tools
 
@@ -12,7 +12,9 @@ An engine that's used for a work in progress fighting game.
 
 ### Instructions
 
-Must install make in order to run commands.
+1. Must install Make in order to run commands.
+
+2. Dependent DLLs must be available before running the game.  Download [here](https://www.dropbox.com/s/0439l1btc76wbef/rbe_windows_dependencies.zip?dl=1) and extract in the project's root directory.
 
 ##### Build and Compile Game
 
