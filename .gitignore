@@ -5,6 +5,7 @@
 
 temp
 export_package
+site
 
 __pycache__
 venv

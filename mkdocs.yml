@@ -1,0 +1,9 @@
+site_name: Roll Back Engine
+
+nav:
+  - General:
+    - Home: index.md
+  - Python API:
+      - Index: python_api/index.md
+
+theme: readthedocs
