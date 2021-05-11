@@ -1,13 +1,30 @@
-from roll.node import Node
+from roll.node import Node2D
+from roll.math import Vector2
 from roll.input import Input
 from roll.engine import Engine
 from roll.network import Server, Client, Network
 
-IS_SERVER = False
+IS_SERVER = True
 PORT = 55555
 HOST_ENDPOINT = "127.0.0.1"
 
-class Main(Node):
+class InputBuffer:
+    class Value:
+        LEFT = "l"
+        RIGHT = "r"
+        UP = "u"
+        DOWN = "d"
+
+    def __init__(self):
+        self.inputs = []
+
+    def add_input(self, input: str) -> None:
+        self.inputs.append(input)
+
+    def is_empty(self) -> bool:
+        return len(self.inputs) == 0
+
+class Main(Node2D):
     def _start(self) -> None:
         self._setup_connections()
         if IS_SERVER:
@@ -26,6 +43,30 @@ class Main(Node):
     def _physics_process(self, delta_time: float) -> None:
         if Input.is_action_just_pressed(action_name="quit"):
             Engine.exit()
+
+        input_buffer = self._process_inputs()
+        if not input_buffer.is_empty():
+            if IS_SERVER:
+                Server.send_message_to_all_clients(message=f"input = {input_buffer.inputs}, position = {self.position}")
+            else:
+                Client.send_message_to_server(message=f"input = {input_buffer.inputs}, position = {self.position}")
+
+
+    def _process_inputs(self) -> InputBuffer:
+        input_buffer = InputBuffer()
+        if Input.is_action_just_pressed(action_name="left"):
+            input_buffer.add_input(input=InputBuffer.Value.LEFT)
+            self.add_to_position(Vector2.LEFT())
+        elif Input.is_action_just_pressed(action_name="right"):
+            input_buffer.add_input(input=InputBuffer.Value.RIGHT)
+            self.add_to_position(Vector2.RIGHT())
+        if Input.is_action_just_pressed(action_name="up"):
+            input_buffer.add_input(input=InputBuffer.Value.UP)
+            self.add_to_position(Vector2.UP())
+        elif Input.is_action_just_pressed(action_name="down"):
+            input_buffer.add_input(input=InputBuffer.Value.DOWN)
+            self.add_to_position(Vector2.DOWN())
+        return input_buffer
 
     def _on_Network_peer_connected(self, args: list) -> None:
         print("New connection established!")
