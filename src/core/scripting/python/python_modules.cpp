@@ -128,18 +128,6 @@ PyObject* PythonModules::node_queue_deletion(PyObject *self, PyObject *args, PyO
     return nullptr;
 }
 
-PyObject* PythonModules::node_signal_create(PyObject *self, PyObject *args, PyObject *kwargs) {
-    static SignalManager *signalManager = SignalManager::GetInstance();
-    Entity entity;
-    char *pySignalId;
-    PyObject *pyObject = nullptr;
-    if (PyArg_ParseTupleAndKeywords(args, kwargs, "isO", nodeSignalCreateKWList, &entity, &pySignalId, &pyObject)) {
-        signalManager->EmitSignal(entity, std::string(pySignalId), SignalArguments{.pyArgs = pyObject});
-        Py_RETURN_NONE;
-    }
-    return nullptr;
-}
-
 PyObject* PythonModules::node_signal_connect(PyObject *self, PyObject *args, PyObject *kwargs) {
     static SignalManager *signalManager = SignalManager::GetInstance();
     Entity entity;
@@ -153,12 +141,24 @@ PyObject* PythonModules::node_signal_connect(PyObject *self, PyObject *args, PyO
     return nullptr;
 }
 
+PyObject* PythonModules::node_signal_create(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static SignalManager *signalManager = SignalManager::GetInstance();
+    Entity entity;
+    char *pySignalId;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "is", nodeSignalCreateKWList, &entity, &pySignalId)) {
+        signalManager->CreateSignal(entity, std::string(pySignalId));
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
 PyObject* PythonModules::node_signal_emit(PyObject *self, PyObject *args, PyObject *kwargs) {
     static SignalManager *signalManager = SignalManager::GetInstance();
     Entity entity;
     char *pySignalId;
-    if (PyArg_ParseTupleAndKeywords(args, kwargs, "is", nodeSignalEmitKWList, &entity, &pySignalId)) {
-        signalManager->CreateSignal(entity, std::string(pySignalId));
+    PyObject *pyObject = nullptr;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "isO", nodeSignalEmitKWList, &entity, &pySignalId, &pyObject)) {
+        signalManager->EmitSignal(entity, std::string(pySignalId), SignalArguments{.pyArgs = pyObject});
         Py_RETURN_NONE;
     }
     return nullptr;
