@@ -11,6 +11,7 @@ class Main(Node):
         self.create_signal(signal_id="hello_signal")
         self.connect_signal(signal_id="hello_signal", listener_node=self, function_name="_on_Main_hello_signal")
         Network.connect_signal(signal_id="network_peer_connected", listener_node=self, function_name="_on_Network_network_peer_connected")
+        Network.connect_signal(signal_id="network_peer_disconnected", listener_node=self, function_name="_on_Network_network_peer_disconnected")
         Server.start(port=55555)
 
     def _physics_process(self, delta_time: float) -> None:
@@ -25,3 +26,6 @@ class Main(Node):
 
     def _on_Network_network_peer_connected(self, args: list) -> None:
         print("New connection established!")
+
+    def _on_Network_network_peer_disconnected(self, args: list) -> None:
+        print("A connection was disconnected!")

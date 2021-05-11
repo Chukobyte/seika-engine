@@ -60,26 +60,7 @@ class TCPConnection : public NetworkConnection {
         asio::async_write(socket, asio::buffer(message), handleWriteFunction);
     }
 
-    void StartReadingNetworkMessages() override {
-        auto handleReadFunction = [this] (const asio::error_code &errorCode, size_t bytes) {
-            if (!errorCode) {
-                std::string message;
-                for (int i = 0; i < bytes; i++) {
-                    message += networkBuffer[i];
-                }
-                networkQueue.PushBack(NetworkMessage{.message = message});
-                StartReadingNetworkMessages();
-            } else if(errorCode == asio::error::eof || errorCode == asio::error::connection_reset || errorCode == asio::error::connection_aborted) {
-                Disconnect();
-                logger->Warn("Connection closed!");
-            } else {
-                Disconnect();
-                logger->Error("Issues with connection: " + errorCode.message());
-            }
-        };
-        socket.async_read_some(asio::buffer(networkBuffer.data(), networkBuffer.size()), handleReadFunction);
-
-    }
+    void StartReadingNetworkMessages() override;
 };
 
 #endif //NETWORK_CONNECTION_H
