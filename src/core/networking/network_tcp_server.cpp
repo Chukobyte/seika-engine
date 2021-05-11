@@ -23,7 +23,8 @@ void NetworkTCPServer::ProcessMessageQueue() {
     while (!networkQueue.IsEmpty()) {
         NetworkMessage networkMessage = networkQueue.PopFront();
         if (!networkMessage.message.empty() && networkMessage.message != "\n" && networkMessage.message != "\r\n" && networkMessage.message != " ") {
-            std::cout << "[SERVER] Queued Message: '" << networkMessage.message << "'\n" << std::endl;
+//            std::cout << "[SERVER] Queued Message: '" << networkMessage.message << "'\n" << std::endl;
+            SignalManager::GetInstance()->EmitSignal(NO_ENTITY, "network_message_received", PythonSignalArguments::GetStringSignalArgument(networkMessage.message));
         }
     }
 
