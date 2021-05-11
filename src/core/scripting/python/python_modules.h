@@ -44,6 +44,8 @@ class PythonModules {
     static PyObject* scene_tree_change_scene(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* scene_tree_get_current_scene_node(PyObject* self, PyObject* args);
 
+    static PyObject* network_is_server(PyObject* self, PyObject* args);
+
     static PyObject* server_start(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* server_stop(PyObject* self, PyObject* args);
     static PyObject* server_send_message_to_all_clients(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -170,6 +172,11 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "scene_tree_get_current_scene_node", PythonModules::scene_tree_get_current_scene_node,
         METH_VARARGS, "Gets current active scene node."
+    },
+    // NETWORK
+    {
+        "network_is_server", PythonModules::network_is_server,
+        METH_VARARGS, "Checks if network is initialized as a server."
     },
     // SERVER
     {

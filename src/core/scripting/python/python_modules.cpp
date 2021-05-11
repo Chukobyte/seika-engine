@@ -347,6 +347,16 @@ PyObject* PythonModules::scene_tree_get_current_scene_node(PyObject *self, PyObj
     return Py_BuildValue("(si)", nodeTypeString.c_str(), sceneContext->currentSceneEntity);
 }
 
+// NETWORK
+PyObject* PythonModules::network_is_server(PyObject *self, PyObject *args) {
+    static NetworkContext *networkContext = GD::GetContainer()->networkContext;
+    if (networkContext->DoesServerExists()) {
+        networkContext->RemoveServer();
+        Py_RETURN_TRUE;
+    }
+    Py_RETURN_FALSE;
+}
+
 // SERVER
 PyObject* PythonModules::server_start(PyObject *self, PyObject *args, PyObject *kwargs) {
     static NetworkContext *networkContext = GD::GetContainer()->networkContext;
