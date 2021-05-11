@@ -1,5 +1,6 @@
 #include "network_tcp_server.h"
 #include "../global_dependencies.h"
+#include "../signal_manager.h"
 
 NetworkTCPServer::NetworkTCPServer(asio::io_context &context, int port) : context(context), acceptor(context, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port)) {
     logger = Logger::GetInstance();
@@ -33,10 +34,10 @@ void NetworkTCPServer::AcceptConnections() {
     TCPConnection *tcpConnection = networkConnectionContext->NewTCPConnection(context, networkQueue, NetworkConnectionHostType_SERVER, 0);
     auto handleAcceptFunction = [this, tcpConnection](const asio::error_code &errorCode) {
         if (!errorCode) {
-            // TODO: Emit signal for new connection to all clients
-            logger->Debug("New connection established!");
-            tcpConnection->SendNetworkMessage("[FROM SERVER] Hello from server!");
+//            logger->Debug("New connection established!");
+//            tcpConnection->SendNetworkMessage("[FROM SERVER] Hello from server!");
             tcpConnection->StartReadingNetworkMessages();
+            SignalManager::GetInstance()->EmitSignal(NO_ENTITY, "network_peer_connected");
         } else {
             logger->Error("Error establishing connection: " + errorCode.message() + "\nError Code: " + std::to_string(errorCode.value()));
             networkConnectionContext->RemoveTCPConnection(tcpConnection);
