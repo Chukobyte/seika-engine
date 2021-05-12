@@ -1,5 +1,6 @@
 from roll.input import Input
 
+
 class InputBuffer:
     """
     Responsible for collecting game input from both players.  The game state will pull data from here if needed.

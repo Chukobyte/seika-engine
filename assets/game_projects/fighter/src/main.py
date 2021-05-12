@@ -5,7 +5,6 @@ from roll.math import Vector2
 
 from assets.game_projects.fighter.src.input_buffer import InputBuffer
 
-# TODO: Reduce game to 60 frames per second instead of 100
 
 class Main(Node2D):
     def _start(self) -> None:
