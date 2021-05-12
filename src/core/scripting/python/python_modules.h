@@ -30,6 +30,10 @@ class PythonModules {
     static PyObject* node2D_set_position(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node2D_add_to_position(PyObject* self, PyObject* args, PyObject* kwargs);
 
+    static PyObject* animated_sprite_play(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* animated_sprite_stop(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* animated_sprite_is_playing(PyObject* self, PyObject* args, PyObject* kwargs);
+
     static PyObject* text_label_get_text(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* text_label_set_text(PyObject* self, PyObject* args, PyObject* kwargs);
 
@@ -128,6 +132,19 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "node2D_add_to_position", (PyCFunction) PythonModules::node2D_add_to_position,
         METH_VARARGS | METH_KEYWORDS, "Adds to a node's position."
+    },
+    // ANIMATED_SPRITE
+    {
+        "animated_sprite_play", (PyCFunction) PythonModules::animated_sprite_play,
+        METH_VARARGS | METH_KEYWORDS, "Plays animation."
+    },
+    {
+        "animated_sprite_stop", (PyCFunction) PythonModules::animated_sprite_stop,
+        METH_VARARGS | METH_KEYWORDS, "Stops animation."
+    },
+    {
+        "animated_sprite_is_playing", (PyCFunction) PythonModules::animated_sprite_is_playing,
+        METH_VARARGS | METH_KEYWORDS, "Returns if an animations is playing."
     },
     // TEXT_LABEL
     {
@@ -228,6 +245,8 @@ static char *nodeSignalConnectKWList[] = {"entity_id", "signal_id", "listener_en
 static char *nodeSignalEmitKWList[] = {"entity_id", "signal_id", "args", nullptr};
 
 static char *node2DUpdatePositionKWList[] = {"entity_id", "x", "y", nullptr};
+
+static char *animatedSpritePlayKWList[] = {"entity_id", "animation_name", nullptr};
 
 static char *textLabelSetTextKWList[] = {"entity_id", "text", nullptr};
 

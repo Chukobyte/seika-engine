@@ -1,6 +1,6 @@
-from roll.node import Node2D
+from roll.node import AnimatedSprite
 
 
-class Main(Node2D):
+class Main(AnimatedSprite):
     def _start(self) -> None:
         print("In Main")
