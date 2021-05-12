@@ -8,4 +8,14 @@ TEST_CASE("Json File Helper Tests", "[json_file_helper]") {
 
         REQUIRE(messageFromFile == "hello");
     }
+
+    SECTION("Is JSON String Valid") {
+        const std::string &validJsonString = "{\"test\": true}";
+
+        REQUIRE(JsonFileHelper::IsJsonValid(validJsonString));
+
+        const std::string &invalidJsonString = "{okays";
+
+        REQUIRE(!JsonFileHelper::IsJsonValid(invalidJsonString));
+    }
 }
