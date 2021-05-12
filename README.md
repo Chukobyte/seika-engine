@@ -1,6 +1,6 @@
 # Roll Back Engine
 
-A 2D game engine that's used for a work in progress fighting game.  Windows only for now, but may support other platforms in the future.  Documentation can be found [here](https://chukobyte.github.io/roll-back-engine/).
+A 2D game engine that's used for a work in progress fighting game.  Windows only for now, but may support other platforms in the future.  Full documentation can be found [here](https://chukobyte.github.io/roll-back-engine/).
 
 ### Dependencies & Tools
 

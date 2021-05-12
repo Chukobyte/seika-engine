@@ -1,0 +1,27 @@
+# roll.engine
+
+## Engine
+
+Interface for miscellaneous operations for the game engine.
+
+### Variables
+
+None.
+
+---
+
+### Signals
+
+None.
+
+---
+
+### Methods
+
+```python
+exit(code=0) -> None:
+```
+
+Exits the engine returning the value of `code` as the exit code.
+
+---

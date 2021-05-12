@@ -5,5 +5,15 @@ nav:
     - Home: index.md
   - Python API:
       - Index: python_api/index.md
+      - Node: python_api/node.md
+      - Camera: python_api/camera.md
+      - Audio: python_api/audio.md
+      - Input: python_api/input.md
+      - Engine: python_api/engine.md
+      - Scene: python_api/scene.md
+      - Network: python_api/network.md
+      - Physics: python_api/physics.md
+      - Math: python_api/math.md
+      - Color: python_api/color.md
 
 theme: readthedocs
