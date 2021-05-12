@@ -11,8 +11,10 @@ class Main(AnimatedSprite):
         if Input.is_action_pressed(action_name="left"):
             self.add_to_position(Vector2.LEFT())
             self.play(animation_name="Walk")
+            self.flip_h = True
         elif Input.is_action_pressed(action_name="right"):
             self.add_to_position(Vector2.RIGHT())
             self.play(animation_name="Walk")
+            self.flip_h = False
         else:
             self.play(animation_name="Idle")

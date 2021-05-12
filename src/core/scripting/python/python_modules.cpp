@@ -203,6 +203,59 @@ PyObject* PythonModules::node2D_add_to_position(PyObject *self, PyObject *args, 
     return nullptr;
 }
 
+// SPRITE
+PyObject* PythonModules::sprite_get_flip_h(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        SpriteComponent spriteComponent = entityComponentOrchestrator->GetComponent<SpriteComponent>(entity);
+        if (spriteComponent.flipX) {
+            Py_RETURN_TRUE;
+        }
+        Py_RETURN_FALSE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::sprite_set_flip_h(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    bool flipH;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ib", setSpriteFlipHKWList, &entity, &flipH)) {
+        SpriteComponent spriteComponent = entityComponentOrchestrator->GetComponent<SpriteComponent>(entity);
+        spriteComponent.flipX = flipH;
+        entityComponentOrchestrator->UpdateComponent<SpriteComponent>(entity, spriteComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::sprite_get_flip_v(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        SpriteComponent spriteComponent = entityComponentOrchestrator->GetComponent<SpriteComponent>(entity);
+        if (spriteComponent.flipY) {
+            Py_RETURN_TRUE;
+        }
+        Py_RETURN_FALSE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::sprite_set_flip_v(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    bool flipV;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ib", setSpriteFlipVKWList, &entity, &flipV)) {
+        SpriteComponent spriteComponent = entityComponentOrchestrator->GetComponent<SpriteComponent>(entity);
+        spriteComponent.flipY = flipV;
+        entityComponentOrchestrator->UpdateComponent<SpriteComponent>(entity, spriteComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
 // ANIMATED_SPRITE
 PyObject* PythonModules::animated_sprite_play(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
@@ -242,6 +295,58 @@ PyObject* PythonModules::animated_sprite_is_playing(PyObject *self, PyObject *ar
             Py_RETURN_TRUE;
         }
         Py_RETURN_FALSE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::animated_sprite_get_flip_h(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        AnimatedSpriteComponent animatedSpriteComponent = entityComponentOrchestrator->GetComponent<AnimatedSpriteComponent>(entity);
+        if (animatedSpriteComponent.flipX) {
+            Py_RETURN_TRUE;
+        }
+        Py_RETURN_FALSE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::animated_sprite_set_flip_h(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    bool flipH;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ib", setSpriteFlipHKWList, &entity, &flipH)) {
+        AnimatedSpriteComponent animatedSpriteComponent = entityComponentOrchestrator->GetComponent<AnimatedSpriteComponent>(entity);
+        animatedSpriteComponent.flipX = flipH;
+        entityComponentOrchestrator->UpdateComponent<AnimatedSpriteComponent>(entity, animatedSpriteComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::animated_sprite_get_flip_v(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        AnimatedSpriteComponent animatedSpriteComponent = entityComponentOrchestrator->GetComponent<AnimatedSpriteComponent>(entity);
+        if (animatedSpriteComponent.flipY) {
+            Py_RETURN_TRUE;
+        }
+        Py_RETURN_FALSE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::animated_sprite_set_flip_v(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    bool flipV;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ib", setSpriteFlipVKWList, &entity, &flipV)) {
+        AnimatedSpriteComponent animatedSpriteComponent = entityComponentOrchestrator->GetComponent<AnimatedSpriteComponent>(entity);
+        animatedSpriteComponent.flipY = flipV;
+        entityComponentOrchestrator->UpdateComponent<AnimatedSpriteComponent>(entity, animatedSpriteComponent);
+        Py_RETURN_NONE;
     }
     return nullptr;
 }
