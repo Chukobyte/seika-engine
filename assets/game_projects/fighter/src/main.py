@@ -4,12 +4,15 @@ from roll.engine import Engine
 from roll.math import Vector2
 
 from assets.game_projects.fighter.src.input_buffer import InputBuffer
+from assets.game_projects.fighter.src.game_state import GameState, PlayerStateData
 
 
 class Main(Node2D):
     def _start(self) -> None:
+        self.frame_counter = 0
         self.player_one_input_buffer = InputBuffer()
         self.player_one_node = self.get_node(name="PlayerOne")
+        self.game_state = GameState()
 
     def _physics_process(self, delta_time: float) -> None:
         # INPUTS
@@ -17,20 +20,17 @@ class Main(Node2D):
         if Input.is_action_just_pressed(action_name="quit"):
             Engine.exit()
 
-        self.player_one_input_buffer.clear()
-        self.player_one_input_buffer.poll_client_inputs()
+        self.player_one_input_buffer.poll_client_inputs(frame=self.frame_counter)
 
         # SIMULATION
 
-        if self.player_one_input_buffer.is_empty():
-            self.player_one_node.play(animation_name="Idle")
-        else:
-            for input in self.player_one_input_buffer.get_inputs():
-                if input == InputBuffer.Value.LEFT:
-                    self.player_one_node.add_to_position(Vector2.LEFT())
-                    self.player_one_node.play(animation_name="Walk")
-                    self.player_one_node.flip_h = True
-                elif input == InputBuffer.Value.RIGHT:
-                    self.player_one_node.add_to_position(Vector2.RIGHT())
-                    self.player_one_node.play(animation_name="Walk")
-                    self.player_one_node.flip_h = False
+        self.game_state.simulate_frame(
+            frame=self.frame_counter,
+            player_one_state_data=PlayerStateData(
+                player_node=self.player_one_node,
+                player_input_buffer=self.player_one_input_buffer,
+            ),
+        )
+
+        print(self.player_one_input_buffer)
+        self.frame_counter += 1
