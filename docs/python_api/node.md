@@ -31,12 +31,6 @@ None.
 ### Methods
 
 ```python
-new() -> seika.nodes.Node:
-```
-
-Used to create a new node and maps an engine entity to the script's node instance.  If the intent is for a node to eventually be deleted, it should be done either with `queue_free()`, once the node's parent is deleted, or once the scene that the node is currently in is changed/deleted.
-
-```python
 queue_deletion() -> None:
 ```
 
@@ -49,13 +43,19 @@ add_child(node: Node) -> None:
 Adds a node as a child to the current node.
 
 ```python
+get_node(name: str) -> roll.node.Node:
+```
+
+Returns a node with the given name.  Will be `None` if node is not found.
+
+```python
 create_signal(signal_id: str) -> None:
 ```
 
 Creates a signal for subscribers to listen to.
 
 ```python
-connect_signal(signal_id: str, listener_node: seika.nodes.Node, function_name: str) -> None:
+connect_signal(signal_id: str, listener_node: roll.node.Node, function_name: str) -> None:
 ```
 
 Connects source node's signal to listener node.
@@ -111,19 +111,19 @@ None.
 ### Methods
 
 ```python
-get_position() -> seika.math.Vector2:
+get_position() -> roll.math.Vector2:
 ```
 
 Get node's current position.
 
 ```python
-set_position(value: seika.math.Vector2) -> None:
+set_position(value: roll.math.Vector2) -> None:
 ```
 
 Set node's current position.
 
 ```python
-add_to_position(value: seika.math.Vector2) -> None:
+add_to_position(value: roll.math.Vector2) -> None:
 ```
 
 Add to node's current position.  For example, if this line of code is within the `_process` function, the output of this line of code `node.add_to_position(Vector(5, 10))` within 3 frames will be `[(5, 10), (10, 20), (15, 30)]`.
@@ -168,18 +168,6 @@ None.
 **Inherits**: [Node2D](#node2d) -> [Node](#node)
 
 ### Variables
-
-```python
-animation: seika.assets.Animation
-```
-
-Current node's animation.
-
-```python
-current_index: int
-```
-
-Current node's animation index.
 
 ```python
 is_playing: bool
