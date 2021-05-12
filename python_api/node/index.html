@@ -181,19 +181,19 @@
 <p>None.</p>
 <hr />
 <h3 id="methods">Methods</h3>
-<pre><code class="language-python">new() -&gt; seika.nodes.Node:
-</code></pre>
-<p>Used to create a new node and maps an engine entity to the script's node instance.  If the intent is for a node to eventually be deleted, it should be done either with <code>queue_free()</code>, once the node's parent is deleted, or once the scene that the node is currently in is changed/deleted.</p>
 <pre><code class="language-python">queue_deletion() -&gt; None:
 </code></pre>
 <p>Queues a node to be deleted and removed from a scene if it's currently added to the scene tree.</p>
 <pre><code class="language-python">add_child(node: Node) -&gt; None:
 </code></pre>
 <p>Adds a node as a child to the current node.</p>
+<pre><code class="language-python">get_node(name: str) -&gt; roll.node.Node:
+</code></pre>
+<p>Returns a node with the given name.  Will be <code>None</code> if node is not found.</p>
 <pre><code class="language-python">create_signal(signal_id: str) -&gt; None:
 </code></pre>
 <p>Creates a signal for subscribers to listen to.</p>
-<pre><code class="language-python">connect_signal(signal_id: str, listener_node: seika.nodes.Node, function_name: str) -&gt; None:
+<pre><code class="language-python">connect_signal(signal_id: str, listener_node: roll.node.Node, function_name: str) -&gt; None:
 </code></pre>
 <p>Connects source node's signal to listener node.</p>
 <pre><code class="language-python">emit_signal(signal_id: str, args=[]) -&gt; None:
@@ -221,13 +221,13 @@
 <p>None.</p>
 <hr />
 <h3 id="methods_1">Methods</h3>
-<pre><code class="language-python">get_position() -&gt; seika.math.Vector2:
+<pre><code class="language-python">get_position() -&gt; roll.math.Vector2:
 </code></pre>
 <p>Get node's current position.</p>
-<pre><code class="language-python">set_position(value: seika.math.Vector2) -&gt; None:
+<pre><code class="language-python">set_position(value: roll.math.Vector2) -&gt; None:
 </code></pre>
 <p>Set node's current position.</p>
-<pre><code class="language-python">add_to_position(value: seika.math.Vector2) -&gt; None:
+<pre><code class="language-python">add_to_position(value: roll.math.Vector2) -&gt; None:
 </code></pre>
 <p>Add to node's current position.  For example, if this line of code is within the <code>_process</code> function, the output of this line of code <code>node.add_to_position(Vector(5, 10))</code> within 3 frames will be <code>[(5, 10), (10, 20), (15, 30)]</code>.</p>
 <hr />
@@ -250,12 +250,6 @@
 <h2 id="animatedsprite">AnimatedSprite</h2>
 <p><strong>Inherits</strong>: <a href="#node2d">Node2D</a> -&gt; <a href="#node">Node</a></p>
 <h3 id="variables_3">Variables</h3>
-<pre><code class="language-python">animation: seika.assets.Animation
-</code></pre>
-<p>Current node's animation.</p>
-<pre><code class="language-python">current_index: int
-</code></pre>
-<p>Current node's animation index.</p>
 <pre><code class="language-python">is_playing: bool
 </code></pre>
 <p>Returns <code>True</code> if an animation is currently playing.</p>
