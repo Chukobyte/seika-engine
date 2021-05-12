@@ -1,23 +1,99 @@
 {
     "name": "Main",
-    "type": "Node2D",
+    "type": "AnimatedSprite",
     "tags": [],
     "external_scene_source": "",
     "components": [
         {
             "transform2D": {
                 "position": {
-                    "x": 0.0,
-                    "y": 0.0
+                    "x": 400.0,
+                    "y": 300.0
                 },
                 "scale": {
-                    "x": 1.0,
-                    "y": 1.0
+                    "x": 4.0,
+                    "y": 4.0
                 },
                 "rotation": 0.0,
                 "z_index": 0,
                 "z_index_relative_to_parent": false,
                 "ignore_camera": false
+            }
+        },
+        {
+            "animated_sprite": {
+                "current_animation": "Idle",
+                "is_playing": true,
+                "flip_x": false,
+                "flip_y": false,
+                "animations": [
+                    {
+                        "name": "Idle",
+                        "speed": 100,
+                        "frames": [
+                            {
+                                "frame": 0,
+                                "texture_path": "assets/images/puncher_idle.png",
+                                "draw_source": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "width": 12.0,
+                                    "height": 16.0
+                                }
+                            },
+                            {
+                                "frame": 1,
+                                "texture_path": "assets/images/puncher_idle.png",
+                                "draw_source": {
+                                    "x": 12.0,
+                                    "y": 0.0,
+                                    "width": 12.0,
+                                    "height": 16.0
+                                }
+                            },
+                            {
+                                "frame": 2,
+                                "texture_path": "assets/images/puncher_idle.png",
+                                "draw_source": {
+                                    "x": 24.0,
+                                    "y": 0.0,
+                                    "width": 12.0,
+                                    "height": 16.0
+                                }
+                            },
+                            {
+                                "frame": 3,
+                                "texture_path": "assets/images/puncher_idle.png",
+                                "draw_source": {
+                                    "x": 36.0,
+                                    "y": 0.0,
+                                    "width": 12.0,
+                                    "height": 16.0
+                                }
+                            },
+                            {
+                                "frame": 4,
+                                "texture_path": "assets/images/puncher_idle.png",
+                                "draw_source": {
+                                    "x": 48.0,
+                                    "y": 0.0,
+                                    "width": 12.0,
+                                    "height": 16.0
+                                }
+                            },
+                            {
+                                "frame": 5,
+                                "texture_path": "assets/images/puncher_idle.png",
+                                "draw_source": {
+                                    "x": 60.0,
+                                    "y": 0.0,
+                                    "width": 12.0,
+                                    "height": 16.0
+                                }
+                            }
+                        ]
+                    }
+                ]
             }
         },
         {
