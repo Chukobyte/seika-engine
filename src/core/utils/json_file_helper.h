@@ -13,6 +13,9 @@ class JsonFileHelper {
         return json;
     }
 
+    static bool IsJsonValid(const std::string &jsonText) {
+        return nlohmann::json::accept(jsonText);
+    }
 };
 
 #endif //JSON_FILE_HELPER_H

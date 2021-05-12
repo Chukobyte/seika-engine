@@ -30,6 +30,19 @@ class PythonModules {
     static PyObject* node2D_set_position(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node2D_add_to_position(PyObject* self, PyObject* args, PyObject* kwargs);
 
+    static PyObject* sprite_get_flip_h(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* sprite_set_flip_h(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* sprite_get_flip_v(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* sprite_set_flip_v(PyObject* self, PyObject* args, PyObject* kwargs);
+
+    static PyObject* animated_sprite_play(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* animated_sprite_stop(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* animated_sprite_is_playing(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* animated_sprite_get_flip_h(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* animated_sprite_set_flip_h(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* animated_sprite_get_flip_v(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* animated_sprite_set_flip_v(PyObject* self, PyObject* args, PyObject* kwargs);
+
     static PyObject* text_label_get_text(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* text_label_set_text(PyObject* self, PyObject* args, PyObject* kwargs);
 
@@ -128,6 +141,52 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "node2D_add_to_position", (PyCFunction) PythonModules::node2D_add_to_position,
         METH_VARARGS | METH_KEYWORDS, "Adds to a node's position."
+    },
+    // SPRITE
+    {
+        "sprite_get_flip_h", (PyCFunction) PythonModules::sprite_get_flip_h,
+        METH_VARARGS | METH_KEYWORDS, "Gets a sprite's flip h."
+    },
+    {
+        "sprite_set_flip_h", (PyCFunction) PythonModules::sprite_set_flip_h,
+        METH_VARARGS | METH_KEYWORDS, "Sets a sprite's flip h."
+    },
+    {
+        "sprite_get_flip_v", (PyCFunction) PythonModules::sprite_get_flip_v,
+        METH_VARARGS | METH_KEYWORDS, "Gets a sprite's flip v."
+    },
+    {
+        "sprite_set_flip_v", (PyCFunction) PythonModules::sprite_set_flip_v,
+        METH_VARARGS | METH_KEYWORDS, "Sets a sprite's flip v."
+    },
+    // ANIMATED_SPRITE
+    {
+        "animated_sprite_play", (PyCFunction) PythonModules::animated_sprite_play,
+        METH_VARARGS | METH_KEYWORDS, "Plays animation."
+    },
+    {
+        "animated_sprite_stop", (PyCFunction) PythonModules::animated_sprite_stop,
+        METH_VARARGS | METH_KEYWORDS, "Stops animation."
+    },
+    {
+        "animated_sprite_is_playing", (PyCFunction) PythonModules::animated_sprite_is_playing,
+        METH_VARARGS | METH_KEYWORDS, "Returns if an animations is playing."
+    },
+    {
+        "animated_sprite_get_flip_h", (PyCFunction) PythonModules::animated_sprite_get_flip_h,
+        METH_VARARGS | METH_KEYWORDS, "Gets a sprite's flip h."
+    },
+    {
+        "animated_sprite_set_flip_h", (PyCFunction) PythonModules::animated_sprite_set_flip_h,
+        METH_VARARGS | METH_KEYWORDS, "Sets a sprite's flip h."
+    },
+    {
+        "animated_sprite_get_flip_v", (PyCFunction) PythonModules::animated_sprite_get_flip_v,
+        METH_VARARGS | METH_KEYWORDS, "Gets a sprite's flip v."
+    },
+    {
+        "animated_sprite_set_flip_v", (PyCFunction) PythonModules::animated_sprite_set_flip_v,
+        METH_VARARGS | METH_KEYWORDS, "Sets a sprite's flip v."
     },
     // TEXT_LABEL
     {
@@ -228,6 +287,11 @@ static char *nodeSignalConnectKWList[] = {"entity_id", "signal_id", "listener_en
 static char *nodeSignalEmitKWList[] = {"entity_id", "signal_id", "args", nullptr};
 
 static char *node2DUpdatePositionKWList[] = {"entity_id", "x", "y", nullptr};
+
+static char *setSpriteFlipHKWList[] = {"entity_id", "flip_h", nullptr};
+static char *setSpriteFlipVKWList[] = {"entity_id", "flip_v", nullptr};
+
+static char *animatedSpritePlayKWList[] = {"entity_id", "animation_name", nullptr};
 
 static char *textLabelSetTextKWList[] = {"entity_id", "text", nullptr};
 

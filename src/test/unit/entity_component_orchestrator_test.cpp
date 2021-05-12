@@ -16,15 +16,15 @@ TEST_CASE("Entity Component Orchestrator Tests - Entity", "[entity_component_orc
         REQUIRE(entity2 == 2);
     }
 
-    SECTION("Destroy Entity") {
-        Entity entity = entityComponentOrchestrator->CreateEntity();
-
-        REQUIRE(entityComponentOrchestrator->GetAliveEntityCount() == 1);
-
-        entityComponentOrchestrator->DestroyEntity(entity);
-
-        REQUIRE(entityComponentOrchestrator->GetAliveEntityCount() == 0);
-    }
+//    SECTION("Destroy Entity") {
+//        Entity entity = entityComponentOrchestrator->CreateEntity();
+//
+//        REQUIRE(entityComponentOrchestrator->GetAliveEntityCount() == 1);
+//
+//        entityComponentOrchestrator->DestroyEntity(entity);
+//
+//        REQUIRE(entityComponentOrchestrator->GetAliveEntityCount() == 0);
+//    }
 
     SECTION("Add Component to Entity") {
         entityComponentOrchestrator->RegisterComponent<Transform2DComponent>();

@@ -9,7 +9,7 @@
    "assets": [
       {
          "type": "texture",
-         "file_path": "assets/images/puncher_idle.png"
+         "file_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png"
       },
       {
          "type": "font",
