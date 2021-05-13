@@ -45,6 +45,8 @@ class PythonModules {
 
     static PyObject* text_label_get_text(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* text_label_set_text(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* text_label_get_color(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* text_label_set_color(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* collision_check(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* collision_get_collided_nodes(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -197,6 +199,14 @@ static struct PyMethodDef rollApiMethods[] = {
         "text_label_set_text", (PyCFunction) PythonModules::text_label_set_text,
         METH_VARARGS | METH_KEYWORDS, "Sets a node's text."
     },
+    {
+        "text_label_get_color", (PyCFunction) PythonModules::text_label_get_color,
+        METH_VARARGS | METH_KEYWORDS, "Gets a text label's color."
+    },
+    {
+        "text_label_set_color", (PyCFunction) PythonModules::text_label_set_color,
+        METH_VARARGS | METH_KEYWORDS, "Sets a text label's color."
+    },
     // COLLISION
     {
         "collision_check", (PyCFunction) PythonModules::collision_check,
@@ -294,6 +304,7 @@ static char *setSpriteFlipVKWList[] = {"entity_id", "flip_v", nullptr};
 static char *animatedSpritePlayKWList[] = {"entity_id", "animation_name", nullptr};
 
 static char *textLabelSetTextKWList[] = {"entity_id", "text", nullptr};
+static char *textLabelSetColorKWList[] = {"entity_id", "red", "green", "blue", "alpha", nullptr};
 
 static char *inputAddActionKWList[] = {"action_name", "value", nullptr};
 static char *inputActionCheckKWList[] = {"action_name", nullptr};
