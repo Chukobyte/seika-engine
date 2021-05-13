@@ -119,6 +119,12 @@ static PythonSource PYTHON_SOURCE_COLOR_MODULE =
     "       self.b = b\n"
     "       self.a = a\n"
     "\n"
+    "   def __str__(self):\n"
+    "       return f\"({self.r}, {self.g}, {self.b}, {self.a})\"\n"
+    "\n"
+    "   def __repr__(self):\n"
+    "       return f\"({self.r}, {self.g}, {self.b}, {self.a})\"\n"
+    "\n"
     "";
 
 static PythonSource PYTHON_SOURCE_INPUT_MODULE =

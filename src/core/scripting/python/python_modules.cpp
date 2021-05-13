@@ -389,7 +389,7 @@ PyObject* PythonModules::text_label_set_color(PyObject *self, PyObject *args, Py
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     Entity entity;
     float red, green, blue, alpha;
-    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", textLabelSetColorKWList, &entity, &red, &green, &blue, &alpha)) {
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "iffff", textLabelSetColorKWList, &entity, &red, &green, &blue, &alpha)) {
         TextLabelComponent textLabelComponent = entityComponentOrchestrator->GetComponent<TextLabelComponent>(entity);
         textLabelComponent.color = Color(red, green, blue, alpha);
         entityComponentOrchestrator->UpdateComponent<TextLabelComponent>(entity, textLabelComponent);
