@@ -13,8 +13,10 @@ class InputBuffer:
         UP = "u"
         DOWN = "d"
 
-    def __init__(self, frame_limit=12):
+    def __init__(self, left_action_name: str, right_action_name: str, frame_limit=12):
         self._inputs = {}
+        self.left_action_name = left_action_name
+        self.right_action_name = right_action_name
         self._frame_limit = frame_limit
 
     def __str__(self):
@@ -42,9 +44,9 @@ class InputBuffer:
         self._inputs.clear()
 
     def poll_client_inputs(self, frame: int) -> None:
-        if Input.is_action_pressed(action_name="left"):
+        if Input.is_action_pressed(action_name=self.left_action_name):
             self.add_input(input=InputBuffer.Value.LEFT, frame=frame)
-        elif Input.is_action_pressed(action_name="right"):
+        elif Input.is_action_pressed(action_name=self.right_action_name):
             self.add_input(input=InputBuffer.Value.RIGHT, frame=frame)
 
         self._inputs.pop(frame - self._frame_limit, None)

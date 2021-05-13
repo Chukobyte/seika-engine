@@ -33,25 +33,25 @@
          ]
       },
       {
-         "name": "left",
+         "name": "one_left",
          "values": [
             "left"
          ]
       },
       {
-         "name": "right",
+         "name": "one_right",
          "values": [
             "right"
          ]
       },
       {
-         "name": "up",
+         "name": "one_up",
          "values": [
             "up"
          ]
       },
       {
-         "name": "down",
+         "name": "one_down",
          "values": [
             "down"
          ]
@@ -63,25 +63,25 @@
          ]
       },
       {
-         "name": "camera_left",
+         "name": "two_left",
          "values": [
             "a"
          ]
       },
       {
-         "name": "camera_right",
+         "name": "two_right",
          "values": [
             "d"
          ]
       },
       {
-         "name": "camera_up",
+         "name": "two_up",
          "values": [
             "w"
          ]
       },
       {
-         "name": "camera_down",
+         "name": "two_down",
          "values": [
             "s"
          ]
