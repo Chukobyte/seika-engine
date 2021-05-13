@@ -1,0 +1,201 @@
+{
+    "name": "TitleScreen",
+    "type": "Node",
+    "tags": [],
+    "external_scene_source": "",
+    "components": [
+        {
+            "scriptable_class": {
+                "class_path": "assets.game_projects.fighter.src.title_screen",
+                "class_name": "TitleScreen"
+            }
+        }
+    ],
+    "children": [
+        {
+            "name": "TitleText",
+            "type": "TextLabel",
+            "tags": [],
+            "external_scene_source": "",
+            "components": [
+                {
+                    "transform2D": {
+                        "position": {
+                            "x": 65.0,
+                            "y": 100.0
+                        },
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "rotation": 0.0,
+                        "z_index": 0,
+                        "z_index_relative_to_parent": true,
+                        "ignore_camera": true
+                    }
+                },
+                {
+                    "text_label": {
+                        "text": "Fighting Game Proto",
+                        "font_path": "assets/game_projects/fighter/assets/fonts/bruh_large.ttf",
+                        "color": {
+                            "red": 0.0,
+                            "green": 1.0,
+                            "blue": 1.0,
+                            "alpha": 1.0
+                        }
+                    }
+                }
+            ],
+            "children": []
+        },
+        {
+            "name": "PlayLocalComputerText",
+            "type": "TextLabel",
+            "tags": [],
+            "external_scene_source": "",
+            "components": [
+                {
+                    "transform2D": {
+                        "position": {
+                            "x": 200.0,
+                            "y": 500.0
+                        },
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "rotation": 0.0,
+                        "z_index": 0,
+                        "z_index_relative_to_parent": true,
+                        "ignore_camera": true
+                    }
+                },
+                {
+                    "text_label": {
+                        "text": "Play With Computer",
+                        "font_path": "assets/fonts/bruh.ttf",
+                        "color": {
+                            "red": 0.0,
+                            "green": 1.0,
+                            "blue": 1.0,
+                            "alpha": 1.0
+                        }
+                    }
+                }
+            ],
+            "children": []
+        },
+        {
+            "name": "PlayLocalHumanText",
+            "type": "TextLabel",
+            "tags": [],
+            "external_scene_source": "",
+            "components": [
+                {
+                    "transform2D": {
+                        "position": {
+                            "x": 200.0,
+                            "y": 560.0
+                        },
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "rotation": 0.0,
+                        "z_index": 0,
+                        "z_index_relative_to_parent": true,
+                        "ignore_camera": true
+                    }
+                },
+                {
+                    "text_label": {
+                        "text": "Play With Human",
+                        "font_path": "assets/fonts/bruh.ttf",
+                        "color": {
+                            "red": 0.0,
+                            "green": 1.0,
+                            "blue": 1.0,
+                            "alpha": 1.0
+                        }
+                    }
+                }
+            ],
+            "children": []
+        },
+        {
+            "name": "PlayAsHostText",
+            "type": "TextLabel",
+            "tags": [],
+            "external_scene_source": "",
+            "components": [
+                {
+                    "transform2D": {
+                        "position": {
+                            "x": 200.0,
+                            "y": 620.0
+                        },
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "rotation": 0.0,
+                        "z_index": 0,
+                        "z_index_relative_to_parent": true,
+                        "ignore_camera": true
+                    }
+                },
+                {
+                    "text_label": {
+                        "text": "Play As Host",
+                        "font_path": "assets/fonts/bruh.ttf",
+                        "color": {
+                            "red": 0.0,
+                            "green": 1.0,
+                            "blue": 1.0,
+                            "alpha": 1.0
+                        }
+                    }
+                }
+            ],
+            "children": []
+        },
+        {
+            "name": "PlayAsClientText",
+            "type": "TextLabel",
+            "tags": [],
+            "external_scene_source": "",
+            "components": [
+                {
+                    "transform2D": {
+                        "position": {
+                            "x": 200.0,
+                            "y": 680.0
+                        },
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "rotation": 0.0,
+                        "z_index": 0,
+                        "z_index_relative_to_parent": true,
+                        "ignore_camera": true
+                    }
+                },
+                {
+                    "text_label": {
+                        "text": "Play As Client",
+                        "font_path": "assets/fonts/bruh.ttf",
+                        "color": {
+                            "red": 0.0,
+                            "green": 1.0,
+                            "blue": 1.0,
+                            "alpha": 1.0
+                        }
+                    }
+                }
+            ],
+            "children": []
+        }
+    ]
+}

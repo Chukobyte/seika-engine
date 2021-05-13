@@ -17,6 +17,11 @@
          "size": 60
       },
       {
+         "type": "font",
+         "file_path": "assets/game_projects/fighter/assets/fonts/bruh_large.ttf",
+         "size": 120
+      },
+      {
          "type": "music",
          "file_path": "assets/audio/music/test_music.wav"
       },
