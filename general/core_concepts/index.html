@@ -1,165 +1,140 @@
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  
-  
-  <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Core Concepts - Roll Back Engine</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
-  <link rel="stylesheet" href="../../css/theme.css" />
-  <link rel="stylesheet" href="../../css/theme_extra.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
-  
-  <script>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../../img/favicon.ico" rel="shortcut icon"/>
+<title>Core Concepts - Roll Back Engine</title>
+<link href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" rel="stylesheet">
+<link href="../../css/theme.css" rel="stylesheet"/>
+<link href="../../css/theme_extra.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet"/>
+<script>
     // Current page data
     var mkdocs_page_name = "Core Concepts";
     var mkdocs_page_input_path = "general/core_concepts.md";
     var mkdocs_page_url = null;
   </script>
-  
-  <script src="../../js/jquery-2.1.1.min.js" defer></script>
-  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-  <script>hljs.initHighlightingOnLoad();</script> 
-  
-</head>
-
+<script defer="" src="../../js/jquery-2.1.1.min.js"></script>
+<script defer="" src="../../js/modernizr-2.8.3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</link></head>
 <body class="wy-body-for-nav" role="document">
-
-  <div class="wy-grid-for-nav">
-
-    
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
-    <div class="wy-side-scroll">
-      <div class="wy-side-nav-search">
-        <a href="../.." class="icon icon-home"> Roll Back Engine</a>
-        <div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
-  </form>
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side stickynav" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../.."> Roll Back Engine</a>
+<div role="search">
+<form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input name="q" placeholder="Search docs" title="Type search term here" type="text"/>
+</form>
 </div>
-      </div>
-
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-                <p class="caption"><span class="caption-text">General</span></p>
-                <ul class="current">
-                    <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
-                    </li>
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Core Concepts</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#node">Node</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#scene">Scene</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#scene-tree">Scene Tree</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#signal">Signal</a>
-    </li>
-    </ul>
-                    </li>
-                </ul>
-                <p class="caption"><span class="caption-text">Python API</span></p>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../python_api/">Index</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../python_api/node/">Node</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../python_api/camera/">Camera</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../python_api/audio/">Audio</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../python_api/input/">Input</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../python_api/engine/">Engine</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../python_api/scene/">Scene</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../python_api/network/">Network</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../python_api/physics/">Physics</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../python_api/math/">Math</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../python_api/color/">Color</a>
-                    </li>
-                </ul>
-      </div>
-    </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../..">Roll Back Engine</a>
-      </nav>
-
-      
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="breadcrumbs navigation">
-  <ul class="wy-breadcrumbs">
-    <li><a href="../..">Docs</a> &raquo;</li>
-    
-      
-        
-          <li>General &raquo;</li>
-        
-      
-    
-    <li>Core Concepts</li>
-    <li class="wy-breadcrumbs-aside">
-      
-    </li>
-  </ul>
-  
-  <hr/>
 </div>
-          <div role="main">
-            <div class="section">
-              
-                <h1 id="core-concepts">Core Concepts</h1>
+<div aria-label="main navigation" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption"><span class="caption-text">General</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+</li>
+<li class="toctree-l1 current"><a class="reference internal current" href="./">Core Concepts</a>
+<ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="#node">Node</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#scene">Scene</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#scene-tree">Scene Tree</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#signal">Signal</a>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Python API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../python_api/">Index</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_api/node/">Node</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_api/camera/">Camera</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_api/audio/">Audio</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_api/input/">Input</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_api/engine/">Engine</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_api/scene/">Scene</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_api/network/">Network</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_api/physics/">Physics</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_api/math/">Math</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_api/color/">Color</a>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+<nav aria-label="top navigation" class="wy-nav-top" role="navigation">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../..">Roll Back Engine</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="breadcrumbs navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a href="../..">Docs</a> »</li>
+<li>General »</li>
+<li>Core Concepts</li>
+<li class="wy-breadcrumbs-aside">
+</li>
+</ul>
+<hr/>
+</div>
+<div role="main">
+<div class="section">
+<h1 id="core-concepts">Core Concepts</h1>
 <h2 id="node">Node</h2>
 <p>Nodes are the basic building block of a game in Roll Back Engine.  There are many different node types that inherit from the base <code>Node</code> class and more information about their API usage can be found <a href="../../python_api/node/">here</a>.  Python scripts can be attached to Nodes to add to their functionality.</p>
 <h2 id="scene">Scene</h2>
 <p>A scene is a collection of nodes.  Must contain a root node and there can only be one root node per scene.  Scenes can be instanced.  When a scene is destroyed the root node as well as all it's children will also be removed.  In Roll Back Engine all scenes are stored as json files.  Here is an example of how a scene with just a root node is serialized to json.</p>
 <pre><code class="language-json">{
-    &quot;name&quot;: &quot;Main&quot;,
-    &quot;type&quot;: &quot;Node&quot;,
-    &quot;tags&quot;: [],
-    &quot;external_scene_source&quot;: &quot;&quot;,
-    &quot;components&quot;: [
+    "name": "Main",
+    "type": "Node",
+    "tags": [],
+    "external_scene_source": "",
+    "components": [
         {
-            &quot;transform2D&quot;: {
-                &quot;position&quot;: {
-                    &quot;x&quot;: 0.0,
-                    &quot;y&quot;: 0.0
+            "transform2D": {
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0
                 },
-                &quot;scale&quot;: {
-                    &quot;x&quot;: 0.0,
-                    &quot;y&quot;: 0.0
+                "scale": {
+                    "x": 0.0,
+                    "y": 0.0
                 },
-                &quot;rotation&quot;: 0,
-                &quot;z_index&quot;: 0,
-                &quot;z_index_relative_to_parent&quot;: false,
-                &quot;ignore_camera&quot;: false
+                "rotation": 0,
+                "z_index": 0,
+                "z_index_relative_to_parent": false,
+                "ignore_camera": false
             }
         },
         {
-            &quot;scriptable_class&quot;: {
-                &quot;class_path&quot;: &quot;assets.game_projects.fighter.src.init&quot;,
-                &quot;class_name&quot;: &quot;Init&quot;
+            "scriptable_class": {
+                "class_path": "assets.game_projects.fighter.src.init",
+                "class_name": "Init"
             }
         }
     ],
-    &quot;children&quot;: []
+    "children": []
 }
 
 </code></pre>
@@ -175,65 +150,45 @@
 
 class Seika(AnimatedSprite):
     def _start(self) -&gt; None:
-        self.connect_signal(&quot;animation_finished&quot;, self, &quot;_on_AnimatedSprite_animation_finished&quot;)
-        self.play(animation_name=&quot;swim&quot;)
+        self.connect_signal("animation_finished", self, "_on_AnimatedSprite_animation_finished")
+        self.play(animation_name="swim")
 
     def _on_AnimatedSprite_animation_finished(self, args : list) -&gt; None:
-        if self.animation.name == &quot;swim&quot;:
-            self.play(animation_name=&quot;idle&quot;)
+        if self.animation.name == "swim":
+            self.play(animation_name="idle")
 </code></pre>
 <p>Example to play an animation named 'idle' after the 'swim' animation is played.</p>
-              
-            </div>
-          </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="../../python_api/" class="btn btn-neutral float-right" title="Index">Next <span class="icon icon-circle-arrow-right"></span></a>
-      
-      
-        <a href="../.." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-      
-    </div>
-  
-
-  <hr/>
-
-  <div role="contentinfo">
-    <!-- Copyright etc -->
-    
-  </div>
+</div>
+</div>
+<footer>
+<div aria-label="footer navigation" class="rst-footer-buttons" role="navigation">
+<a class="btn btn-neutral float-right" href="../../python_api/" title="Index">Next <span class="icon icon-circle-arrow-right"></span></a>
+<a class="btn btn-neutral" href="../.." title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+</div>
+<hr/>
+<div role="contentinfo">
+<!-- Copyright etc -->
+</div>
 
   Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
 </footer>
-      
-        </div>
-      </div>
-
-    </section>
-
-  </div>
-
-  <div class="rst-versions" role="note" aria-label="versions">
-    <span class="rst-current-version" data-toggle="rst-current-version">
-      
-      
-        <span><a href="../.." style="color: #fcfcfc;">&laquo; Previous</a></span>
-      
-      
-        <span style="margin-left: 15px"><a href="../../python_api/" style="color: #fcfcfc">Next &raquo;</a></span>
-      
-    </span>
 </div>
-    <script>var base_url = '../..';</script>
-    <script src="../../js/theme.js" defer></script>
-      <script src="../../search/main.js" defer></script>
-    <script defer>
+</div>
+</section>
+</div>
+<div aria-label="versions" class="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span><a href="../.." style="color: #fcfcfc;">« Previous</a></span>
+<span style="margin-left: 15px"><a href="../../python_api/" style="color: #fcfcfc">Next »</a></span>
+</span>
+</div>
+<script>var base_url = '../..';</script>
+<script defer="" src="../../js/theme.js"></script>
+<script defer="" src="../../search/main.js"></script>
+<script defer="">
         window.onload = function () {
             SphinxRtdTheme.Navigation.enable(true);
         };
     </script>
-
 </body>
 </html>
