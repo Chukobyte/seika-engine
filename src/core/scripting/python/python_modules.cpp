@@ -375,6 +375,29 @@ PyObject* PythonModules::text_label_set_text(PyObject *self, PyObject *args, PyO
     return nullptr;
 }
 
+PyObject* PythonModules::text_label_get_color(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        TextLabelComponent textLabelComponent = entityComponentOrchestrator->GetComponent<TextLabelComponent>(entity);
+        return Py_BuildValue("(ffff)", textLabelComponent.color.r, textLabelComponent.color.g, textLabelComponent.color.b, textLabelComponent.color.a);
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::text_label_set_color(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    float red, green, blue, alpha;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "iffff", textLabelSetColorKWList, &entity, &red, &green, &blue, &alpha)) {
+        TextLabelComponent textLabelComponent = entityComponentOrchestrator->GetComponent<TextLabelComponent>(entity);
+        textLabelComponent.color = Color(red, green, blue, alpha);
+        entityComponentOrchestrator->UpdateComponent<TextLabelComponent>(entity, textLabelComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
 // COLLISION
 PyObject* PythonModules::collision_check(PyObject *self, PyObject *args, PyObject *kwargs) {
     static CollisionContext *collisionContext = GD::GetContainer()->collisionContext;

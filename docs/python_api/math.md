@@ -21,7 +21,7 @@ Y coordinate.
 ### Methods
 
 ```python
-dot_product(value: seika.math.Vector2) -> float:
+dot_product(value: roll.math.Vector2) -> float:
 ```
 
 Returns the dot product of two Vector2 items.

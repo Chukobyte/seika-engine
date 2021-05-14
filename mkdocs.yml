@@ -3,6 +3,7 @@ site_name: Roll Back Engine
 nav:
   - General:
     - Home: index.md
+    - Core Concepts: general/core_concepts.md
   - Python API:
       - Index: python_api/index.md
       - Node: python_api/node.md
@@ -15,5 +16,9 @@ nav:
       - Physics: python_api/physics.md
       - Math: python_api/math.md
       - Color: python_api/color.md
+
+plugins:
+  - search
+  - mermaid2
 
 theme: readthedocs

@@ -11,6 +11,7 @@ IS_SERVER = True
 PORT = 6510
 HOST_ENDPOINT = "127.0.0.1"
 
+
 class InputBuffer:
     class Value:
         LEFT = "l"
@@ -27,13 +28,15 @@ class InputBuffer:
     def is_empty(self) -> bool:
         return len(self.inputs) == 0
 
+
 def truncate_float(f: float, n: int):
-    '''Truncates/pads a float f to n decimal places without rounding'''
-    s = '{}'.format(f)
-    if 'e' in s or 'E' in s:
-        return '{0:.{1}f}'.format(f, n)
-    i, p, d = s.partition('.')
-    return '.'.join([i, (d+'0'*n)[:n]])
+    """Truncates/pads a float f to n decimal places without rounding"""
+    s = "{}".format(f)
+    if "e" in s or "E" in s:
+        return "{0:.{1}f}".format(f, n)
+    i, p, d = s.partition(".")
+    return ".".join([i, (d + "0" * n)[:n]])
+
 
 class Main(Node2D):
     def _start(self) -> None:
@@ -47,12 +50,32 @@ class Main(Node2D):
             Client.connect(endpoint=HOST_ENDPOINT, port=PORT)
 
     def _setup_connections(self) -> None:
-        Network.connect_signal(signal_id="peer_connected", listener_node=self, function_name="_on_Network_peer_connected")
-        Network.connect_signal(signal_id="peer_disconnected", listener_node=self, function_name="_on_Network_peer_disconnected")
-        Network.connect_signal(signal_id="message_received", listener_node=self, function_name="_on_Network_message_received")
+        Network.connect_signal(
+            signal_id="peer_connected",
+            listener_node=self,
+            function_name="_on_Network_peer_connected",
+        )
+        Network.connect_signal(
+            signal_id="peer_disconnected",
+            listener_node=self,
+            function_name="_on_Network_peer_disconnected",
+        )
+        Network.connect_signal(
+            signal_id="message_received",
+            listener_node=self,
+            function_name="_on_Network_message_received",
+        )
         if not IS_SERVER:
-            Network.connect_signal(signal_id="connected_to_server", listener_node=self, function_name="_on_Network_connected_to_server")
-            Network.connect_signal(signal_id="connection_to_server_failed", listener_node=self, function_name="_on_Network_connection_to_server_failed")
+            Network.connect_signal(
+                signal_id="connected_to_server",
+                listener_node=self,
+                function_name="_on_Network_connected_to_server",
+            )
+            Network.connect_signal(
+                signal_id="connection_to_server_failed",
+                listener_node=self,
+                function_name="_on_Network_connection_to_server_failed",
+            )
 
     def _physics_process(self, delta_time: float) -> None:
         if Input.is_action_just_pressed(action_name="quit"):
@@ -61,23 +84,23 @@ class Main(Node2D):
         input_buffer = self._process_inputs()
         if not input_buffer.is_empty():
             if IS_SERVER:
-                Server.send_message_to_all_clients(message=f"input = {input_buffer.inputs}, position = {self.position}")
+                Server.send_message_to_all_clients(
+                    message=f"input = {input_buffer.inputs}, position = {self.position}"
+                )
             else:
-                Client.send_message_to_server(message=f"input = {input_buffer.inputs}, position = {self.position}")
+                Client.send_message_to_server(
+                    message=f"input = {input_buffer.inputs}, position = {self.position}"
+                )
 
         # Client sends ping
         if not IS_SERVER:
             if self.ping_timer >= 200:
                 self.last_ping_time = time.time()
                 self.ping_timer = 0
-                message = {
-                    "id": "ping",
-                    "t": self.server_ping
-                }
+                message = {"id": "ping", "t": self.server_ping}
                 Client.send_message_to_server(message=json.dumps(message))
             else:
                 self.ping_timer += 1
-
 
     def _process_inputs(self) -> InputBuffer:
         input_buffer = InputBuffer()
@@ -98,10 +121,7 @@ class Main(Node2D):
     def _on_Network_peer_connected(self, args: list) -> None:
         print("New connection established!")
         if Network.is_server():
-            message = {
-                "id": "text",
-                "v": "Welcome to server!"
-            }
+            message = {"id": "text", "v": "Welcome to server!"}
             Server.send_message_to_all_clients(message=json.dumps(message))
 
     def _on_Network_peer_disconnected(self, args: list) -> None:
@@ -127,7 +147,9 @@ class Main(Node2D):
                     Server.send_message_to_all_clients(message=json.dumps(message))
                 else:
                     current_time = time.time()
-                    self.server_ping = truncate_float(current_time - self.last_ping_time, 4)
+                    self.server_ping = truncate_float(
+                        current_time - self.last_ping_time, 4
+                    )
                     print(f"ping = {self.server_ping}")
                     self.last_ping_time = current_time
         except ValueError:
@@ -137,10 +159,7 @@ class Main(Node2D):
 
     def _on_Network_connected_to_server(self, args: list) -> None:
         print("Connected to server!")
-        message = {
-            "id": "ping",
-            "t": self.server_ping
-        }
+        message = {"id": "ping", "t": self.server_ping}
         self.last_ping_time = time.time()
         Client.send_message_to_server(message=json.dumps(message))
 
