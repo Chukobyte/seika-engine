@@ -231,7 +231,13 @@ Stops currently playing animation.
 text: str
 ```
 
-Node's label text.
+Text Label's text.
+
+```python
+color: roll.color.Color
+```
+
+Color of the text.
 
 ---
 
