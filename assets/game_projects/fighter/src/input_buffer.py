@@ -1,3 +1,5 @@
+from enum import Enum
+
 from roll.input import Input
 
 
@@ -7,7 +9,7 @@ class InputBuffer:
     Network messages will also update the input buffer when receiving data from the opposite player
     """
 
-    class Value:
+    class Value(Enum):
         LEFT = "l"
         RIGHT = "r"
         UP = "u"

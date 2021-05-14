@@ -74,5 +74,5 @@ class Main(Node2D):
             ),
         )
 
-        # print(self.player_one_input_buffer)
+        print(self.player_one_input_buffer)
         self.frame_counter += 1

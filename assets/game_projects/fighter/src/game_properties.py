@@ -1,12 +1,16 @@
-class PropertyName:
-    PLAYER_OPPONENT_MODE = "player_opponent_mode"
+from enum import auto
+from assets.game_projects.fighter.src.auto_enum import AutoName
 
 
-class PropertyValue:
-    PLAYER_OPPONENT_MODE_PLAYER_VS_COMPUTER = "pvc"
-    PLAYER_OPPONENT_MODE_PLAYER_VS_PLAYER = "pvp"
-    PLAYER_OPPONENT_MODE_HOST_PLAYER_VS_PLAYER = "hpvp"
-    PLAYER_OPPONENT_MODE_CLIENT_PLAYER_VS_PLAYER = "cpvp"
+class PropertyName(AutoName):
+    PLAYER_OPPONENT_MODE = auto()
+
+
+class PropertyValue(AutoName):
+    PLAYER_OPPONENT_MODE_PLAYER_VS_COMPUTER = auto()
+    PLAYER_OPPONENT_MODE_PLAYER_VS_PLAYER = auto()
+    PLAYER_OPPONENT_MODE_HOST_PLAYER_VS_PLAYER = auto()
+    PLAYER_OPPONENT_MODE_CLIENT_PLAYER_VS_PLAYER = auto()
 
 
 class GameProperties:

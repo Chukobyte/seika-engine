@@ -1,8 +1,12 @@
+from enum import auto
+
 from roll.node import Node2D
 from roll.scene import SceneTree
 from roll.input import Input
 from roll.engine import Engine
 from roll.color import Color
+
+from assets.game_projects.fighter.src.auto_enum import AutoName
 
 from assets.game_projects.fighter.src.game_properties import (
     GameProperties,
@@ -10,11 +14,11 @@ from assets.game_projects.fighter.src.game_properties import (
 )
 
 
-class MenuSelection:
-    PLAY_LOCAL_COMPUTER = 0
-    PLAY_LOCAL_HUMAN = 1
-    PLAY_AS_HOST = 2
-    PLAY_AS_CLIENT = 3
+class MenuSelection(AutoName):
+    PLAY_LOCAL_COMPUTER = auto()
+    PLAY_LOCAL_HUMAN = auto()
+    PLAY_AS_HOST = auto()
+    PLAY_AS_CLIENT = auto()
 
 
 class SelectionList:
