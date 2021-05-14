@@ -17,4 +17,8 @@ nav:
       - Math: python_api/math.md
       - Color: python_api/color.md
 
+plugins:
+  - search
+  - mermaid2
+
 theme: readthedocs
