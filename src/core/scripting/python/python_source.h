@@ -13,6 +13,10 @@ static PythonSource  PYTHON_SOURCE_ENGINE_MODULE =
     "   def exit(code: int = 0) -> None:\n"
     "       roll_engine_api.engine_exit(code=code)\n"
     "\n"
+    "   @staticmethod\n"
+    "   def get_fps() -> float:\n"
+    "       return roll_engine_api.engine_get_fps()\n"
+    "\n"
     "";
 
 static PythonSource PYTHON_SOURCE_AUDIO_MODULE =

@@ -18,6 +18,11 @@ PyObject* PythonModules::engine_exit(PyObject *self, PyObject *args, PyObject *k
     return nullptr;
 }
 
+PyObject* PythonModules::engine_get_fps(PyObject *self, PyObject *args) {
+    static EngineContext *engineContext = GD::GetContainer()->engineContext;
+    return PyLong_FromLong(engineContext->GetFPS());
+}
+
 // AUDIO
 PyObject* PythonModules::audio_play_music(PyObject *self, PyObject *args, PyObject *kwargs) {
     char *musicId;

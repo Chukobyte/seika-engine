@@ -38,10 +38,7 @@ void Game::Initialize() {
     inputManager->LoadProjectInputActions();
     InitializeECS();
     engineContext->SetRunning(true);
-
-    // TODO: temp server
-//    networkContext->CreateServer(55555);
-//    networkContext->StartServer();
+    engineContext->StartFPSCounter();
 }
 
 void Game::InitializeSDL() {
@@ -168,6 +165,8 @@ void Game::Update() {
     if (timeToWait > 0 && timeToWait <= FRAME_TARGET_TIME) {
         SDL_Delay(timeToWait);
     }
+
+    engineContext->UpdateFPSCounter();
 
     networkContext->Poll();
 

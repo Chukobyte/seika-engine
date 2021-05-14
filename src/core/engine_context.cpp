@@ -16,3 +16,15 @@ std::string EngineContext::GetEngineVersion() {
     }
     return engineVersion;
 }
+
+void EngineContext::StartFPSCounter() {
+    fpsCounter.Start();
+}
+
+void EngineContext::UpdateFPSCounter() {
+    fpsCounter.Update();
+}
+
+long EngineContext::GetFPS() const {
+    return fpsCounter.averageFPS;
+}

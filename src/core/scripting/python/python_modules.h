@@ -9,6 +9,7 @@
 class PythonModules {
   public:
     static PyObject* engine_exit(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* engine_get_fps(PyObject* self, PyObject* args);
 
     static PyObject* audio_play_music(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* audio_stop_music(PyObject* self, PyObject* args);
@@ -75,6 +76,10 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "engine_exit", (PyCFunction) PythonModules::engine_exit,
         METH_VARARGS | METH_KEYWORDS, "Exits the engine."
+    },
+    {
+        "engine_get_fps", PythonModules::engine_get_fps,
+        METH_VARARGS, "Get FPS."
     },
     // AUDIO
     {
