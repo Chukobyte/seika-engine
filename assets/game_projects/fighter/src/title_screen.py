@@ -4,6 +4,11 @@ from roll.input import Input
 from roll.engine import Engine
 from roll.color import Color
 
+from assets.game_projects.fighter.src.game_properties import (
+    GameProperties,
+    PropertyValue,
+)
+
 
 class MenuSelection:
     PLAY_LOCAL_COMPUTER = 0
@@ -91,6 +96,24 @@ class TitleScreen(Node2D):
             )
 
         if Input.is_action_just_pressed(action_name="confirm"):
+            selection = self.selection_list.get_current_item()
+            game_properties = GameProperties()
+            if selection == MenuSelection.PLAY_LOCAL_COMPUTER:
+                game_properties.player_opponent_mode = (
+                    PropertyValue.PLAYER_OPPONENT_MODE_PLAYER_VS_COMPUTER
+                )
+            elif selection == MenuSelection.PLAY_LOCAL_HUMAN:
+                game_properties.player_opponent_mode = (
+                    PropertyValue.PLAYER_OPPONENT_MODE_PLAYER_VS_PLAYER
+                )
+            elif selection == MenuSelection.PLAY_AS_HOST:
+                game_properties.player_opponent_mode = (
+                    PropertyValue.PLAYER_OPPONENT_MODE_HOST_PLAYER_VS_PLAYER
+                )
+            elif selection == MenuSelection.PLAY_AS_CLIENT:
+                game_properties.player_opponent_mode = (
+                    PropertyValue.PLAYER_OPPONENT_MODE_CLIENT_PLAYER_VS_PLAYER
+                )
             SceneTree.change_scene(
                 scene_path="assets/game_projects/fighter/scenes/main.json"
             )

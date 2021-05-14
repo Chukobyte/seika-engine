@@ -5,6 +5,10 @@ from roll.math import Vector2
 
 from assets.game_projects.fighter.src.input_buffer import InputBuffer
 from assets.game_projects.fighter.src.game_state import GameState, PlayerStateData
+from assets.game_projects.fighter.src.game_properties import (
+    GameProperties,
+    PropertyValue,
+)
 
 
 class Main(Node2D):
@@ -14,6 +18,30 @@ class Main(Node2D):
             left_action_name="one_left", right_action_name="one_right"
         )
         self.player_one_node = self.get_node(name="PlayerOne")
+
+        # TODO: implement start modes
+        game_properties = GameProperties()
+        if (
+            game_properties.player_opponent_mode
+            == PropertyValue.PLAYER_OPPONENT_MODE_PLAYER_VS_COMPUTER
+        ):
+            pass
+        elif (
+            game_properties.player_opponent_mode
+            == PropertyValue.PLAYER_OPPONENT_MODE_PLAYER_VS_PLAYER
+        ):
+            pass
+        elif (
+            game_properties.player_opponent_mode
+            == PropertyValue.PLAYER_OPPONENT_MODE_HOST_PLAYER_VS_PLAYER
+        ):
+            pass
+        elif (
+            game_properties.player_opponent_mode
+            == PropertyValue.PLAYER_OPPONENT_MODE_CLIENT_PLAYER_VS_PLAYER
+        ):
+            pass
+
         self.player_two_node = self.get_node(name="PlayerTwo")
         self.player_two_input_buffer = InputBuffer(
             left_action_name="two_left", right_action_name="two_right"
