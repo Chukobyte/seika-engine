@@ -50,7 +50,7 @@ endif
 run:
 	./$(BUILD_OBJECT)
 
-package: clean build
+package-without-clean:
 ifneq ($(wildcard $(EXPORT_PACKAGE_DIR)/.*),)
 	rd /S /Q $(EXPORT_PACKAGE_DIR)
 endif
@@ -62,6 +62,7 @@ endif
 	Xcopy /E /I assets $(EXPORT_PACKAGE_DIR)\assets
 	cd $(EXPORT_PACKAGE_DIR) && echo %cd% && 7z a $(PROJECT_NAME).zip *
 
+package: clean build package-without-clean
 
 # Tests
 test: build-test run-test
