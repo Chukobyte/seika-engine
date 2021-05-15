@@ -144,6 +144,7 @@ class Main(Node2D):
 
         self._process_simulation()
 
+        self.game_properties.has_received_network_inputs = False
         self.frame_counter += 1
 
     def _process_inputs(self) -> None:
@@ -196,11 +197,12 @@ class Main(Node2D):
                     self.player_two_state_data.player_input_buffer.add_input(
                         input=input, frame=self.frame_counter
                     )
+                self.game_properties.has_received_network_inputs = True
             elif message_id == NetworkMessage.ID.CONSOLE_MESSAGE:
                 print(f"network message = {message_value}")
         except ValueError:
-            # print(f"Not valid json, skipping message:\nMessage = {args[0]}")
-            pass
+            print(f"Not valid json, skipping message:\nMessage = {args[0]}")
+            # pass
         except Exception as e:
             print(f"Some other error: {e}\nMessage = {args[0]}")
         if self.game_properties.is_server:

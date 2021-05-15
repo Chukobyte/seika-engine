@@ -7,6 +7,7 @@ class PropertyName(AutoName):
     IS_SERVER = auto()
     SERVER_PORT = auto()
     SERVER_ENDPOINT = auto()
+    HAS_RECEIVED_NETWORK_INPUTS = auto()
 
 
 class PropertyValue(AutoName):
@@ -28,6 +29,7 @@ class GameProperties:
                 PropertyName.IS_SERVER: False,
                 PropertyName.SERVER_PORT: 6510,
                 PropertyName.SERVER_ENDPOINT: "127.0.0.1",
+                PropertyName.HAS_RECEIVED_NETWORK_INPUTS: False,
             }
         return GameProperties.__instance
 
@@ -68,3 +70,11 @@ class GameProperties:
     @server_endpoint.setter
     def server_endpoint(self, value: str) -> None:
         self._data[PropertyName.SERVER_ENDPOINT] = value
+
+    @property
+    def has_received_network_inputs(self) -> bool:
+        return self._data[PropertyName.HAS_RECEIVED_NETWORK_INPUTS]
+
+    @has_received_network_inputs.setter
+    def has_received_network_inputs(self, value: bool) -> None:
+        self._data[PropertyName.HAS_RECEIVED_NETWORK_INPUTS] = value

@@ -6,10 +6,19 @@ void TCPConnection::StartReadingNetworkMessages() {
     auto handleReadFunction = [this] (const asio::error_code &errorCode, size_t bytes) {
         if (!errorCode) {
             std::string message;
+            int startBracketCounter = 0;
             for (int i = 0; i < bytes; i++) {
                 message += networkBuffer[i];
+                if (message.back() == '{') {
+                    startBracketCounter++;
+                } else if (message.back() == '}') {
+                    startBracketCounter--;
+                    if (startBracketCounter == 0) {
+                        networkQueue.PushBack(NetworkMessage{.message = message});
+                        message.clear();
+                    }
+                }
             }
-            networkQueue.PushBack(NetworkMessage{.message = message});
             StartReadingNetworkMessages();
         } else if(errorCode == asio::error::eof || errorCode == asio::error::connection_reset || errorCode == asio::error::connection_aborted) {
             Disconnect();

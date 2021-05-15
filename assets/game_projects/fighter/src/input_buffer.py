@@ -101,4 +101,8 @@ class IncomingNetworkInputBuffer(InputBuffer):
             self._inputs[frame] = [input]
 
     def poll_client_inputs(self, frame: int) -> None:
+        # TODO: Proper prediction
+        if not self.game_properties.has_received_network_inputs:
+            pass
+
         self._inputs.pop(frame - self._frame_limit, None)
