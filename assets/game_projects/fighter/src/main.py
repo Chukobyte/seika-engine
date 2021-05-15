@@ -6,12 +6,13 @@ from roll.engine import Engine
 from roll.math import Vector2
 from roll.network import Server, Client, Network
 
+from assets.game_projects.fighter.src.fight_state import FightState, PlayerStateData
 from assets.game_projects.fighter.src.input_buffer import (
     InputBuffer,
     OutgoingNetworkInputBuffer,
     IncomingNetworkInputBuffer,
 )
-from assets.game_projects.fighter.src.game_state import GameState, PlayerStateData
+from assets.game_projects.fighter.src.fight_simulator import FightSimulator
 from assets.game_projects.fighter.src.game_properties import (
     GameProperties,
     PropertyValue,
@@ -24,8 +25,9 @@ from assets.game_projects.fighter.src.network_message import (
 
 class Main(Node2D):
     def _start(self) -> None:
-        self.game_state = GameState()
+        self.fight_simulator = FightSimulator()
         self.game_properties = GameProperties()
+        self.fight_state = FightState()
         self.frame_counter = 0
         self.input_buffers = []
 
@@ -144,6 +146,13 @@ class Main(Node2D):
 
         self._process_simulation()
 
+        self.fight_state.serialize(
+            frame=self.frame_counter,
+            player_one_state_data=self.player_one_state_data,
+            player_two_state_data=self.player_two_state_data,
+        )
+        # print(f"fight_state = {self.fight_state}")
+
         self.game_properties.has_received_network_inputs = False
         self.frame_counter += 1
 
@@ -155,7 +164,7 @@ class Main(Node2D):
             input_buffer.poll_client_inputs(frame=self.frame_counter)
 
     def _process_simulation(self) -> None:
-        self.game_state.simulate_frame(
+        self.fight_simulator.simulate_frame(
             frame=self.frame_counter,
             player_one_state_data=self.player_one_state_data,
             player_two_state_data=self.player_two_state_data,

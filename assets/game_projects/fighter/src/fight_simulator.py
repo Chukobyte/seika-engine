@@ -3,16 +3,11 @@ from typing import Optional
 from roll.node import Node
 from roll.math import Vector2
 
+from assets.game_projects.fighter.src.fight_state import PlayerStateData
 from assets.game_projects.fighter.src.input_buffer import InputBuffer
 
 
-class PlayerStateData:
-    def __init__(self, player_node: Node, player_input_buffer: InputBuffer):
-        self.player_node = player_node
-        self.player_input_buffer = player_input_buffer
-
-
-class GameState:
+class FightSimulator:
     def simulate_frame(
         self,
         frame: int,
