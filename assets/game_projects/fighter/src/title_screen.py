@@ -69,11 +69,7 @@ class TitleScreen(Node2D):
         )
 
         print("start")
-        test_instance = roll_engine_api.node_new(
-            class_path="assets.game_projects.fighter.src.test",
-            class_name="Test",
-            node_type="Node2D",
-        )
+        test_instance = Test.new()
         print(f"test instance = {test_instance.entity_id}")
         self.add_child(child_node=test_instance)
 
