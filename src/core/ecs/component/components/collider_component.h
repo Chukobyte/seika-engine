@@ -7,7 +7,7 @@
 
 struct ColliderComponent {
   public:
-    Rect2 collider;
+    Rect2 collider = Rect2();
 };
 
 #endif //COLLIDER_COMPONENT_H

@@ -7,6 +7,7 @@
 #include "../component.h"
 
 using NodeType = std::uint32_t;
+using NodeTypeInheritance = std::uint32_t;
 
 enum _NodeType {
     NodeType_INVALID = 0,
@@ -19,6 +20,7 @@ enum _NodeType {
 };
 
 enum _NodeTypeInheritance {
+    NodeTypeInheritance_INVALID = NodeType_INVALID,
     NodeTypeInheritance_NODE = NodeType_NODE,
     NodeTypeInheritance_NODE2D = NodeType_NODE | NodeType_NODE2D,
     NodeTypeInheritance_SPRITE = NodeType_NODE | NodeType_NODE2D | NodeType_SPRITE,

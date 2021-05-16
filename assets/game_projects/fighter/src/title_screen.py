@@ -68,9 +68,8 @@ class TitleScreen(Node2D):
             selection=self.selection_list.get_current_item()
         )
 
-        print("start")
         test_instance = Test.new()
-        print(f"test instance = {test_instance.entity_id}")
+        print(f"test instance = {test_instance}")
         self.add_child(child_node=test_instance)
 
     def _update_menu_selection_labels(self, selection) -> None:

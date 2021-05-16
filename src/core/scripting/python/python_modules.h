@@ -51,6 +51,9 @@ class PythonModules {
     static PyObject* text_label_get_color(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* text_label_set_color(PyObject* self, PyObject* args, PyObject* kwargs);
 
+    static PyObject* collision_shape2d_get_collider_rect(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* collision_shape2d_set_collider_rect(PyObject* self, PyObject* args, PyObject* kwargs);
+
     static PyObject* collision_check(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* collision_get_collided_nodes(PyObject* self, PyObject* args, PyObject* kwargs);
 
@@ -222,6 +225,15 @@ static struct PyMethodDef rollApiMethods[] = {
         "text_label_set_color", (PyCFunction) PythonModules::text_label_set_color,
         METH_VARARGS | METH_KEYWORDS, "Sets a text label's color."
     },
+    // COLLISION SHAPE2D
+    {
+        "collision_shape2d_get_collider_rect", (PyCFunction) PythonModules::collision_shape2d_get_collider_rect,
+        METH_VARARGS | METH_KEYWORDS, "Get collider's rectangle."
+    },
+    {
+        "collision_shape2d_set_collider_rect", (PyCFunction) PythonModules::collision_shape2d_set_collider_rect,
+        METH_VARARGS | METH_KEYWORDS, "Set collider's rectangle."
+    },
     // COLLISION
     {
         "collision_check", (PyCFunction) PythonModules::collision_check,
@@ -322,6 +334,8 @@ static char *animatedSpritePlayKWList[] = {"entity_id", "animation_name", nullpt
 
 static char *textLabelSetTextKWList[] = {"entity_id", "text", nullptr};
 static char *textLabelSetColorKWList[] = {"entity_id", "red", "green", "blue", "alpha", nullptr};
+
+static char *collisionShape2DSetColliderRectKWList[] = {"entity_id", "x", "y", "w", "h", nullptr};
 
 static char *inputAddActionKWList[] = {"action_name", "value", nullptr};
 static char *inputActionCheckKWList[] = {"action_name", nullptr};
