@@ -30,8 +30,7 @@ void NetworkTCPServer::ProcessMessageQueue() {
 }
 
 void NetworkTCPServer::AcceptConnections() {
-    static int connectionId = 0;
-    TCPConnection *tcpConnection = networkConnectionContext->NewTCPConnection(context, networkQueue, NetworkConnectionHostType_SERVER, connectionId++);
+    TCPConnection *tcpConnection = networkConnectionContext->NewTCPConnection(context, networkQueue, NetworkConnectionHostType_SERVER);
     auto handleAcceptFunction = [this, tcpConnection](const asio::error_code &errorCode) {
         if (!errorCode) {
             tcpConnection->StartReadingNetworkMessages();

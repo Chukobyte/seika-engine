@@ -11,8 +11,9 @@ class NetworkConnectionContext {
     std::map<NetworkConnectionId, TCPConnection*> networkConnections;
   public:
 
-    TCPConnection* NewTCPConnection(asio::io_context &context, NetworkQueue<NetworkMessage> &networkQueue, NetworkConnectionHostType hostType, NetworkConnectionId connectionId) {
-        TCPConnection *tcpConnection = new TCPConnection(context, networkQueue, hostType, connectionId);
+    TCPConnection* NewTCPConnection(asio::io_context &context, NetworkQueue<NetworkMessage> &networkQueue, NetworkConnectionHostType hostType) {
+        static NetworkConnectionId connectionId = 0;
+        TCPConnection *tcpConnection = new TCPConnection(context, networkQueue, hostType, connectionId++);
         networkConnections.emplace(connectionId, tcpConnection);
         return tcpConnection;
     }

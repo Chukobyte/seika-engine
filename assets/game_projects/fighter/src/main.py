@@ -5,6 +5,7 @@ from roll.input import Input
 from roll.engine import Engine
 from roll.math import Vector2
 from roll.network import Server, Client, Network
+from roll.scene import SceneTree
 
 from assets.game_projects.fighter.src.fight_state import FightState, PlayerStateData
 from assets.game_projects.fighter.src.input_buffer import (
@@ -158,7 +159,13 @@ class Main(Node2D):
 
     def _process_inputs(self) -> None:
         if Input.is_action_just_pressed(action_name="quit"):
-            Engine.exit()
+            # Go back to main menu
+            if self.game_properties.player_opponent_mode == PropertyValue.PLAYER_OPPONENT_MODE_HOST_PLAYER_VS_PLAYER:
+                Server.stop()
+            elif self.game_properties.player_opponent_mode == PropertyValue.PLAYER_OPPONENT_MODE_CLIENT_PLAYER_VS_PLAYER:
+                Client.disconnect()
+            SceneTree.change_scene(scene_path="assets/game_projects/fighter/scenes/title_screen.json")
+            # Engine.exit()
 
         for input_buffer in self.input_buffers:
             input_buffer.poll_client_inputs(frame=self.frame_counter)

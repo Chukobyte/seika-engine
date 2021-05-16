@@ -17,6 +17,7 @@
 #endif
 
 #define ASIO_STANDALONE
+//#define ASIO_ENABLE_HANDLER_TRACKING
 #include <asio.hpp>
 #include <asio/ts/buffer.hpp>
 #include <asio/ts/internet.hpp>
