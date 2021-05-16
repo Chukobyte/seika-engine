@@ -5,21 +5,6 @@ from roll.node import CollisionShape2D
 
 class Test(CollisionShape2D):
     @classmethod
-    def extract_valid_inheritance_node(cls) -> str:
-        inheritance_list = [
-            "Node",
-            "Node2D",
-            "Sprite",
-            "AnimatedSprite",
-            "TextLabel",
-            "CollisionShape2D",
-        ]
-        for class_path in cls.__mro__:
-            if class_path.__name__ in inheritance_list:
-                return class_path.__name__
-        return ""
-
-    @classmethod
     def new(cls):
         return roll_engine_api.node_new(
             class_path=f"{__name__}",
