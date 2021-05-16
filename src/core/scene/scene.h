@@ -259,8 +259,12 @@ class SceneManager {
         if (parent != NO_ENTITY) {
             assert((entityToSceneNodeMap.count(parent) > 0) && "Parent scene node doesn't exist!");
             SceneNode parentNode = entityToSceneNodeMap[parent];
-            parentNode.children.emplace_back(SceneNode{.entity = child});
+            SceneNode childNode = SceneNode{.entity = child};
+            parentNode.children.emplace_back(childNode);
             entityToSceneNodeMap[parent] = parentNode;
+            if (parentNode.entity == currentScene.rootNode.entity) {
+                currentScene.rootNode.children.emplace_back(childNode);
+            }
         }
 //        assert((entityToSceneNodeMap.count(child) <= 0) && "Child already exists!");
         SceneNode childNode = SceneNode{.entity = child, .parent = parent};
