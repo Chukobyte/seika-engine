@@ -11,6 +11,7 @@ class NodeTypeHelper {
     static const std::string NODE_TYPE_SPRITE;
     static const std::string NODE_TYPE_ANIMATED_SPRITE;
     static const std::string NODE_TYPE_TEXT_LABEL;
+    static const std::string NODE_TYPE_COLLISION_SHAPE2D;
   public:
     static std::string GetNodeTypeString(NodeType nodeType) {
         switch (nodeType) {
@@ -24,6 +25,8 @@ class NodeTypeHelper {
             return NODE_TYPE_ANIMATED_SPRITE;
         case NodeType_TEXT_LABEL:
             return NODE_TYPE_TEXT_LABEL;
+        case NodeType_COLLISION_SHAPE2D:
+            return NODE_TYPE_COLLISION_SHAPE2D;
         default:
             return NODE_TYPE_INVALID;
         }
@@ -39,6 +42,8 @@ class NodeTypeHelper {
             return NodeType_ANIMATED_SPRITE;
         } else if(nodeTypeString == NODE_TYPE_TEXT_LABEL) {
             return NodeType_TEXT_LABEL;
+        } else if(nodeTypeString == NODE_TYPE_COLLISION_SHAPE2D) {
+            return NodeType_COLLISION_SHAPE2D;
         }
 
         return NodeType_INVALID;

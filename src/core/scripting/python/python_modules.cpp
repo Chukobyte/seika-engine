@@ -146,6 +146,13 @@ PyObject* PythonModules::node_new(PyObject *self, PyObject *args, PyObject *kwar
             entityManager->SetSignature(sceneNode.entity, signature);
         }
 
+        if ((nodeComponent.type & NodeTypeInheritance_COLLISION_SHAPE2D) == NodeTypeInheritance_COLLISION_SHAPE2D) {
+            componentManager->AddComponent(sceneNode.entity, ColliderComponent{});
+            auto signature = entityManager->GetSignature(sceneNode.entity);
+            signature.set(componentManager->GetComponentType<ColliderComponent>(), true);
+            entityManager->SetSignature(sceneNode.entity, signature);
+        }
+
         componentManager->AddComponent(sceneNode.entity, ScriptableClassComponent{
             .classPath = std::string(pyClassPath),
             .className = std::string(pyClassName)
