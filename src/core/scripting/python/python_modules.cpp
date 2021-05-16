@@ -104,6 +104,7 @@ PyObject* PythonModules::node_new(PyObject *self, PyObject *args, PyObject *kwar
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     static PythonCache *pythonCache = PythonCache::GetInstance();
     static ComponentManager *componentManager = GD::GetContainer()->componentManager;
+    static EntityManager *entityManager = GD::GetContainer()->entityManager;
     char *pyClassPath;
     char *pyClassName;
     char *pyNodeType;
@@ -111,32 +112,47 @@ PyObject* PythonModules::node_new(PyObject *self, PyObject *args, PyObject *kwar
         SceneNode sceneNode = SceneNode{.entity = entityComponentOrchestrator->CreateEntity()};
 
         componentManager->AddComponent(sceneNode.entity, NodeComponent{
-                .type = NodeTypeHelper::GetNodeTypeInt(std::string(pyNodeType)),
-                .name = std::string(pyClassName)
+            .type = NodeTypeHelper::GetNodeTypeInt(std::string(pyNodeType)),
+            .name = std::string(pyClassName)
         });
 
         NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(sceneNode.entity);
 
         if ((nodeComponent.type & NodeTypeInheritance_NODE2D) == NodeTypeInheritance_NODE2D) {
             componentManager->AddComponent(sceneNode.entity, Transform2DComponent{});
+            auto signature = entityManager->GetSignature(sceneNode.entity);
+            signature.set(componentManager->GetComponentType<Transform2DComponent>(), true);
+            entityManager->SetSignature(sceneNode.entity, signature);
         }
 
         if ((nodeComponent.type & NodeTypeInheritance_SPRITE) == NodeTypeInheritance_SPRITE) {
             componentManager->AddComponent(sceneNode.entity, SpriteComponent{});
+            auto signature = entityManager->GetSignature(sceneNode.entity);
+            signature.set(componentManager->GetComponentType<SpriteComponent>(), true);
+            entityManager->SetSignature(sceneNode.entity, signature);
         }
 
         if ((nodeComponent.type & NodeTypeInheritance_ANIMATED_SPRITE) == NodeTypeInheritance_ANIMATED_SPRITE) {
             componentManager->AddComponent(sceneNode.entity, AnimatedSpriteComponent{});
+            auto signature = entityManager->GetSignature(sceneNode.entity);
+            signature.set(componentManager->GetComponentType<AnimatedSpriteComponent>(), true);
+            entityManager->SetSignature(sceneNode.entity, signature);
         }
 
         if ((nodeComponent.type & NodeTypeInheritance_TEXT_LABEL) == NodeTypeInheritance_TEXT_LABEL) {
             componentManager->AddComponent(sceneNode.entity, TextLabelComponent{});
+            auto signature = entityManager->GetSignature(sceneNode.entity);
+            signature.set(componentManager->GetComponentType<TextLabelComponent>(), true);
+            entityManager->SetSignature(sceneNode.entity, signature);
         }
 
         componentManager->AddComponent(sceneNode.entity, ScriptableClassComponent{
             .classPath = std::string(pyClassPath),
             .className = std::string(pyClassName)
         });
+        auto scriptClassSignature = entityManager->GetSignature(sceneNode.entity);
+        scriptClassSignature.set(componentManager->GetComponentType<ScriptableClassComponent>(), true);
+        entityManager->SetSignature(sceneNode.entity, scriptClassSignature);
 
         entityComponentOrchestrator->NewEntity(sceneNode);
 
@@ -147,6 +163,19 @@ PyObject* PythonModules::node_new(PyObject *self, PyObject *args, PyObject *kwar
             return pClassInstance;
         }
         Logger::GetInstance()->Debug("failed to add new python instance");
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::node_add_child(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity parentEntity;
+    Entity childEntity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ii", nodeAddChildKWList, &parentEntity, &childEntity)) {
+        Logger::GetInstance()->Debug("Attempting to add child");
+        entityComponentOrchestrator->NewEntityAddChild(parentEntity, childEntity);
+        Logger::GetInstance()->Debug("Child added!");
         Py_RETURN_NONE;
     }
     return nullptr;

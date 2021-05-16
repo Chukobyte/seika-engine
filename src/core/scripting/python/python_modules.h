@@ -22,6 +22,7 @@ class PythonModules {
     static PyObject* camera_set_viewport_position(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* node_new(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* node_add_child(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_get_node(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_queue_deletion(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_signal_create(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -118,8 +119,12 @@ static struct PyMethodDef rollApiMethods[] = {
     },
     // NODE
     {
-            "node_new", (PyCFunction) PythonModules::node_new,
-            METH_VARARGS | METH_KEYWORDS, "Creates new node."
+        "node_new", (PyCFunction) PythonModules::node_new,
+        METH_VARARGS | METH_KEYWORDS, "Creates new node."
+    },
+    {
+        "node_add_child", (PyCFunction) PythonModules::node_add_child,
+        METH_VARARGS | METH_KEYWORDS, "Adds a child to a parent node."
     },
     {
         "node_get_node", (PyCFunction) PythonModules::node_get_node,
@@ -302,6 +307,7 @@ static char *cameraVector2SetKWList[] = {"x", "y", nullptr};
 
 static char *nodeGetEntityKWList[] = {"entity_id", nullptr};
 static char *nodeNewKWList[] = {"class_path", "class_name", "node_type", nullptr};
+static char *nodeAddChildKWList[] = {"parent_entity_id", "child_entity_id", nullptr};
 static char *nodeGetNodeKWList[] = {"name", nullptr};
 static char *nodeSignalCreateKWList[] = {"entity_id", "signal_id", nullptr};
 static char *nodeSignalConnectKWList[] = {"entity_id", "signal_id", "listener_entity_id", "function_name", nullptr};

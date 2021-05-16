@@ -69,6 +69,14 @@ class EntityComponentOrchestrator {
         }
     }
 
+    void NewEntityAddChild(Entity parent, Entity child) {
+        SceneNode childNode = SceneNode{.entity = child, .parent = parent};
+        AddChildToEntityScene(childNode.parent, childNode.entity);
+        NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(childNode.entity);
+        nodeNameToEntityMap.emplace(nodeComponent.name, childNode.entity);
+        CallStartOnScriptInstances(childNode);
+    }
+
     void QueueEntityForDeletion(Entity entity) {
         entitiesQueuedForDeletion.emplace_back(entity);
     }

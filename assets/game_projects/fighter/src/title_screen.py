@@ -75,6 +75,7 @@ class TitleScreen(Node2D):
             node_type="Node2D",
         )
         print(f"test instance = {test_instance.entity_id}")
+        self.add_child(child_node=test_instance)
 
     def _update_menu_selection_labels(self, selection) -> None:
         if selection == MenuSelection.PLAY_LOCAL_COMPUTER:
