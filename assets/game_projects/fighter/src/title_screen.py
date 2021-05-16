@@ -1,10 +1,13 @@
 from enum import auto
 
+import roll_engine_api
+
 from roll.node import Node2D
 from roll.scene import SceneTree
 from roll.input import Input
 from roll.engine import Engine
 from roll.color import Color
+
 
 from assets.game_projects.fighter.src.auto_enum import AutoName
 
@@ -12,6 +15,7 @@ from assets.game_projects.fighter.src.game_properties import (
     GameProperties,
     PropertyValue,
 )
+from assets.game_projects.fighter.src.test import Test
 
 
 class MenuSelection(AutoName):
@@ -63,6 +67,14 @@ class TitleScreen(Node2D):
         self._update_menu_selection_labels(
             selection=self.selection_list.get_current_item()
         )
+
+        print("start")
+        test_instance = roll_engine_api.node_new(
+            class_path="assets.game_projects.fighter.src.test",
+            class_name="Test",
+            node_type="Node2D",
+        )
+        print(f"test instance = {test_instance.entity_id}")
 
     def _update_menu_selection_labels(self, selection) -> None:
         if selection == MenuSelection.PLAY_LOCAL_COMPUTER:

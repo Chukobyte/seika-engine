@@ -21,6 +21,7 @@ class PythonModules {
     static PyObject* camera_set_zoom(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* camera_set_viewport_position(PyObject* self, PyObject* args, PyObject* kwargs);
 
+    static PyObject* node_new(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_get_node(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_queue_deletion(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_signal_create(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -116,6 +117,10 @@ static struct PyMethodDef rollApiMethods[] = {
         METH_VARARGS | METH_KEYWORDS, "Set viewport's position."
     },
     // NODE
+    {
+            "node_new", (PyCFunction) PythonModules::node_new,
+            METH_VARARGS | METH_KEYWORDS, "Creates new node."
+    },
     {
         "node_get_node", (PyCFunction) PythonModules::node_get_node,
         METH_VARARGS | METH_KEYWORDS, "Gets a node if name exists."
@@ -296,6 +301,7 @@ static char *audioSetVolumeKWList[] = {"volume", nullptr};
 static char *cameraVector2SetKWList[] = {"x", "y", nullptr};
 
 static char *nodeGetEntityKWList[] = {"entity_id", nullptr};
+static char *nodeNewKWList[] = {"class_path", "class_name", "node_type", nullptr};
 static char *nodeGetNodeKWList[] = {"name", nullptr};
 static char *nodeSignalCreateKWList[] = {"entity_id", "signal_id", nullptr};
 static char *nodeSignalConnectKWList[] = {"entity_id", "signal_id", "listener_entity_id", "function_name", nullptr};

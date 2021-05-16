@@ -53,7 +53,6 @@ class SceneManager {
         nlohmann::json nodeChildrenJsonArray = nodeJson["children"].get<nlohmann::json>();
 
         // Configure node type component
-        // TODO: Figure out if node type info should go into a component within scene json
         std::vector<std::string> nodeTags;
         for (const std::string &nodeTag : nodeTagsJsonArray) {
             nodeTags.emplace_back(nodeTag);

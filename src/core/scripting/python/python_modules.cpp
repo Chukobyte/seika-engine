@@ -100,6 +100,58 @@ PyObject* PythonModules::camera_set_viewport_position(PyObject *self, PyObject *
 }
 
 // NODE
+PyObject* PythonModules::node_new(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    static PythonCache *pythonCache = PythonCache::GetInstance();
+    static ComponentManager *componentManager = GD::GetContainer()->componentManager;
+    char *pyClassPath;
+    char *pyClassName;
+    char *pyNodeType;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "sss", nodeNewKWList, &pyClassPath, &pyClassName, &pyNodeType)) {
+        SceneNode sceneNode = SceneNode{.entity = entityComponentOrchestrator->CreateEntity()};
+
+        componentManager->AddComponent(sceneNode.entity, NodeComponent{
+                .type = NodeTypeHelper::GetNodeTypeInt(std::string(pyNodeType)),
+                .name = std::string(pyClassName)
+        });
+
+        NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(sceneNode.entity);
+
+        if ((nodeComponent.type & NodeTypeInheritance_NODE2D) == NodeTypeInheritance_NODE2D) {
+            componentManager->AddComponent(sceneNode.entity, Transform2DComponent{});
+        }
+
+        if ((nodeComponent.type & NodeTypeInheritance_SPRITE) == NodeTypeInheritance_SPRITE) {
+            componentManager->AddComponent(sceneNode.entity, SpriteComponent{});
+        }
+
+        if ((nodeComponent.type & NodeTypeInheritance_ANIMATED_SPRITE) == NodeTypeInheritance_ANIMATED_SPRITE) {
+            componentManager->AddComponent(sceneNode.entity, AnimatedSpriteComponent{});
+        }
+
+        if ((nodeComponent.type & NodeTypeInheritance_TEXT_LABEL) == NodeTypeInheritance_TEXT_LABEL) {
+            componentManager->AddComponent(sceneNode.entity, TextLabelComponent{});
+        }
+
+        componentManager->AddComponent(sceneNode.entity, ScriptableClassComponent{
+            .classPath = std::string(pyClassPath),
+            .className = std::string(pyClassName)
+        });
+
+        entityComponentOrchestrator->NewEntity(sceneNode);
+
+        if (pythonCache->HasActiveInstance(sceneNode.entity)) {
+            Logger::GetInstance()->Debug("Add new python instance");
+            CPyObject &pClassInstance = pythonCache->GetClassInstance(sceneNode.entity);
+            pClassInstance.AddRef();
+            return pClassInstance;
+        }
+        Logger::GetInstance()->Debug("failed to add new python instance");
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
 PyObject* PythonModules::node_get_node(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     static PythonCache *pythonCache = PythonCache::GetInstance();

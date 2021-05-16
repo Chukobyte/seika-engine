@@ -62,6 +62,13 @@ class EntityComponentOrchestrator {
         return entityManager->CreateEntity();
     }
 
+    void NewEntity(SceneNode sceneNode) {
+        if (componentManager->HasComponent<ScriptableClassComponent>(sceneNode.entity)) {
+            ScriptEntitySystem *scriptEntitySystem = (ScriptEntitySystem*) entitySystemManager->GetEntitySystem<ScriptEntitySystem>();
+            scriptEntitySystem->CreateEntityInstance(sceneNode.entity);
+        }
+    }
+
     void QueueEntityForDeletion(Entity entity) {
         entitiesQueuedForDeletion.emplace_back(entity);
     }

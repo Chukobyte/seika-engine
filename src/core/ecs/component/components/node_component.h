@@ -10,11 +10,19 @@ using NodeType = std::uint32_t;
 
 enum _NodeType {
     NodeType_INVALID = 0,
-    NodeType_NODE = 1,
-    NodeType_NODE2D = 2,
-    NodeType_SPRITE = 3,
-    NodeType_ANIMATED_SPRITE = 4,
-    NodeType_TEXT_LABEL = 5,
+    NodeType_NODE = 2,
+    NodeType_NODE2D = 4,
+    NodeType_SPRITE = 8,
+    NodeType_ANIMATED_SPRITE = 16,
+    NodeType_TEXT_LABEL = 32,
+};
+
+enum _NodeTypeInheritance {
+    NodeTypeInheritance_NODE = NodeType_NODE,
+    NodeTypeInheritance_NODE2D = NodeType_NODE | NodeType_NODE2D,
+    NodeTypeInheritance_SPRITE = NodeType_NODE | NodeType_SPRITE,
+    NodeTypeInheritance_ANIMATED_SPRITE = NodeType_NODE | NodeType_ANIMATED_SPRITE,
+    NodeTypeInheritance_TEXT_LABEL = NodeType_NODE | NodeType_TEXT_LABEL,
 };
 
 struct NodeComponent {
