@@ -11,17 +11,30 @@ class AnimatedSpriteRenderingEntitySystem : public EntitySystem {
     Renderer *renderer = nullptr;
     ComponentManager *componentManager = nullptr;
     CameraManager *cameraManager = nullptr;
+    SceneManager *sceneManager = nullptr;
+
+    Vector2 GetParentPosition(Entity entity) {
+        Entity parentEntity = sceneManager->GetParent(entity);
+        if (parentEntity == NO_ENTITY) {
+            return {0, 0};
+        } else {
+            Transform2DComponent transform2DComponent = componentManager->GetComponent<Transform2DComponent>(parentEntity);
+            return transform2DComponent.position;
+        }
+    }
   public:
+
     AnimatedSpriteRenderingEntitySystem() {
         renderer = GD::GetContainer()->renderer;
         componentManager = GD::GetContainer()->componentManager;
         cameraManager = GD::GetContainer()->cameraManager;
+        sceneManager = GD::GetContainer()->sceneManager;
         enabled = true;
     }
-
     void Initialize() override {}
     void Enable() override {}
     void Disable() override {}
+
     void UnregisterEntity(Entity entity) override {}
 
     void Render() {
@@ -44,7 +57,8 @@ class AnimatedSpriteRenderingEntitySystem : public EntitySystem {
                     }
                 }
                 Camera camera = cameraManager->GetCurrentCamera();
-                Vector2 drawDestinationPosition = SpaceHandler::WorldToScreen(transform2DComponent.position, transform2DComponent.ignoreCamera);
+                Vector2 parentPosition = GetParentPosition(entity);
+                Vector2 drawDestinationPosition = SpaceHandler::WorldToScreen(transform2DComponent.position + parentPosition, transform2DComponent.ignoreCamera);
                 Vector2 drawScale = !transform2DComponent.ignoreCamera ? transform2DComponent.scale * camera.zoom : transform2DComponent.scale;
                 Vector2 drawDestinationSize = Vector2(currentFrame.drawSource.w * drawScale.x, currentFrame.drawSource.h * drawScale.y);
                 Rect2 drawDestination = Rect2(drawDestinationPosition, drawDestinationSize);

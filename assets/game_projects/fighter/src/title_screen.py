@@ -1,10 +1,14 @@
 from enum import auto
 
+import roll_engine_api
+
 from roll.node import Node2D
 from roll.scene import SceneTree
 from roll.input import Input
 from roll.engine import Engine
 from roll.color import Color
+from roll.math import Vector2
+
 
 from assets.game_projects.fighter.src.auto_enum import AutoName
 
@@ -12,6 +16,7 @@ from assets.game_projects.fighter.src.game_properties import (
     GameProperties,
     PropertyValue,
 )
+from assets.game_projects.fighter.src.test import Test
 
 
 class MenuSelection(AutoName):

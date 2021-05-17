@@ -223,7 +223,50 @@
                     }
                 }
             ],
-            "children": []
+            "children": [
+                {
+                    "name": "PlayerOneHitBox",
+                    "type": "CollisionShape2D",
+                    "tags": [],
+                    "external_scene_source": "",
+                    "components": [
+                        {
+                            "transform2D": {
+                                "position": {
+                                    "x": 0,
+                                    "y": 0
+                                },
+                                "scale": {
+                                    "x": 4,
+                                    "y": 4
+                                },
+                                "rotation": 0,
+                                "z_index": 0,
+                                "z_index_relative_to_parent": false,
+                                "ignore_camera": false
+                            }
+                        },
+                        {
+                            "collider": {
+                                "rectangle": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "width": 4.0,
+                                    "height": 4.0
+                                }
+                            }
+                        },
+                        {
+                            "scriptable_class": {
+                                "class_path": "assets.game_projects.fighter.src.hit_box",
+                                "class_name": "HitBox"
+                            }
+                        }
+                    ],
+                    "children": []
+                }
+
+            ]
         },
         {
             "name": "PlayerTwo",
@@ -420,7 +463,49 @@
                     }
                 }
             ],
-            "children": []
+            "children": [
+                {
+                    "name": "PlayerTwoHitBox",
+                    "type": "CollisionShape2D",
+                    "tags": [],
+                    "external_scene_source": "",
+                    "components": [
+                        {
+                            "transform2D": {
+                                "position": {
+                                    "x": 0,
+                                    "y": 0
+                                },
+                                "scale": {
+                                    "x": 4,
+                                    "y": 4
+                                },
+                                "rotation": 0,
+                                "z_index": 0,
+                                "z_index_relative_to_parent": false,
+                                "ignore_camera": false
+                            }
+                        },
+                        {
+                            "collider": {
+                                "rectangle": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "width": 4.0,
+                                    "height": 4.0
+                                }
+                            }
+                        },
+                        {
+                            "scriptable_class": {
+                                "class_path": "assets.game_projects.fighter.src.hit_box",
+                                "class_name": "HitBox"
+                            }
+                        }
+                    ],
+                    "children": []
+                }
+            ]
         }
     ]
 }

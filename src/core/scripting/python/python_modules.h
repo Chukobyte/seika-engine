@@ -21,6 +21,8 @@ class PythonModules {
     static PyObject* camera_set_zoom(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* camera_set_viewport_position(PyObject* self, PyObject* args, PyObject* kwargs);
 
+    static PyObject* node_new(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* node_add_child(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_get_node(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_queue_deletion(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_signal_create(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -48,6 +50,9 @@ class PythonModules {
     static PyObject* text_label_set_text(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* text_label_get_color(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* text_label_set_color(PyObject* self, PyObject* args, PyObject* kwargs);
+
+    static PyObject* collision_shape2d_get_collider_rect(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* collision_shape2d_set_collider_rect(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* collision_check(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* collision_get_collided_nodes(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -116,6 +121,14 @@ static struct PyMethodDef rollApiMethods[] = {
         METH_VARARGS | METH_KEYWORDS, "Set viewport's position."
     },
     // NODE
+    {
+        "node_new", (PyCFunction) PythonModules::node_new,
+        METH_VARARGS | METH_KEYWORDS, "Creates new node."
+    },
+    {
+        "node_add_child", (PyCFunction) PythonModules::node_add_child,
+        METH_VARARGS | METH_KEYWORDS, "Adds a child to a parent node."
+    },
     {
         "node_get_node", (PyCFunction) PythonModules::node_get_node,
         METH_VARARGS | METH_KEYWORDS, "Gets a node if name exists."
@@ -212,6 +225,15 @@ static struct PyMethodDef rollApiMethods[] = {
         "text_label_set_color", (PyCFunction) PythonModules::text_label_set_color,
         METH_VARARGS | METH_KEYWORDS, "Sets a text label's color."
     },
+    // COLLISION SHAPE2D
+    {
+        "collision_shape2d_get_collider_rect", (PyCFunction) PythonModules::collision_shape2d_get_collider_rect,
+        METH_VARARGS | METH_KEYWORDS, "Get collider's rectangle."
+    },
+    {
+        "collision_shape2d_set_collider_rect", (PyCFunction) PythonModules::collision_shape2d_set_collider_rect,
+        METH_VARARGS | METH_KEYWORDS, "Set collider's rectangle."
+    },
     // COLLISION
     {
         "collision_check", (PyCFunction) PythonModules::collision_check,
@@ -296,6 +318,8 @@ static char *audioSetVolumeKWList[] = {"volume", nullptr};
 static char *cameraVector2SetKWList[] = {"x", "y", nullptr};
 
 static char *nodeGetEntityKWList[] = {"entity_id", nullptr};
+static char *nodeNewKWList[] = {"class_path", "class_name", "node_type", nullptr};
+static char *nodeAddChildKWList[] = {"parent_entity_id", "child_entity_id", nullptr};
 static char *nodeGetNodeKWList[] = {"name", nullptr};
 static char *nodeSignalCreateKWList[] = {"entity_id", "signal_id", nullptr};
 static char *nodeSignalConnectKWList[] = {"entity_id", "signal_id", "listener_entity_id", "function_name", nullptr};
@@ -310,6 +334,8 @@ static char *animatedSpritePlayKWList[] = {"entity_id", "animation_name", nullpt
 
 static char *textLabelSetTextKWList[] = {"entity_id", "text", nullptr};
 static char *textLabelSetColorKWList[] = {"entity_id", "red", "green", "blue", "alpha", nullptr};
+
+static char *collisionShape2DSetColliderRectKWList[] = {"entity_id", "x", "y", "w", "h", nullptr};
 
 static char *inputAddActionKWList[] = {"action_name", "value", nullptr};
 static char *inputActionCheckKWList[] = {"action_name", nullptr};

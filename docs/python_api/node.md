@@ -134,6 +134,8 @@ Add to node's current position.  For example, if this line of code is within the
 
 **Inherits**: [Node2D](#node2d) -> [Node](#node)
 
+Class used to render a sprite entity.
+
 ### Variables
 
 ```python
@@ -166,6 +168,8 @@ None.
 ## AnimatedSprite
 
 **Inherits**: [Node2D](#node2d) -> [Node](#node)
+
+Class used to render an animated sprite entity.
 
 ### Variables
 
@@ -225,6 +229,8 @@ Stops currently playing animation.
 
 **Inherits**: [Node2D](#node2d) -> [Node](#node)
 
+Class used to render font.
+
 ### Variables
 
 ```python
@@ -260,5 +266,41 @@ set_text(value: str) -> None:
 ```
 
 Set node's label text.
+
+---
+
+---
+
+## CollisionShape2D
+
+**Inherits**: [Node2D](#node2d) -> [Node](#node)
+
+Class used to define collision shapes defined as rectangles.  May add other collision shapes in the future.
+
+### Variables
+
+```python
+collider_rect: roll.math.Rect2
+```
+
+Collision shape's colliding rectangle.
+
+```python
+nodes_to_exclude: roll.color.Node
+```
+
+Nodes that should be excluded from collision checks.
+
+---
+
+### Signals
+
+None.
+
+---
+
+### Methods
+
+None.
 
 ---

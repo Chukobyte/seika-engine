@@ -31,9 +31,6 @@ class EntityComponentOrchestrator {
 
     // Will be the function to initialize stuff for a scene
     void RegisterSceneNodeInstances(SceneNode sceneNode) {
-        for (SceneNode childSceneNode : sceneNode.children) {
-            RegisterSceneNodeInstances(childSceneNode);
-        }
         AddChildToEntityScene(sceneNode.parent, sceneNode.entity);
         if (componentManager->HasComponent<ScriptableClassComponent>(sceneNode.entity)) {
             ScriptEntitySystem *scriptEntitySystem = (ScriptEntitySystem*) entitySystemManager->GetEntitySystem<ScriptEntitySystem>();
@@ -41,6 +38,10 @@ class EntityComponentOrchestrator {
         }
         NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(sceneNode.entity);
         nodeNameToEntityMap.emplace(nodeComponent.name, sceneNode.entity);
+
+        for (SceneNode childSceneNode : sceneNode.children) {
+            RegisterSceneNodeInstances(childSceneNode);
+        }
     }
 
     void CallStartOnScriptInstances(SceneNode sceneNode) {
@@ -60,6 +61,21 @@ class EntityComponentOrchestrator {
     // ENTITY METHODS
     Entity CreateEntity() {
         return entityManager->CreateEntity();
+    }
+
+    void NewEntity(SceneNode sceneNode) {
+        if (componentManager->HasComponent<ScriptableClassComponent>(sceneNode.entity)) {
+            ScriptEntitySystem *scriptEntitySystem = (ScriptEntitySystem*) entitySystemManager->GetEntitySystem<ScriptEntitySystem>();
+            scriptEntitySystem->CreateEntityInstance(sceneNode.entity);
+        }
+    }
+
+    void NewEntityAddChild(Entity parent, Entity child) {
+        SceneNode childNode = SceneNode{.entity = child, .parent = parent};
+        AddChildToEntityScene(childNode.parent, childNode.entity);
+        NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(childNode.entity);
+        nodeNameToEntityMap.emplace(nodeComponent.name, childNode.entity);
+        CallStartOnScriptInstances(childNode);
     }
 
     void QueueEntityForDeletion(Entity entity) {

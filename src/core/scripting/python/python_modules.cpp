@@ -100,6 +100,99 @@ PyObject* PythonModules::camera_set_viewport_position(PyObject *self, PyObject *
 }
 
 // NODE
+PyObject* PythonModules::node_new(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    static PythonCache *pythonCache = PythonCache::GetInstance();
+    static ComponentManager *componentManager = GD::GetContainer()->componentManager;
+    static EntityManager *entityManager = GD::GetContainer()->entityManager;
+    char *pyClassPath;
+    char *pyClassName;
+    char *pyNodeType;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "sss", nodeNewKWList, &pyClassPath, &pyClassName, &pyNodeType)) {
+        SceneNode sceneNode = SceneNode{.entity = entityComponentOrchestrator->CreateEntity()};
+
+        componentManager->AddComponent<NodeComponent>(sceneNode.entity, NodeComponent{
+            .type = NodeTypeHelper::GetNodeTypeInt(std::string(pyNodeType)),
+            .name = std::string(pyClassName)
+        });
+
+        NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(sceneNode.entity);
+        NodeTypeInheritance nodeTypeInheritance = NodeTypeHelper::GetNodeTypeInheritanceInt(nodeComponent.type);
+
+        if ((NodeType_NODE2D & nodeTypeInheritance) == NodeType_NODE2D) {
+            componentManager->AddComponent<Transform2DComponent>(sceneNode.entity, Transform2DComponent{});
+            auto signature = entityManager->GetSignature(sceneNode.entity);
+            signature.set(componentManager->GetComponentType<Transform2DComponent>(), true);
+            entityManager->SetSignature(sceneNode.entity, signature);
+        }
+
+        if ((NodeTypeInheritance_SPRITE & nodeTypeInheritance) == NodeTypeInheritance_SPRITE) {
+            componentManager->AddComponent<SpriteComponent>(sceneNode.entity, SpriteComponent{});
+            auto signature = entityManager->GetSignature(sceneNode.entity);
+            signature.set(componentManager->GetComponentType<SpriteComponent>(), true);
+            entityManager->SetSignature(sceneNode.entity, signature);
+        }
+
+        if ((NodeTypeInheritance_ANIMATED_SPRITE & nodeTypeInheritance) == NodeTypeInheritance_ANIMATED_SPRITE) {
+            componentManager->AddComponent<AnimatedSpriteComponent>(sceneNode.entity, AnimatedSpriteComponent{});
+            auto signature = entityManager->GetSignature(sceneNode.entity);
+            signature.set(componentManager->GetComponentType<AnimatedSpriteComponent>(), true);
+            entityManager->SetSignature(sceneNode.entity, signature);
+        }
+
+        if ((NodeTypeInheritance_TEXT_LABEL & nodeTypeInheritance) == NodeTypeInheritance_TEXT_LABEL) {
+            componentManager->AddComponent<TextLabelComponent>(sceneNode.entity, TextLabelComponent{});
+            auto signature = entityManager->GetSignature(sceneNode.entity);
+            signature.set(componentManager->GetComponentType<TextLabelComponent>(), true);
+            entityManager->SetSignature(sceneNode.entity, signature);
+        }
+
+        if ((NodeTypeInheritance_COLLISION_SHAPE2D & nodeTypeInheritance) == NodeTypeInheritance_COLLISION_SHAPE2D) {
+            componentManager->AddComponent<ColliderComponent>(sceneNode.entity, ColliderComponent{});
+            auto signature = entityManager->GetSignature(sceneNode.entity);
+            signature.set(componentManager->GetComponentType<ColliderComponent>(), true);
+            entityManager->SetSignature(sceneNode.entity, signature);
+        }
+
+        if (NodeTypeHelper::IsNameDefaultNodeClass(std::string(pyClassName))) {
+            pythonCache->CreateClassInstance(std::string(pyClassPath), std::string(pyClassName), sceneNode.entity);
+        } else {
+            componentManager->AddComponent(sceneNode.entity, ScriptableClassComponent{
+                .classPath = std::string(pyClassPath),
+                .className = std::string(pyClassName)
+            });
+            auto scriptClassSignature = entityManager->GetSignature(sceneNode.entity);
+            scriptClassSignature.set(componentManager->GetComponentType<ScriptableClassComponent>(), true);
+            entityManager->SetSignature(sceneNode.entity, scriptClassSignature);
+
+            entityComponentOrchestrator->NewEntity(sceneNode);
+        }
+
+
+        if (pythonCache->HasActiveInstance(sceneNode.entity)) {
+            CPyObject &pClassInstance = pythonCache->GetClassInstance(sceneNode.entity);
+            pClassInstance.AddRef();
+            return pClassInstance;
+        }
+        Logger::GetInstance()->Debug("failed to add new python instance");
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::node_add_child(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity parentEntity;
+    Entity childEntity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ii", nodeAddChildKWList, &parentEntity, &childEntity)) {
+        Logger::GetInstance()->Debug("Attempting to add child");
+        entityComponentOrchestrator->NewEntityAddChild(parentEntity, childEntity);
+        Logger::GetInstance()->Debug("Child added!");
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
 PyObject* PythonModules::node_get_node(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     static PythonCache *pythonCache = PythonCache::GetInstance();
@@ -398,6 +491,30 @@ PyObject* PythonModules::text_label_set_color(PyObject *self, PyObject *args, Py
         TextLabelComponent textLabelComponent = entityComponentOrchestrator->GetComponent<TextLabelComponent>(entity);
         textLabelComponent.color = Color(red, green, blue, alpha);
         entityComponentOrchestrator->UpdateComponent<TextLabelComponent>(entity, textLabelComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+// COLLISION_SHAPE2D
+PyObject* PythonModules::collision_shape2d_get_collider_rect(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        ColliderComponent colliderComponent = entityComponentOrchestrator->GetComponent<ColliderComponent>(entity);
+        return Py_BuildValue("(ffff)", colliderComponent.collider.x, colliderComponent.collider.y, colliderComponent.collider.w, colliderComponent.collider.h);
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::collision_shape2d_set_collider_rect(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    float x, y, w, h;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "iffff", collisionShape2DSetColliderRectKWList, &entity, &x, &y, &w, &h)) {
+        ColliderComponent colliderComponent = entityComponentOrchestrator->GetComponent<ColliderComponent>(entity);
+        colliderComponent.collider = Rect2(x, y, w, h);
+        entityComponentOrchestrator->UpdateComponent<ColliderComponent>(entity, colliderComponent);
         Py_RETURN_NONE;
     }
     return nullptr;
