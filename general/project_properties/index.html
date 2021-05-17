@@ -102,46 +102,43 @@
 <p>Project properties define how the game will be configured before running.  An example of the file is found below:</p>
 <h3 id="format">Format</h3>
 <pre><code class="language-json">{
-   "game_title": "Fighting Game Proto",
-   "initial_scene": "scenes/init.json",
-   "base_resolution": {
-      "width": 800,
-      "height": 600
-   },
-   "colliders_visible": true,
-   "assets": [
-      {
-         "type": "texture",
-         "file_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png"
-      },
-      {
-         "type": "font",
-         "file_path": "assets/fonts/bruh.ttf",
-         "size": 60
-      },
-      {
-         "type": "music",
-         "file_path": "assets/audio/music/test_music.wav"
-      },
-      {
-         "type": "sound",
-         "file_path": "assets/audio/sound/test_sound_effect.wav"
-      }
-   ],
-   "input_actions": [
-      {
-         "name": "quit",
-         "values": [
-            "esc"
-         ]
-      },
-      {
-         "name": "confirm",
-         "values": ["return"]
-      }
-   ]
+  "game_title": "Fighting Game Proto",
+  "initial_scene": "scenes/init.json",
+  "base_resolution": {
+    "width": 800,
+    "height": 600
+  },
+  "colliders_visible": true,
+  "assets": [
+    {
+      "type": "texture",
+      "file_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png"
+    },
+    {
+      "type": "font",
+      "file_path": "assets/fonts/bruh.ttf",
+      "size": 60
+    },
+    {
+      "type": "music",
+      "file_path": "assets/audio/music/test_music.wav"
+    },
+    {
+      "type": "sound",
+      "file_path": "assets/audio/sound/test_sound_effect.wav"
+    }
+  ],
+  "input_actions": [
+    {
+      "name": "quit",
+      "values": ["esc"]
+    },
+    {
+      "name": "confirm",
+      "values": ["return"]
+    }
+  ]
 }
-
 </code></pre>
 <h3 id="properties">Properties</h3>
 <p><code>game_title</code></p>
