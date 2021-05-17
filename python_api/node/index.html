@@ -42,6 +42,8 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../general/core_concepts/">Core Concepts</a>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../general/project_properties/">Project Properties</a>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">Python API</span></p>
 <ul class="current">
@@ -96,6 +98,16 @@
 <li class="toctree-l3"><a class="reference internal" href="#signals_4">Signals</a>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#methods_4">Methods</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#collisionshape2d">CollisionShape2D</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#variables_5">Variables</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#signals_5">Signals</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#methods_5">Methods</a>
 </li>
 </ul>
 </li>
@@ -210,6 +222,7 @@
 <hr/>
 <h2 id="sprite">Sprite</h2>
 <p><strong>Inherits</strong>: <a href="#node2d">Node2D</a> -&gt; <a href="#node">Node</a></p>
+<p>Class used to render a sprite entity.</p>
 <h3 id="variables_2">Variables</h3>
 <pre><code class="language-python">flip_h: bool
 </code></pre>
@@ -226,6 +239,7 @@
 <hr/>
 <h2 id="animatedsprite">AnimatedSprite</h2>
 <p><strong>Inherits</strong>: <a href="#node2d">Node2D</a> -&gt; <a href="#node">Node</a></p>
+<p>Class used to render an animated sprite entity.</p>
 <h3 id="variables_3">Variables</h3>
 <pre><code class="language-python">is_playing: bool
 </code></pre>
@@ -255,6 +269,7 @@
 <hr/>
 <h2 id="textlabel">TextLabel</h2>
 <p><strong>Inherits</strong>: <a href="#node2d">Node2D</a> -&gt; <a href="#node">Node</a></p>
+<p>Class used to render font.</p>
 <h3 id="variables_4">Variables</h3>
 <pre><code class="language-python">text: str
 </code></pre>
@@ -273,6 +288,24 @@
 <pre><code class="language-python">set_text(value: str) -&gt; None:
 </code></pre>
 <p>Set node's label text.</p>
+<hr/>
+<hr/>
+<h2 id="collisionshape2d">CollisionShape2D</h2>
+<p><strong>Inherits</strong>: <a href="#node2d">Node2D</a> -&gt; <a href="#node">Node</a></p>
+<p>Class used to define collision shapes defined as rectangles.  May add other collision shapes in the future.</p>
+<h3 id="variables_5">Variables</h3>
+<pre><code class="language-python">collider_rect: roll.math.Rect2
+</code></pre>
+<p>Collision shape's colliding rectangle.</p>
+<pre><code class="language-python">nodes_to_exclude: roll.color.Node
+</code></pre>
+<p>Nodes that should be excluded from collision checks.</p>
+<hr/>
+<h3 id="signals_5">Signals</h3>
+<p>None.</p>
+<hr/>
+<h3 id="methods_5">Methods</h3>
+<p>None.</p>
 <hr/>
 </div>
 </div>
