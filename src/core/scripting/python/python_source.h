@@ -310,7 +310,7 @@ static PythonSource PYTHON_SOURCE_NODE_MODULE =
     "   def new(cls):\n"
     "       return roll_engine_api.node_new(\n"
     "           class_path=f\"{__name__}\",\n"
-    "           class_name=f\"{__class__.__name__}\",\n"
+    "           class_name=f\"{cls.__name__}\",\n"
     "           node_type=f\"{cls.extract_valid_inheritance_node()}\",\n"
     "       )\n"
     "\n"

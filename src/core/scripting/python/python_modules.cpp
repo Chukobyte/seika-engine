@@ -120,7 +120,6 @@ PyObject* PythonModules::node_new(PyObject *self, PyObject *args, PyObject *kwar
         NodeTypeInheritance nodeTypeInheritance = NodeTypeHelper::GetNodeTypeInheritanceInt(nodeComponent.type);
 
         if ((NodeType_NODE2D & nodeTypeInheritance) == NodeType_NODE2D) {
-            Logger::GetInstance()->Debug("Node2D added!");
             componentManager->AddComponent<Transform2DComponent>(sceneNode.entity, Transform2DComponent{});
             auto signature = entityManager->GetSignature(sceneNode.entity);
             signature.set(componentManager->GetComponentType<Transform2DComponent>(), true);
@@ -149,7 +148,6 @@ PyObject* PythonModules::node_new(PyObject *self, PyObject *args, PyObject *kwar
         }
 
         if ((NodeTypeInheritance_COLLISION_SHAPE2D & nodeTypeInheritance) == NodeTypeInheritance_COLLISION_SHAPE2D) {
-            Logger::GetInstance()->Debug("Collider added!");
             componentManager->AddComponent<ColliderComponent>(sceneNode.entity, ColliderComponent{});
             auto signature = entityManager->GetSignature(sceneNode.entity);
             signature.set(componentManager->GetComponentType<ColliderComponent>(), true);
@@ -172,7 +170,6 @@ PyObject* PythonModules::node_new(PyObject *self, PyObject *args, PyObject *kwar
 
 
         if (pythonCache->HasActiveInstance(sceneNode.entity)) {
-            Logger::GetInstance()->Debug("Add new python instance");
             CPyObject &pClassInstance = pythonCache->GetClassInstance(sceneNode.entity);
             pClassInstance.AddRef();
             return pClassInstance;

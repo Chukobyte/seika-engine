@@ -69,13 +69,6 @@ class TitleScreen(Node2D):
             selection=self.selection_list.get_current_item()
         )
 
-        test_instance = Test.new()
-        print(f"test instance = {test_instance}")
-        self.add_child(child_node=test_instance)
-        test_node_2d = Node2D.new()
-        print(f"position = {test_node_2d.position}")
-        test_node_2d.position = Vector2(10, 20)
-
     def _update_menu_selection_labels(self, selection) -> None:
         if selection == MenuSelection.PLAY_LOCAL_COMPUTER:
             self.play_local_computer_text.color = self.selected_color
