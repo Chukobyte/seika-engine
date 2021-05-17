@@ -285,12 +285,6 @@ collider_rect: roll.math.Rect2
 
 Collision shape's colliding rectangle.
 
-```python
-nodes_to_exclude: roll.color.Node
-```
-
-Nodes that should be excluded from collision checks.
-
 ---
 
 ### Signals
@@ -301,6 +295,16 @@ None.
 
 ### Methods
 
-None.
+```python
+add_collision_exception(node: roll.node.Node) -> None:
+```
+
+Adds a node to an exception list to ignore collisions.
+
+```python
+remove_collision_exception(node: roll.node.Node) -> None:
+```
+
+Removes a node from an exception list. Collisions between nodes are enabled.
 
 ---
