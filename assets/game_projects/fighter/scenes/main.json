@@ -233,8 +233,8 @@
                         {
                             "transform2D": {
                                 "position": {
-                                    "x": 175,
-                                    "y": 300
+                                    "x": 0,
+                                    "y": 0
                                 },
                                 "scale": {
                                     "x": 4,
@@ -473,8 +473,8 @@
                         {
                             "transform2D": {
                                 "position": {
-                                    "x": 500,
-                                    "y": 300
+                                    "x": 0,
+                                    "y": 0
                                 },
                                 "scale": {
                                     "x": 4,

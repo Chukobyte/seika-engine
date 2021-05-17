@@ -43,8 +43,14 @@ class SceneManager {
     AssetManager *assetManager = nullptr;
     TimerManager *timerManager = nullptr;
 
-    SceneNode ParseSceneJson(nlohmann::json nodeJson) {
-        SceneNode sceneNode = SceneNode{.entity = entityManager->CreateEntity()};
+    SceneNode ParseSceneJson(nlohmann::json nodeJson, bool isRoot) {
+        SceneNode sceneNode;
+        if (isRoot) {
+            sceneNode = SceneNode{.entity = entityManager->CreateEntity()};
+        } else {
+            sceneNode = SceneNode{.entity = entityManager->CreateEntity(), .parent = nodeJson["parent_entity_id"].get<unsigned int>()};
+        }
+
         std::string nodeName = nodeJson["name"].get<std::string>();
         std::string nodeType = nodeJson["type"].get<std::string>();
         nlohmann::json nodeTagsJsonArray = nodeJson["tags"].get<nlohmann::json>();
@@ -211,7 +217,8 @@ class SceneManager {
         }
 
         for (nlohmann::json nodeChildJson : nodeChildrenJsonArray) {
-            SceneNode childNode = ParseSceneJson(nodeChildJson);
+            nodeChildJson["parent_entity_id"] = sceneNode.entity;
+            SceneNode childNode = ParseSceneJson(nodeChildJson, false);
             sceneNode.children.emplace_back(childNode);
         }
 
@@ -256,7 +263,6 @@ class SceneManager {
     }
 
     void AddChild(Entity parent, Entity child) {
-        Logger::GetInstance()->Debug("Add child: parent = " + std::to_string(parent) + ", child = " + std::to_string(child));
         SceneNode childNode = SceneNode{.entity = child, .parent = parent};
         if (parent != NO_ENTITY) {
             assert((entityToSceneNodeMap.count(parent) > 0) && "Parent scene node doesn't exist!");
@@ -308,7 +314,7 @@ class SceneManager {
 
     Scene LoadSceneFromFile(const std::string &filePath) {
         nlohmann::json sceneJson = JsonFileHelper::LoadJsonFile(filePath);
-        SceneNode rootNode = ParseSceneJson(sceneJson);
+        SceneNode rootNode = ParseSceneJson(sceneJson, true);
         Scene loadedScene = Scene{.rootNode = rootNode};
         ChangeToScene(loadedScene);
         return loadedScene;

@@ -31,9 +31,6 @@ class EntityComponentOrchestrator {
 
     // Will be the function to initialize stuff for a scene
     void RegisterSceneNodeInstances(SceneNode sceneNode) {
-        for (SceneNode childSceneNode : sceneNode.children) {
-            RegisterSceneNodeInstances(childSceneNode);
-        }
         AddChildToEntityScene(sceneNode.parent, sceneNode.entity);
         if (componentManager->HasComponent<ScriptableClassComponent>(sceneNode.entity)) {
             ScriptEntitySystem *scriptEntitySystem = (ScriptEntitySystem*) entitySystemManager->GetEntitySystem<ScriptEntitySystem>();
@@ -41,6 +38,10 @@ class EntityComponentOrchestrator {
         }
         NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(sceneNode.entity);
         nodeNameToEntityMap.emplace(nodeComponent.name, sceneNode.entity);
+
+        for (SceneNode childSceneNode : sceneNode.children) {
+            RegisterSceneNodeInstances(childSceneNode);
+        }
     }
 
     void CallStartOnScriptInstances(SceneNode sceneNode) {

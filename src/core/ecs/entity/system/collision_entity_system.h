@@ -85,13 +85,6 @@ class CollisionEntitySystem : public EntitySystem {
             Transform2DComponent transform2DComponent = componentManager->GetComponent<Transform2DComponent>(entity);
             ColliderComponent colliderComponent = componentManager->GetComponent<ColliderComponent>(entity);
             Vector2 parentPosition = GetParentPosition(entity);
-
-            static bool hasTested = false;
-            if (!hasTested) {
-                std::cout << "parent position = " << parentPosition.x << ", " << parentPosition.y << std::endl;
-                hasTested = true;
-            }
-
             Vector2 drawDestinationPosition = SpaceHandler::WorldToScreen(Vector2(
                                                   transform2DComponent.position.x + parentPosition.x + (colliderComponent.collider.x * transform2DComponent.scale.x),
                                                   transform2DComponent.position.y + parentPosition.y + (colliderComponent.collider.y * transform2DComponent.scale.y)),
