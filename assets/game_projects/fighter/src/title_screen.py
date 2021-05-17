@@ -7,6 +7,7 @@ from roll.scene import SceneTree
 from roll.input import Input
 from roll.engine import Engine
 from roll.color import Color
+from roll.math import Vector2
 
 
 from assets.game_projects.fighter.src.auto_enum import AutoName
@@ -71,6 +72,9 @@ class TitleScreen(Node2D):
         test_instance = Test.new()
         print(f"test instance = {test_instance}")
         self.add_child(child_node=test_instance)
+        test_node_2d = Node2D.new()
+        print(f"position = {test_node_2d.position}")
+        test_node_2d.position = Vector2(10, 20)
 
     def _update_menu_selection_labels(self, selection) -> None:
         if selection == MenuSelection.PLAY_LOCAL_COMPUTER:

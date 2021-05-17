@@ -156,15 +156,20 @@ PyObject* PythonModules::node_new(PyObject *self, PyObject *args, PyObject *kwar
             entityManager->SetSignature(sceneNode.entity, signature);
         }
 
-        componentManager->AddComponent(sceneNode.entity, ScriptableClassComponent{
-            .classPath = std::string(pyClassPath),
-            .className = std::string(pyClassName)
-        });
-        auto scriptClassSignature = entityManager->GetSignature(sceneNode.entity);
-        scriptClassSignature.set(componentManager->GetComponentType<ScriptableClassComponent>(), true);
-        entityManager->SetSignature(sceneNode.entity, scriptClassSignature);
+        if (NodeTypeHelper::IsNameDefaultNodeClass(std::string(pyClassName))) {
+            pythonCache->CreateClassInstance(std::string(pyClassPath), std::string(pyClassName), sceneNode.entity);
+        } else {
+            componentManager->AddComponent(sceneNode.entity, ScriptableClassComponent{
+                .classPath = std::string(pyClassPath),
+                .className = std::string(pyClassName)
+            });
+            auto scriptClassSignature = entityManager->GetSignature(sceneNode.entity);
+            scriptClassSignature.set(componentManager->GetComponentType<ScriptableClassComponent>(), true);
+            entityManager->SetSignature(sceneNode.entity, scriptClassSignature);
 
-        entityComponentOrchestrator->NewEntity(sceneNode);
+            entityComponentOrchestrator->NewEntity(sceneNode);
+        }
+
 
         if (pythonCache->HasActiveInstance(sceneNode.entity)) {
             Logger::GetInstance()->Debug("Add new python instance");

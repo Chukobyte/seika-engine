@@ -38,6 +38,13 @@ class NodeTypeHelper {
         }
         return NodeTypeInheritance_INVALID;
     }
+
+    static bool IsNameDefaultNodeClass(const std::string &className) {
+        if (GetNodeTypeInt(className) != NodeType_INVALID) {
+            return true;
+        }
+        return false;
+    }
 };
 
 #endif //NODE_TYPE_HELPER_H
