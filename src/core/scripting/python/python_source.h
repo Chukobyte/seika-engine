@@ -514,6 +514,16 @@ static PythonSource PYTHON_SOURCE_NODE_MODULE =
     "           entity_id=self.entity_id, x=value.x, y=value.y, w=value.w, h=value.h\n"
     "       )\n"
     "\n"
+    "   def add_collision_exception(self, node) -> None:\n"
+    "       roll_engine_api.collision_shape2d_add_collision_exception(\n"
+    "           entity_id=self.entity_id, exception_entity_id=node.entity_id\n"
+    "       )\n"
+    "\n"
+    "   def remove_collision_exception(self, node) -> None:\n"
+    "       roll_engine_api.collision_shape2d_remove_collision_exception(\n"
+    "           entity_id=self.entity_id, exception_entity_id=node.entity_id\n"
+    "       )\n"
+    "\n"
     "";
 
 static PythonSource PYTHON_SOURCE_PHYSICS_MODULE =

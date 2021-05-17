@@ -520,6 +520,32 @@ PyObject* PythonModules::collision_shape2d_set_collider_rect(PyObject *self, PyO
     return nullptr;
 }
 
+PyObject* PythonModules::collision_shape2d_add_collision_exception(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    Entity exceptionEntity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ii", collisionModifyCollisionExceptionKWList, &entity, &exceptionEntity)) {
+        ColliderComponent colliderComponent = entityComponentOrchestrator->GetComponent<ColliderComponent>(entity);
+        colliderComponent.collisionExceptions.emplace_back(exceptionEntity);
+        entityComponentOrchestrator->UpdateComponent<ColliderComponent>(entity, colliderComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::collision_shape2d_remove_collision_exception(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    Entity exceptionEntity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ii", collisionModifyCollisionExceptionKWList, &entity, &exceptionEntity)) {
+        ColliderComponent colliderComponent = entityComponentOrchestrator->GetComponent<ColliderComponent>(entity);
+        colliderComponent.collisionExceptions.erase(std::remove(colliderComponent.collisionExceptions.begin(), colliderComponent.collisionExceptions.end(), exceptionEntity), colliderComponent.collisionExceptions.end());
+        entityComponentOrchestrator->UpdateComponent<ColliderComponent>(entity, colliderComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
 // COLLISION
 PyObject* PythonModules::collision_check(PyObject *self, PyObject *args, PyObject *kwargs) {
     static CollisionContext *collisionContext = GD::GetContainer()->collisionContext;

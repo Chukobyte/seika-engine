@@ -53,6 +53,8 @@ class PythonModules {
 
     static PyObject* collision_shape2d_get_collider_rect(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* collision_shape2d_set_collider_rect(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* collision_shape2d_add_collision_exception(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* collision_shape2d_remove_collision_exception(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* collision_check(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* collision_get_collided_nodes(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -336,6 +338,7 @@ static char *textLabelSetTextKWList[] = {"entity_id", "text", nullptr};
 static char *textLabelSetColorKWList[] = {"entity_id", "red", "green", "blue", "alpha", nullptr};
 
 static char *collisionShape2DSetColliderRectKWList[] = {"entity_id", "x", "y", "w", "h", nullptr};
+static char *collisionModifyCollisionExceptionKWList[] = {"entity_id", "exception_entity_id", nullptr};
 
 static char *inputAddActionKWList[] = {"action_name", "value", nullptr};
 static char *inputActionCheckKWList[] = {"action_name", nullptr};
