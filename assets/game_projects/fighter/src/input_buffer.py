@@ -67,7 +67,7 @@ class InputBuffer:
         elif Input.is_action_pressed(action_name=self.right_action_name):
             self.add_input(input=InputBuffer.Value.RIGHT, frame=frame)
         if Input.is_action_pressed(action_name=self.weak_punch_action_name):
-            self.add_input(input=InputBuffer.Value.RIGHT, frame=frame)
+            self.add_input(input=InputBuffer.Value.WEAK_PUNCH, frame=frame)
 
         self._inputs.pop(frame - self._frame_limit, None)
 

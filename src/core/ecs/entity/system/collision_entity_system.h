@@ -35,6 +35,11 @@ class CollisionEntitySystem : public EntitySystem {
                      transform2DComponent.scale.x + colliderComponent.collider.w,
                      transform2DComponent.scale.y + colliderComponent.collider.h);
     }
+
+    bool IsTargetCollisionEntityInExceptionList(Entity sourceEntity, Entity targetEntity) {
+        ColliderComponent sourceColliderComponent = componentManager->GetComponent<ColliderComponent>(sourceEntity);
+        return std::find(sourceColliderComponent.collisionExceptions.begin(), sourceColliderComponent.collisionExceptions.end(), targetEntity) != sourceColliderComponent.collisionExceptions.end();
+    }
   public:
     CollisionEntitySystem() {
         collisionContext = GD::GetContainer()->collisionContext;
@@ -61,7 +66,7 @@ class CollisionEntitySystem : public EntitySystem {
         for (Entity sourceEntity : entities) {
             std::vector<Entity> collidedEntities;
             for (Entity targetEntity : entities) {
-                if (sourceEntity != targetEntity) {
+                if (!IsTargetCollisionEntityInExceptionList(sourceEntity, targetEntity)) {
                     Rect2 sourceCollisionRectangle = GetCollisionRectangle(sourceEntity);
                     Rect2 targetCollisionRectangle = GetCollisionRectangle(targetEntity);
                     if (CollisionResolver::DoesRectanglesCollide(sourceCollisionRectangle, targetCollisionRectangle)) {

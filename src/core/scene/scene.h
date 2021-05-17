@@ -197,7 +197,8 @@ class SceneManager {
                 float nodeHeight = nodeRectangleJson["height"].get<float>();
 
                 componentManager->AddComponent(sceneNode.entity, ColliderComponent{
-                    .collider = Rect2(nodeX, nodeY, nodeWidth, nodeHeight)
+                    .collider = Rect2(nodeX, nodeY, nodeWidth, nodeHeight),
+                    .collisionExceptions = { sceneNode.entity }
                 });
                 auto signature = entityManager->GetSignature(sceneNode.entity);
                 signature.set(componentManager->GetComponentType<ColliderComponent>(), true);

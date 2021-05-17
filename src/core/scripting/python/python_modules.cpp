@@ -148,7 +148,7 @@ PyObject* PythonModules::node_new(PyObject *self, PyObject *args, PyObject *kwar
         }
 
         if ((NodeTypeInheritance_COLLISION_SHAPE2D & nodeTypeInheritance) == NodeTypeInheritance_COLLISION_SHAPE2D) {
-            componentManager->AddComponent<ColliderComponent>(sceneNode.entity, ColliderComponent{});
+            componentManager->AddComponent<ColliderComponent>(sceneNode.entity, ColliderComponent{.collider = Rect2(), .collisionExceptions { sceneNode.entity }});
             auto signature = entityManager->GetSignature(sceneNode.entity);
             signature.set(componentManager->GetComponentType<ColliderComponent>(), true);
             entityManager->SetSignature(sceneNode.entity, signature);
