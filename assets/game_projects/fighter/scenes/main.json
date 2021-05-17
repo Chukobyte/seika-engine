@@ -29,6 +29,43 @@
     ],
     "children": [
         {
+            "name": "PlayerOneHealthText",
+            "type": "TextLabel",
+            "tags": [],
+            "external_scene_source": "",
+            "components": [
+                {
+                    "transform2D": {
+                        "position": {
+                            "x": 120.0,
+                            "y": 100.0
+                        },
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "rotation": 0.0,
+                        "z_index": 0,
+                        "z_index_relative_to_parent": true,
+                        "ignore_camera": true
+                    }
+                },
+                {
+                    "text_label": {
+                        "text": "10",
+                        "font_path": "assets/fonts/bruh.ttf",
+                        "color": {
+                            "red": 0.0,
+                            "green": 1.0,
+                            "blue": 1.0,
+                            "alpha": 1.0
+                        }
+                    }
+                }
+            ],
+            "children": []
+        },
+        {
             "name": "PlayerOne",
             "type": "AnimatedSprite",
             "tags": [],
@@ -267,6 +304,43 @@
                 }
 
             ]
+        },
+        {
+            "name": "PlayerTwoHealthText",
+            "type": "TextLabel",
+            "tags": [],
+            "external_scene_source": "",
+            "components": [
+                {
+                    "transform2D": {
+                        "position": {
+                            "x": 600.0,
+                            "y": 100.0
+                        },
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "rotation": 0.0,
+                        "z_index": 0,
+                        "z_index_relative_to_parent": true,
+                        "ignore_camera": true
+                    }
+                },
+                {
+                    "text_label": {
+                        "text": "10",
+                        "font_path": "assets/fonts/bruh.ttf",
+                        "color": {
+                            "red": 0.0,
+                            "green": 1.0,
+                            "blue": 1.0,
+                            "alpha": 1.0
+                        }
+                    }
+                }
+            ],
+            "children": []
         },
         {
             "name": "PlayerTwo",
