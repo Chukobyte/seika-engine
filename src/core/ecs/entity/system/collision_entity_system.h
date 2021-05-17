@@ -11,15 +11,27 @@ class CollisionEntitySystem : public EntitySystem {
     CollisionContext *collisionContext = nullptr;
     ComponentManager *componentManager = nullptr;
     CameraManager *cameraManager = nullptr;
+    SceneManager *sceneManager = nullptr;
     Renderer *renderer = nullptr;
     Texture2D *colliderTexture = nullptr;
     Rect2 colliderDrawSource = Rect2(0.0f, 0.0f, 4.0f, 4.0f);
 
+    Vector2 GetParentPosition(Entity entity) {
+        Entity parentEntity = sceneManager->GetParent(entity);
+        if (parentEntity == NO_ENTITY) {
+            return {0, 0};
+        } else {
+            Transform2DComponent transform2DComponent = componentManager->GetComponent<Transform2DComponent>(parentEntity);
+            return transform2DComponent.position;
+        }
+    }
+
     Rect2 GetCollisionRectangle(Entity entity) {
         Transform2DComponent transform2DComponent = componentManager->GetComponent<Transform2DComponent>(entity);
         ColliderComponent colliderComponent = componentManager->GetComponent<ColliderComponent>(entity);
-        return Rect2(transform2DComponent.position.x + (colliderComponent.collider.x * transform2DComponent.scale.x),
-                     transform2DComponent.position.y + (colliderComponent.collider.y * transform2DComponent.scale.y),
+        Vector2 parentPosition = GetParentPosition(entity);
+        return Rect2(transform2DComponent.position.x + parentPosition.x + (colliderComponent.collider.x * transform2DComponent.scale.x),
+                     transform2DComponent.position.y + parentPosition.y + (colliderComponent.collider.y * transform2DComponent.scale.y),
                      transform2DComponent.scale.x + colliderComponent.collider.w,
                      transform2DComponent.scale.y + colliderComponent.collider.h);
     }
@@ -28,6 +40,7 @@ class CollisionEntitySystem : public EntitySystem {
         collisionContext = GD::GetContainer()->collisionContext;
         componentManager = GD::GetContainer()->componentManager;
         cameraManager = GD::GetContainer()->cameraManager;
+        sceneManager = GD::GetContainer()->sceneManager;
         renderer = GD::GetContainer()->renderer;
         enabled = true;
     }
@@ -71,9 +84,17 @@ class CollisionEntitySystem : public EntitySystem {
         for (Entity entity : entities) {
             Transform2DComponent transform2DComponent = componentManager->GetComponent<Transform2DComponent>(entity);
             ColliderComponent colliderComponent = componentManager->GetComponent<ColliderComponent>(entity);
+            Vector2 parentPosition = GetParentPosition(entity);
+
+            static bool hasTested = false;
+            if (!hasTested) {
+                std::cout << "parent position = " << parentPosition.x << ", " << parentPosition.y << std::endl;
+                hasTested = true;
+            }
+
             Vector2 drawDestinationPosition = SpaceHandler::WorldToScreen(Vector2(
-                                                  transform2DComponent.position.x + (colliderComponent.collider.x * transform2DComponent.scale.x),
-                                                  transform2DComponent.position.y + (colliderComponent.collider.y * transform2DComponent.scale.y)),
+                                                  transform2DComponent.position.x + parentPosition.x + (colliderComponent.collider.x * transform2DComponent.scale.x),
+                                                  transform2DComponent.position.y + parentPosition.y + (colliderComponent.collider.y * transform2DComponent.scale.y)),
                                               transform2DComponent.ignoreCamera);
             Rect2 colliderDrawDestination = Rect2(drawDestinationPosition,
                                                   Vector2(transform2DComponent.scale.x * colliderComponent.collider.w,

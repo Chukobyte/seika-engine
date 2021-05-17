@@ -256,10 +256,11 @@ class SceneManager {
     }
 
     void AddChild(Entity parent, Entity child) {
+        Logger::GetInstance()->Debug("Add child: parent = " + std::to_string(parent) + ", child = " + std::to_string(child));
+        SceneNode childNode = SceneNode{.entity = child, .parent = parent};
         if (parent != NO_ENTITY) {
             assert((entityToSceneNodeMap.count(parent) > 0) && "Parent scene node doesn't exist!");
             SceneNode parentNode = entityToSceneNodeMap[parent];
-            SceneNode childNode = SceneNode{.entity = child};
             parentNode.children.emplace_back(childNode);
             entityToSceneNodeMap[parent] = parentNode;
             if (parentNode.entity == currentScene.rootNode.entity) {
@@ -267,7 +268,6 @@ class SceneManager {
             }
         }
 //        assert((entityToSceneNodeMap.count(child) <= 0) && "Child already exists!");
-        SceneNode childNode = SceneNode{.entity = child, .parent = parent};
         entityToSceneNodeMap.emplace(childNode.entity, childNode);
     }
 
