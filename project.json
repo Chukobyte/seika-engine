@@ -62,7 +62,7 @@
          ]
       },
       {
-         "name": "weak_punch",
+         "name": "one_weak_punch",
          "values": [
             "space"
          ]
@@ -89,6 +89,12 @@
          "name": "two_down",
          "values": [
             "s"
+         ]
+      },
+      {
+         "name": "two_weak_punch",
+         "values": [
+            "q"
          ]
       },
       {

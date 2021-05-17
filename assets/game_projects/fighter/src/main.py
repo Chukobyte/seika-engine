@@ -42,7 +42,9 @@ class Main(Node2D):
             self.player_one_state_data = PlayerStateData(
                 player_node=self.get_node(name="PlayerOne"),
                 player_input_buffer=InputBuffer(
-                    left_action_name="one_left", right_action_name="one_right"
+                    left_action_name="one_left",
+                    right_action_name="one_right",
+                    weak_punch_action_name="one_weak_punch",
                 ),
             )
             self.input_buffers.append(self.player_one_state_data.player_input_buffer)
@@ -55,7 +57,9 @@ class Main(Node2D):
             self.player_one_state_data = PlayerStateData(
                 player_node=self.get_node(name="PlayerOne"),
                 player_input_buffer=InputBuffer(
-                    left_action_name="one_left", right_action_name="one_right"
+                    left_action_name="one_left",
+                    right_action_name="one_right",
+                    weak_punch_action_name="one_weak_punch",
                 ),
             )
             self.input_buffers.append(self.player_one_state_data.player_input_buffer)
@@ -63,7 +67,9 @@ class Main(Node2D):
             self.player_two_state_data = PlayerStateData(
                 player_node=self.get_node(name="PlayerTwo"),
                 player_input_buffer=InputBuffer(
-                    left_action_name="two_left", right_action_name="two_right"
+                    left_action_name="two_left",
+                    right_action_name="two_right",
+                    weak_punch_action_name="two_weak_punch",
                 ),
             )
             self.input_buffers.append(self.player_two_state_data.player_input_buffer)
@@ -74,7 +80,9 @@ class Main(Node2D):
             self.player_one_state_data = PlayerStateData(
                 player_node=self.get_node(name="PlayerOne"),
                 player_input_buffer=OutgoingNetworkInputBuffer(
-                    left_action_name="one_left", right_action_name="one_right"
+                    left_action_name="one_left",
+                    right_action_name="one_right",
+                    weak_punch_action_name="one_weak_punch",
                 ),
             )
             self.input_buffers.append(self.player_one_state_data.player_input_buffer)
@@ -110,7 +118,9 @@ class Main(Node2D):
             self.player_one_state_data = PlayerStateData(
                 player_node=self.get_node(name="PlayerTwo"),
                 player_input_buffer=OutgoingNetworkInputBuffer(
-                    left_action_name="one_left", right_action_name="one_right"
+                    left_action_name="one_left",
+                    right_action_name="one_right",
+                    weak_punch_action_name="one_weak_punch",
                 ),
             )
             self.input_buffers.append(self.player_one_state_data.player_input_buffer)

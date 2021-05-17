@@ -4,16 +4,50 @@ from roll.node import Node
 from roll.math import Vector2
 
 from assets.game_projects.fighter.src.fight_state import PlayerStateData
+from assets.game_projects.fighter.src.hit_box import Attack
 from assets.game_projects.fighter.src.input_buffer import InputBuffer
 
 
+class AttackManager:
+    def __init__(self):
+        self._player_attacks = {}
+
+    def add_attack(self, node: Node, attack: Attack) -> None:
+        self._player_attacks[node.entity_id] = attack
+
+    def _remove_node_active_attack(self, entity_id: int) -> None:
+        if self.has_attack(node=entity_id):
+            self._player_attacks[entity_id].queue_deletion()
+            self._player_attacks[entity_id] = None
+
+    def has_attack(self, entity_id: int) -> bool:
+        if entity_id in self._player_attacks and self._player_attacks[entity_id]:
+            return True
+        return False
+
+    def node_has_attack(self, node: Node) -> bool:
+        return self.has_attack(entity_id=node.entity_id)
+
+    def process_frame(self) -> None:
+        for entity_id in self._player_attacks:
+            attack = self._player_attacks[entity_id]
+            attack.frame_life_time -= 1
+            if attack.frame_life_time <= 0:
+                self._remove_node_active_attack(entity_id=entity_id)
+
+
 class FightSimulator:
+    def __init__(self):
+        self.attack_manager = AttackManager()
+
     def simulate_frame(
         self,
         frame: int,
         player_one_state_data: Optional[PlayerStateData] = None,
         player_two_state_data: Optional[PlayerStateData] = None,
     ) -> None:
+        self.attack_manager.process_frame()
+
         for player_state_data in [player_one_state_data, player_two_state_data]:
             if player_state_data:
                 self._simulate_player_state(
@@ -37,6 +71,13 @@ class FightSimulator:
                     player_state_data.player_node.add_to_position(Vector2.RIGHT())
                     player_state_data.player_node.play(animation_name="Walk")
                     # player_one_state_data.player_node.flip_h = False
+
+                if not self.attack_manager.node_has_attack(
+                    node=player_state_data.player_node
+                ):
+                    if input == InputBuffer.Value.WEAK_PUNCH.value:
+                        # TODO: Implement weak punch
+                        pass
 
     def roll_back(self, frame: int, new_state) -> None:
         pass

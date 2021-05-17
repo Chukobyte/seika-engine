@@ -15,3 +15,8 @@ class HitBox(CollisionShape2D):
 
     def _start(self) -> None:
         pass
+
+
+class Attack(HitBox):
+    def _start(self) -> None:
+        self.frame_life_time = 0
