@@ -297,15 +297,17 @@
 <pre><code class="language-python">collider_rect: roll.math.Rect2
 </code></pre>
 <p>Collision shape's colliding rectangle.</p>
-<pre><code class="language-python">nodes_to_exclude: roll.color.Node
-</code></pre>
-<p>Nodes that should be excluded from collision checks.</p>
 <hr/>
 <h3 id="signals_5">Signals</h3>
 <p>None.</p>
 <hr/>
 <h3 id="methods_5">Methods</h3>
-<p>None.</p>
+<pre><code class="language-python">add_collision_exception(node: roll.node.Node) -&gt; None:
+</code></pre>
+<p>Adds a node to an exception list to ignore collisions.</p>
+<pre><code class="language-python">remove_collision_exception(node: roll.node.Node) -&gt; None:
+</code></pre>
+<p>Removes a node from an exception list. Collisions between nodes are enabled.</p>
 <hr/>
 </div>
 </div>
