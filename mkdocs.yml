@@ -4,6 +4,7 @@ nav:
   - General:
     - Home: index.md
     - Core Concepts: general/core_concepts.md
+    - Project Properties: general/project_properties.md
   - Python API:
       - Index: python_api/index.md
       - Node: python_api/node.md
