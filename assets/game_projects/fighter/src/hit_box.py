@@ -24,4 +24,4 @@ class Attack(HitBox):
         self.has_hit = False
 
     def has_collided_with_anything(self) -> bool:
-        return Collision.check(node=self)
+        return len(Collision.get_collided_nodes(node=self)) > 0

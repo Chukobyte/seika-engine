@@ -106,7 +106,7 @@ class FightSimulator:
                         # TODO: Implement weak punch
                         weak_punch_attack = Attack.new()
                         # weak_punch_attack.collider_rect = Rect2(x=64, y=0, w=64, h=64)
-                        weak_punch_attack.collider_rect = Rect2(x=64, y=64, w=64, h=64)
+                        weak_punch_attack.collider_rect = Rect2(x=100, y=32, w=64, h=64)
                         weak_punch_attack.color = Color(1.0, 0.0, 0.0, 0.75)
                         player_state_data.player_node.add_child(
                             child_node=weak_punch_attack
