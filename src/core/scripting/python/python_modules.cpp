@@ -185,9 +185,7 @@ PyObject* PythonModules::node_add_child(PyObject *self, PyObject *args, PyObject
     Entity parentEntity;
     Entity childEntity;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "ii", nodeAddChildKWList, &parentEntity, &childEntity)) {
-        Logger::GetInstance()->Debug("Attempting to add child");
         entityComponentOrchestrator->NewEntityAddChild(parentEntity, childEntity);
-        Logger::GetInstance()->Debug("Child added!");
         Py_RETURN_NONE;
     }
     return nullptr;

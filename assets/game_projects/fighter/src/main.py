@@ -7,7 +7,11 @@ from roll.math import Vector2
 from roll.network import Server, Client, Network
 from roll.scene import SceneTree
 
-from assets.game_projects.fighter.src.fight_state import FightState, PlayerStateData
+from assets.game_projects.fighter.src.fight_state import (
+    FightState,
+    PlayerStateData,
+    UIState,
+)
 from assets.game_projects.fighter.src.input_buffer import (
     InputBuffer,
     OutgoingNetworkInputBuffer,
@@ -32,8 +36,9 @@ class Main(Node2D):
         self.frame_counter = 0
         self.input_buffers = []
 
-        self.player_one_hp_text_label = self.get_node(name="PlayerOneHealthText")
-        self.player_two_hp_text_label = self.get_node(name="PlayerTwoHealthText")
+        ui_state = UIState()
+        ui_state.player_one_hp_text_label = self.get_node(name="PlayerOneHealthText")
+        ui_state.player_two_hp_text_label = self.get_node(name="PlayerTwoHealthText")
 
         self._process_game_mode()
 

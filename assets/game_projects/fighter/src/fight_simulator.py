@@ -4,7 +4,7 @@ from roll.node import Node
 from roll.math import Vector2, Rect2
 from roll.color import Color
 
-from assets.game_projects.fighter.src.fight_state import PlayerStateData
+from assets.game_projects.fighter.src.fight_state import PlayerStateData, UIState
 from assets.game_projects.fighter.src.hit_box import Attack
 from assets.game_projects.fighter.src.input_buffer import InputBuffer
 
@@ -49,6 +49,7 @@ class AttackManager:
 class FightSimulator:
     def __init__(self):
         self.attack_manager = AttackManager()
+        self.ui_state = UIState()
 
     def simulate_frame(
         self,
@@ -57,11 +58,23 @@ class FightSimulator:
         player_two_state_data: Optional[PlayerStateData] = None,
     ) -> None:
         self.attack_manager.process_frame()
-        for attack_entity_id in self.attack_manager.get_entity_id_for_collided_attacks():
+        # TODO: clean up
+        for (
+            attack_entity_id
+        ) in self.attack_manager.get_entity_id_for_collided_attacks():
             if attack_entity_id == player_one_state_data.player_node.entity_id:
-                pass
-            elif attack_entity_id == player_two_state_data.player_node.entity_id:
-                pass
+                hp_amount = int(self.ui_state.player_two_hp_text_label.text)
+                damage = 1
+                hp_amount -= damage
+                self.ui_state.player_two_hp_text_label.text = str(hp_amount)
+            elif (
+                player_two_state_data
+                and attack_entity_id == player_two_state_data.player_node.entity_id
+            ):
+                hp_amount = int(self.ui_state.player_one_hp_text_label.text)
+                damage = 1
+                hp_amount -= damage
+                self.ui_state.player_one_hp_text_label.text = str(hp_amount)
 
         for player_state_data in [player_one_state_data, player_two_state_data]:
             if player_state_data:

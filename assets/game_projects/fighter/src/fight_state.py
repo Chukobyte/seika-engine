@@ -5,7 +5,11 @@ from assets.game_projects.fighter.src.input_buffer import InputBuffer
 
 
 class PlayerStateData:
-    def __init__(self, player_node: Node, player_input_buffer: InputBuffer):
+    def __init__(
+        self,
+        player_node: Node,
+        player_input_buffer: InputBuffer,
+    ):
         self.player_node = player_node
         self.player_input_buffer = player_input_buffer
 
@@ -73,3 +77,14 @@ class FightState:
 
     def __repr__(self):
         return f"{self.frame_states}"
+
+
+class UIState:
+    __instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if not UIState.__instance:
+            UIState.__instance = object.__new__(cls)
+            UIState.__instance.player_one_hp_text_label = None
+            UIState.__instance.player_two_hp_text_label = None
+        return UIState.__instance
