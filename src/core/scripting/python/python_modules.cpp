@@ -395,6 +395,29 @@ PyObject* PythonModules::animated_sprite_is_playing(PyObject *self, PyObject *ar
     return nullptr;
 }
 
+PyObject* PythonModules::animated_sprite_get_frame(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        AnimatedSpriteComponent animatedSpriteComponent = entityComponentOrchestrator->GetComponent<AnimatedSpriteComponent>(entity);
+        return Py_BuildValue("i", animatedSpriteComponent.currentFrameIndex);
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::animated_sprite_set_frame(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    int animationFrame;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ii", animatedSpriteSetFrameKWList, &entity, &animationFrame)) {
+        AnimatedSpriteComponent animatedSpriteComponent = entityComponentOrchestrator->GetComponent<AnimatedSpriteComponent>(entity);
+        animatedSpriteComponent.currentFrameIndex = animationFrame;
+        entityComponentOrchestrator->UpdateComponent<AnimatedSpriteComponent>(entity, animatedSpriteComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
 PyObject* PythonModules::animated_sprite_get_flip_h(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     Entity entity;
@@ -568,18 +591,6 @@ PyObject* PythonModules::collision_shape2d_set_color(PyObject *self, PyObject *a
 }
 
 // COLLISION
-PyObject* PythonModules::collision_check(PyObject *self, PyObject *args, PyObject *kwargs) {
-    static CollisionContext *collisionContext = GD::GetContainer()->collisionContext;
-    Entity entity;
-    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
-        if (collisionContext->HasEntityCollided(entity)) {
-            Py_RETURN_TRUE;
-        }
-        Py_RETURN_FALSE;
-    }
-    return nullptr;
-}
-
 PyObject* PythonModules::collision_get_collided_nodes(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     static CollisionContext *collisionContext = GD::GetContainer()->collisionContext;

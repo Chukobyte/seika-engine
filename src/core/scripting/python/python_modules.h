@@ -41,6 +41,8 @@ class PythonModules {
     static PyObject* animated_sprite_play(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_stop(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_is_playing(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* animated_sprite_get_frame(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* animated_sprite_set_frame(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_get_flip_h(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_set_flip_h(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_get_flip_v(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -58,7 +60,6 @@ class PythonModules {
     static PyObject* collision_shape2d_get_color(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* collision_shape2d_set_color(PyObject* self, PyObject* args, PyObject* kwargs);
 
-    static PyObject* collision_check(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* collision_get_collided_nodes(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* input_add_action(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -197,6 +198,14 @@ static struct PyMethodDef rollApiMethods[] = {
         METH_VARARGS | METH_KEYWORDS, "Returns if an animations is playing."
     },
     {
+        "animated_sprite_get_frame", (PyCFunction) PythonModules::animated_sprite_get_frame,
+        METH_VARARGS | METH_KEYWORDS, "Returns frame of current playing animation."
+    },
+    {
+        "animated_sprite_set_frame", (PyCFunction) PythonModules::animated_sprite_set_frame,
+        METH_VARARGS | METH_KEYWORDS, "Sets the frame of the current playing animation."
+    },
+    {
         "animated_sprite_get_flip_h", (PyCFunction) PythonModules::animated_sprite_get_flip_h,
         METH_VARARGS | METH_KEYWORDS, "Gets a sprite's flip h."
     },
@@ -247,10 +256,6 @@ static struct PyMethodDef rollApiMethods[] = {
         METH_VARARGS | METH_KEYWORDS, "Sets a collider's color."
     },
     // COLLISION
-    {
-        "collision_check", (PyCFunction) PythonModules::collision_check,
-        METH_VARARGS | METH_KEYWORDS, "Checks if entity collided with others."
-    },
     {
         "collision_get_collided_nodes", (PyCFunction) PythonModules::collision_get_collided_nodes,
         METH_VARARGS | METH_KEYWORDS, "Gets nodes entity collided with."
@@ -340,11 +345,13 @@ static char *nodeSignalEmitKWList[] = {"entity_id", "signal_id", "args", nullptr
 static char *nodeSetColorKWList[] = {"entity_id", "red", "green", "blue", "alpha", nullptr};
 
 static char *node2DUpdatePositionKWList[] = {"entity_id", "x", "y", nullptr};
-static char *setSpriteFlipHKWList[] = {"entity_id", "flip_h", nullptr};
 
+static char *setSpriteFlipHKWList[] = {"entity_id", "flip_h", nullptr};
 static char *setSpriteFlipVKWList[] = {"entity_id", "flip_v", nullptr};
 
 static char *animatedSpritePlayKWList[] = {"entity_id", "animation_name", nullptr};
+static char *animatedSpriteSetFrameKWList[] = {"entity_id", "frame", nullptr};
+
 static char *textLabelSetTextKWList[] = {"entity_id", "text", nullptr};
 
 static char *collisionShape2DSetColliderRectKWList[] = {"entity_id", "x", "y", "w", "h", nullptr};
