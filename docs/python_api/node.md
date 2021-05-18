@@ -285,6 +285,12 @@ collider_rect: roll.math.Rect2
 
 Collision shape's colliding rectangle.
 
+```python
+color: roll.color.Color
+```
+
+A collider's color.  Only shown when `colliders_visible` is enabled in [project properties](../general/project_properties.md).
+
 ---
 
 ### Signals
