@@ -12,6 +12,7 @@ from assets.game_projects.fighter.src.input_buffer import InputBuffer
 class AttackManager:
     def __init__(self):
         self._player_attacks = {}
+        self._collided_attack_entity_ids = []
 
     def add_attack(self, node: Node, attack: Attack) -> None:
         self._player_attacks[node.entity_id] = attack
@@ -30,12 +31,19 @@ class AttackManager:
         return self.has_attack(entity_id=node.entity_id)
 
     def process_frame(self) -> None:
+        self._collided_attack_entity_ids.clear()
         for entity_id in self._player_attacks:
             attack = self._player_attacks[entity_id]
             if attack:
+                if not attack.has_hit and attack.has_collided_with_anything():
+                    attack.has_hit = True
+                    self._collided_attack_entity_ids.append(entity_id)
                 attack.frame_life_time -= 1
                 if attack.frame_life_time <= 0:
                     self._remove_node_active_attack(entity_id=entity_id)
+
+    def get_entity_id_for_collided_attacks(self) -> list:
+        return self._collided_attack_entity_ids
 
 
 class FightSimulator:
@@ -49,6 +57,11 @@ class FightSimulator:
         player_two_state_data: Optional[PlayerStateData] = None,
     ) -> None:
         self.attack_manager.process_frame()
+        for attack_entity_id in self.attack_manager.get_entity_id_for_collided_attacks():
+            if attack_entity_id == player_one_state_data.player_node.entity_id:
+                pass
+            elif attack_entity_id == player_two_state_data.player_node.entity_id:
+                pass
 
         for player_state_data in [player_one_state_data, player_two_state_data]:
             if player_state_data:
