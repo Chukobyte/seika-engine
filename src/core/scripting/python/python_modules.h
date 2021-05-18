@@ -55,6 +55,8 @@ class PythonModules {
     static PyObject* collision_shape2d_set_collider_rect(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* collision_shape2d_add_collision_exception(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* collision_shape2d_remove_collision_exception(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* collision_shape2d_get_color(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* collision_shape2d_set_color(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* collision_check(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* collision_get_collided_nodes(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -236,6 +238,14 @@ static struct PyMethodDef rollApiMethods[] = {
         "collision_shape2d_set_collider_rect", (PyCFunction) PythonModules::collision_shape2d_set_collider_rect,
         METH_VARARGS | METH_KEYWORDS, "Set collider's rectangle."
     },
+    {
+        "collision_shape2d_get_color", (PyCFunction) PythonModules::collision_shape2d_get_color,
+        METH_VARARGS | METH_KEYWORDS, "Gets a collider's color."
+    },
+    {
+        "collision_shape2d_set_color", (PyCFunction) PythonModules::collision_shape2d_set_color,
+        METH_VARARGS | METH_KEYWORDS, "Sets a collider's color."
+    },
     // COLLISION
     {
         "collision_check", (PyCFunction) PythonModules::collision_check,
@@ -327,15 +337,15 @@ static char *nodeSignalCreateKWList[] = {"entity_id", "signal_id", nullptr};
 static char *nodeSignalConnectKWList[] = {"entity_id", "signal_id", "listener_entity_id", "function_name", nullptr};
 static char *nodeSignalEmitKWList[] = {"entity_id", "signal_id", "args", nullptr};
 
-static char *node2DUpdatePositionKWList[] = {"entity_id", "x", "y", nullptr};
+static char *nodeSetColorKWList[] = {"entity_id", "red", "green", "blue", "alpha", nullptr};
 
+static char *node2DUpdatePositionKWList[] = {"entity_id", "x", "y", nullptr};
 static char *setSpriteFlipHKWList[] = {"entity_id", "flip_h", nullptr};
+
 static char *setSpriteFlipVKWList[] = {"entity_id", "flip_v", nullptr};
 
 static char *animatedSpritePlayKWList[] = {"entity_id", "animation_name", nullptr};
-
 static char *textLabelSetTextKWList[] = {"entity_id", "text", nullptr};
-static char *textLabelSetColorKWList[] = {"entity_id", "red", "green", "blue", "alpha", nullptr};
 
 static char *collisionShape2DSetColliderRectKWList[] = {"entity_id", "x", "y", "w", "h", nullptr};
 static char *collisionModifyCollisionExceptionKWList[] = {"entity_id", "exception_entity_id", nullptr};

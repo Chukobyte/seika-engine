@@ -32,6 +32,9 @@ class Main(Node2D):
         self.frame_counter = 0
         self.input_buffers = []
 
+        self.player_one_hp_text_label = self.get_node(name="PlayerOneHealthText")
+        self.player_two_hp_text_label = self.get_node(name="PlayerTwoHealthText")
+
         self._process_game_mode()
 
     def _process_game_mode(self) -> None:

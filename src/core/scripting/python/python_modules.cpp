@@ -487,7 +487,7 @@ PyObject* PythonModules::text_label_set_color(PyObject *self, PyObject *args, Py
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     Entity entity;
     float red, green, blue, alpha;
-    if (PyArg_ParseTupleAndKeywords(args, kwargs, "iffff", textLabelSetColorKWList, &entity, &red, &green, &blue, &alpha)) {
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "iffff", nodeSetColorKWList, &entity, &red, &green, &blue, &alpha)) {
         TextLabelComponent textLabelComponent = entityComponentOrchestrator->GetComponent<TextLabelComponent>(entity);
         textLabelComponent.color = Color(red, green, blue, alpha);
         entityComponentOrchestrator->UpdateComponent<TextLabelComponent>(entity, textLabelComponent);
@@ -540,6 +540,29 @@ PyObject* PythonModules::collision_shape2d_remove_collision_exception(PyObject *
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "ii", collisionModifyCollisionExceptionKWList, &entity, &exceptionEntity)) {
         ColliderComponent colliderComponent = entityComponentOrchestrator->GetComponent<ColliderComponent>(entity);
         colliderComponent.collisionExceptions.erase(std::remove(colliderComponent.collisionExceptions.begin(), colliderComponent.collisionExceptions.end(), exceptionEntity), colliderComponent.collisionExceptions.end());
+        entityComponentOrchestrator->UpdateComponent<ColliderComponent>(entity, colliderComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::collision_shape2d_get_color(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        ColliderComponent colliderComponent = entityComponentOrchestrator->GetComponent<ColliderComponent>(entity);
+        return Py_BuildValue("(ffff)", colliderComponent.color.r, colliderComponent.color.g, colliderComponent.color.b, colliderComponent.color.a);
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::collision_shape2d_set_color(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    float red, green, blue, alpha;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "iffff", nodeSetColorKWList, &entity, &red, &green, &blue, &alpha)) {
+        ColliderComponent colliderComponent = entityComponentOrchestrator->GetComponent<ColliderComponent>(entity);
+        colliderComponent.color = Color(red, green, blue, alpha);
         entityComponentOrchestrator->UpdateComponent<ColliderComponent>(entity, colliderComponent);
         Py_RETURN_NONE;
     }

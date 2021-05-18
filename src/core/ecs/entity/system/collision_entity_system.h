@@ -102,7 +102,7 @@ class CollisionEntitySystem : public EntitySystem {
                 colliderDrawDestination.w *= camera.zoom.x;
                 colliderDrawDestination.h *= camera.zoom.y;
             }
-            renderer->DrawSprite(colliderTexture, &colliderDrawSource, &colliderDrawDestination, transform2DComponent.zIndex);
+            renderer->DrawSprite(colliderTexture, &colliderDrawSource, &colliderDrawDestination, transform2DComponent.zIndex, transform2DComponent.rotation, colliderComponent.color);
         }
     }
 };

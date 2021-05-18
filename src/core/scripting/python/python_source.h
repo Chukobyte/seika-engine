@@ -524,6 +524,23 @@ static PythonSource PYTHON_SOURCE_NODE_MODULE =
     "           entity_id=self.entity_id, exception_entity_id=node.entity_id\n"
     "       )\n"
     "\n"
+    "   @property\n"
+    "   def color(self) -> Color:\n"
+    "       red, green, blue, alpha = roll_engine_api.collision_shape2d_get_color(\n"
+    "           entity_id=self.entity_id\n"
+    "       )\n"
+    "       return Color(r=red, g=green, b=blue, a=alpha)\n"
+    "\n"
+    "   @color.setter\n"
+    "   def color(self, value: Color) -> None:\n"
+    "       roll_engine_api.collision_shape2d_set_color(\n"
+    "           entity_id=self.entity_id,\n"
+    "           red=value.r,\n"
+    "           green=value.g,\n"
+    "           blue=value.b,\n"
+    "           alpha=value.a,\n"
+    "       )\n"
+    "\n"
     "";
 
 static PythonSource PYTHON_SOURCE_PHYSICS_MODULE =
