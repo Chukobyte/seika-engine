@@ -27,6 +27,8 @@ class Rect2 {
     bool operator!=(const Rect2 &otherRect2) const {
         return !(*this == otherRect2);
     }
+
+    friend std::ostream& operator<<(std::ostream& os, const Rect2 &r);
 };
 
 #endif //RECT2_H

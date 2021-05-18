@@ -32,8 +32,8 @@ class CollisionEntitySystem : public EntitySystem {
         Vector2 parentPosition = GetParentPosition(entity);
         return Rect2(transform2DComponent.position.x + parentPosition.x + (colliderComponent.collider.x * transform2DComponent.scale.x),
                      transform2DComponent.position.y + parentPosition.y + (colliderComponent.collider.y * transform2DComponent.scale.y),
-                     transform2DComponent.scale.x + colliderComponent.collider.w,
-                     transform2DComponent.scale.y + colliderComponent.collider.h);
+                     transform2DComponent.scale.x * colliderComponent.collider.w,
+                     transform2DComponent.scale.y * colliderComponent.collider.h);
     }
 
     bool IsTargetCollisionEntityInExceptionList(Entity sourceEntity, Entity targetEntity) {

@@ -99,11 +99,27 @@
       },
       {
          "name": "zoom_in",
-         "values": ["i"]
+         "values": ["o"]
       },
       {
          "name": "zoom_out",
-         "values": ["o"]
+         "values": ["p"]
+      },
+      {
+         "name": "camera_left",
+         "values": ["j"]
+      },
+      {
+         "name": "camera_right",
+         "values": ["l"]
+      },
+      {
+         "name": "camera_up",
+         "values": ["i"]
+      },
+      {
+         "name": "camera_down",
+         "values": ["k"]
       },
       {
          "name": "confirm",
