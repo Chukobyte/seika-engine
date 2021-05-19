@@ -89,69 +89,13 @@
                 },
                 {
                     "animated_sprite": {
-                        "current_animation": "idle",
+                        "current_animation": "Idle",
                         "is_playing": true,
                         "flip_x": false,
                         "flip_y": false,
                         "animations": [
                             {
-                                "name": "idle",
-                                "speed": 100,
-                                "frames": [
-                                    {
-                                        "frame": 0,
-                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
-                                        "draw_source": {
-                                            "x": 0,
-                                            "y": 35,
-                                            "width": 30,
-                                            "height": 35
-                                        }
-                                    },
-                                    {
-                                        "frame": 1,
-                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
-                                        "draw_source": {
-                                            "x": 30,
-                                            "y": 35,
-                                            "width": 30,
-                                            "height": 35
-                                        }
-                                    },
-                                    {
-                                        "frame": 2,
-                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
-                                        "draw_source": {
-                                            "x": 60,
-                                            "y": 35,
-                                            "width": 30,
-                                            "height": 35
-                                        }
-                                    },
-                                    {
-                                        "frame": 3,
-                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
-                                        "draw_source": {
-                                            "x": 90,
-                                            "y": 35,
-                                            "width": 30,
-                                            "height": 35
-                                        }
-                                    },
-                                    {
-                                        "frame": 4,
-                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
-                                        "draw_source": {
-                                            "x": 120,
-                                            "y": 35,
-                                            "width": 30,
-                                            "height": 35
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "walk",
+                                "name": "Idle",
                                 "speed": 100,
                                 "frames": [
                                     {
@@ -160,98 +104,350 @@
                                         "draw_source": {
                                             "x": 0,
                                             "y": 0,
-                                            "width": 30,
-                                            "height": 35
+                                            "width": 19,
+                                            "height": 20
                                         }
                                     },
                                     {
                                         "frame": 1,
                                         "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
                                         "draw_source": {
-                                            "x": 30,
+                                            "x": 19,
                                             "y": 0,
-                                            "width": 30,
-                                            "height": 35
+                                            "width": 19,
+                                            "height": 20
                                         }
                                     },
                                     {
                                         "frame": 2,
                                         "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
                                         "draw_source": {
-                                            "x": 60,
+                                            "x": 38,
                                             "y": 0,
-                                            "width": 30,
-                                            "height": 35
+                                            "width": 19,
+                                            "height": 20
                                         }
                                     },
                                     {
                                         "frame": 3,
                                         "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
                                         "draw_source": {
-                                            "x": 90,
+                                            "x": 57,
                                             "y": 0,
-                                            "width": 30,
-                                            "height": 35
+                                            "width": 19,
+                                            "height": 20
                                         }
                                     },
                                     {
                                         "frame": 4,
                                         "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
                                         "draw_source": {
-                                            "x": 120,
+                                            "x": 76,
                                             "y": 0,
-                                            "width": 30,
-                                            "height": 35
+                                            "width": 19,
+                                            "height": 20
                                         }
                                     },
                                     {
                                         "frame": 5,
                                         "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
                                         "draw_source": {
-                                            "x": 150,
+                                            "x": 95,
                                             "y": 0,
-                                            "width": 30,
-                                            "height": 35
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "Walk",
+                                "speed": 100,
+                                "frames": [
+                                    {
+                                        "frame": 0,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 0,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 1,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 19,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 2,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 38,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 3,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 57,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 4,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 76,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 5,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 95,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
                                         }
                                     },
                                     {
                                         "frame": 6,
                                         "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
                                         "draw_source": {
-                                            "x": 180,
-                                            "y": 0,
-                                            "width": 30,
-                                            "height": 35
+                                            "x": 114,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
                                         }
                                     },
                                     {
                                         "frame": 7,
                                         "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
                                         "draw_source": {
-                                            "x": 210,
-                                            "y": 0,
-                                            "width": 30,
-                                            "height": 35
+                                            "x": 133,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
                                         }
                                     },
                                     {
                                         "frame": 8,
                                         "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
                                         "draw_source": {
-                                            "x": 240,
-                                            "y": 0,
-                                            "width": 30,
-                                            "height": 35
+                                            "x": 152,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
                                         }
                                     },
                                     {
                                         "frame": 9,
                                         "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
                                         "draw_source": {
-                                            "x": 270,
-                                            "y": 0,
-                                            "width": 30,
-                                            "height": 35
+                                            "x": 171,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 10,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 190,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 11,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 209,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 12,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 228,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 13,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 247,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "WalkBack",
+                                "speed": 100,
+                                "frames": [
+                                    {
+                                        "frame": 13,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 0,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 12,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 19,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 11,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 38,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 10,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 57,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 9,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 76,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 8,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 95,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 7,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 114,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 6,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 133,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 5,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 152,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 4,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 171,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 3,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 190,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 2,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 209,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 1,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 228,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 0,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 247,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
                                         }
                                     }
                                 ]
@@ -270,8 +466,8 @@
                         {
                             "transform2D": {
                                 "position": {
-                                    "x": 32,
-                                    "y": 32
+                                    "x": 22,
+                                    "y": 16
                                 },
                                 "scale": {
                                     "x": 4,
@@ -288,7 +484,7 @@
                                 "rectangle": {
                                     "x": 0.0,
                                     "y": 0.0,
-                                    "width": 16.0,
+                                    "width": 8.0,
                                     "height": 16.0
                                 }
                             }
@@ -366,69 +562,13 @@
                 },
                 {
                     "animated_sprite": {
-                        "current_animation": "idle",
+                        "current_animation": "Idle",
                         "is_playing": true,
                         "flip_x": true,
                         "flip_y": false,
                         "animations": [
                             {
-                                "name": "idle",
-                                "speed": 100,
-                                "frames": [
-                                    {
-                                        "frame": 0,
-                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
-                                        "draw_source": {
-                                            "x": 0,
-                                            "y": 35,
-                                            "width": 30,
-                                            "height": 35
-                                        }
-                                    },
-                                    {
-                                        "frame": 1,
-                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
-                                        "draw_source": {
-                                            "x": 30,
-                                            "y": 35,
-                                            "width": 30,
-                                            "height": 35
-                                        }
-                                    },
-                                    {
-                                        "frame": 2,
-                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
-                                        "draw_source": {
-                                            "x": 60,
-                                            "y": 35,
-                                            "width": 30,
-                                            "height": 35
-                                        }
-                                    },
-                                    {
-                                        "frame": 3,
-                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
-                                        "draw_source": {
-                                            "x": 90,
-                                            "y": 35,
-                                            "width": 30,
-                                            "height": 35
-                                        }
-                                    },
-                                    {
-                                        "frame": 4,
-                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
-                                        "draw_source": {
-                                            "x": 120,
-                                            "y": 35,
-                                            "width": 30,
-                                            "height": 35
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "walk",
+                                "name": "Idle",
                                 "speed": 100,
                                 "frames": [
                                     {
@@ -437,98 +577,350 @@
                                         "draw_source": {
                                             "x": 0,
                                             "y": 0,
-                                            "width": 30,
-                                            "height": 35
+                                            "width": 19,
+                                            "height": 20
                                         }
                                     },
                                     {
                                         "frame": 1,
                                         "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
                                         "draw_source": {
-                                            "x": 30,
+                                            "x": 19,
                                             "y": 0,
-                                            "width": 30,
-                                            "height": 35
+                                            "width": 19,
+                                            "height": 20
                                         }
                                     },
                                     {
                                         "frame": 2,
                                         "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
                                         "draw_source": {
-                                            "x": 60,
+                                            "x": 38,
                                             "y": 0,
-                                            "width": 30,
-                                            "height": 35
+                                            "width": 19,
+                                            "height": 20
                                         }
                                     },
                                     {
                                         "frame": 3,
                                         "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
                                         "draw_source": {
-                                            "x": 90,
+                                            "x": 57,
                                             "y": 0,
-                                            "width": 30,
-                                            "height": 35
+                                            "width": 19,
+                                            "height": 20
                                         }
                                     },
                                     {
                                         "frame": 4,
                                         "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
                                         "draw_source": {
-                                            "x": 120,
+                                            "x": 76,
                                             "y": 0,
-                                            "width": 30,
-                                            "height": 35
+                                            "width": 19,
+                                            "height": 20
                                         }
                                     },
                                     {
                                         "frame": 5,
                                         "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
                                         "draw_source": {
-                                            "x": 150,
+                                            "x": 95,
                                             "y": 0,
-                                            "width": 30,
-                                            "height": 35
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "Walk",
+                                "speed": 100,
+                                "frames": [
+                                    {
+                                        "frame": 0,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 0,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 1,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 19,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 2,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 38,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 3,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 57,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 4,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 76,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 5,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 95,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
                                         }
                                     },
                                     {
                                         "frame": 6,
                                         "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
                                         "draw_source": {
-                                            "x": 180,
-                                            "y": 0,
-                                            "width": 30,
-                                            "height": 35
+                                            "x": 114,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
                                         }
                                     },
                                     {
                                         "frame": 7,
                                         "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
                                         "draw_source": {
-                                            "x": 210,
-                                            "y": 0,
-                                            "width": 30,
-                                            "height": 35
+                                            "x": 133,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
                                         }
                                     },
                                     {
                                         "frame": 8,
                                         "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
                                         "draw_source": {
-                                            "x": 240,
-                                            "y": 0,
-                                            "width": 30,
-                                            "height": 35
+                                            "x": 152,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
                                         }
                                     },
                                     {
                                         "frame": 9,
                                         "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
                                         "draw_source": {
-                                            "x": 270,
-                                            "y": 0,
-                                            "width": 30,
-                                            "height": 35
+                                            "x": 171,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 10,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 190,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 11,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 209,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 12,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 228,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 13,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 247,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "WalkBack",
+                                "speed": 100,
+                                "frames": [
+                                    {
+                                        "frame": 13,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 0,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 12,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 19,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 11,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 38,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 10,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 57,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 9,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 76,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 8,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 95,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 7,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 114,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 6,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 133,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 5,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 152,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 4,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 171,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 3,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 190,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 2,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 209,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 1,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 228,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
+                                        }
+                                    },
+                                    {
+                                        "frame": 0,
+                                        "texture_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png",
+                                        "draw_source": {
+                                            "x": 247,
+                                            "y": 20,
+                                            "width": 19,
+                                            "height": 20
                                         }
                                     }
                                 ]
@@ -547,8 +939,8 @@
                         {
                             "transform2D": {
                                 "position": {
-                                    "x": 28,
-                                    "y": 32
+                                    "x": 22,
+                                    "y": 16
                                 },
                                 "scale": {
                                     "x": 4,
@@ -565,7 +957,7 @@
                                 "rectangle": {
                                     "x": 0.0,
                                     "y": 0.0,
-                                    "width": 16.0,
+                                    "width": 8.0,
                                     "height": 16.0
                                 }
                             }

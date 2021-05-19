@@ -37,6 +37,11 @@ class Main(Node2D):
         self.fight_state = FightState()
         self.frame_counter = 0
         self.input_buffers = []
+        self.x_intensity_max = 0.0 #the x shake the camera has
+        self.y_intensity_max = 0.0 #the y shake the camera has
+        self.x_shake = 20.0 #shake value on press for x
+        self.y_shake = 20.0 #shake value on press for y
+        self.shake_decay = 0.1 #rate at which the shake decays
 
         ui_state = UIState()
         ui_state.player_one_hp_text_label = self.get_node(name="PlayerOneHealthText")
@@ -221,18 +226,20 @@ class Main(Node2D):
             camera_position = Camera.get_viewport_position()
             camera_position += Vector2.DOWN()
             Camera.set_viewport_position(position=camera_position)
-
-        if Input.is_action_pressed(action_name="camera_shake"):
-            x_intensity_max = 5.0
-            y_intensity_max = 5.0
+        if Input.is_action_just_pressed(action_name="camera_shake"):
+            self.x_intensity_max = self.x_shake
+            self.y_intensity_max = self.y_shake
+        if self.x_intensity_max > 0 and self.y_intensity_max > 0:
             Camera.set_offset(
                 Vector2(
-                    random.uniform(-x_intensity_max, x_intensity_max),
-                    random.uniform(-y_intensity_max, y_intensity_max),
+                    random.uniform(-self.x_intensity_max, self.x_intensity_max),
+                    random.uniform(-self.y_intensity_max, self.y_intensity_max),
                 )
             )
-        else:
-            Camera.set_offset(offset=Vector2(0, 0))
+        if self.x_intensity_max > 0:
+            self.x_intensity_max = (1-self.shake_decay)*self.x_intensity_max+0
+        if self.y_intensity_max > 0:
+            self.y_intensity_max = (1-self.shake_decay)*self.y_intensity_max+0
 
         for input_buffer in self.input_buffers:
             input_buffer.poll_client_inputs(frame=self.frame_counter)
