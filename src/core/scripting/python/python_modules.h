@@ -18,7 +18,9 @@ class PythonModules {
     static PyObject* audio_set_sound_volume(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* audio_set_all_volume(PyObject* self, PyObject* args, PyObject* kwargs);
 
+    static PyObject* camera_get_zoom(PyObject* self, PyObject* args);
     static PyObject* camera_set_zoom(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* camera_get_viewport_position(PyObject* self, PyObject* args);
     static PyObject* camera_set_viewport_position(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* node_new(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -119,8 +121,16 @@ static struct PyMethodDef rollApiMethods[] = {
     },
     // CAMERA
     {
+        "camera_get_zoom", PythonModules::camera_get_zoom,
+        METH_VARARGS, "Get camera's zoom."
+    },
+    {
         "camera_set_zoom", (PyCFunction) PythonModules::camera_set_zoom,
-        METH_VARARGS | METH_KEYWORDS, "Sets camera zoom."
+        METH_VARARGS | METH_KEYWORDS, "Set camera's zoom."
+    },
+    {
+        "camera_get_viewport_position", PythonModules::camera_get_viewport_position,
+        METH_VARARGS, "Get viewport's position."
     },
     {
         "camera_set_viewport_position", (PyCFunction) PythonModules::camera_set_viewport_position,

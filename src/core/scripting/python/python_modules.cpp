@@ -75,6 +75,12 @@ PyObject* PythonModules::audio_set_all_volume(PyObject *self, PyObject *args, Py
 }
 
 // CAMERA
+PyObject* PythonModules::camera_get_zoom(PyObject *self, PyObject *args) {
+    static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
+    Camera camera = cameraManager->GetCurrentCamera();
+    return Py_BuildValue("(ff)", camera.zoom.x, camera.zoom.y);
+}
+
 PyObject* PythonModules::camera_set_zoom(PyObject *self, PyObject *args, PyObject *kwargs) {
     static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
     float x, y;
@@ -85,6 +91,12 @@ PyObject* PythonModules::camera_set_zoom(PyObject *self, PyObject *args, PyObjec
         Py_RETURN_NONE;
     }
     return nullptr;
+}
+
+PyObject* PythonModules::camera_get_viewport_position(PyObject *self, PyObject *args) {
+    static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
+    Camera camera = cameraManager->GetCurrentCamera();
+    return Py_BuildValue("(ff)", camera.viewport.x, camera.viewport.y);
 }
 
 PyObject* PythonModules::camera_set_viewport_position(PyObject *self, PyObject *args, PyObject *kwargs) {
