@@ -4,7 +4,7 @@
 
 Represents the scene tree which handles operations related to the scene system.
 
-### Variables
+### Properties
 
 None.
 

@@ -4,7 +4,7 @@
 
 Interface for network related operations for multiplayer.
 
-### Variables
+### Properties
 
 None.
 
@@ -62,7 +62,7 @@ Connects to network related signal.
 
 Interface for server related operations for multiplayer.
 
-### Variables
+### Properties
 
 None.
 
@@ -100,7 +100,7 @@ Sends message to all connected clients.
 
 Interface for client related operations for multiplayer.
 
-### Variables
+### Properties
 
 None.
 

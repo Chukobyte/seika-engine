@@ -6,7 +6,7 @@
 
 Class used as an interface for scene node functionality.  Base class for all scene node types.
 
-### Variables
+### Properties
 
 ```python
 name : str
@@ -92,7 +92,7 @@ Called before entity exits scene tree.
 
 Class used as an interface for scene 2D functionality.  Base class for all 2D scene node types.
 
-### Variables
+### Properties
 
 ```python
 position : roll.math.Vector2
@@ -136,7 +136,7 @@ Add to node's current position.  For example, if this line of code is within the
 
 Class used to render a sprite entity.
 
-### Variables
+### Properties
 
 ```python
 flip_h: bool
@@ -171,7 +171,7 @@ None.
 
 Class used to render an animated sprite entity.
 
-### Variables
+### Properties
 
 ```python
 is_playing: bool
@@ -243,7 +243,7 @@ Stops the currently playing animation.
 
 Class used to render font.
 
-### Variables
+### Properties
 
 ```python
 text: str
@@ -289,7 +289,7 @@ Set node's label text.
 
 Class used to define collision shapes defined as rectangles.  May add other collision shapes in the future.
 
-### Variables
+### Properties
 
 ```python
 collider_rect: roll.math.Rect2
