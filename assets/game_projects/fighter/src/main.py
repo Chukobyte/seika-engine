@@ -36,8 +36,6 @@ class Main(Node2D):
         self.fight_state = FightState()
         self.frame_counter = 0
         self.input_buffers = []
-        self.camera_position = Vector2(0, 0)
-        self.camera_zoom = Vector2(1.0, 1.0)
 
         ui_state = UIState()
         ui_state.player_one_hp_text_label = self.get_node(name="PlayerOneHealthText")
@@ -197,25 +195,31 @@ class Main(Node2D):
             # Engine.exit()
 
         if Input.is_action_just_pressed(action_name="zoom_in"):
-            self.camera_zoom -= Vector2(-0.1, -0.1)
-            Camera.set_zoom(zoom=self.camera_zoom)
+            camera_zoom = Camera.get_zoom()
+            camera_zoom -= Vector2(-0.1, -0.1)
+            Camera.set_zoom(zoom=camera_zoom)
 
         if Input.is_action_just_pressed(action_name="zoom_out"):
-            self.camera_zoom -= Vector2(0.1, 0.1)
-            Camera.set_zoom(zoom=self.camera_zoom)
+            camera_zoom = Camera.get_zoom()
+            camera_zoom -= Vector2(0.1, 0.1)
+            Camera.set_zoom(zoom=camera_zoom)
 
         if Input.is_action_pressed(action_name="camera_left"):
-            self.camera_position += Vector2.LEFT()
-            Camera.set_viewport_position(position=self.camera_position)
+            camera_position = Camera.get_viewport_position()
+            camera_position += Vector2.LEFT()
+            Camera.set_viewport_position(position=camera_position)
         elif Input.is_action_pressed(action_name="camera_right"):
-            self.camera_position += Vector2.RIGHT()
-            Camera.set_viewport_position(position=self.camera_position)
+            camera_position = Camera.get_viewport_position()
+            camera_position += Vector2.RIGHT()
+            Camera.set_viewport_position(position=camera_position)
         if Input.is_action_pressed(action_name="camera_up"):
-            self.camera_position += Vector2.UP()
-            Camera.set_viewport_position(position=self.camera_position)
+            camera_position = Camera.get_viewport_position()
+            camera_position += Vector2.UP()
+            Camera.set_viewport_position(position=camera_position)
         elif Input.is_action_pressed(action_name="camera_down"):
-            self.camera_position += Vector2.DOWN()
-            Camera.set_viewport_position(position=self.camera_position)
+            camera_position = Camera.get_viewport_position()
+            camera_position += Vector2.DOWN()
+            Camera.set_viewport_position(position=camera_position)
 
         for input_buffer in self.input_buffers:
             input_buffer.poll_client_inputs(frame=self.frame_counter)
