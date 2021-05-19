@@ -22,6 +22,8 @@ class PythonModules {
     static PyObject* camera_set_zoom(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* camera_get_viewport_position(PyObject* self, PyObject* args);
     static PyObject* camera_set_viewport_position(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* camera_get_offset(PyObject* self, PyObject* args);
+    static PyObject* camera_set_offset(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* node_new(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_add_child(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -135,6 +137,14 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "camera_set_viewport_position", (PyCFunction) PythonModules::camera_set_viewport_position,
         METH_VARARGS | METH_KEYWORDS, "Set viewport's position."
+    },
+    {
+        "camera_get_offset", PythonModules::camera_get_offset,
+        METH_VARARGS, "Get camera's offset."
+    },
+    {
+        "camera_set_offset", (PyCFunction) PythonModules::camera_set_offset,
+        METH_VARARGS | METH_KEYWORDS, "Set camera's offset."
     },
     // NODE
     {

@@ -270,6 +270,15 @@ static PythonSource PYTHON_SOURCE_CAMERA_MODULE =
     "   def set_viewport_position(position: Vector2) -> None:\n"
     "       roll_engine_api.camera_set_viewport_position(position.x, position.y)\n"
     "\n"
+    "   @staticmethod\n"
+    "   def get_offset() -> Vector2:\n"
+    "       zoom_x, zoom_y = roll_engine_api.camera_get_offset()\n"
+    "       return Vector2(zoom_x, zoom_y)\n"
+    "\n"
+    "   @staticmethod\n"
+    "   def set_offset(offset: Vector2) -> None:\n"
+    "       roll_engine_api.camera_set_offset(offset.x, offset.y)\n"
+    "\n"
     "";
 
 static PythonSource PYTHON_SOURCE_NODE_MODULE =

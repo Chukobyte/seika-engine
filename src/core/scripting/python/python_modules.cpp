@@ -111,6 +111,24 @@ PyObject* PythonModules::camera_set_viewport_position(PyObject *self, PyObject *
     return nullptr;
 }
 
+PyObject* PythonModules::camera_get_offset(PyObject *self, PyObject *args) {
+    static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
+    Camera camera = cameraManager->GetCurrentCamera();
+    return Py_BuildValue("(ff)", camera.offset.x, camera.offset.y);
+}
+
+PyObject* PythonModules::camera_set_offset(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
+    float x, y;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ff", cameraVector2SetKWList, &x, &y)) {
+        Camera camera = cameraManager->GetCurrentCamera();
+        camera.offset = Vector2(x, y);
+        cameraManager->UpdateCurrentCamera(camera);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
 // NODE
 PyObject* PythonModules::node_new(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;

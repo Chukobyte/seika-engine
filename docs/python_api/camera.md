@@ -43,4 +43,16 @@ get_viewport_position() -> rool.math.Vector2:
 
 Gets the camera's viewport position.
 
+```python
+set_offset(zoom: rool.math.Vector2) -> None:
+```
+
+Sets the camera's offset.
+
+```python
+get_offset() -> rool.math.Vector2:
+```
+
+Gets the camera's offset.
+
 ---
