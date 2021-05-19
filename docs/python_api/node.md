@@ -180,6 +180,12 @@ is_playing: bool
 Returns `True` if an animation is currently playing.
 
 ```python
+frame: int
+```
+
+Current frame of animation.
+
+```python
 flip_h: bool
 ```
 
@@ -218,10 +224,16 @@ play(animation_name: str, start_frame = 0) -> None:
 Plays animation based on the name passed in.
 
 ```python
+set_animation(animation_name: str) -> None:
+```
+
+Sets the current animation based on the name passed in.
+
+```python
 stop() -> None:
 ```
 
-Stops currently playing animation.
+Stops the currently playing animation.
 
 ---
 
