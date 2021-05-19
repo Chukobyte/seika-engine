@@ -1,4 +1,5 @@
 import json
+import random
 
 from roll.node import Node2D, AnimatedSprite
 from roll.input import Input
@@ -220,6 +221,18 @@ class Main(Node2D):
             camera_position = Camera.get_viewport_position()
             camera_position += Vector2.DOWN()
             Camera.set_viewport_position(position=camera_position)
+
+        if Input.is_action_pressed(action_name="camera_shake"):
+            x_intensity_max = 5.0
+            y_intensity_max = 5.0
+            Camera.set_offset(
+                Vector2(
+                    random.uniform(-x_intensity_max, x_intensity_max),
+                    random.uniform(-y_intensity_max, y_intensity_max),
+                )
+            )
+        else:
+            Camera.set_offset(offset=Vector2(0, 0))
 
         for input_buffer in self.input_buffers:
             input_buffer.poll_client_inputs(frame=self.frame_counter)
