@@ -75,6 +75,12 @@ PyObject* PythonModules::audio_set_all_volume(PyObject *self, PyObject *args, Py
 }
 
 // CAMERA
+PyObject* PythonModules::camera_get_zoom(PyObject *self, PyObject *args) {
+    static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
+    Camera camera = cameraManager->GetCurrentCamera();
+    return Py_BuildValue("(ff)", camera.zoom.x, camera.zoom.y);
+}
+
 PyObject* PythonModules::camera_set_zoom(PyObject *self, PyObject *args, PyObject *kwargs) {
     static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
     float x, y;
@@ -85,6 +91,12 @@ PyObject* PythonModules::camera_set_zoom(PyObject *self, PyObject *args, PyObjec
         Py_RETURN_NONE;
     }
     return nullptr;
+}
+
+PyObject* PythonModules::camera_get_viewport_position(PyObject *self, PyObject *args) {
+    static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
+    Camera camera = cameraManager->GetCurrentCamera();
+    return Py_BuildValue("(ff)", camera.viewport.x, camera.viewport.y);
 }
 
 PyObject* PythonModules::camera_set_viewport_position(PyObject *self, PyObject *args, PyObject *kwargs) {
@@ -148,7 +160,7 @@ PyObject* PythonModules::node_new(PyObject *self, PyObject *args, PyObject *kwar
         }
 
         if ((NodeTypeInheritance_COLLISION_SHAPE2D & nodeTypeInheritance) == NodeTypeInheritance_COLLISION_SHAPE2D) {
-            componentManager->AddComponent<ColliderComponent>(sceneNode.entity, ColliderComponent{});
+            componentManager->AddComponent<ColliderComponent>(sceneNode.entity, ColliderComponent{.collider = Rect2(), .collisionExceptions { sceneNode.entity }});
             auto signature = entityManager->GetSignature(sceneNode.entity);
             signature.set(componentManager->GetComponentType<ColliderComponent>(), true);
             entityManager->SetSignature(sceneNode.entity, signature);
@@ -185,9 +197,7 @@ PyObject* PythonModules::node_add_child(PyObject *self, PyObject *args, PyObject
     Entity parentEntity;
     Entity childEntity;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "ii", nodeAddChildKWList, &parentEntity, &childEntity)) {
-        Logger::GetInstance()->Debug("Attempting to add child");
         entityComponentOrchestrator->NewEntityAddChild(parentEntity, childEntity);
-        Logger::GetInstance()->Debug("Child added!");
         Py_RETURN_NONE;
     }
     return nullptr;
@@ -359,11 +369,27 @@ PyObject* PythonModules::animated_sprite_play(PyObject *self, PyObject *args, Py
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     Entity entity;
     char *pyAnimationName;
-    if (PyArg_ParseTupleAndKeywords(args, kwargs, "is", animatedSpritePlayKWList, &entity, &pyAnimationName)) {
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "is", animatedSpriteAnimationUpdateKWList, &entity, &pyAnimationName)) {
         AnimatedSpriteComponent animatedSpriteComponent = entityComponentOrchestrator->GetComponent<AnimatedSpriteComponent>(entity);
         const std::string &animationName = std::string(pyAnimationName);
         if (animatedSpriteComponent.animations.count(animationName) > 0) {
             animatedSpriteComponent.isPlaying = true;
+            animatedSpriteComponent.currentAnimation = animatedSpriteComponent.animations[animationName];
+            entityComponentOrchestrator->UpdateComponent<AnimatedSpriteComponent>(entity, animatedSpriteComponent);
+        }
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::animated_sprite_set_animation(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    char *pyAnimationName;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "is", animatedSpriteAnimationUpdateKWList, &entity, &pyAnimationName)) {
+        AnimatedSpriteComponent animatedSpriteComponent = entityComponentOrchestrator->GetComponent<AnimatedSpriteComponent>(entity);
+        const std::string &animationName = std::string(pyAnimationName);
+        if (animatedSpriteComponent.animations.count(animationName) > 0) {
             animatedSpriteComponent.currentAnimation = animatedSpriteComponent.animations[animationName];
             entityComponentOrchestrator->UpdateComponent<AnimatedSpriteComponent>(entity, animatedSpriteComponent);
         }
@@ -393,6 +419,29 @@ PyObject* PythonModules::animated_sprite_is_playing(PyObject *self, PyObject *ar
             Py_RETURN_TRUE;
         }
         Py_RETURN_FALSE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::animated_sprite_get_frame(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        AnimatedSpriteComponent animatedSpriteComponent = entityComponentOrchestrator->GetComponent<AnimatedSpriteComponent>(entity);
+        return Py_BuildValue("i", animatedSpriteComponent.currentFrameIndex);
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::animated_sprite_set_frame(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    int animationFrame;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ii", animatedSpriteSetFrameKWList, &entity, &animationFrame)) {
+        AnimatedSpriteComponent animatedSpriteComponent = entityComponentOrchestrator->GetComponent<AnimatedSpriteComponent>(entity);
+        animatedSpriteComponent.currentFrameIndex = animationFrame;
+        entityComponentOrchestrator->UpdateComponent<AnimatedSpriteComponent>(entity, animatedSpriteComponent);
+        Py_RETURN_NONE;
     }
     return nullptr;
 }
@@ -487,7 +536,7 @@ PyObject* PythonModules::text_label_set_color(PyObject *self, PyObject *args, Py
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     Entity entity;
     float red, green, blue, alpha;
-    if (PyArg_ParseTupleAndKeywords(args, kwargs, "iffff", textLabelSetColorKWList, &entity, &red, &green, &blue, &alpha)) {
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "iffff", nodeSetColorKWList, &entity, &red, &green, &blue, &alpha)) {
         TextLabelComponent textLabelComponent = entityComponentOrchestrator->GetComponent<TextLabelComponent>(entity);
         textLabelComponent.color = Color(red, green, blue, alpha);
         entityComponentOrchestrator->UpdateComponent<TextLabelComponent>(entity, textLabelComponent);
@@ -520,19 +569,56 @@ PyObject* PythonModules::collision_shape2d_set_collider_rect(PyObject *self, PyO
     return nullptr;
 }
 
-// COLLISION
-PyObject* PythonModules::collision_check(PyObject *self, PyObject *args, PyObject *kwargs) {
-    static CollisionContext *collisionContext = GD::GetContainer()->collisionContext;
+PyObject* PythonModules::collision_shape2d_add_collision_exception(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     Entity entity;
-    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
-        if (collisionContext->HasEntityCollided(entity)) {
-            Py_RETURN_TRUE;
-        }
-        Py_RETURN_FALSE;
+    Entity exceptionEntity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ii", collisionModifyCollisionExceptionKWList, &entity, &exceptionEntity)) {
+        ColliderComponent colliderComponent = entityComponentOrchestrator->GetComponent<ColliderComponent>(entity);
+        colliderComponent.collisionExceptions.emplace_back(exceptionEntity);
+        entityComponentOrchestrator->UpdateComponent<ColliderComponent>(entity, colliderComponent);
+        Py_RETURN_NONE;
     }
     return nullptr;
 }
 
+PyObject* PythonModules::collision_shape2d_remove_collision_exception(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    Entity exceptionEntity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ii", collisionModifyCollisionExceptionKWList, &entity, &exceptionEntity)) {
+        ColliderComponent colliderComponent = entityComponentOrchestrator->GetComponent<ColliderComponent>(entity);
+        colliderComponent.collisionExceptions.erase(std::remove(colliderComponent.collisionExceptions.begin(), colliderComponent.collisionExceptions.end(), exceptionEntity), colliderComponent.collisionExceptions.end());
+        entityComponentOrchestrator->UpdateComponent<ColliderComponent>(entity, colliderComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::collision_shape2d_get_color(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        ColliderComponent colliderComponent = entityComponentOrchestrator->GetComponent<ColliderComponent>(entity);
+        return Py_BuildValue("(ffff)", colliderComponent.color.r, colliderComponent.color.g, colliderComponent.color.b, colliderComponent.color.a);
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::collision_shape2d_set_color(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    float red, green, blue, alpha;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "iffff", nodeSetColorKWList, &entity, &red, &green, &blue, &alpha)) {
+        ColliderComponent colliderComponent = entityComponentOrchestrator->GetComponent<ColliderComponent>(entity);
+        colliderComponent.color = Color(red, green, blue, alpha);
+        entityComponentOrchestrator->UpdateComponent<ColliderComponent>(entity, colliderComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+// COLLISION
 PyObject* PythonModules::collision_get_collided_nodes(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     static CollisionContext *collisionContext = GD::GetContainer()->collisionContext;

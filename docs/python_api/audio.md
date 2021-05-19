@@ -4,7 +4,7 @@
 
 Interface for music and sound effects.  Music will continue to loop until stopped and sound is only played once.
 
-### Variables
+### Properties
 
 None.
 

@@ -18,7 +18,9 @@ class PythonModules {
     static PyObject* audio_set_sound_volume(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* audio_set_all_volume(PyObject* self, PyObject* args, PyObject* kwargs);
 
+    static PyObject* camera_get_zoom(PyObject* self, PyObject* args);
     static PyObject* camera_set_zoom(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* camera_get_viewport_position(PyObject* self, PyObject* args);
     static PyObject* camera_set_viewport_position(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* node_new(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -39,8 +41,11 @@ class PythonModules {
     static PyObject* sprite_set_flip_v(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* animated_sprite_play(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* animated_sprite_set_animation(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_stop(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_is_playing(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* animated_sprite_get_frame(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* animated_sprite_set_frame(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_get_flip_h(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_set_flip_h(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_get_flip_v(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -53,8 +58,11 @@ class PythonModules {
 
     static PyObject* collision_shape2d_get_collider_rect(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* collision_shape2d_set_collider_rect(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* collision_shape2d_add_collision_exception(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* collision_shape2d_remove_collision_exception(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* collision_shape2d_get_color(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* collision_shape2d_set_color(PyObject* self, PyObject* args, PyObject* kwargs);
 
-    static PyObject* collision_check(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* collision_get_collided_nodes(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* input_add_action(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -113,8 +121,16 @@ static struct PyMethodDef rollApiMethods[] = {
     },
     // CAMERA
     {
+        "camera_get_zoom", PythonModules::camera_get_zoom,
+        METH_VARARGS, "Get camera's zoom."
+    },
+    {
         "camera_set_zoom", (PyCFunction) PythonModules::camera_set_zoom,
-        METH_VARARGS | METH_KEYWORDS, "Sets camera zoom."
+        METH_VARARGS | METH_KEYWORDS, "Set camera's zoom."
+    },
+    {
+        "camera_get_viewport_position", PythonModules::camera_get_viewport_position,
+        METH_VARARGS, "Get viewport's position."
     },
     {
         "camera_set_viewport_position", (PyCFunction) PythonModules::camera_set_viewport_position,
@@ -185,12 +201,24 @@ static struct PyMethodDef rollApiMethods[] = {
         METH_VARARGS | METH_KEYWORDS, "Plays animation."
     },
     {
+        "animated_sprite_set_animation", (PyCFunction) PythonModules::animated_sprite_set_animation,
+        METH_VARARGS | METH_KEYWORDS, "Set sprite animation."
+    },
+    {
         "animated_sprite_stop", (PyCFunction) PythonModules::animated_sprite_stop,
         METH_VARARGS | METH_KEYWORDS, "Stops animation."
     },
     {
         "animated_sprite_is_playing", (PyCFunction) PythonModules::animated_sprite_is_playing,
         METH_VARARGS | METH_KEYWORDS, "Returns if an animations is playing."
+    },
+    {
+        "animated_sprite_get_frame", (PyCFunction) PythonModules::animated_sprite_get_frame,
+        METH_VARARGS | METH_KEYWORDS, "Returns frame of current playing animation."
+    },
+    {
+        "animated_sprite_set_frame", (PyCFunction) PythonModules::animated_sprite_set_frame,
+        METH_VARARGS | METH_KEYWORDS, "Sets the frame of the current playing animation."
     },
     {
         "animated_sprite_get_flip_h", (PyCFunction) PythonModules::animated_sprite_get_flip_h,
@@ -234,11 +262,15 @@ static struct PyMethodDef rollApiMethods[] = {
         "collision_shape2d_set_collider_rect", (PyCFunction) PythonModules::collision_shape2d_set_collider_rect,
         METH_VARARGS | METH_KEYWORDS, "Set collider's rectangle."
     },
-    // COLLISION
     {
-        "collision_check", (PyCFunction) PythonModules::collision_check,
-        METH_VARARGS | METH_KEYWORDS, "Checks if entity collided with others."
+        "collision_shape2d_get_color", (PyCFunction) PythonModules::collision_shape2d_get_color,
+        METH_VARARGS | METH_KEYWORDS, "Gets a collider's color."
     },
+    {
+        "collision_shape2d_set_color", (PyCFunction) PythonModules::collision_shape2d_set_color,
+        METH_VARARGS | METH_KEYWORDS, "Sets a collider's color."
+    },
+    // COLLISION
     {
         "collision_get_collided_nodes", (PyCFunction) PythonModules::collision_get_collided_nodes,
         METH_VARARGS | METH_KEYWORDS, "Gets nodes entity collided with."
@@ -325,17 +357,20 @@ static char *nodeSignalCreateKWList[] = {"entity_id", "signal_id", nullptr};
 static char *nodeSignalConnectKWList[] = {"entity_id", "signal_id", "listener_entity_id", "function_name", nullptr};
 static char *nodeSignalEmitKWList[] = {"entity_id", "signal_id", "args", nullptr};
 
+static char *nodeSetColorKWList[] = {"entity_id", "red", "green", "blue", "alpha", nullptr};
+
 static char *node2DUpdatePositionKWList[] = {"entity_id", "x", "y", nullptr};
 
 static char *setSpriteFlipHKWList[] = {"entity_id", "flip_h", nullptr};
 static char *setSpriteFlipVKWList[] = {"entity_id", "flip_v", nullptr};
 
-static char *animatedSpritePlayKWList[] = {"entity_id", "animation_name", nullptr};
+static char *animatedSpriteAnimationUpdateKWList[] = {"entity_id", "animation_name", nullptr};
+static char *animatedSpriteSetFrameKWList[] = {"entity_id", "frame", nullptr};
 
 static char *textLabelSetTextKWList[] = {"entity_id", "text", nullptr};
-static char *textLabelSetColorKWList[] = {"entity_id", "red", "green", "blue", "alpha", nullptr};
 
 static char *collisionShape2DSetColliderRectKWList[] = {"entity_id", "x", "y", "w", "h", nullptr};
+static char *collisionModifyCollisionExceptionKWList[] = {"entity_id", "exception_entity_id", nullptr};
 
 static char *inputAddActionKWList[] = {"action_name", "value", nullptr};
 static char *inputActionCheckKWList[] = {"action_name", nullptr};

@@ -4,7 +4,7 @@
 
 Interface for miscellaneous operations for the game engine.
 
-### Variables
+### Properties
 
 None.
 

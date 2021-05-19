@@ -4,7 +4,7 @@
 
 Class for handling input.
 
-### Variables
+### Properties
 
 Mouse Action Values
 
@@ -123,7 +123,7 @@ None.
 add_action(action_name: str, value: str) -> None:
 ```
 
-Adds an input action.  Multiple input values can be added to the same `action_name`.  See `Variables` for possible values.
+Adds an input action.  Multiple input values can be added to the same `action_name`.  See [Properties](#properties) for possible values.
 
 ```python
 remove_action(action_name: str) -> None:

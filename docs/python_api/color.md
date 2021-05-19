@@ -4,7 +4,7 @@
 
 Engine representation of color.
 
-### Variables
+### Properties
 
 ```
 r : float

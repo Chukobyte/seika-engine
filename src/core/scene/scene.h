@@ -196,9 +196,18 @@ class SceneManager {
                 float nodeWidth = nodeRectangleJson["width"].get<float>();
                 float nodeHeight = nodeRectangleJson["height"].get<float>();
 
-                componentManager->AddComponent(sceneNode.entity, ColliderComponent{
-                    .collider = Rect2(nodeX, nodeY, nodeWidth, nodeHeight)
-                });
+                ColliderComponent colliderComponent = ColliderComponent{
+                    .collider = Rect2(nodeX, nodeY, nodeWidth, nodeHeight),
+                    .collisionExceptions = { sceneNode.entity }
+                };
+                if (nodeComponentObjectJson.contains("color")) {
+                    float nodeColorRed = nodeComponentObjectJson["color"]["red"].get<float>();
+                    float nodeColorGreen = nodeComponentObjectJson["color"]["green"].get<float>();
+                    float nodeColorBlue = nodeComponentObjectJson["color"]["blue"].get<float>();
+                    float nodeColorAlpha = nodeComponentObjectJson["color"]["alpha"].get<float>();
+                    colliderComponent.color = Color(nodeColorRed, nodeColorGreen, nodeColorBlue, nodeColorAlpha);
+                }
+                componentManager->AddComponent(sceneNode.entity, colliderComponent);
                 auto signature = entityManager->GetSignature(sceneNode.entity);
                 signature.set(componentManager->GetComponentType<ColliderComponent>(), true);
                 entityManager->SetSignature(sceneNode.entity, signature);

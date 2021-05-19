@@ -5,7 +5,7 @@
 Engine representation of a camera.
 
 
-### Variables
+### Properties
 
 None.
 

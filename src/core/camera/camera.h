@@ -17,7 +17,7 @@ struct Camera {
     Rect2 boundary;
     Vector2 viewport;
     Vector2 zoom = Vector2(1.0f, 1.0f);
-    Vector2 offset;
+    Vector2 offset = Vector2(0.0f, 0.0f);
 };
 
 #endif //CAMERA_H

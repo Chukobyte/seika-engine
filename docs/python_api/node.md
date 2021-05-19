@@ -6,7 +6,7 @@
 
 Class used as an interface for scene node functionality.  Base class for all scene node types.
 
-### Variables
+### Properties
 
 ```python
 name : str
@@ -92,7 +92,7 @@ Called before entity exits scene tree.
 
 Class used as an interface for scene 2D functionality.  Base class for all 2D scene node types.
 
-### Variables
+### Properties
 
 ```python
 position : roll.math.Vector2
@@ -136,7 +136,7 @@ Add to node's current position.  For example, if this line of code is within the
 
 Class used to render a sprite entity.
 
-### Variables
+### Properties
 
 ```python
 flip_h: bool
@@ -171,13 +171,19 @@ None.
 
 Class used to render an animated sprite entity.
 
-### Variables
+### Properties
 
 ```python
 is_playing: bool
 ```
 
 Returns `True` if an animation is currently playing.
+
+```python
+frame: int
+```
+
+Current frame of animation.
 
 ```python
 flip_h: bool
@@ -218,10 +224,16 @@ play(animation_name: str, start_frame = 0) -> None:
 Plays animation based on the name passed in.
 
 ```python
+set_animation(animation_name: str) -> None:
+```
+
+Sets the current animation based on the name passed in.
+
+```python
 stop() -> None:
 ```
 
-Stops currently playing animation.
+Stops the currently playing animation.
 
 ---
 
@@ -231,7 +243,7 @@ Stops currently playing animation.
 
 Class used to render font.
 
-### Variables
+### Properties
 
 ```python
 text: str
@@ -277,7 +289,7 @@ Set node's label text.
 
 Class used to define collision shapes defined as rectangles.  May add other collision shapes in the future.
 
-### Variables
+### Properties
 
 ```python
 collider_rect: roll.math.Rect2
@@ -286,10 +298,10 @@ collider_rect: roll.math.Rect2
 Collision shape's colliding rectangle.
 
 ```python
-nodes_to_exclude: roll.color.Node
+color: roll.color.Color
 ```
 
-Nodes that should be excluded from collision checks.
+A collider's color.  Only shown when `colliders_visible` is enabled in [project properties](../general/project_properties.md).
 
 ---
 
@@ -301,6 +313,16 @@ None.
 
 ### Methods
 
-None.
+```python
+add_collision_exception(node: roll.node.Node) -> None:
+```
+
+Adds a node to an exception list to ignore collisions.
+
+```python
+remove_collision_exception(node: roll.node.Node) -> None:
+```
+
+Removes a node from an exception list. Collisions between nodes are enabled.
 
 ---

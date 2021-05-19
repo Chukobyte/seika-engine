@@ -4,7 +4,7 @@
 
 Engine representation of a two-dimensional vector.
 
-### Variables
+### Properties
 
 ```python
 x : float
@@ -44,7 +44,7 @@ DOWN() -> Vector2(0.0, 1.0):
 
 Engine representation of a two dimensional vector.
 
-### Variables
+### Properties
 
 ```python
 x : float
@@ -76,7 +76,7 @@ None.
 
 Engine representation of a rectangle vector.
 
-### Variables
+### Properties
 
 ```python
 x : float

@@ -4,7 +4,7 @@
 
 Interface for collisions between entities.
 
-### Variables
+### Properties
 
 None.
 

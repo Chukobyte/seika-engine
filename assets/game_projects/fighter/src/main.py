@@ -6,8 +6,13 @@ from roll.engine import Engine
 from roll.math import Vector2
 from roll.network import Server, Client, Network
 from roll.scene import SceneTree
+from roll.camera import Camera
 
-from assets.game_projects.fighter.src.fight_state import FightState, PlayerStateData
+from assets.game_projects.fighter.src.fight_state import (
+    FightState,
+    PlayerStateData,
+    UIState,
+)
 from assets.game_projects.fighter.src.input_buffer import (
     InputBuffer,
     OutgoingNetworkInputBuffer,
@@ -32,6 +37,10 @@ class Main(Node2D):
         self.frame_counter = 0
         self.input_buffers = []
 
+        ui_state = UIState()
+        ui_state.player_one_hp_text_label = self.get_node(name="PlayerOneHealthText")
+        ui_state.player_two_hp_text_label = self.get_node(name="PlayerTwoHealthText")
+
         self._process_game_mode()
 
     def _process_game_mode(self) -> None:
@@ -42,7 +51,9 @@ class Main(Node2D):
             self.player_one_state_data = PlayerStateData(
                 player_node=self.get_node(name="PlayerOne"),
                 player_input_buffer=InputBuffer(
-                    left_action_name="one_left", right_action_name="one_right"
+                    left_action_name="one_left",
+                    right_action_name="one_right",
+                    weak_punch_action_name="one_weak_punch",
                 ),
             )
             self.input_buffers.append(self.player_one_state_data.player_input_buffer)
@@ -55,7 +66,9 @@ class Main(Node2D):
             self.player_one_state_data = PlayerStateData(
                 player_node=self.get_node(name="PlayerOne"),
                 player_input_buffer=InputBuffer(
-                    left_action_name="one_left", right_action_name="one_right"
+                    left_action_name="one_left",
+                    right_action_name="one_right",
+                    weak_punch_action_name="one_weak_punch",
                 ),
             )
             self.input_buffers.append(self.player_one_state_data.player_input_buffer)
@@ -63,7 +76,9 @@ class Main(Node2D):
             self.player_two_state_data = PlayerStateData(
                 player_node=self.get_node(name="PlayerTwo"),
                 player_input_buffer=InputBuffer(
-                    left_action_name="two_left", right_action_name="two_right"
+                    left_action_name="two_left",
+                    right_action_name="two_right",
+                    weak_punch_action_name="two_weak_punch",
                 ),
             )
             self.input_buffers.append(self.player_two_state_data.player_input_buffer)
@@ -74,7 +89,9 @@ class Main(Node2D):
             self.player_one_state_data = PlayerStateData(
                 player_node=self.get_node(name="PlayerOne"),
                 player_input_buffer=OutgoingNetworkInputBuffer(
-                    left_action_name="one_left", right_action_name="one_right"
+                    left_action_name="one_left",
+                    right_action_name="one_right",
+                    weak_punch_action_name="one_weak_punch",
                 ),
             )
             self.input_buffers.append(self.player_one_state_data.player_input_buffer)
@@ -110,7 +127,9 @@ class Main(Node2D):
             self.player_one_state_data = PlayerStateData(
                 player_node=self.get_node(name="PlayerTwo"),
                 player_input_buffer=OutgoingNetworkInputBuffer(
-                    left_action_name="one_left", right_action_name="one_right"
+                    left_action_name="one_left",
+                    right_action_name="one_right",
+                    weak_punch_action_name="one_weak_punch",
                 ),
             )
             self.input_buffers.append(self.player_one_state_data.player_input_buffer)
@@ -174,6 +193,33 @@ class Main(Node2D):
                 scene_path="assets/game_projects/fighter/scenes/title_screen.json"
             )
             # Engine.exit()
+
+        if Input.is_action_just_pressed(action_name="zoom_in"):
+            camera_zoom = Camera.get_zoom()
+            camera_zoom -= Vector2(-0.1, -0.1)
+            Camera.set_zoom(zoom=camera_zoom)
+
+        if Input.is_action_just_pressed(action_name="zoom_out"):
+            camera_zoom = Camera.get_zoom()
+            camera_zoom -= Vector2(0.1, 0.1)
+            Camera.set_zoom(zoom=camera_zoom)
+
+        if Input.is_action_pressed(action_name="camera_left"):
+            camera_position = Camera.get_viewport_position()
+            camera_position += Vector2.LEFT()
+            Camera.set_viewport_position(position=camera_position)
+        elif Input.is_action_pressed(action_name="camera_right"):
+            camera_position = Camera.get_viewport_position()
+            camera_position += Vector2.RIGHT()
+            Camera.set_viewport_position(position=camera_position)
+        if Input.is_action_pressed(action_name="camera_up"):
+            camera_position = Camera.get_viewport_position()
+            camera_position += Vector2.UP()
+            Camera.set_viewport_position(position=camera_position)
+        elif Input.is_action_pressed(action_name="camera_down"):
+            camera_position = Camera.get_viewport_position()
+            camera_position += Vector2.DOWN()
+            Camera.set_viewport_position(position=camera_position)
 
         for input_buffer in self.input_buffers:
             input_buffer.poll_client_inputs(frame=self.frame_counter)

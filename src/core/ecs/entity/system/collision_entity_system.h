@@ -32,8 +32,13 @@ class CollisionEntitySystem : public EntitySystem {
         Vector2 parentPosition = GetParentPosition(entity);
         return Rect2(transform2DComponent.position.x + parentPosition.x + (colliderComponent.collider.x * transform2DComponent.scale.x),
                      transform2DComponent.position.y + parentPosition.y + (colliderComponent.collider.y * transform2DComponent.scale.y),
-                     transform2DComponent.scale.x + colliderComponent.collider.w,
-                     transform2DComponent.scale.y + colliderComponent.collider.h);
+                     transform2DComponent.scale.x * colliderComponent.collider.w,
+                     transform2DComponent.scale.y * colliderComponent.collider.h);
+    }
+
+    bool IsTargetCollisionEntityInExceptionList(Entity sourceEntity, Entity targetEntity) {
+        ColliderComponent sourceColliderComponent = componentManager->GetComponent<ColliderComponent>(sourceEntity);
+        return std::find(sourceColliderComponent.collisionExceptions.begin(), sourceColliderComponent.collisionExceptions.end(), targetEntity) != sourceColliderComponent.collisionExceptions.end();
     }
   public:
     CollisionEntitySystem() {
@@ -61,7 +66,7 @@ class CollisionEntitySystem : public EntitySystem {
         for (Entity sourceEntity : entities) {
             std::vector<Entity> collidedEntities;
             for (Entity targetEntity : entities) {
-                if (sourceEntity != targetEntity) {
+                if (!IsTargetCollisionEntityInExceptionList(sourceEntity, targetEntity)) {
                     Rect2 sourceCollisionRectangle = GetCollisionRectangle(sourceEntity);
                     Rect2 targetCollisionRectangle = GetCollisionRectangle(targetEntity);
                     if (CollisionResolver::DoesRectanglesCollide(sourceCollisionRectangle, targetCollisionRectangle)) {
@@ -97,7 +102,7 @@ class CollisionEntitySystem : public EntitySystem {
                 colliderDrawDestination.w *= camera.zoom.x;
                 colliderDrawDestination.h *= camera.zoom.y;
             }
-            renderer->DrawSprite(colliderTexture, &colliderDrawSource, &colliderDrawDestination, transform2DComponent.zIndex);
+            renderer->DrawSprite(colliderTexture, &colliderDrawSource, &colliderDrawDestination, transform2DComponent.zIndex, transform2DComponent.rotation, colliderComponent.color);
         }
     }
 };

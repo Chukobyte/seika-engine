@@ -1,6 +1,7 @@
 import roll_engine_api
 
 from roll.node import CollisionShape2D
+from roll.physics import Collision
 
 
 class HitBox(CollisionShape2D):
@@ -15,3 +16,12 @@ class HitBox(CollisionShape2D):
 
     def _start(self) -> None:
         pass
+
+
+class Attack(HitBox):
+    def _start(self) -> None:
+        self.frame_life_time = 0
+        self.has_hit = False
+
+    def has_collided_with_anything(self) -> bool:
+        return len(Collision.get_collided_nodes(node=self)) > 0
