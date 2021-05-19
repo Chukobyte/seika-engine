@@ -86,7 +86,7 @@ class FightSimulator:
         self, frame: int, player_state_data: PlayerStateData
     ) -> None:
         if player_state_data.player_input_buffer.is_empty():
-            player_state_data.player_node.play(animation_name="Idle")
+            player_state_data.player_node.play(animation_name="idle")
         else:
             for input in player_state_data.player_input_buffer.get_frame_inputs(
                 frame=frame
@@ -96,11 +96,11 @@ class FightSimulator:
                 ):
                     if input == InputBuffer.Value.LEFT.value:
                         player_state_data.player_node.add_to_position(Vector2.LEFT())
-                        player_state_data.player_node.play(animation_name="Walk")
+                        player_state_data.player_node.play(animation_name="walk")
                         # player_one_state_data.player_node.flip_h = True
                     elif input == InputBuffer.Value.RIGHT.value:
                         player_state_data.player_node.add_to_position(Vector2.RIGHT())
-                        player_state_data.player_node.play(animation_name="Walk")
+                        player_state_data.player_node.play(animation_name="walk")
                         # player_one_state_data.player_node.flip_h = False
                     elif input == InputBuffer.Value.WEAK_PUNCH.value:
                         # TODO: Implement weak punch

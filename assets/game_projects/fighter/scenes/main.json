@@ -89,13 +89,13 @@
                 },
                 {
                     "animated_sprite": {
-                        "current_animation": "Idle",
+                        "current_animation": "idle",
                         "is_playing": true,
                         "flip_x": false,
                         "flip_y": false,
                         "animations": [
                             {
-                                "name": "Idle",
+                                "name": "idle",
                                 "speed": 100,
                                 "frames": [
                                     {
@@ -151,7 +151,7 @@
                                 ]
                             },
                             {
-                                "name": "Walk",
+                                "name": "walk",
                                 "speed": 100,
                                 "frames": [
                                     {
@@ -366,13 +366,13 @@
                 },
                 {
                     "animated_sprite": {
-                        "current_animation": "Idle",
+                        "current_animation": "idle",
                         "is_playing": true,
                         "flip_x": true,
                         "flip_y": false,
                         "animations": [
                             {
-                                "name": "Idle",
+                                "name": "idle",
                                 "speed": 100,
                                 "frames": [
                                     {
@@ -428,7 +428,7 @@
                                 ]
                             },
                             {
-                                "name": "Walk",
+                                "name": "walk",
                                 "speed": 100,
                                 "frames": [
                                     {
