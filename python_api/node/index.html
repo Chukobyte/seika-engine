@@ -244,6 +244,9 @@
 <pre><code class="language-python">is_playing: bool
 </code></pre>
 <p>Returns <code>True</code> if an animation is currently playing.</p>
+<pre><code class="language-python">frame: int
+</code></pre>
+<p>Current frame of animation.</p>
 <pre><code class="language-python">flip_h: bool
 </code></pre>
 <p>Detemines whether the x axis is flipped.</p>
@@ -263,9 +266,12 @@
 <pre><code class="language-python">play(animation_name: str, start_frame = 0) -&gt; None:
 </code></pre>
 <p>Plays animation based on the name passed in.</p>
+<pre><code class="language-python">set_animation(animation_name: str) -&gt; None:
+</code></pre>
+<p>Sets the current animation based on the name passed in.</p>
 <pre><code class="language-python">stop() -&gt; None:
 </code></pre>
-<p>Stops currently playing animation.</p>
+<p>Stops the currently playing animation.</p>
 <hr/>
 <h2 id="textlabel">TextLabel</h2>
 <p><strong>Inherits</strong>: <a href="#node2d">Node2D</a> -&gt; <a href="#node">Node</a></p>
