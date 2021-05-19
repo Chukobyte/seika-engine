@@ -357,11 +357,27 @@ PyObject* PythonModules::animated_sprite_play(PyObject *self, PyObject *args, Py
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     Entity entity;
     char *pyAnimationName;
-    if (PyArg_ParseTupleAndKeywords(args, kwargs, "is", animatedSpritePlayKWList, &entity, &pyAnimationName)) {
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "is", animatedSpriteAnimationUpdateKWList, &entity, &pyAnimationName)) {
         AnimatedSpriteComponent animatedSpriteComponent = entityComponentOrchestrator->GetComponent<AnimatedSpriteComponent>(entity);
         const std::string &animationName = std::string(pyAnimationName);
         if (animatedSpriteComponent.animations.count(animationName) > 0) {
             animatedSpriteComponent.isPlaying = true;
+            animatedSpriteComponent.currentAnimation = animatedSpriteComponent.animations[animationName];
+            entityComponentOrchestrator->UpdateComponent<AnimatedSpriteComponent>(entity, animatedSpriteComponent);
+        }
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::animated_sprite_set_animation(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    char *pyAnimationName;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "is", animatedSpriteAnimationUpdateKWList, &entity, &pyAnimationName)) {
+        AnimatedSpriteComponent animatedSpriteComponent = entityComponentOrchestrator->GetComponent<AnimatedSpriteComponent>(entity);
+        const std::string &animationName = std::string(pyAnimationName);
+        if (animatedSpriteComponent.animations.count(animationName) > 0) {
             animatedSpriteComponent.currentAnimation = animatedSpriteComponent.animations[animationName];
             entityComponentOrchestrator->UpdateComponent<AnimatedSpriteComponent>(entity, animatedSpriteComponent);
         }

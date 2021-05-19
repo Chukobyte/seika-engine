@@ -39,6 +39,7 @@ class PythonModules {
     static PyObject* sprite_set_flip_v(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* animated_sprite_play(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* animated_sprite_set_animation(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_stop(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_is_playing(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_get_frame(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -188,6 +189,10 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "animated_sprite_play", (PyCFunction) PythonModules::animated_sprite_play,
         METH_VARARGS | METH_KEYWORDS, "Plays animation."
+    },
+    {
+        "animated_sprite_set_animation", (PyCFunction) PythonModules::animated_sprite_set_animation,
+        METH_VARARGS | METH_KEYWORDS, "Set sprite animation."
     },
     {
         "animated_sprite_stop", (PyCFunction) PythonModules::animated_sprite_stop,
@@ -349,7 +354,7 @@ static char *node2DUpdatePositionKWList[] = {"entity_id", "x", "y", nullptr};
 static char *setSpriteFlipHKWList[] = {"entity_id", "flip_h", nullptr};
 static char *setSpriteFlipVKWList[] = {"entity_id", "flip_v", nullptr};
 
-static char *animatedSpritePlayKWList[] = {"entity_id", "animation_name", nullptr};
+static char *animatedSpriteAnimationUpdateKWList[] = {"entity_id", "animation_name", nullptr};
 static char *animatedSpriteSetFrameKWList[] = {"entity_id", "frame", nullptr};
 
 static char *textLabelSetTextKWList[] = {"entity_id", "text", nullptr};
