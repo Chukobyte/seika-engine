@@ -53,7 +53,7 @@
 <ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="#node">Node</a>
 <ul>
-<li class="toctree-l3"><a class="reference internal" href="#variables">Variables</a>
+<li class="toctree-l3"><a class="reference internal" href="#properties">Properties</a>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#signals">Signals</a>
 </li>
@@ -63,7 +63,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#node2d">Node2D</a>
 <ul>
-<li class="toctree-l3"><a class="reference internal" href="#variables_1">Variables</a>
+<li class="toctree-l3"><a class="reference internal" href="#properties_1">Properties</a>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#signals_1">Signals</a>
 </li>
@@ -73,7 +73,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#sprite">Sprite</a>
 <ul>
-<li class="toctree-l3"><a class="reference internal" href="#variables_2">Variables</a>
+<li class="toctree-l3"><a class="reference internal" href="#properties_2">Properties</a>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#signals_2">Signals</a>
 </li>
@@ -83,7 +83,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#animatedsprite">AnimatedSprite</a>
 <ul>
-<li class="toctree-l3"><a class="reference internal" href="#variables_3">Variables</a>
+<li class="toctree-l3"><a class="reference internal" href="#properties_3">Properties</a>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#signals_3">Signals</a>
 </li>
@@ -93,7 +93,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#textlabel">TextLabel</a>
 <ul>
-<li class="toctree-l3"><a class="reference internal" href="#variables_4">Variables</a>
+<li class="toctree-l3"><a class="reference internal" href="#properties_4">Properties</a>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#signals_4">Signals</a>
 </li>
@@ -103,7 +103,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#collisionshape2d">CollisionShape2D</a>
 <ul>
-<li class="toctree-l3"><a class="reference internal" href="#variables_5">Variables</a>
+<li class="toctree-l3"><a class="reference internal" href="#properties_5">Properties</a>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#signals_5">Signals</a>
 </li>
@@ -158,7 +158,7 @@
 <h2 id="node">Node</h2>
 <p><strong>Inherits</strong>: N/A.</p>
 <p>Class used as an interface for scene node functionality.  Base class for all scene node types.</p>
-<h3 id="variables">Variables</h3>
+<h3 id="properties">Properties</h3>
 <pre><code class="language-python">name : str
 </code></pre>
 <p>Unique name of node once added to the scene.</p>
@@ -201,7 +201,7 @@
 <h2 id="node2d">Node2D</h2>
 <p><strong>Inherits</strong>: <a href="#node">Node</a></p>
 <p>Class used as an interface for scene 2D functionality.  Base class for all 2D scene node types.</p>
-<h3 id="variables_1">Variables</h3>
+<h3 id="properties_1">Properties</h3>
 <pre><code class="language-python">position : roll.math.Vector2
 </code></pre>
 <p>Current position of entity.</p>
@@ -223,7 +223,7 @@
 <h2 id="sprite">Sprite</h2>
 <p><strong>Inherits</strong>: <a href="#node2d">Node2D</a> -&gt; <a href="#node">Node</a></p>
 <p>Class used to render a sprite entity.</p>
-<h3 id="variables_2">Variables</h3>
+<h3 id="properties_2">Properties</h3>
 <pre><code class="language-python">flip_h: bool
 </code></pre>
 <p>Detemines whether the x axis is flipped.</p>
@@ -240,7 +240,7 @@
 <h2 id="animatedsprite">AnimatedSprite</h2>
 <p><strong>Inherits</strong>: <a href="#node2d">Node2D</a> -&gt; <a href="#node">Node</a></p>
 <p>Class used to render an animated sprite entity.</p>
-<h3 id="variables_3">Variables</h3>
+<h3 id="properties_3">Properties</h3>
 <pre><code class="language-python">is_playing: bool
 </code></pre>
 <p>Returns <code>True</code> if an animation is currently playing.</p>
@@ -276,7 +276,7 @@
 <h2 id="textlabel">TextLabel</h2>
 <p><strong>Inherits</strong>: <a href="#node2d">Node2D</a> -&gt; <a href="#node">Node</a></p>
 <p>Class used to render font.</p>
-<h3 id="variables_4">Variables</h3>
+<h3 id="properties_4">Properties</h3>
 <pre><code class="language-python">text: str
 </code></pre>
 <p>Text Label's text.</p>
@@ -299,7 +299,7 @@
 <h2 id="collisionshape2d">CollisionShape2D</h2>
 <p><strong>Inherits</strong>: <a href="#node2d">Node2D</a> -&gt; <a href="#node">Node</a></p>
 <p>Class used to define collision shapes defined as rectangles.  May add other collision shapes in the future.</p>
-<h3 id="variables_5">Variables</h3>
+<h3 id="properties_5">Properties</h3>
 <pre><code class="language-python">collider_rect: roll.math.Rect2
 </code></pre>
 <p>Collision shape's colliding rectangle.</p>
