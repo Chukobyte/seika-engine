@@ -5,6 +5,8 @@ from roll.node import Node
 from assets.game_projects.fighter.src.hit_box import Attack
 from assets.game_projects.fighter.src.input_buffer import InputBuffer
 from assets.game_projects.fighter.src.model.animation_name import AnimationName
+from assets.game_projects.fighter.src.model.fighter_direction import FighterDirection
+from assets.game_projects.fighter.src.model.player import Player
 from assets.game_projects.fighter.src.state.game_state_manager import GameStateManager
 
 
@@ -74,7 +76,9 @@ class FightSimulator:
                         player_state.animation_state.set_animation(AnimationName.WALK)
                     elif input == InputBuffer.Value.WEAK_PUNCH.value:
                         weak_punch_attack = Attack.new()
-                        weak_punch_attack.collider_rect = Rect2(x=100, y=32, w=64, h=64)
+                        weak_punch_attack.collider_rect = Rect2(
+                            x=100 * player_state.direction, y=32, w=64, h=64
+                        )
                         weak_punch_attack.color = Color(1.0, 0.0, 0.0, 0.75)
                         player_state.node.add_child(child_node=weak_punch_attack)
                         weak_punch_attack.frame_life_time = 100
@@ -95,3 +99,23 @@ class FightSimulator:
         for player_id in game_state_manager.game_state.player_states:
             player_state = game_state_manager.game_state.player_states[player_id]
             player_state.animation_state.process_frame()
+
+        # Update direction facing
+        player_one_state = game_state_manager.game_state.player_states[Player.ONE]
+        player_two_state = game_state_manager.game_state.player_states[Player.TWO]
+        player_one_position_x = player_one_state.node.position.x
+        player_two_position_x = player_two_state.node.position.x
+
+        if player_one_position_x < player_two_position_x:
+            player_one_state.direction = FighterDirection.RIGHT
+            player_one_state.node.flip_h = False
+        else:
+            player_one_state.direction = FighterDirection.LEFT
+            player_one_state.node.flip_h = True
+
+        if player_two_position_x < player_one_position_x:
+            player_two_state.direction = FighterDirection.RIGHT
+            player_two_state.node.flip_h = False
+        else:
+            player_two_state.direction = FighterDirection.LEFT
+            player_two_state.node.flip_h = True

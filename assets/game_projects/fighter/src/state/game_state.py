@@ -1,6 +1,7 @@
 from roll.node import AnimatedSprite, TextLabel
 
 from assets.game_projects.fighter.src.input_buffer import InputBuffer
+from assets.game_projects.fighter.src.model.fighter_direction import FighterDirection
 from assets.game_projects.fighter.src.model.player import Player
 from assets.game_projects.fighter.src.state.state_data import FrameStateData
 
@@ -40,6 +41,7 @@ class PlayerState:
         self.node = None
         self.input_buffer = None
         self.animation_state = None
+        self.direction = FighterDirection.RIGHT
 
 
 class GameState:
