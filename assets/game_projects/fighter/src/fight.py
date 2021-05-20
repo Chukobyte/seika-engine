@@ -12,7 +12,7 @@ from assets.game_projects.fighter.src.network_message import (
     NetworkMessage,
     NetworkMessageKey,
 )
-from assets.game_projects.fighter.src.new_fight_simulator import FightSimulator
+from assets.game_projects.fighter.src.fight_simulator import FightSimulator
 from assets.game_projects.fighter.src.game_properties import (
     GameProperties,
     PropertyValue,
