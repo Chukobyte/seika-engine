@@ -29,17 +29,89 @@ from assets.game_projects.fighter.src.network_message import (
     NetworkMessage,
 )
 from assets.game_projects.fighter.src.state.game_state_manager import GameStateManager
+from assets.game_projects.fighter.src.state.game_state_serializer import StateSerializer
 
 
 class Main(Node2D):
     def _new_start(self) -> None:
+        self.fight_simulator = FightSimulator()
         self.game_properties = GameProperties()
         self.frame_counter = 0
         self.game_state_manager = GameStateManager()
 
+        self._new_process_game_start_mode()
+
+    def _new_process_game_start_mode(self) -> None:
         self.game_state_manager.process_game_start_mode(
             game_start_mode=self.game_properties.player_opponent_mode, main=self
         )
+
+        if (
+            self.game_properties.player_opponent_mode
+            == PropertyValue.PLAYER_OPPONENT_MODE_HOST_PLAYER_VS_PLAYER
+        ):
+            self.game_properties.is_server = True
+            Network.connect_signal(
+                signal_id="peer_connected",
+                listener_node=self,
+                function_name="_on_Network_peer_connected",
+            )
+            Network.connect_signal(
+                signal_id="peer_disconnected",
+                listener_node=self,
+                function_name="_on_Network_peer_disconnected",
+            )
+            Network.connect_signal(
+                signal_id="message_received",
+                listener_node=self,
+                function_name="_on_Network_message_received",
+            )
+            Server.start(port=self.game_properties.server_port)
+            print("Server started...")
+        elif (
+            self.game_properties.player_opponent_mode
+            == PropertyValue.PLAYER_OPPONENT_MODE_CLIENT_PLAYER_VS_PLAYER
+        ):
+            Network.connect_signal(
+                signal_id="message_received",
+                listener_node=self,
+                function_name="_on_Network_message_received",
+            )
+            Network.connect_signal(
+                signal_id="connected_to_server",
+                listener_node=self,
+                function_name="_on_Network_connected_to_server",
+            )
+            Network.connect_signal(
+                signal_id="connection_to_server_failed",
+                listener_node=self,
+                function_name="_on_Network_connection_to_server_failed",
+            )
+            print("Client attempting to connect to server...")
+            Client.connect(
+                endpoint=self.game_properties.server_endpoint,
+                port=self.game_properties.server_port,
+            )
+
+    def _new_process_inputs(self) -> None:
+        pass
+
+    def _new_process_simulation(self) -> None:
+        pass
+
+    def _new_process_frame_serialization(self) -> None:
+        StateSerializer.serialize_frame(frame=self.frame_counter)
+
+    def _new_physics_process(self, delta_time: float) -> None:
+        self._new_process_inputs()
+
+        self._new_process_simulation()
+
+        self._new_process_frame_serialization()
+
+        self.game_properties.has_received_network_inputs = False
+
+        self.frame_counter += 1
 
     def _start(self) -> None:
         self.fight_simulator = FightSimulator()

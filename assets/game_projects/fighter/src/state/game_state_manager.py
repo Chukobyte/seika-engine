@@ -6,6 +6,10 @@ from assets.game_projects.fighter.src.input_buffer import (
     OutgoingNetworkInputBuffer,
     IncomingNetworkInputBuffer,
 )
+from assets.game_projects.fighter.src.state.state_data import (
+    FighterFrameStateData,
+    FrameStateData,
+)
 
 
 class Player:
@@ -14,14 +18,19 @@ class Player:
 
 
 class PlayerState:
-    def __init__(self):
+    def __init__(self, id: int):
+        self.id = id
         self.node = None
         self.input_buffer = None
 
 
 class GameState:
     def __init__(self):
-        self.player_states = {Player.ONE: PlayerState(), Player.TWO: PlayerState()}
+        self.player_states = {
+            Player.ONE: PlayerState(Player.ONE),
+            Player.TWO: PlayerState(Player.TWO),
+        }
+        self.frame_states = {}
 
     def poll_input(self, frame: int) -> None:
         for player_number in self.player_states:
@@ -35,6 +44,9 @@ class GameState:
     def set_player_state(self, player: int, state: PlayerState):
         self.player_states[player] = state
 
+    def add_frame_state(self, frame_state_data: FrameStateData) -> None:
+        self.frame_states[frame_state_data.frame] = frame_state_data
+
 
 class UIState:
     def __init__(self):
@@ -43,7 +55,7 @@ class UIState:
             Player.TWO: None,
         }
 
-    def set_hp_label(self, player, label: TextLabel) -> None:
+    def set_hp_label(self, player: int, label: TextLabel) -> None:
         self.hp_labels[player] = label
 
 
@@ -58,8 +70,16 @@ class GameStateManager:
 
     @classmethod
     def reset(cls) -> None:
-        cls.__instance.game_state = GameState()
-        cls.__instance.ui_state = UIState()
+        cls.__instance._game_state = GameState()
+        cls.__instance._ui_state = UIState()
+
+    @property
+    def game_state(self) -> GameState:
+        return self._game_state
+
+    @property
+    def ui_state(self) -> UIState:
+        return self._ui_state
 
     def process_game_start_mode(self, game_start_mode, main: Node) -> None:
         player_one_state = PlayerState()
@@ -114,5 +134,12 @@ class GameStateManager:
             player_two_state.node = main.get_node(name="PlayerOne")
             player_two_state.input_buffer = IncomingNetworkInputBuffer()
 
-        self.game_state.set_player_state(player=Player.ONE, state=player_one_state)
-        self.game_state.set_player_state(player=Player.TWO, state=player_two_state)
+        self._game_state.set_player_state(player=Player.ONE, state=player_one_state)
+        self._game_state.set_player_state(player=Player.TWO, state=player_two_state)
+
+        self._ui_state.set_hp_label(
+            player=Player.ONE, label=main.get_node(name="PlayerOneHealthText")
+        )
+        self._ui_state.set_hp_label(
+            player=Player.TWO, label=main.get_node(name="PlayerTwoHealthText")
+        )

@@ -38,7 +38,33 @@ class FighterFrameStateData:
         }
 
     def __str__(self):
-        return json.dumps(self.data, indent=4)
+        return json.dumps(self.data)
 
     def __repr__(self):
-        return json.dumps(self.data, indent=4)
+        return json.dumps(self.data)
+
+
+class FrameStateData:
+    def __init__(
+        self,
+        frame: int,
+        fighter_one_frame_data: FighterFrameStateData,
+        fighter_two_frame_data: FighterFrameStateData,
+    ):
+        self.frame = frame
+        self.fighter_one_frame_data = fighter_one_frame_data
+        self.fighter_two_frame_data = fighter_two_frame_data
+
+    @property
+    def data(self) -> dict:
+        return {
+            "frame": self.frame,
+            "fighter_one": self.fighter_one_frame_data.data,
+            "fighter_two": self.fighter_two_frame_data.data,
+        }
+
+    def __str__(self):
+        return json.dumps(self.data)
+
+    def __repr__(self):
+        return json.dumps(self.data)
