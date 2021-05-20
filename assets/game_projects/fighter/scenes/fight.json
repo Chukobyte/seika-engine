@@ -1,5 +1,5 @@
 {
-    "name": "Main",
+    "name": "Fight",
     "type": "Node2D",
     "tags": [],
     "external_scene_source": "",
@@ -22,8 +22,8 @@
         },
         {
             "scriptable_class": {
-                "class_path": "assets.game_projects.fighter.src.main",
-                "class_name": "Main"
+                "class_path": "assets.game_projects.fighter.src.fight",
+                "class_name": "Fight"
             }
         }
     ],
