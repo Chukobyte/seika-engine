@@ -72,6 +72,19 @@ class InputBuffer:
         self._inputs.pop(frame - self._frame_limit, None)
 
 
+class AIInputBuffer(InputBuffer):
+    def __init__(self, frame_limit=12):
+        super().__init__(
+            left_action_name="",
+            right_action_name="",
+            weak_punch_action_name="",
+            frame_limit=frame_limit,
+        )
+
+    def poll_client_inputs(self, frame: int) -> None:
+        pass
+
+
 class OutgoingNetworkInputBuffer(InputBuffer):
     def __init__(
         self,

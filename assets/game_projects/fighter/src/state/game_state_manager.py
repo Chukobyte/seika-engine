@@ -5,6 +5,7 @@ from assets.game_projects.fighter.src.input_buffer import (
     InputBuffer,
     OutgoingNetworkInputBuffer,
     IncomingNetworkInputBuffer,
+    AIInputBuffer,
 )
 from assets.game_projects.fighter.src.state.state_data import (
     FighterFrameStateData,
@@ -93,7 +94,7 @@ class GameStateManager:
             )
 
             player_two_state.node = main.get_node(name="PlayerTwo")
-            player_two_state.input_buffer = None
+            player_two_state.input_buffer = AIInputBuffer()
         elif game_start_mode == PropertyValue.PLAYER_OPPONENT_MODE_PLAYER_VS_PLAYER:
             player_one_state.node = main.get_node(name="PlayerOne")
             player_one_state.input_buffer = InputBuffer(

@@ -59,30 +59,25 @@ class FightSimulator:
     ) -> None:
         for player_id in game_state_manager.game_state.player_states:
             player_state = game_state_manager.game_state.player_states[player_id]
-            if player_state.input_buffer:
-                if player_state.input_buffer.is_empty():
-                    player_state.node.play(animation_name="idle")
-                elif not self.attack_manager.has_attack(player=player_state.id):
-                    for input in player_state.input_buffer.get_frame_inputs(
-                        frame=frame
-                    ):
-                        if input == InputBuffer.Value.LEFT.value:
-                            player_state.node.add_to_position(Vector2.LEFT())
-                            player_state.node.play(animation_name="walk")
-                        elif input == InputBuffer.Value.RIGHT.value:
-                            player_state.node.add_to_position(Vector2.RIGHT())
-                            player_state.node.play(animation_name="walk")
-                        elif input == InputBuffer.Value.WEAK_PUNCH.value:
-                            weak_punch_attack = Attack.new()
-                            weak_punch_attack.collider_rect = Rect2(
-                                x=100, y=32, w=64, h=64
-                            )
-                            weak_punch_attack.color = Color(1.0, 0.0, 0.0, 0.75)
-                            player_state.node.add_child(child_node=weak_punch_attack)
-                            weak_punch_attack.frame_life_time = 100
-                            self.attack_manager.add_attack(
-                                player=player_state.id, attack=weak_punch_attack
-                            )
+            if player_state.input_buffer.is_empty():
+                player_state.node.play(animation_name="idle")
+            elif not self.attack_manager.has_attack(player=player_state.id):
+                for input in player_state.input_buffer.get_frame_inputs(frame=frame):
+                    if input == InputBuffer.Value.LEFT.value:
+                        player_state.node.add_to_position(Vector2.LEFT())
+                        player_state.node.play(animation_name="walk")
+                    elif input == InputBuffer.Value.RIGHT.value:
+                        player_state.node.add_to_position(Vector2.RIGHT())
+                        player_state.node.play(animation_name="walk")
+                    elif input == InputBuffer.Value.WEAK_PUNCH.value:
+                        weak_punch_attack = Attack.new()
+                        weak_punch_attack.collider_rect = Rect2(x=100, y=32, w=64, h=64)
+                        weak_punch_attack.color = Color(1.0, 0.0, 0.0, 0.75)
+                        player_state.node.add_child(child_node=weak_punch_attack)
+                        weak_punch_attack.frame_life_time = 100
+                        self.attack_manager.add_attack(
+                            player=player_state.id, attack=weak_punch_attack
+                        )
 
     def _resolve_attacks(self, game_state_manager: GameStateManager) -> None:
         self.attack_manager.process_frame()
