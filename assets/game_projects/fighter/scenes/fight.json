@@ -90,7 +90,7 @@
                 {
                     "animated_sprite": {
                         "current_animation": "idle",
-                        "is_playing": true,
+                        "is_playing": false,
                         "flip_x": false,
                         "flip_y": false,
                         "animations": [
@@ -367,7 +367,7 @@
                 {
                     "animated_sprite": {
                         "current_animation": "idle",
-                        "is_playing": true,
+                        "is_playing": false,
                         "flip_x": true,
                         "flip_y": false,
                         "animations": [

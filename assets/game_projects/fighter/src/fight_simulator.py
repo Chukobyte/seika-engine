@@ -54,21 +54,27 @@ class FightSimulator:
 
         self._resolve_attacks(game_state_manager=game_state_manager)
 
+        self._update_animations(game_state_manager=game_state_manager)
+
     def _process_general_state(
         self, frame: int, game_state_manager: GameStateManager
     ) -> None:
         for player_id in game_state_manager.game_state.player_states:
             player_state = game_state_manager.game_state.player_states[player_id]
             if player_state.input_buffer.is_empty():
-                player_state.node.play(animation_name="idle")
+                player_state.animation_state.set_animation(animation_name="idle")
             elif not self.attack_manager.has_attack(player=player_state.id):
                 for input in player_state.input_buffer.get_frame_inputs(frame=frame):
                     if input == InputBuffer.Value.LEFT.value:
                         player_state.node.add_to_position(Vector2.LEFT())
-                        player_state.node.play(animation_name="walk")
+                        player_state.animation_state.set_animation(
+                            animation_name="walk"
+                        )
                     elif input == InputBuffer.Value.RIGHT.value:
                         player_state.node.add_to_position(Vector2.RIGHT())
-                        player_state.node.play(animation_name="walk")
+                        player_state.animation_state.set_animation(
+                            animation_name="walk"
+                        )
                     elif input == InputBuffer.Value.WEAK_PUNCH.value:
                         weak_punch_attack = Attack.new()
                         weak_punch_attack.collider_rect = Rect2(x=100, y=32, w=64, h=64)
@@ -87,3 +93,8 @@ class FightSimulator:
             previous_hp = int(hp_text_label.text)
             damage = 1  # TODO: Will be based off of attack damage
             hp_text_label.text = str(previous_hp - damage)
+
+    def _update_animations(self, game_state_manager: GameStateManager) -> None:
+        for player_id in game_state_manager.game_state.player_states:
+            player_state = game_state_manager.game_state.player_states[player_id]
+            player_state.animation_state.process_frame()

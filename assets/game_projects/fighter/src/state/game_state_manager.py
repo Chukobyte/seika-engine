@@ -1,4 +1,4 @@
-from roll.node import TextLabel, Node
+from roll.node import TextLabel, Node, AnimatedSprite
 
 from assets.game_projects.fighter.src.game_properties import PropertyValue
 from assets.game_projects.fighter.src.input_buffer import (
@@ -18,11 +18,46 @@ class Player:
     TWO = 2
 
 
+class AnimationState:
+    def __init__(self, node: AnimatedSprite):
+        self.node = node
+        self.current_frame = 0
+        self.current_index = 0
+        self.animation_name = ""
+        self.frames_per_index = 10  # Defaults to 10 frames per frame
+        self.animation_frames = 5
+
+        # temp
+        self.animation_frame_count = {
+            "idle": 5,
+            "walk": 9,
+        }
+
+    def set_animation(self, animation_name: str) -> None:
+        if self.animation_name != animation_name:
+            self.animation_name = animation_name
+            self.node.set_animation(animation_name=animation_name)
+            self.animation_frames = self.animation_frame_count.get(animation_name, 1)
+            self.current_frame = 0
+            self.current_index = 0
+
+    def process_frame(self) -> None:
+        self.node.frame = self.current_index
+        if self.current_frame >= self.frames_per_index:
+            self.current_index += 1
+            if self.current_index >= self.animation_frames:
+                self.current_index = 0
+            self.current_frame = 0
+        else:
+            self.current_frame += 1
+
+
 class PlayerState:
     def __init__(self, id: int):
         self.id = id
         self.node = None
         self.input_buffer = None
+        self.animation_state = None
 
 
 class GameState:
@@ -92,9 +127,15 @@ class GameStateManager:
                 right_action_name="one_right",
                 weak_punch_action_name="one_weak_punch",
             )
+            player_one_state.animation_state = AnimationState(
+                node=player_one_state.node
+            )
 
             player_two_state.node = main.get_node(name="PlayerTwo")
             player_two_state.input_buffer = AIInputBuffer()
+            player_two_state.animation_state = AnimationState(
+                node=player_two_state.node
+            )
         elif game_start_mode == PropertyValue.PLAYER_OPPONENT_MODE_PLAYER_VS_PLAYER:
             player_one_state.node = main.get_node(name="PlayerOne")
             player_one_state.input_buffer = InputBuffer(
@@ -102,12 +143,18 @@ class GameStateManager:
                 right_action_name="one_right",
                 weak_punch_action_name="one_weak_punch",
             )
+            player_one_state.animation_state = AnimationState(
+                node=player_one_state.node
+            )
 
             player_two_state.node = main.get_node(name="PlayerTwo")
             player_two_state.input_buffer = InputBuffer(
                 left_action_name="two_left",
                 right_action_name="two_right",
                 weak_punch_action_name="two_weak_punch",
+            )
+            player_two_state.animation_state = AnimationState(
+                node=player_two_state.node
             )
         elif (
             game_start_mode == PropertyValue.PLAYER_OPPONENT_MODE_HOST_PLAYER_VS_PLAYER
@@ -118,9 +165,15 @@ class GameStateManager:
                 right_action_name="one_right",
                 weak_punch_action_name="one_weak_punch",
             )
+            player_one_state.animation_state = AnimationState(
+                node=player_one_state.node
+            )
 
             player_two_state.node = main.get_node(name="PlayerTwo")
             player_two_state.input_buffer = IncomingNetworkInputBuffer()
+            player_two_state.animation_state = AnimationState(
+                node=player_two_state.node
+            )
         elif (
             game_start_mode
             == PropertyValue.PLAYER_OPPONENT_MODE_CLIENT_PLAYER_VS_PLAYER
@@ -131,9 +184,15 @@ class GameStateManager:
                 right_action_name="one_right",
                 weak_punch_action_name="one_weak_punch",
             )
+            player_one_state.animation_state = AnimationState(
+                node=player_one_state.node
+            )
 
             player_two_state.node = main.get_node(name="PlayerOne")
             player_two_state.input_buffer = IncomingNetworkInputBuffer()
+            player_two_state.animation_state = AnimationState(
+                node=player_two_state.node
+            )
 
         self._game_state.set_player_state(player=Player.ONE, state=player_one_state)
         self._game_state.set_player_state(player=Player.TWO, state=player_two_state)
