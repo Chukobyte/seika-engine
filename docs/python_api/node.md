@@ -186,6 +186,18 @@ frame: int
 Current frame of animation.
 
 ```python
+animation_frames: int
+```
+
+Amount of frames for current animation.
+
+```python
+animation_speed: int
+```
+
+Speed of current animation in milliseconds per frame.
+
+```python
 flip_h: bool
 ```
 

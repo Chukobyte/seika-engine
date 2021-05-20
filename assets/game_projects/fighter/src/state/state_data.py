@@ -23,7 +23,7 @@ class FighterFrameStateData:
     def __init__(self):
         self.player = 1
         self.position = Vector2(0.0, 0.0)
-        self.inputs = ["l", "wp"]
+        self.inputs = []
         self.animation = AnimationStateData()
         self.state = "idle"
 

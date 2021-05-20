@@ -48,6 +48,8 @@ class PythonModules {
     static PyObject* animated_sprite_is_playing(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_get_frame(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_set_frame(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* animated_sprite_get_animation_frames(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* animated_sprite_get_animation_speed(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_get_flip_h(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_set_flip_h(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_get_flip_v(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -229,6 +231,14 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "animated_sprite_set_frame", (PyCFunction) PythonModules::animated_sprite_set_frame,
         METH_VARARGS | METH_KEYWORDS, "Sets the frame of the current playing animation."
+    },
+    {
+        "animated_sprite_get_animation_frames", (PyCFunction) PythonModules::animated_sprite_get_animation_frames,
+        METH_VARARGS | METH_KEYWORDS, "Returns total frame count of current playing animation."
+    },
+    {
+        "animated_sprite_get_animation_speed", (PyCFunction) PythonModules::animated_sprite_get_animation_speed,
+        METH_VARARGS | METH_KEYWORDS, "Returns speed current playing animation in frames per milliseconds."
     },
     {
         "animated_sprite_get_flip_h", (PyCFunction) PythonModules::animated_sprite_get_flip_h,

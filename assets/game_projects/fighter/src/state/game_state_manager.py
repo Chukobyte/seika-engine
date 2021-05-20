@@ -24,20 +24,15 @@ class AnimationState:
         self.current_frame = 0
         self.current_index = 0
         self.animation_name = ""
-        self.frames_per_index = 10  # Defaults to 10 frames per frame
-        self.animation_frames = 5
-
-        # temp
-        self.animation_frame_count = {
-            "idle": 5,
-            "walk": 9,
-        }
+        self.frames_per_index = 0
+        self.animation_frames = 0
 
     def set_animation(self, animation_name: str) -> None:
         if self.animation_name != animation_name:
             self.animation_name = animation_name
             self.node.set_animation(animation_name=animation_name)
-            self.animation_frames = self.animation_frame_count.get(animation_name, 1)
+            self.animation_frames = self.node.animation_frames
+            self.frames_per_index = self.node.animation_speed / 10
             self.current_frame = 0
             self.current_index = 0
 

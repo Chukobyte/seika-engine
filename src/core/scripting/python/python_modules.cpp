@@ -464,6 +464,26 @@ PyObject* PythonModules::animated_sprite_set_frame(PyObject *self, PyObject *arg
     return nullptr;
 }
 
+PyObject* PythonModules::animated_sprite_get_animation_frames(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        AnimatedSpriteComponent animatedSpriteComponent = entityComponentOrchestrator->GetComponent<AnimatedSpriteComponent>(entity);
+        return Py_BuildValue("i", animatedSpriteComponent.currentAnimation.frames);
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::animated_sprite_get_animation_speed(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        AnimatedSpriteComponent animatedSpriteComponent = entityComponentOrchestrator->GetComponent<AnimatedSpriteComponent>(entity);
+        return Py_BuildValue("i", animatedSpriteComponent.currentAnimation.speed);
+    }
+    return nullptr;
+}
+
 PyObject* PythonModules::animated_sprite_get_flip_h(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     Entity entity;
