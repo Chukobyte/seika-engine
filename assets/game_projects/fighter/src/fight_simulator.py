@@ -4,6 +4,7 @@ from roll.node import Node
 
 from assets.game_projects.fighter.src.hit_box import Attack
 from assets.game_projects.fighter.src.input_buffer import InputBuffer
+from assets.game_projects.fighter.src.model.animation_name import AnimationName
 from assets.game_projects.fighter.src.state.game_state_manager import GameStateManager
 
 
@@ -62,19 +63,15 @@ class FightSimulator:
         for player_id in game_state_manager.game_state.player_states:
             player_state = game_state_manager.game_state.player_states[player_id]
             if player_state.input_buffer.is_empty():
-                player_state.animation_state.set_animation(animation_name="idle")
+                player_state.animation_state.set_animation(AnimationName.IDLE)
             elif not self.attack_manager.has_attack(player=player_state.id):
                 for input in player_state.input_buffer.get_frame_inputs(frame=frame):
                     if input == InputBuffer.Value.LEFT.value:
                         player_state.node.add_to_position(Vector2.LEFT())
-                        player_state.animation_state.set_animation(
-                            animation_name="walk"
-                        )
+                        player_state.animation_state.set_animation(AnimationName.WALK)
                     elif input == InputBuffer.Value.RIGHT.value:
                         player_state.node.add_to_position(Vector2.RIGHT())
-                        player_state.animation_state.set_animation(
-                            animation_name="walk"
-                        )
+                        player_state.animation_state.set_animation(AnimationName.WALK)
                     elif input == InputBuffer.Value.WEAK_PUNCH.value:
                         weak_punch_attack = Attack.new()
                         weak_punch_attack.collider_rect = Rect2(x=100, y=32, w=64, h=64)

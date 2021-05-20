@@ -7,5 +7,3 @@ class Init(Node2D):
         SceneTree.change_scene(
             scene_path="assets/game_projects/fighter/scenes/title_screen.json"
         )
-        # player_state = PlayerState()
-        # print(player_state)

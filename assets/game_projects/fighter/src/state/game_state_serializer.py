@@ -1,8 +1,6 @@
+from assets.game_projects.fighter.src.model.player import Player
 from assets.game_projects.fighter.src.state.game_state_manager import (
-    GameState,
-    PlayerState,
     GameStateManager,
-    Player,
 )
 from assets.game_projects.fighter.src.state.state_data import (
     FrameStateData,
