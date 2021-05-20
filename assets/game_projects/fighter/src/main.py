@@ -28,9 +28,19 @@ from assets.game_projects.fighter.src.network_message import (
     NetworkMessageKey,
     NetworkMessage,
 )
+from assets.game_projects.fighter.src.state.game_state_manager import GameStateManager
 
 
 class Main(Node2D):
+    def _new_start(self) -> None:
+        self.game_properties = GameProperties()
+        self.frame_counter = 0
+        self.game_state_manager = GameStateManager()
+
+        self.game_state_manager.process_game_start_mode(
+            game_start_mode=self.game_properties.player_opponent_mode, main=self
+        )
+
     def _start(self) -> None:
         self.fight_simulator = FightSimulator()
         self.game_properties = GameProperties()

@@ -2,10 +2,8 @@ import json
 
 from roll.math import Vector2
 
-# Roughing out player state data
-
 # These will be stored by frame
-class AnimationState:
+class AnimationStateData:
     def __init__(self):
         self.animation_name = "idle"
         self.frame = 0
@@ -21,12 +19,12 @@ class AnimationState:
         return json.dumps(self.data)
 
 
-class FighterFrameState:
+class FighterFrameStateData:
     def __init__(self):
         self.player = 1
         self.position = Vector2(0.0, 0.0)
         self.inputs = ["l", "wp"]
-        self.animation = AnimationState()
+        self.animation = AnimationStateData()
         self.state = "idle"
 
     @property
