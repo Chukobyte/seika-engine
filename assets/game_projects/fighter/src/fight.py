@@ -1,3 +1,4 @@
+import json
 import random
 
 from roll.camera import Camera
@@ -7,6 +8,10 @@ from roll.network import Server, Network, Client
 from roll.node import Node2D
 from roll.scene import SceneTree
 
+from assets.game_projects.fighter.src.network_message import (
+    NetworkMessage,
+    NetworkMessageKey,
+)
 from assets.game_projects.fighter.src.new_fight_simulator import FightSimulator
 from assets.game_projects.fighter.src.game_properties import (
     GameProperties,
@@ -41,6 +46,7 @@ class Fight(Node2D):
             self._setup_client()
 
     def _process_inputs(self) -> None:
+        # Temporary inputs for testing
         if Input.is_action_just_pressed(action_name="quit"):
             # Go back to main menu
             if (
@@ -169,3 +175,50 @@ class Fight(Node2D):
             endpoint=self.game_properties.server_endpoint,
             port=self.game_properties.server_port,
         )
+
+    # Server
+    def _on_Network_peer_connected(self, args: list) -> None:
+        print("Client connected")
+        Server.send_message_to_all_clients(
+            message=f"{NetworkMessage(message_id=NetworkMessage.ID.CONSOLE_MESSAGE, value='Welcome to the server!')}"
+        )
+
+    def _on_Network_peer_disconnected(self, args: list) -> None:
+        print("Client disconnected")
+
+    # Client
+    def _on_Network_connected_to_server(self, args: list) -> None:
+        print("Connected to server!")
+        Client.send_message_to_server(
+            message=f"{NetworkMessage(message_id=NetworkMessage.ID.CONSOLE_MESSAGE, value='A message from the client')}"
+        )
+
+    def _on_Network_connection_to_server_failed(self, args: list) -> None:
+        print("Connection to server failed!")
+
+    # Both
+    def _on_Network_message_received(self, args: list) -> None:
+        try:
+            message_json = json.loads(args[0])
+            message_id = message_json[NetworkMessageKey.ID]
+            message_value = message_json[NetworkMessageKey.VALUE]
+
+            if message_id == NetworkMessage.ID.INPUTS:
+                # print(f"received inputs = {message_value}")
+                # TODO: update input buffer for other player
+                for input in message_value:
+                    self.player_two_state_data.player_input_buffer.add_input(
+                        input=input, frame=self.frame_counter
+                    )
+                self.game_properties.has_received_network_inputs = True
+            elif message_id == NetworkMessage.ID.CONSOLE_MESSAGE:
+                print(f"network message = {message_value}")
+        except ValueError:
+            print(f"Not valid json, skipping message:\nMessage = {args[0]}")
+            # pass
+        except Exception as e:
+            print(f"Some other error: {e}\nMessage = {args[0]}")
+        if self.game_properties.is_server:
+            pass
+        else:
+            pass
