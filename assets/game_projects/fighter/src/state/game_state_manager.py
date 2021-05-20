@@ -35,7 +35,7 @@ class GameState:
     def poll_input(self, frame: int) -> None:
         for player_number in self.player_states:
             player_state = self.player_states[player_number]
-            if player_state:
+            if player_state and player_state.input_buffer:
                 player_state.input_buffer.poll_client_inputs(frame=frame)
 
     def set_input_buffer(self, player: int, input_buffer: InputBuffer) -> None:
@@ -44,7 +44,7 @@ class GameState:
     def set_player_state(self, player: int, state: PlayerState):
         self.player_states[player] = state
 
-    def add_frame_state(self, frame_state_data: FrameStateData) -> None:
+    def save_frame_state(self, frame_state_data: FrameStateData) -> None:
         self.frame_states[frame_state_data.frame] = frame_state_data
 
 
@@ -82,8 +82,8 @@ class GameStateManager:
         return self._ui_state
 
     def process_game_start_mode(self, game_start_mode, main: Node) -> None:
-        player_one_state = PlayerState()
-        player_two_state = PlayerState()
+        player_one_state = PlayerState(Player.ONE)
+        player_two_state = PlayerState(Player.TWO)
         if game_start_mode == PropertyValue.PLAYER_OPPONENT_MODE_PLAYER_VS_COMPUTER:
             player_one_state.node = main.get_node(name="PlayerOne")
             player_one_state.input_buffer = InputBuffer(
