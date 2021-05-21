@@ -95,10 +95,16 @@ Class used as an interface for scene 2D functionality.  Base class for all 2D sc
 ### Properties
 
 ```python
-position : roll.math.Vector2
+position: roll.math.Vector2
 ```
 
 Current position of entity.
+
+```python
+rotation: float
+```
+
+Current rotation in degrees of entity.
 
 ---
 
