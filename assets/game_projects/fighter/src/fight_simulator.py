@@ -1,6 +1,5 @@
 from roll.color import Color
 from roll.math import Vector2, Rect2
-from roll.node import Node
 
 from assets.game_projects.fighter.src.hit_box import Attack
 from assets.game_projects.fighter.src.input_buffer import InputBuffer
