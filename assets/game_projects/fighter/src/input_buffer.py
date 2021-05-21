@@ -24,12 +24,16 @@ class InputBuffer:
         self,
         left_action_name: str,
         right_action_name: str,
+        up_action_name: str,
+        down_action_name: str,
         weak_punch_action_name: str,
         frame_limit=12,
     ):
         self._inputs = {}
         self.left_action_name = left_action_name
         self.right_action_name = right_action_name
+        self.up_action_name = up_action_name
+        self.down_action_name = down_action_name
         self.weak_punch_action_name = weak_punch_action_name
         self._frame_limit = frame_limit
 
@@ -66,6 +70,12 @@ class InputBuffer:
             self.add_input(input=InputBuffer.Value.LEFT, frame=frame)
         elif Input.is_action_pressed(action_name=self.right_action_name):
             self.add_input(input=InputBuffer.Value.RIGHT, frame=frame)
+
+        if Input.is_action_pressed(action_name=self.up_action_name):
+            self.add_input(input=InputBuffer.Value.UP, frame=frame)
+        elif Input.is_action_pressed(action_name=self.down_action_name):
+            self.add_input(input=InputBuffer.Value.DOWN, frame=frame)
+
         if Input.is_action_pressed(action_name=self.weak_punch_action_name):
             self.add_input(input=InputBuffer.Value.WEAK_PUNCH, frame=frame)
 
@@ -77,6 +87,8 @@ class AIInputBuffer(InputBuffer):
         super().__init__(
             left_action_name="",
             right_action_name="",
+            up_action_name="",
+            down_action_name="",
             weak_punch_action_name="",
             frame_limit=frame_limit,
         )
@@ -90,12 +102,16 @@ class OutgoingNetworkInputBuffer(InputBuffer):
         self,
         left_action_name: str,
         right_action_name: str,
+        up_action_name: str,
+        down_action_name: str,
         weak_punch_action_name: str,
         frame_limit=12,
     ):
         super().__init__(
             left_action_name=left_action_name,
             right_action_name=right_action_name,
+            up_action_name=up_action_name,
+            down_action_name=down_action_name,
             weak_punch_action_name=weak_punch_action_name,
             frame_limit=frame_limit,
         )
@@ -120,6 +136,8 @@ class IncomingNetworkInputBuffer(InputBuffer):
         super().__init__(
             left_action_name="",
             right_action_name="",
+            up_action_name="",
+            down_action_name="",
             weak_punch_action_name="",
             frame_limit=frame_limit,
         )

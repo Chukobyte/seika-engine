@@ -8,7 +8,7 @@ from assets.game_projects.fighter.src.state.state_data import FrameStateData
 
 
 class FighterActionState:
-    IDLE = "idle"
+    WAITING = "waiting"
     ATTACKING = "attacking"
     GUARDING = "guarding"
     HIT_STUN = "hit_stun"
@@ -60,7 +60,7 @@ class PlayerState:
         self.direction = FighterDirection.RIGHT
         self.velocity = Vector2(0, 0)
         self.fighter_stance_state = FighterStanceState.STANDING
-        self.fighter_action_state = FighterActionState.IDLE
+        self.fighter_action_state = FighterActionState.WAITING
         self.is_jumping = False
 
 
