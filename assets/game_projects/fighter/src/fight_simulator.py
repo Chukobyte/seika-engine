@@ -52,7 +52,6 @@ class FightSimulator:
         self.attack_manager = AttackManager()
 
     def simulate_frame(self, frame: int, game_state_manager: GameStateManager) -> None:
-        # TODO: Will separate general state processing into more steps once attack damage animations come into play
         self._process_general_state(frame=frame, game_state_manager=game_state_manager)
 
         self._resolve_attacks(game_state_manager=game_state_manager)
@@ -77,7 +76,7 @@ class FightSimulator:
                     elif input == InputBuffer.Value.WEAK_PUNCH.value:
                         weak_punch_attack = Attack.new()
                         weak_punch_attack.collider_rect = Rect2(
-                            x=100 * player_state.direction, y=32, w=64, h=64
+                            x=32 + (65 * player_state.direction), y=32, w=64, h=64
                         )
                         weak_punch_attack.color = Color(1.0, 0.0, 0.0, 0.75)
                         player_state.node.add_child(child_node=weak_punch_attack)
@@ -90,7 +89,8 @@ class FightSimulator:
         self.attack_manager.process_frame()
         for player in self.attack_manager.get_entity_id_for_collided_attacks():
             # Only resolving damage for now
-            hp_text_label = game_state_manager.ui_state.hp_labels[player]
+            opponent_player = game_state_manager.game_state.opponent_player[player]
+            hp_text_label = game_state_manager.ui_state.hp_labels[opponent_player]
             previous_hp = int(hp_text_label.text)
             damage = 1  # TODO: Will be based off of attack damage
             hp_text_label.text = str(previous_hp - damage)

@@ -50,6 +50,10 @@ class GameState:
             Player.ONE: PlayerState(Player.ONE),
             Player.TWO: PlayerState(Player.TWO),
         }
+        self.opponent_player = {
+            Player.ONE: Player.TWO,
+            Player.TWO: Player.ONE,
+        }
         self.frame_states = {}
 
     def poll_input(self, frame: int) -> None:
