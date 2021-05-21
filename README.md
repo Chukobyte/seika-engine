@@ -39,34 +39,3 @@ A 2D game engine that's used for a work in progress fighting game.  Windows only
 `make package`
 
 *Must have 7zip installed and added to the `PATH`.
-
-##### Architecture
-
-Systems and their connections.
-
-```mermaid
-
-graph LR;
-    C[Audio]
-    D[Rendering]
-    E[Physics]
-    E-->D
-    F[Input]
-    F-->G
-    F-->E
-    G[Scripting]
-    G-->C
-    G-->I
-    G-->J
-    G-->K
-    H[Assets]
-    H-->C
-    H-->D
-    H-->G
-    H-->K
-    I[Timer]
-    J[Networking]
-    J-->D
-    K[Animations]
-    K-->D
-```
