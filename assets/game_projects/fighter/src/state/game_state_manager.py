@@ -46,6 +46,8 @@ class GameStateManager:
             player_one_state.input_buffer = InputBuffer(
                 left_action_name="one_left",
                 right_action_name="one_right",
+                up_action_name="one_up",
+                down_action_name="one_down",
                 weak_punch_action_name="one_weak_punch",
             )
             player_one_state.animation_state = AnimationState(
@@ -62,6 +64,8 @@ class GameStateManager:
             player_one_state.input_buffer = InputBuffer(
                 left_action_name="one_left",
                 right_action_name="one_right",
+                up_action_name="one_up",
+                down_action_name="one_down",
                 weak_punch_action_name="one_weak_punch",
             )
             player_one_state.animation_state = AnimationState(
@@ -72,6 +76,8 @@ class GameStateManager:
             player_two_state.input_buffer = InputBuffer(
                 left_action_name="two_left",
                 right_action_name="two_right",
+                up_action_name="one_up",
+                down_action_name="one_down",
                 weak_punch_action_name="two_weak_punch",
             )
             player_two_state.animation_state = AnimationState(
@@ -84,6 +90,8 @@ class GameStateManager:
             player_one_state.input_buffer = OutgoingNetworkInputBuffer(
                 left_action_name="one_left",
                 right_action_name="one_right",
+                up_action_name="one_up",
+                down_action_name="one_down",
                 weak_punch_action_name="one_weak_punch",
             )
             player_one_state.animation_state = AnimationState(
@@ -103,6 +111,8 @@ class GameStateManager:
             player_one_state.input_buffer = OutgoingNetworkInputBuffer(
                 left_action_name="one_left",
                 right_action_name="one_right",
+                up_action_name="one_up",
+                down_action_name="one_down",
                 weak_punch_action_name="one_weak_punch",
             )
             player_one_state.animation_state = AnimationState(

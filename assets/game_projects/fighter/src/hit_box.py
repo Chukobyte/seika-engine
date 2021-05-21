@@ -25,3 +25,6 @@ class Attack(HitBox):
 
     def has_collided_with_anything(self) -> bool:
         return len(Collision.get_collided_nodes(node=self)) > 0
+
+    def get_collided_nodes(self) -> list:
+        return Collision.get_collided_nodes(node=self)

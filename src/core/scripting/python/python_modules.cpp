@@ -329,6 +329,29 @@ PyObject* PythonModules::node2D_add_to_position(PyObject *self, PyObject *args, 
     return nullptr;
 }
 
+PyObject* PythonModules::node2D_get_rotation(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        Transform2DComponent transform2DComponent = entityComponentOrchestrator->GetComponent<Transform2DComponent>(entity);
+        return Py_BuildValue("f", transform2DComponent.rotation);
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::node2D_set_rotation(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    float rotation;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "if", node2DSetRotationKWList, &entity, &rotation)) {
+        Transform2DComponent transform2DComponent = entityComponentOrchestrator->GetComponent<Transform2DComponent>(entity);
+        transform2DComponent.rotation = rotation;
+        entityComponentOrchestrator->UpdateComponent<Transform2DComponent>(entity, transform2DComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
 // SPRITE
 PyObject* PythonModules::sprite_get_flip_h(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;

@@ -36,6 +36,8 @@ class PythonModules {
     static PyObject* node2D_get_position(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node2D_set_position(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node2D_add_to_position(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* node2D_get_rotation(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* node2D_set_rotation(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* sprite_get_flip_h(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* sprite_set_flip_h(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -189,6 +191,14 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "node2D_add_to_position", (PyCFunction) PythonModules::node2D_add_to_position,
         METH_VARARGS | METH_KEYWORDS, "Adds to a node's position."
+    },
+    {
+        "node2D_get_rotation", (PyCFunction) PythonModules::node2D_get_rotation,
+        METH_VARARGS | METH_KEYWORDS, "Gets a node's rotation."
+    },
+    {
+        "node2D_set_rotation", (PyCFunction) PythonModules::node2D_set_rotation,
+        METH_VARARGS | METH_KEYWORDS, "Sets a node's rotation."
     },
     // SPRITE
     {
@@ -380,6 +390,7 @@ static char *nodeSignalEmitKWList[] = {"entity_id", "signal_id", "args", nullptr
 static char *nodeSetColorKWList[] = {"entity_id", "red", "green", "blue", "alpha", nullptr};
 
 static char *node2DUpdatePositionKWList[] = {"entity_id", "x", "y", nullptr};
+static char *node2DSetRotationKWList[] = {"entity_id", "rotation", nullptr};
 
 static char *setSpriteFlipHKWList[] = {"entity_id", "flip_h", nullptr};
 static char *setSpriteFlipVKWList[] = {"entity_id", "flip_v", nullptr};

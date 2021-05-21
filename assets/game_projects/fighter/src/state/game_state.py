@@ -1,8 +1,24 @@
+from roll.math import Vector2
 from roll.node import AnimatedSprite, TextLabel
 
 from assets.game_projects.fighter.src.input_buffer import InputBuffer
+from assets.game_projects.fighter.src.model.fighter_direction import FighterDirection
 from assets.game_projects.fighter.src.model.player import Player
 from assets.game_projects.fighter.src.state.state_data import FrameStateData
+
+
+class FighterActionState:
+    WAITING = "waiting"
+    ATTACKING = "attacking"
+    GUARDING = "guarding"
+    HIT_STUN = "hit_stun"
+    KNOCKED_DOWN = "knocked_down"
+
+
+class FighterStanceState:
+    STANDING = "standing"
+    CROUCHING = "crouching"
+    IN_THE_AIR = "in_the_air"
 
 
 class AnimationState:
@@ -41,12 +57,22 @@ class PlayerState:
         self.input_buffer = None
         self.animation_state = None
 
+        self.direction = FighterDirection.RIGHT
+        self.velocity = Vector2(0, 0)
+        self.fighter_stance_state = FighterStanceState.STANDING
+        self.fighter_action_state = FighterActionState.WAITING
+        self.is_jumping = False
+
 
 class GameState:
     def __init__(self):
         self.player_states = {
             Player.ONE: PlayerState(Player.ONE),
             Player.TWO: PlayerState(Player.TWO),
+        }
+        self.opponent_player = {
+            Player.ONE: Player.TWO,
+            Player.TWO: Player.ONE,
         }
         self.frame_states = {}
 

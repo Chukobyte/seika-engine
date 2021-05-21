@@ -27,6 +27,7 @@ class Fight(Node2D):
         self.game_properties = GameProperties()
         self.frame_counter = 0
         self.game_state_manager = GameStateManager()
+        self.game_state_manager.game_state.frame_states.clear()  # TODO: cleanly clear stuff between fights
 
         self._process_game_start_mode()
 
