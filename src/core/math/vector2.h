@@ -2,6 +2,7 @@
 #define VECTOR2_H
 
 #include <iostream>
+#include <math.h>
 
 class Vector2 {
   public:
@@ -24,8 +25,16 @@ class Vector2 {
         return Vector2(this->x * otherVector.x, this->y * otherVector.y);
     }
 
+    Vector2 operator*(float value) {
+        return Vector2(this->x * value, this->y * value);
+    }
+
     Vector2 operator/(const Vector2 &otherVector) {
         return Vector2(this->x / otherVector.x, this->y / otherVector.y);
+    }
+
+    Vector2 operator/(float value) {
+        return Vector2(this->x / value, this->y / value);
     }
 
     bool operator==(const Vector2 &otherVector) const {
@@ -38,6 +47,32 @@ class Vector2 {
 
     float DotProduct(const Vector2 &otherVector) {
         return (this->x * otherVector.x) + (this->y * otherVector.y);
+    }
+
+    Vector2 DotProductVector(const Vector2 &otherVector) {
+        return Vector2(DotProduct(otherVector), DotProduct(otherVector));
+    }
+
+    Vector2 CrossProduct(const Vector2 &otherVector) {
+        return Vector2(this->y - otherVector.y, this->x - otherVector.y);
+    }
+
+    double Magnitude() {
+        return sqrt(this->x * this->x + this->y * this->y);
+    }
+
+    void Normalize() {
+        double magnitude = Magnitude();
+        this->x = this->x / magnitude;
+        this->y = this->y / magnitude;
+    }
+
+    Vector2 Lerp(Vector2 otherVector, float amount) {
+        return *this + (otherVector - *this) * amount;
+    }
+
+    Vector2 ProjectionPlane(Vector2 normalVector) {
+        return *this - (normalVector * (this->DotProductVector(normalVector) / (normalVector * normalVector)));
     }
 
     friend std::ostream& operator<<(std::ostream& os, const Vector2 &v);
