@@ -6,7 +6,10 @@ from assets.game_projects.fighter.src.input_buffer import InputBuffer
 from assets.game_projects.fighter.src.model.animation_name import AnimationName
 from assets.game_projects.fighter.src.model.fighter_direction import FighterDirection
 from assets.game_projects.fighter.src.model.player import Player
-from assets.game_projects.fighter.src.state.game_state import FighterActionState
+from assets.game_projects.fighter.src.state.game_state import (
+    FighterActionState,
+    FighterStanceState,
+)
 from assets.game_projects.fighter.src.state.game_state_manager import GameStateManager
 
 
@@ -68,6 +71,7 @@ class FightSimulator:
     ) -> None:
         for player_id in game_state_manager.game_state.player_states:
             player_state = game_state_manager.game_state.player_states[player_id]
+            # TODO: Separate movement from state
             if player_state.input_buffer.is_empty():
                 player_state.animation_state.set_animation(AnimationName.IDLE)
             else:
@@ -75,6 +79,17 @@ class FightSimulator:
                     for input in player_state.input_buffer.get_frame_inputs(
                         frame=frame
                     ):
+                        if (
+                            input == InputBuffer.Value.UP.value
+                            and player_state.fighter_stance_state
+                            != FighterStanceState.IN_THE_AIR
+                        ):
+                            player_state.is_jumping = True
+                            player_state.jump_amount = 0
+                            player_state.fighter_stance_state = (
+                                FighterStanceState.IN_THE_AIR
+                            )
+                            player_state.node.add_to_position(Vector2(0, -32))
                         if input == InputBuffer.Value.LEFT.value:
                             player_state.node.add_to_position(Vector2.LEFT())
                             player_state.animation_state.set_animation(
@@ -99,6 +114,18 @@ class FightSimulator:
                             self.attack_manager.add_attack(
                                 player=player_state.id, attack=weak_punch_attack
                             )
+            # TODO: Putting gravity stuff here, move later
+            if player_state.fighter_stance_state == FighterStanceState.IN_THE_AIR:
+                if player_state.is_jumping and player_state.jump_amount + 1 < 64:
+                    player_state.node.add_to_position(Vector2(0, -1))
+                    player_state.jump_amount += 1
+                else:
+                    player_state.is_jumping = False
+                    player_state.node.add_to_position(Vector2(0, 1))
+                    prev_position = player_state.node.position
+                    if prev_position.y >= 300:
+                        player_state.node.position = Vector2(prev_position.x, 300)
+                        player_state.fighter_stance_state = FighterStanceState.STANDING
 
     def _resolve_attacks(self, game_state_manager: GameStateManager) -> None:
         attack_frame_result = self.attack_manager.process_frame(
@@ -136,3 +163,5 @@ class FightSimulator:
         else:
             player_two_state.direction = FighterDirection.LEFT
             player_two_state.node.flip_h = True
+
+        # Placing gravity here for now

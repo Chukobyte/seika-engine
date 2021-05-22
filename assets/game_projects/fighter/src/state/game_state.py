@@ -62,6 +62,7 @@ class PlayerState:
         self.fighter_stance_state = FighterStanceState.STANDING
         self.fighter_action_state = FighterActionState.WAITING
         self.is_jumping = False
+        self.jump_amount = 0
 
 
 class GameState:
