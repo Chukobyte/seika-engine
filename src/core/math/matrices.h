@@ -3,6 +3,7 @@
 
 #include <iostream>
 
+#include "math_util.h"
 #include "vector3.h"
 
 class Matrix4 {
@@ -80,27 +81,38 @@ class Matrix4 {
         return members[(row * 4) + col];
     }
 
-    Matrix4 Translation(const Vector3 &position) {
-        return *this * Matrix4(
-                   position.x, 0.0f, 0.0f, 0.0f,
-                   position.y, 0.0f, 0.0f, 0.0f,
-                   position.z, 0.0f, 0.0f, 0.0f,
-                   1.0f, 0.0f, 0.0f, 0.0f
-               );
+    Matrix4& Translation(const Vector3 &position) {
+        this->members[0] += this->members[12] * position.x;
+        this->members[4] += this->members[12] * position.y;
+        this->members[8] += this->members[12] * position.z;
+
+        this->members[1] += this->members[13] * position.x;
+        this->members[5] += this->members[13] * position.y;
+        this->members[9] += this->members[13] * position.z;
+
+        this->members[2] += this->members[14] * position.x;
+        this->members[6] += this->members[14] * position.y;
+        this->members[10] += this->members[14] * position.z;
+
+        this->members[3] += this->members[15] * position.x;
+        this->members[7] += this->members[15] * position.y;
+        this->members[11] += this->members[15] * position.z;
+
+        return *this;
     }
 
     Matrix4 Scale(const Vector3 &scaleFactor) {
         return Matrix4(
-                   scaleFactor.x * this->members[0], 0.0f, 0.0f, 0.0f,
-                   0.0f, scaleFactor.y * this->members[5], 0.0f, 0.0f,
-                   0.0f, 0.0f, scaleFactor.z * this->members[10], 0.0f,
-                   0.0f, 0.0f, 0.0f, 1.0f * this->members[15]
+                   scaleFactor.x * this->members[0], scaleFactor.x * this->members[1], scaleFactor.x * this->members[2], scaleFactor.x * this->members[3],
+                   scaleFactor.y * this->members[4], scaleFactor.x * this->members[5], scaleFactor.x * this->members[6], scaleFactor.x * this->members[7],
+                   scaleFactor.z * this->members[8], scaleFactor.x * this->members[9], scaleFactor.x * this->members[10], scaleFactor.x * this->members[11],
+                   1.0f * this->members[12], 1.0f * this->members[13], 1.0f * this->members[14], 1.0f * this->members[15]
                );
     }
 
     Matrix4 Rotate(const Vector3 &axis, float angleDegrees) {
-        float c = cosf(angleDegrees);
-        float s = sinf(angleDegrees);
+        float c = cosf(angleDegrees * MathUtil::DEG2RAD);
+        float s = sinf(angleDegrees * MathUtil::DEG2RAD);
         float t = 1.0f - c;
 
         Vector3 normalizedAxis = axis;
