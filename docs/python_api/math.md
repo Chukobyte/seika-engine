@@ -1,5 +1,31 @@
 # roll.math
 
+## Math
+
+Generic math functions
+
+### Properties
+
+None.
+
+---
+
+### Signals
+
+None.
+
+---
+
+### Methods
+
+```python
+lerp(source: float, destination: float, amount: float) -> float:
+```
+
+Linearly interpolate between two values.
+
+---
+
 ## Vector2
 
 Engine representation of a two-dimensional vector.
@@ -18,6 +44,12 @@ Y coordinate.
 
 ---
 
+### Signals
+
+None.
+
+---
+
 ### Methods
 
 ```python
@@ -25,6 +57,12 @@ dot_product(value: roll.math.Vector2) -> float:
 ```
 
 Returns the dot product of two Vector2 items.
+
+```python
+lerp(source: roll.math.Vector2, destination: roll.math.Vector2, amount: float) -> roll.math.Vector2:
+```
+
+Returns the linearly interpolated value of two points.
 
 ---
 
@@ -66,6 +104,12 @@ Z coordinate.
 
 ---
 
+### Signals
+
+None.
+
+---
+
 ### Methods
 
 None.
@@ -101,6 +145,12 @@ h : float
 ```
 
 Rectangle's height.
+
+---
+
+### Signals
+
+None.
 
 ---
 
