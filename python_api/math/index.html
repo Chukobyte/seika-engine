@@ -67,27 +67,43 @@
 </li>
 <li class="toctree-l1 current"><a class="reference internal current" href="./">Math</a>
 <ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="#vector2">Vector2</a>
+<li class="toctree-l2"><a class="reference internal" href="#math">Math</a>
 <ul>
 <li class="toctree-l3"><a class="reference internal" href="#properties">Properties</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#signals">Signals</a>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#methods">Methods</a>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#vector3">Vector3</a>
+<li class="toctree-l2"><a class="reference internal" href="#vector2">Vector2</a>
 <ul>
 <li class="toctree-l3"><a class="reference internal" href="#properties_1">Properties</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#signals_1">Signals</a>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#methods_1">Methods</a>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#rect2">Rect2</a>
+<li class="toctree-l2"><a class="reference internal" href="#vector3">Vector3</a>
 <ul>
 <li class="toctree-l3"><a class="reference internal" href="#properties_2">Properties</a>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#signals_2">Signals</a>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#methods_2">Methods</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#rect2">Rect2</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#properties_3">Properties</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#signals_3">Signals</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#methods_3">Methods</a>
 </li>
 </ul>
 </li>
@@ -119,9 +135,22 @@
 <div role="main">
 <div class="section">
 <h1 id="rollmath">roll.math</h1>
+<h2 id="math">Math</h2>
+<p>Generic math functions</p>
+<h3 id="properties">Properties</h3>
+<p>None.</p>
+<hr/>
+<h3 id="signals">Signals</h3>
+<p>None.</p>
+<hr/>
+<h3 id="methods">Methods</h3>
+<pre><code class="language-python">lerp(source: float, destination: float, amount: float) -&gt; float:
+</code></pre>
+<p>Linearly interpolate between two values.</p>
+<hr/>
 <h2 id="vector2">Vector2</h2>
 <p>Engine representation of a two-dimensional vector.</p>
-<h3 id="properties">Properties</h3>
+<h3 id="properties_1">Properties</h3>
 <pre><code class="language-python">x : float
 </code></pre>
 <p>X coordinate.</p>
@@ -129,10 +158,16 @@
 </code></pre>
 <p>Y coordinate.</p>
 <hr/>
-<h3 id="methods">Methods</h3>
+<h3 id="signals_1">Signals</h3>
+<p>None.</p>
+<hr/>
+<h3 id="methods_1">Methods</h3>
 <pre><code class="language-python">dot_product(value: roll.math.Vector2) -&gt; float:
 </code></pre>
 <p>Returns the dot product of two Vector2 items.</p>
+<pre><code class="language-python">lerp(source: roll.math.Vector2, destination: roll.math.Vector2, amount: float) -&gt; roll.math.Vector2:
+</code></pre>
+<p>Returns the linearly interpolated value of two points.</p>
 <hr/>
 <p><strong>Static functions that return specific values</strong></p>
 <pre><code class="language-python">ZERO() -&gt; Vector2(0.0, 0.0):
@@ -144,7 +179,7 @@ DOWN() -&gt; Vector2(0.0, 1.0):
 <hr/>
 <h2 id="vector3">Vector3</h2>
 <p>Engine representation of a two dimensional vector.</p>
-<h3 id="properties_1">Properties</h3>
+<h3 id="properties_2">Properties</h3>
 <pre><code class="language-python">x : float
 </code></pre>
 <p>X coordinate.</p>
@@ -155,12 +190,15 @@ DOWN() -&gt; Vector2(0.0, 1.0):
 </code></pre>
 <p>Z coordinate.</p>
 <hr/>
-<h3 id="methods_1">Methods</h3>
+<h3 id="signals_2">Signals</h3>
+<p>None.</p>
+<hr/>
+<h3 id="methods_2">Methods</h3>
 <p>None.</p>
 <hr/>
 <h2 id="rect2">Rect2</h2>
 <p>Engine representation of a rectangle vector.</p>
-<h3 id="properties_2">Properties</h3>
+<h3 id="properties_3">Properties</h3>
 <pre><code class="language-python">x : float
 </code></pre>
 <p>X coordinate.</p>
@@ -174,7 +212,10 @@ DOWN() -&gt; Vector2(0.0, 1.0):
 </code></pre>
 <p>Rectangle's height.</p>
 <hr/>
-<h3 id="methods_2">Methods</h3>
+<h3 id="signals_3">Signals</h3>
+<p>None.</p>
+<hr/>
+<h3 id="methods_3">Methods</h3>
 <p>None.</p>
 <hr/>
 </div>
