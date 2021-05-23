@@ -40,6 +40,14 @@ A 2D game engine that's used for a work in progress fighting game.  Windows only
 
 *Must have 7zip installed and added to the `PATH`.
 
+### Developing with Python API
+
+To help with developing within IDEs, a helper module can be installed to provide a 'Mock' version of the python API.
+
+`pip install -i https://test.pypi.org/simple/ roll-engine-api-test`
+
+*Note: Kept up to date with the latest release version of the engine.  Support for previous versions may be limited.*
+
 ### How To Contribute
 
 There are 3 main ways to contribute to the engine.
