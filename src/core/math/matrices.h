@@ -15,6 +15,7 @@ class Matrix4 {
     }
 
     Matrix4(float n) {
+        SetAll(0.0f);
         SetDiagonal(n);
     }
 
@@ -81,24 +82,35 @@ class Matrix4 {
         return members[(row * 4) + col];
     }
 
-    Matrix4& Translation(const Vector3 &position) {
-        this->members[0] += this->members[12] * position.x;
-        this->members[4] += this->members[12] * position.y;
-        this->members[8] += this->members[12] * position.z;
+    Matrix4 Translation(const Vector3 &position) {
+        std::cout << "Trans\n";
+//        this->members[0] += this->members[12] * position.x;
+//        this->members[4] += this->members[12] * position.y;
+//        this->members[8] += this->members[12] * position.z;
+//
+//        this->members[1] += this->members[13] * position.x;
+//        this->members[5] += this->members[13] * position.y;
+//        this->members[9] += this->members[13] * position.z;
+//
+//        this->members[2] += this->members[14] * position.x;
+//        this->members[6] += this->members[14] * position.y;
+//        this->members[10] += this->members[14] * position.z;
+//
+//        this->members[3] += this->members[15] * position.x;
+//        this->members[7] += this->members[15] * position.y;
+//        this->members[11] += this->members[15] * position.z;
 
-        this->members[1] += this->members[13] * position.x;
-        this->members[5] += this->members[13] * position.y;
-        this->members[9] += this->members[13] * position.z;
+        return Matrix4(
+                   this->members[0] + this->members[12] * position.x, this->members[1] + this->members[13] * position.x,
+                   this->members[2] + this->members[14] * position.x, this->members[3] + this->members[15] * position.y,
 
-        this->members[2] += this->members[14] * position.x;
-        this->members[6] += this->members[14] * position.y;
-        this->members[10] += this->members[14] * position.z;
+                   this->members[5] + this->members[13] * position.y, this->members[6] + this->members[14] * position.y,
+                   this->members[7] += this->members[15] * position.y, this->members[8] + this->members[12] * position.z,
 
-        this->members[3] += this->members[15] * position.x;
-        this->members[7] += this->members[15] * position.y;
-        this->members[11] += this->members[15] * position.z;
-
-        return *this;
+                   this->members[9] + this->members[13] * position.z, this->members[10] + this->members[14] * position.z,
+                   this->members[11] += this->members[15] * position.z, 0.0f,
+                   0.0f, 0.0f, 0.0f, 0.0f
+               );
     }
 
     Matrix4 Scale(const Vector3 &scaleFactor) {
@@ -141,13 +153,14 @@ class Matrix4 {
                );
     }
 
-    Matrix4 Extract() {
-        return Matrix4(
-                   members[0], members[4], members[8], members[12],
-                   members[1], members[5], members[9], members[13],
-                   members[2], members[6], members[10], members[14],
-                   members[3], members[7], members[11], members[15]
-               );
+    float *const Extract() const {
+        Matrix4 extractedMatrix = Matrix4(
+                                      members[0], members[4], members[8], members[12],
+                                      members[1], members[5], members[9], members[13],
+                                      members[2], members[6], members[10], members[14],
+                                      members[3], members[7], members[11], members[15]
+                                  );
+        return extractedMatrix.members;
     }
 
     bool operator==(const Matrix4 &otherMat4) const {
