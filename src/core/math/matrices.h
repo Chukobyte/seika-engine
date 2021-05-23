@@ -3,9 +3,26 @@
 
 #include <iostream>
 
+#include "vector3.h"
+
 class Matrix4 {
   public:
     float members[16];
+
+    Matrix4() {
+        SetAll(0.0f);
+    }
+
+    Matrix4(float n) {
+        SetDiagonal(n);
+    }
+
+    Matrix4(float a1, float a2, float a3, float a4) {
+        SetRow(0, a1, a2, a3, a4);
+        SetRow(1, a1, a2, a3, a4);
+        SetRow(2, a1, a2, a3, a4);
+        SetRow(3, a1, a2, a3, a4);
+    }
 
     Matrix4(float a1, float a2, float a3, float a4,
             float b1, float b2, float b3, float b4,
@@ -35,6 +52,24 @@ class Matrix4 {
         }
     }
 
+    void SetDiagonal(float n) {
+        members[0] = n;
+        members[5] = n;
+        members[10] = n;
+        members[15] = n;
+    }
+
+    void Identity() {
+        SetAll(0.0f);
+        SetDiagonal(1.0f);
+    }
+
+    void SetAll(float n) {
+        for (int i = 0; i < sizeof(members); i++) {
+            members[i] = n;
+        }
+    }
+
     void Set(int row, int col, float value) {
         if (row >= 0 && row <= 3 && col >= 0 && col <= 3) {
             members[(row * 4) + col] = value;
@@ -43,6 +78,64 @@ class Matrix4 {
 
     float Get(int row, int col) {
         return members[(row * 4) + col];
+    }
+
+    Matrix4 Translation(const Vector3 &position) {
+        return *this * Matrix4(
+                   position.x, 0.0f, 0.0f, 0.0f,
+                   position.y, 0.0f, 0.0f, 0.0f,
+                   position.z, 0.0f, 0.0f, 0.0f,
+                   1.0f, 0.0f, 0.0f, 0.0f
+               );
+    }
+
+    Matrix4 Scale(const Vector3 &scaleFactor) {
+        return Matrix4(
+                   scaleFactor.x * this->members[0], 0.0f, 0.0f, 0.0f,
+                   0.0f, scaleFactor.y * this->members[5], 0.0f, 0.0f,
+                   0.0f, 0.0f, scaleFactor.z * this->members[10], 0.0f,
+                   0.0f, 0.0f, 0.0f, 1.0f * this->members[15]
+               );
+    }
+
+    Matrix4 Rotate(const Vector3 &axis, float angleDegrees) {
+        float c = cosf(angleDegrees);
+        float s = sinf(angleDegrees);
+        float t = 1.0f - c;
+
+        Vector3 normalizedAxis = axis;
+        normalizedAxis.Normalize();
+
+        return Matrix4(
+                   1.0f + t * (normalizedAxis.x * normalizedAxis.x - 1.0f),
+                   normalizedAxis.z * s + t * normalizedAxis.x * normalizedAxis.y,
+                   -normalizedAxis.y * s + t * normalizedAxis.x * normalizedAxis.z,
+                   0.0f,
+
+                   -normalizedAxis.z * s + t * normalizedAxis.x * normalizedAxis.y,
+                   1.0f + t * (normalizedAxis.y * normalizedAxis.y - 1.0f),
+                   normalizedAxis.x * s + t * normalizedAxis.y * normalizedAxis.z,
+                   0.0f,
+
+                   normalizedAxis.y * s + t * normalizedAxis.x * normalizedAxis.z,
+                   -normalizedAxis.x * s + t * normalizedAxis.y * normalizedAxis.z,
+                   1.0f + t * (normalizedAxis.z * normalizedAxis.z - 1.0f),
+                   0.0f,
+
+                   0.0f,
+                   0.0f,
+                   0.0f,
+                   1.0f
+               );
+    }
+
+    Matrix4 Extract() {
+        return Matrix4(
+                   members[0], members[4], members[8], members[12],
+                   members[1], members[5], members[9], members[13],
+                   members[2], members[6], members[10], members[14],
+                   members[3], members[7], members[11], members[15]
+               );
     }
 
     bool operator==(const Matrix4 &otherMat4) const {
