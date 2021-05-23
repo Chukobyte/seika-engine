@@ -39,3 +39,18 @@ A 2D game engine that's used for a work in progress fighting game.  Windows only
 `make package`
 
 *Must have 7zip installed and added to the `PATH`.
+
+### How To Contribute
+
+There are 3 main ways to contribute to the engine.
+
+1. Code changes to the engine
+2. A project within the `assets/game_projects` directory.
+3. Documentation additions and changes within the `docs` folder.
+
+It's simple to contribute to roll-back engine, follow the easy steps below:
+
+1. Create a fork of the roll-back-engine repo.
+2. Make sure to pull the latest from main before pushing up changes.
+3. Submit a pull request to the main branch stating the reason for the change.
+4. Once a pull request is submitted, changes may be requested and/or additional information may be requested.
