@@ -106,6 +106,7 @@ void Shader::SetVec4Float(const std::string &name, const Color &value) const {
 }
 
 void Shader::SetMatrix4Float(const std::string &name, const glm::mat4 &mat) const {
+    std::cout << "value ptr: " << glm::value_ptr(mat) << std::endl;
     glUniformMatrix4fv(glGetUniformLocation(this->ID, name.c_str()), 1, GL_FALSE, glm::value_ptr(mat));
 }
 

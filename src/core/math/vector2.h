@@ -17,6 +17,12 @@ class Vector2 {
         return Vector2(this->x + otherVector.x, this->y + otherVector.y);
     }
 
+    Vector2 operator+=(const Vector2 &otherVector) {
+        this->x += otherVector.x;
+        this->y += otherVector.y;
+        return *this;
+    }
+
     Vector2 operator-(const Vector2 &otherVector) {
         return Vector2(this->x - otherVector.x, this->y - otherVector.y);
     }

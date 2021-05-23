@@ -1,7 +1,7 @@
 #ifndef MATH_UTIL_H
 #define MATH_UTIL_H
 
-class MathUtil: {
+class MathUtil {
   public:
     static float Lerp(float source, float destination, float amount) {
         return source + (destination - source) * amount;

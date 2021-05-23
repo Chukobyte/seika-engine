@@ -23,11 +23,11 @@ class Vector3 {
     }
 
     Vector3 operator*(const Vector3 &otherVector) {
-        return Vector3(this->x * otherVector.x, this->y * otherVector.y,, this->z * otherVector.z);
+        return Vector3(this->x * otherVector.x, this->y * otherVector.y, this->z * otherVector.z);
     }
 
     Vector3 operator/(const Vector3 &otherVector) {
-        return Vector3(this->x / otherVector.x, this->y / otherVector.y,, this->z / otherVector.z);
+        return Vector3(this->x / otherVector.x, this->y / otherVector.y, this->z / otherVector.z);
     }
 
     bool operator==(const Vector3 &otherVector) const {
@@ -60,7 +60,7 @@ class Vector3 {
     }
 
     Vector3 Lerp(Vector3 otherVector, float amount) {
-        return *this + (otherVector - *this) * amount;
+        return *this + (otherVector - *this) * Vector3(amount, amount, amount);
     }
 
     friend std::ostream& operator<<(std::ostream& os, const Vector3 &v);
