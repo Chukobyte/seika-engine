@@ -56,6 +56,48 @@ class Matrix4 {
         return !(*this == otherMat4);
     }
 
+    Matrix4 operator+(const Matrix4 &otherMat4) {
+        return Matrix4(
+                   this->members[0] + otherMat4.members[0], this->members[1] + otherMat4.members[1], this->members[2] + otherMat4.members[2], this->members[3] + otherMat4.members[3],
+                   this->members[4] + otherMat4.members[4], this->members[5] + otherMat4.members[5], this->members[6] + otherMat4.members[6], this->members[7] + otherMat4.members[7],
+                   this->members[8] + otherMat4.members[8], this->members[9] + otherMat4.members[9], this->members[10] + otherMat4.members[10], this->members[11] + otherMat4.members[11],
+                   this->members[12] + otherMat4.members[12], this->members[13] + otherMat4.members[13], this->members[14] + otherMat4.members[14], this->members[15] + otherMat4.members[15]
+               );
+    }
+
+    Matrix4 operator-(const Matrix4 &otherMat4) {
+        return Matrix4(
+                   this->members[0] - otherMat4.members[0], this->members[1] - otherMat4.members[1], this->members[2] - otherMat4.members[2], this->members[3] - otherMat4.members[3],
+                   this->members[4] - otherMat4.members[4], this->members[5] - otherMat4.members[5], this->members[6] - otherMat4.members[6], this->members[7] - otherMat4.members[7],
+                   this->members[8] - otherMat4.members[8], this->members[9] - otherMat4.members[9], this->members[10] - otherMat4.members[10], this->members[11] - otherMat4.members[11],
+                   this->members[12] - otherMat4.members[12], this->members[13] - otherMat4.members[13], this->members[14] - otherMat4.members[14], this->members[15] - otherMat4.members[15]
+               );
+    }
+
+    Matrix4 operator*(const Matrix4 &otherMat4) {
+        return Matrix4(
+                   this->members[0] * otherMat4.members[0] + this->members[1] * otherMat4.members[4] + this->members[2] * otherMat4.members[8] + this->members[3] * otherMat4.members[12],
+                   this->members[0] * otherMat4.members[1] + this->members[1] * otherMat4.members[5] + this->members[2] * otherMat4.members[9] + this->members[3] * otherMat4.members[13],
+                   this->members[0] * otherMat4.members[2] + this->members[1] * otherMat4.members[6] + this->members[2] * otherMat4.members[10] + this->members[3] * otherMat4.members[14],
+                   this->members[0] * otherMat4.members[3] + this->members[1] * otherMat4.members[7] + this->members[2] * otherMat4.members[11] + this->members[3] * otherMat4.members[15],
+
+                   this->members[4] * otherMat4.members[0] + this->members[5] * otherMat4.members[4] + this->members[6] * otherMat4.members[8] + this->members[7] * otherMat4.members[12],
+                   this->members[4] * otherMat4.members[1] + this->members[5] * otherMat4.members[5] + this->members[6] * otherMat4.members[9] + this->members[7] * otherMat4.members[13],
+                   this->members[4] * otherMat4.members[2] + this->members[5] * otherMat4.members[6] + this->members[6] * otherMat4.members[10] + this->members[7] * otherMat4.members[14],
+                   this->members[4] * otherMat4.members[3] + this->members[5] * otherMat4.members[7] + this->members[6] * otherMat4.members[11] + this->members[7] * otherMat4.members[15],
+
+                   this->members[8] * otherMat4.members[0] + this->members[9] * otherMat4.members[4] + this->members[10] * otherMat4.members[8] + this->members[11] * otherMat4.members[12],
+                   this->members[8] * otherMat4.members[1] + this->members[9] * otherMat4.members[5] + this->members[10] * otherMat4.members[9] + this->members[11] * otherMat4.members[13],
+                   this->members[8] * otherMat4.members[2] + this->members[9] * otherMat4.members[6] + this->members[10] * otherMat4.members[10] + this->members[11] * otherMat4.members[14],
+                   this->members[8] * otherMat4.members[3] + this->members[9] * otherMat4.members[7] + this->members[10] * otherMat4.members[11] + this->members[11] * otherMat4.members[15],
+
+                   this->members[12] * otherMat4.members[0] + this->members[13] * otherMat4.members[4] + this->members[14] * otherMat4.members[8] + this->members[15] * otherMat4.members[12],
+                   this->members[12] * otherMat4.members[1] + this->members[13] * otherMat4.members[5] + this->members[14] * otherMat4.members[9] + this->members[15] * otherMat4.members[13],
+                   this->members[12] * otherMat4.members[2] + this->members[13] * otherMat4.members[6] + this->members[14] * otherMat4.members[10] + this->members[15] * otherMat4.members[14],
+                   this->members[12] * otherMat4.members[3] + this->members[13] * otherMat4.members[7] + this->members[14] * otherMat4.members[11] + this->members[15] * otherMat4.members[15]
+               );
+    }
+
     friend std::ostream& operator<<(std::ostream& os, const Matrix4 &v);
 };
 

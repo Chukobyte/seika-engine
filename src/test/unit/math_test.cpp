@@ -53,4 +53,22 @@ TEST_CASE("Matrix4", "[math]") {
                                 1.0f, 1.0f, 1.0f, 1.0f,
                                 1.0f, 1.0f, 1.0f, 1.0f));
     }
+
+    SECTION("Multiplication") {
+        Matrix4 test1 = Matrix4(0.0f, 1.0f, 0.0f, 0.0f,
+                                1.0f, 0.0f, 1.0f, 1.0f,
+                                0.0f, 1.0f, 0.0f, 1.0f,
+                                0.0f, 1.0f, 1.0f, 0.0f);
+
+        Matrix4 test2 = Matrix4(0.0f, 1.0f, 0.0f, 0.0f,
+                                1.0f, 0.0f, 1.0f, 1.0f,
+                                0.0f, 1.0f, 0.0f, 1.0f,
+                                0.0f, 1.0f, 1.0f, 0.0f);
+
+        REQUIRE(test1 * test2 == Matrix4(1.0f, 0.0f, 1.0f, 1.0f,
+                                         0.0f, 3.0f, 1.0f, 1.0f,
+                                         1.0f, 1.0f, 2.0f, 1.0f,
+                                         1.0f, 1.0f, 1.0f, 2.0f));
+
+    }
 }
