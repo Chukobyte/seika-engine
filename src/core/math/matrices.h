@@ -139,15 +139,14 @@ class Matrix4 {
                );
     }
 
-    float *const Extract() const {
-        Matrix4 extractedMatrix = Matrix4(
-                                      members[0], members[4], members[8], members[12],
-                                      members[1], members[5], members[9], members[13],
-                                      members[2], members[6], members[10], members[14],
-                                      members[3], members[7], members[11], members[15]
-                                  );
-        std::cout << "Extracted members = \n" << extractedMatrix << std::endl;
-        return extractedMatrix.members;
+    void ChangeToColumnMajorOrder() {
+        Set(Matrix4(
+                members[0], members[4], members[8], members[12],
+                members[1], members[5], members[9], members[13],
+                members[2], members[6], members[10], members[14],
+                members[3], members[7], members[11], members[15]
+            ));
+        std::cout << "Extracted members = \n" << *this << std::endl;
     }
 
     bool operator==(const Matrix4 &otherMat4) const {

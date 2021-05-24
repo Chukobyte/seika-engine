@@ -45,12 +45,13 @@ void SpriteRenderer::Draw(Texture2D *texture2D, Rect2 *sourceRectangle, Rect2 *d
     std::cout << "After First translation\n" << model << std::endl;
     model.Set(model.Translation(Vector3(0.5f * destinationRectangle->w, 0.5f * destinationRectangle->h, 0.0f)));
     std::cout << "After Second translation\n" << model << std::endl;
-    model.Set(model.Rotate(Vector3(0.0f, 0.0f, 1.0f), rotation));
-    std::cout << "After rotation\n" << model << std::endl;
+//    model.Set(model.Rotate(Vector3(0.0f, 0.0f, 1.0f), rotation));
+//    std::cout << "After rotation\n" << model << std::endl;
     model.Set(model.Translation(Vector3(-0.5f * destinationRectangle->w, -0.5f * destinationRectangle->h, 0.0f)));
     std::cout << "After Third translation\n" << model << std::endl;
-    model.Set(model.Scale(Vector3(destinationRectangle->w, destinationRectangle->h, 1.0f)));
-    std::cout << "After scale\n" << model << std::endl;
+//    model.Set(model.Scale(Vector3(destinationRectangle->w, destinationRectangle->h, 1.0f)));
+//    std::cout << "After scale\n" << model << std::endl;
+    model.ChangeToColumnMajorOrder();
 
 //    glm::mat4 model = glm::mat4(1.0f);
 //    std::cout << "Model\n" << glm::to_string(model) << std::endl;
