@@ -100,12 +100,10 @@ class Matrix4 {
     }
 
     Matrix4 Scale(const Vector3 &scaleFactor) {
-        return *this * Matrix4(
-                   1.0f * scaleFactor.x, 0.0f, 0.0f, 0.0f,
-                   0.0f, 1.0f * scaleFactor.y, 0.0f, 0.0f,
-                   0.0f, 0.0f, 1.0f * scaleFactor.z, 0.0f,
-                   0.0f, 0.0f, 0.0f, 1.0f
-               );
+        Set(0, 0, scaleFactor.x);
+        Set(1, 1, scaleFactor.y);
+        Set(2, 2, scaleFactor.z);
+        return *this;
     }
 
     Matrix4 Rotate(const Vector3 &axis, float angleDegrees) {
