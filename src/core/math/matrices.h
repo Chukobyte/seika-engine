@@ -146,7 +146,7 @@ class Matrix4 {
                                       members[2], members[6], members[10], members[14],
                                       members[3], members[7], members[11], members[15]
                                   );
-        std::cout << "Extracted members = \n" << *this << std::endl;
+        std::cout << "Extracted members = \n" << extractedMatrix << std::endl;
         return extractedMatrix.members;
     }
 
