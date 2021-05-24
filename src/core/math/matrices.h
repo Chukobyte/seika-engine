@@ -78,47 +78,31 @@ class Matrix4 {
         }
     }
 
+    void Set(const Matrix4 &mat4) {
+        for (int i = 0; i < sizeof(mat4.members); i++) {
+            this->members[i] = mat4.members[i];
+        }
+    }
+
     float Get(int row, int col) {
         return members[(row * 4) + col];
     }
 
     Matrix4 Translation(const Vector3 &position) {
-        std::cout << "Trans\n";
-//        this->members[0] += this->members[12] * position.x;
-//        this->members[4] += this->members[12] * position.y;
-//        this->members[8] += this->members[12] * position.z;
-//
-//        this->members[1] += this->members[13] * position.x;
-//        this->members[5] += this->members[13] * position.y;
-//        this->members[9] += this->members[13] * position.z;
-//
-//        this->members[2] += this->members[14] * position.x;
-//        this->members[6] += this->members[14] * position.y;
-//        this->members[10] += this->members[14] * position.z;
-//
-//        this->members[3] += this->members[15] * position.x;
-//        this->members[7] += this->members[15] * position.y;
-//        this->members[11] += this->members[15] * position.z;
-
-        return Matrix4(
-                   this->members[0] + this->members[12] * position.x, this->members[1] + this->members[13] * position.x,
-                   this->members[2] + this->members[14] * position.x, this->members[3] + this->members[15] * position.y,
-
-                   this->members[5] + this->members[13] * position.y, this->members[6] + this->members[14] * position.y,
-                   this->members[7] += this->members[15] * position.y, this->members[8] + this->members[12] * position.z,
-
-                   this->members[9] + this->members[13] * position.z, this->members[10] + this->members[14] * position.z,
-                   this->members[11] += this->members[15] * position.z, 0.0f,
-                   0.0f, 0.0f, 0.0f, 0.0f
+        return *this * Matrix4(
+                   1.0f, 0.0f, 0.0f, 0.0f,
+                   0.0f, 1.0f, 0.0f, 0.0f,
+                   0.0f, 0.0f, 1.0f, 0.0f,
+                   position.x, position.y, position.z, 1.0f
                );
     }
 
     Matrix4 Scale(const Vector3 &scaleFactor) {
-        return Matrix4(
-                   scaleFactor.x * this->members[0], scaleFactor.x * this->members[1], scaleFactor.x * this->members[2], scaleFactor.x * this->members[3],
-                   scaleFactor.y * this->members[4], scaleFactor.x * this->members[5], scaleFactor.x * this->members[6], scaleFactor.x * this->members[7],
-                   scaleFactor.z * this->members[8], scaleFactor.x * this->members[9], scaleFactor.x * this->members[10], scaleFactor.x * this->members[11],
-                   1.0f * this->members[12], 1.0f * this->members[13], 1.0f * this->members[14], 1.0f * this->members[15]
+        return *this * Matrix4(
+                   1.0f * scaleFactor.x, 0.0f, 0.0f, 0.0f,
+                   0.0f, 1.0f * scaleFactor.y, 0.0f, 0.0f,
+                   0.0f, 0.0f, 1.0f * scaleFactor.z, 0.0f,
+                   0.0f, 0.0f, 0.0f, 1.0f
                );
     }
 
