@@ -38,19 +38,21 @@ class Matrix4 {
 
     void SetRow(int index, float n1, float n2, float n3, float n4) {
         if (index >= 0 && index <= 3) {
-            members[index] = n1;
-            members[index + 4] = n2;
-            members[index + 8] = n3;
-            members[index + 12] = n4;
+            int setIndex = index * 4;
+            members[setIndex] = n1;
+            members[setIndex + 1] = n2;
+            members[setIndex + 2] = n3;
+            members[setIndex + 3] = n4;
         }
     }
 
     void SetColumn(int index, float n1, float n2, float n3, float n4) {
         if (index >= 0 && index <= 3) {
-            members[index] = n1;
-            members[index + 1] = n2;
-            members[index + 2] = n3;
-            members[index + 3] = n4;
+            int setIndex = index * 4;
+            members[setIndex] = n1;
+            members[setIndex + 4] = n2;
+            members[setIndex + 8] = n3;
+            members[setIndex + 12] = n4;
         }
     }
 
@@ -144,6 +146,7 @@ class Matrix4 {
                                       members[2], members[6], members[10], members[14],
                                       members[3], members[7], members[11], members[15]
                                   );
+        std::cout << "Extracted members = \n" << *this << std::endl;
         return extractedMatrix.members;
     }
 
