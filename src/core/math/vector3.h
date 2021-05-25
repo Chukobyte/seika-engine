@@ -30,6 +30,14 @@ class Vector3 {
         return Vector3(this->x / otherVector.x, this->y / otherVector.y, this->z / otherVector.z);
     }
 
+    Vector3 operator/(float value) {
+        return Vector3(this->x / value, this->y / value, this->z / value);
+    }
+
+    Vector3 operator/=(float value) {
+        return Vector3(this->x / value, this->y / value, this->z / value);
+    }
+
     bool operator==(const Vector3 &otherVector) const {
         return this->x == otherVector.x && this->y == otherVector.y && this->z == otherVector.z;
     }

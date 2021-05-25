@@ -20,25 +20,24 @@ class Quaternion {
 
     void Rotate(const Vector3 &axis, float angleDegrees) {
         float angleRadians = angleDegrees * MathUtil::DEG2RAD;
-        float s = sin(angleRadians / 2);
-        v = Vector3(axis.x * s, axis.y * s, axis.z * s);
-        w = cos(angleRadians / 2.0f);
+        float s = sin(angleRadians / 2.0f);
+        Quaternion localQuaternion = Quaternion(Vector3(axis.x * s, axis.y * s, axis.z * s), cos(angleRadians / 2.0f));
+
+        *this = localQuaternion * *this;
     }
 
     void Normalize() {
         float magnitude = sqrt(w * w + v.x * v.x + v.y * v.y + v.z * v.z);
-        v.x / magnitude;
-        v.y / magnitude;
-        v.z / magnitude;
-        w / magnitude;
+        v /= magnitude;
+        w /= magnitude;
     }
 
     static Matrix4 ToRotationMatrix4(Quaternion q) {
         q.Normalize();
         return Matrix4(
-                   1.0f - 2.0f * q.v.y * q.v.y - 2.0f * q.v.z * q.v.z, 2.0f * q.v.x * q.v.y - 2.0f * q.v.z * q.w, 2.0f * q.v.x * q.v.z + 2.0f * q.v.y * q.w, 0.0f,
-                   2.0f * q.v.x * q.v.y + 2.0f * q.v.z * q.w, 1.0f - 2.0f * q.v.x * q.v.x - 2.0f * q.v.z * q.v.z, 2.0f * q.v.y * q.v.z - 2.0f * q.v.x * q.w, 0.0f,
-                   2.0f * q.v.x * q.v.z - 2.0f * q.v.y * q.w, 2.0f * q.v.y * q.v.z + 2.0f * q.v.x * q.w, 1.0f - 2.0f * q.v.x * q.v.x - 2.0f * q.v.y * q.v.y, 0.0f,
+                   1.0f - 2.0f * q.v.y * q.v.y - 2.0f * q.v.z * q.v.z, 2.0f * q.v.x * q.v.y - 2.0f * q.w * q.v.z, 2.0f * q.v.x * q.v.z + 2.0f * q.w * q.v.y, 0.0f,
+                   2.0f * q.v.x * q.v.y + 2.0f * q.w * q.v.z, 1.0f - 2.0f * q.v.x * q.v.x - 2.0f * q.v.z * q.v.z, 2.0f * q.v.y * q.v.z + 2.0f * q.w * q.v.x, 0.0f,
+                   2.0f * q.v.x * q.v.z - 2.0f * q.w * q.v.y, 2.0f * q.v.y * q.v.z - 2.0f * q.w * q.v.x, 1.0f - 2.0f * q.v.x * q.v.x - 2.0f * q.v.y * q.v.y, 0.0f,
                    0.0f, 0.0f, 0.0f, 1.0f
                );
     }
