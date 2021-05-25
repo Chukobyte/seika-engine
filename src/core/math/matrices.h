@@ -7,6 +7,31 @@
 #include "vector3.h"
 
 class Matrix4 {
+  private:
+    Matrix4 Multiply(const Matrix4 otherMat4) {
+        return Matrix4(
+                   this->members[0] * otherMat4.members[0] + this->members[1] * otherMat4.members[4] + this->members[2] * otherMat4.members[8] + this->members[3] * otherMat4.members[12],
+                   this->members[0] * otherMat4.members[1] + this->members[1] * otherMat4.members[5] + this->members[2] * otherMat4.members[9] + this->members[3] * otherMat4.members[13],
+                   this->members[0] * otherMat4.members[2] + this->members[1] * otherMat4.members[6] + this->members[2] * otherMat4.members[10] + this->members[3] * otherMat4.members[14],
+                   this->members[0] * otherMat4.members[3] + this->members[1] * otherMat4.members[7] + this->members[2] * otherMat4.members[11] + this->members[3] * otherMat4.members[15],
+
+                   this->members[4] * otherMat4.members[0] + this->members[5] * otherMat4.members[4] + this->members[6] * otherMat4.members[8] + this->members[7] * otherMat4.members[12],
+                   this->members[4] * otherMat4.members[1] + this->members[5] * otherMat4.members[5] + this->members[6] * otherMat4.members[9] + this->members[7] * otherMat4.members[13],
+                   this->members[4] * otherMat4.members[2] + this->members[5] * otherMat4.members[6] + this->members[6] * otherMat4.members[10] + this->members[7] * otherMat4.members[14],
+                   this->members[4] * otherMat4.members[3] + this->members[5] * otherMat4.members[7] + this->members[6] * otherMat4.members[11] + this->members[7] * otherMat4.members[15],
+
+                   this->members[8] * otherMat4.members[0] + this->members[9] * otherMat4.members[4] + this->members[10] * otherMat4.members[8] + this->members[11] * otherMat4.members[12],
+                   this->members[8] * otherMat4.members[1] + this->members[9] * otherMat4.members[5] + this->members[10] * otherMat4.members[9] + this->members[11] * otherMat4.members[13],
+                   this->members[8] * otherMat4.members[2] + this->members[9] * otherMat4.members[6] + this->members[10] * otherMat4.members[10] + this->members[11] * otherMat4.members[14],
+                   this->members[8] * otherMat4.members[3] + this->members[9] * otherMat4.members[7] + this->members[10] * otherMat4.members[11] + this->members[11] * otherMat4.members[15],
+
+                   this->members[12] * otherMat4.members[0] + this->members[13] * otherMat4.members[4] + this->members[14] * otherMat4.members[8] + this->members[15] * otherMat4.members[12],
+                   this->members[12] * otherMat4.members[1] + this->members[13] * otherMat4.members[5] + this->members[14] * otherMat4.members[9] + this->members[15] * otherMat4.members[13],
+                   this->members[12] * otherMat4.members[2] + this->members[13] * otherMat4.members[6] + this->members[14] * otherMat4.members[10] + this->members[15] * otherMat4.members[14],
+                   this->members[12] * otherMat4.members[3] + this->members[13] * otherMat4.members[7] + this->members[14] * otherMat4.members[11] + this->members[15] * otherMat4.members[15]
+               );
+    }
+
   public:
     float members[16];
 
@@ -107,34 +132,18 @@ class Matrix4 {
     }
 
     Matrix4 Rotate(const Vector3 &axis, float angleDegrees) {
-        float c = cosf(angleDegrees * MathUtil::DEG2RAD);
-        float s = sinf(angleDegrees * MathUtil::DEG2RAD);
-        float t = 1.0f - c;
+        float x = axis.x;
+        float y = axis.y;
+        float z = axis.z;
 
-        Vector3 normalizedAxis = axis;
-        normalizedAxis.Normalize();
+        float c = cos(angleDegrees * MathUtil::DEG2RAD);
+        float s = sin(angleDegrees * MathUtil::DEG2RAD);
 
-        return Matrix4(
-                   1.0f + t * (normalizedAxis.x * normalizedAxis.x - 1.0f),
-                   normalizedAxis.z * s + t * normalizedAxis.x * normalizedAxis.y,
-                   -normalizedAxis.y * s + t * normalizedAxis.x * normalizedAxis.z,
-                   0.0f,
-
-                   -normalizedAxis.z * s + t * normalizedAxis.x * normalizedAxis.y,
-                   1.0f + t * (normalizedAxis.y * normalizedAxis.y - 1.0f),
-                   normalizedAxis.x * s + t * normalizedAxis.y * normalizedAxis.z,
-                   0.0f,
-
-                   normalizedAxis.y * s + t * normalizedAxis.x * normalizedAxis.z,
-                   -normalizedAxis.x * s + t * normalizedAxis.y * normalizedAxis.z,
-                   1.0f + t * (normalizedAxis.z * normalizedAxis.z - 1.0f),
-                   0.0f,
-
-                   0.0f,
-                   0.0f,
-                   0.0f,
-                   1.0f
-               );
+        Matrix4 rotationMat = Matrix4(x*x*(1.0f-c)+c,   x*y*(1.0f-c)-z*s, x*z*(1.0f-c)+y*s, 0.0f,
+                                      y*x*(1.0f-c)+z*s, y*y*(1.0f-c)+c,   y*z*(1.0f-c)-x*s, 0.0f,
+                                      z*x*(1.0f-c)-y*s, z*y*(1.0f-c)+x*s, z*z*(1.0f-c)+c,   0.0f,
+                                      0.0f,             0.0f,             0.0f,             1.0f);
+        return Multiply(rotationMat);
     }
 
     void ChangeToColumnMajorOrder() {
@@ -177,27 +186,7 @@ class Matrix4 {
     }
 
     Matrix4 operator*(const Matrix4 &otherMat4) {
-        return Matrix4(
-                   this->members[0] * otherMat4.members[0] + this->members[1] * otherMat4.members[4] + this->members[2] * otherMat4.members[8] + this->members[3] * otherMat4.members[12],
-                   this->members[0] * otherMat4.members[1] + this->members[1] * otherMat4.members[5] + this->members[2] * otherMat4.members[9] + this->members[3] * otherMat4.members[13],
-                   this->members[0] * otherMat4.members[2] + this->members[1] * otherMat4.members[6] + this->members[2] * otherMat4.members[10] + this->members[3] * otherMat4.members[14],
-                   this->members[0] * otherMat4.members[3] + this->members[1] * otherMat4.members[7] + this->members[2] * otherMat4.members[11] + this->members[3] * otherMat4.members[15],
-
-                   this->members[4] * otherMat4.members[0] + this->members[5] * otherMat4.members[4] + this->members[6] * otherMat4.members[8] + this->members[7] * otherMat4.members[12],
-                   this->members[4] * otherMat4.members[1] + this->members[5] * otherMat4.members[5] + this->members[6] * otherMat4.members[9] + this->members[7] * otherMat4.members[13],
-                   this->members[4] * otherMat4.members[2] + this->members[5] * otherMat4.members[6] + this->members[6] * otherMat4.members[10] + this->members[7] * otherMat4.members[14],
-                   this->members[4] * otherMat4.members[3] + this->members[5] * otherMat4.members[7] + this->members[6] * otherMat4.members[11] + this->members[7] * otherMat4.members[15],
-
-                   this->members[8] * otherMat4.members[0] + this->members[9] * otherMat4.members[4] + this->members[10] * otherMat4.members[8] + this->members[11] * otherMat4.members[12],
-                   this->members[8] * otherMat4.members[1] + this->members[9] * otherMat4.members[5] + this->members[10] * otherMat4.members[9] + this->members[11] * otherMat4.members[13],
-                   this->members[8] * otherMat4.members[2] + this->members[9] * otherMat4.members[6] + this->members[10] * otherMat4.members[10] + this->members[11] * otherMat4.members[14],
-                   this->members[8] * otherMat4.members[3] + this->members[9] * otherMat4.members[7] + this->members[10] * otherMat4.members[11] + this->members[11] * otherMat4.members[15],
-
-                   this->members[12] * otherMat4.members[0] + this->members[13] * otherMat4.members[4] + this->members[14] * otherMat4.members[8] + this->members[15] * otherMat4.members[12],
-                   this->members[12] * otherMat4.members[1] + this->members[13] * otherMat4.members[5] + this->members[14] * otherMat4.members[9] + this->members[15] * otherMat4.members[13],
-                   this->members[12] * otherMat4.members[2] + this->members[13] * otherMat4.members[6] + this->members[14] * otherMat4.members[10] + this->members[15] * otherMat4.members[14],
-                   this->members[12] * otherMat4.members[3] + this->members[13] * otherMat4.members[7] + this->members[14] * otherMat4.members[11] + this->members[15] * otherMat4.members[15]
-               );
+        return Multiply(otherMat4);
     }
 
     friend std::ostream& operator<<(std::ostream& os, const Matrix4 &v);
