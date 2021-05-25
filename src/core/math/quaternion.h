@@ -14,6 +14,10 @@ class Quaternion {
 
     Quaternion(Vector3 v, float w) : v(v), w(w) {}
 
+    void Rotate(float angleDegrees) {
+        Rotate(v, angleDegrees);
+    }
+
     void Rotate(const Vector3 &axis, float angleDegrees) {
         float angleRadians = angleDegrees * MathUtil::DEG2RAD;
         float s = sin(angleRadians / 2);
@@ -22,21 +26,19 @@ class Quaternion {
     }
 
     void Normalize() {
-        float scalar = this->w * this->w;
-        float imaginary = this->v * this->v;
-        float n = 1.0f / sqrt(scalar + imaginary);
-        v.x *= n;
-        v.y *= n;
-        v.z *= n;
-        w *= n;
+        float magnitude = sqrt(w * w + v.x * v.x + v.y * v.y + v.z * v.z);
+        v.x / magnitude;
+        v.y / magnitude;
+        v.z / magnitude;
+        w / magnitude;
     }
 
-    static Matrix4 ToRotationMatrix4(Quaternion quaternion) {
-        quaternion.Normalize();
+    static Matrix4 ToRotationMatrix4(Quaternion q) {
+        q.Normalize();
         return Matrix4(
-                   1.0f - 2.0f * v.y * v.y - 2.0f * v.z * v.z, 2.0f * v.x * v.y - 2.0f * v.z * w, 2.0f * v.x * v.z + 2.0f * v.y * w, 0.0f,
-                   2.0f * v.x * v.y + 2.0f * v.z * w, 1.0f - 2.0f * v.x * v.x - 2.0f * v.z * v.z, 2.0f * v.y * v.z - 2.0f * v.x * w, 0.0f,
-                   2.0f * v.x * v.z - 2.0f * v.y * w, 2.0f * v.y * v.z + 2.0f * v.x * w, 1.0f - 2.0f * v.x * v.x - 2.0f * v.y * v.y, 0.0f,
+                   1.0f - 2.0f * q.v.y * q.v.y - 2.0f * q.v.z * q.v.z, 2.0f * q.v.x * q.v.y - 2.0f * q.v.z * q.w, 2.0f * q.v.x * q.v.z + 2.0f * q.v.y * q.w, 0.0f,
+                   2.0f * q.v.x * q.v.y + 2.0f * q.v.z * q.w, 1.0f - 2.0f * q.v.x * q.v.x - 2.0f * q.v.z * q.v.z, 2.0f * q.v.y * q.v.z - 2.0f * q.v.x * q.w, 0.0f,
+                   2.0f * q.v.x * q.v.z - 2.0f * q.v.y * q.w, 2.0f * q.v.y * q.v.z + 2.0f * q.v.x * q.w, 1.0f - 2.0f * q.v.x * q.v.x - 2.0f * q.v.y * q.v.y, 0.0f,
                    0.0f, 0.0f, 0.0f, 1.0f
                );
     }
@@ -50,9 +52,11 @@ class Quaternion {
     }
 
     Quaternion operator*(const Quaternion &otherQuaternion) {
-        float scalar = this->w * otherQuaternion.w - this->v.DotProduct(otherQuaternion.v);
-        Vector3 imaginary = otherQuaternion.v * this->w + this->v * otherQuaternion.w + this->v.CrossProduct(otherQuaternion.v);
-        return Quaternion(imaginary, scalar);
+        float qx = w * otherQuaternion.v.x + v.x * otherQuaternion.w + v.y * otherQuaternion.v.z - v.z * otherQuaternion.v.y;
+        float qy = w * otherQuaternion.v.y - v.x * otherQuaternion.v.z + v.y * otherQuaternion.w + v.z * otherQuaternion.v.x;
+        float qz = w * otherQuaternion.v.z + v.x * otherQuaternion.v.y - v.y * otherQuaternion.v.x + v.z * otherQuaternion.w;
+        float qw = w * otherQuaternion.w - v.x * otherQuaternion.v.x - v.y * otherQuaternion.v.y - v.z * otherQuaternion.v.z;
+        return Quaternion(qx, qy, qz, qw);
     }
 };
 
