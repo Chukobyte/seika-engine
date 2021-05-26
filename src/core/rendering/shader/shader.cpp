@@ -109,6 +109,10 @@ void Shader::SetMatrix4Float(const std::string &name, const glm::mat4 &mat) cons
     glUniformMatrix4fv(glGetUniformLocation(this->ID, name.c_str()), 1, GL_FALSE, glm::value_ptr(mat));
 }
 
+void Shader::SetMatrix4Float(const std::string &name, const Matrix4 &mat) const {
+    glUniformMatrix4fv(glGetUniformLocation(this->ID, name.c_str()), 1, GL_FALSE, mat.members);
+}
+
 void Shader::CheckCompileErrors(unsigned int shader, const std::string &type) {
     int success;
     char infoLog[1024];

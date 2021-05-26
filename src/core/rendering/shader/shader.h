@@ -12,6 +12,8 @@
 #include <sstream>
 #include <iostream>
 
+#include "../../math/matrices.h"
+
 #include "opengl_shaders/opengl_shader_source.h"
 #include "../../color.h"
 
@@ -58,6 +60,8 @@ class Shader {
     void SetVec4Float(const std::string &name, const Color &value) const;
 
     void SetMatrix4Float(const std::string &name, const glm::mat4 &mat) const;
+
+    void SetMatrix4Float(const std::string &name, const Matrix4 &mat) const;
 };
 
 #endif //SHADER_H
