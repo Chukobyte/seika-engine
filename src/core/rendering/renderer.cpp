@@ -1,10 +1,6 @@
 #include "renderer.h"
 
 #include "../project_properties.h"
-#include "../math/quaternion.h"
-#include <glm/gtx/string_cast.hpp>
-
-#define GLM_ENABLE_EXPERIMENTAL
 
 // Sprite Renderer
 SpriteRenderer::SpriteRenderer(const glm::mat4 &projection) {
@@ -40,38 +36,15 @@ SpriteRenderer::SpriteRenderer(const glm::mat4 &projection) {
 void SpriteRenderer::Draw(Texture2D *texture2D, Rect2 *sourceRectangle, Rect2 *destinationRectangle, int zIndex, float rotation, Color color, bool flipX, bool flipY) {
     glDepthMask(false);
 
-    // 1. Translation  2. Rotation  3. Scaling
-
-    Matrix4 model = Matrix4(1.0f);
-    model.Set(model.Translation(Vector3(destinationRectangle->x, destinationRectangle->y, 0.0f)));
-
-    model.Set(model.Translation(Vector3(0.5f * destinationRectangle->w, 0.5f * destinationRectangle->h, 0.0f)));
-
-    Quaternion quaternion = Quaternion(Vector3(0.0f, 0.0f, 1.0f), 1.0f);
-    quaternion.Rotate(Vector3(destinationRectangle->x, destinationRectangle->y, 1.0f), rotation);
-    model.Set(Quaternion::ToRotationMatrix4(quaternion) * model);
-    std::cout << "After rotation\n" << model << std::endl;
-
-//    model.Set(model.Rotate(Vector3(0.0f, 0.0f, 1.0f), rotation));
-    model.Set(model.Translation(Vector3(-0.5f * destinationRectangle->w, -0.5f * destinationRectangle->h, 0.0f)));
-
-    model.Set(model.Scale(Vector3(destinationRectangle->w, destinationRectangle->h, 1.0f)));
-    std::cout << "After scale\n" << model << std::endl;
-
-//    glm::mat4 model = glm::mat4(1.0f);
-//    std::cout << "Model\n" << glm::to_string(model) << std::endl;
-//    model = glm::translate(model, glm::vec3(destinationRectangle->x, destinationRectangle->y, 0.0f));  // first translate (transformations are: scale happens first, then rotation, and then final translation happens; reversed order)
-//    std::cout << "After First translation\n" << glm::to_string(model) << std::endl;
-
-//    model = glm::translate(model, glm::vec3(0.5f * destinationRectangle->w, 0.5f * destinationRectangle->h, 0.0f)); // move origin of rotation to center of quad
-//    std::cout << "After Second translation\n" << glm::to_string(model) << std::endl;
-//    model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f)); // then rotate
-//    std::cout << "After rotation\n" << glm::to_string(model) << std::endl;
-//    model = glm::translate(model, glm::vec3(-0.5f * destinationRectangle->w, -0.5f * destinationRectangle->h, 0.0f)); // move origin back
-//    std::cout << "After third translation\n" << glm::to_string(model) << std::endl;
-
-//    model = glm::scale(model, glm::vec3(destinationRectangle->w, destinationRectangle->h, 1.0f)); // last scale
-//    std::cout << "After scale\n" << glm::to_string(model) << std::endl;
+    // 1. Translation
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(destinationRectangle->x, destinationRectangle->y, 0.0f));  // first translate (transformations are: scale happens first, then rotation, and then final translation happens; reversed order)
+    // 2. Rotation
+    model = glm::translate(model, glm::vec3(0.5f * destinationRectangle->w, 0.5f * destinationRectangle->h, 0.0f)); // move origin of rotation to center of quad
+    model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f)); // then rotate
+    model = glm::translate(model, glm::vec3(-0.5f * destinationRectangle->w, -0.5f * destinationRectangle->h, 0.0f)); // move origin back
+    // 3. Scaling
+    model = glm::scale(model, glm::vec3(destinationRectangle->w, destinationRectangle->h, 1.0f)); // last scale
 
     glBindVertexArray(quadVAO);
     glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
