@@ -13,6 +13,7 @@ Project properties define how the game will be configured before running.  An ex
     "height": 600
   },
   "colliders_visible": true,
+  "target_fps": 60,
   "assets": [
     {
       "type": "texture",

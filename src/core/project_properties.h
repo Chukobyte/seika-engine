@@ -44,7 +44,7 @@ struct InputActionsConfigurations {
 class ProjectProperties {
   private:
     static ProjectProperties *instance;
-    unsigned int targetFPS = 60;
+    unsigned int targetFPS = 66;
     double millisecondsPerTick = 1000.0f;
     double maxDeltaTime = 0.5f;
     double fixedPhysicsDeltaTime = 0.01f;
@@ -112,6 +112,10 @@ class ProjectProperties {
         return targetFPS;
     }
 
+    void SetTargetFPS(unsigned int fps) {
+        targetFPS = fps;
+    }
+
     double GetMillisecondsPerTick() {
         return millisecondsPerTick;
     }
@@ -141,6 +145,7 @@ class ProjectProperties {
         windowWidth = baseResolutionJson["width"].get<int>();
         windowHeight = baseResolutionJson["height"].get<int>();
         areColliderVisible = projectConfigurationsJson["colliders_visible"].get<bool>();
+        targetFPS = projectConfigurationsJson["target_fps"].get<unsigned int>();
 
         nlohmann::json assetsJsonArray = projectConfigurationsJson["assets"].get<nlohmann::json>();
         LoadProjectAssets(assetsJsonArray);

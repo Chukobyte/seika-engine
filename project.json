@@ -6,6 +6,7 @@
       "height": 600
    },
    "colliders_visible": true,
+   "target_fps": 66,
    "assets": [
       {
          "type": "texture",
