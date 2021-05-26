@@ -24,4 +24,10 @@ exit(code=0) -> None:
 
 Exits the engine returning the value of `code` as the exit code.
 
+```python
+get_fps() -> float:
+```
+
+Returns current FPS.
+
 ---
