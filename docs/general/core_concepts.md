@@ -60,7 +60,7 @@ Scenes that are made active when the game is initialized.  They will stay active
 Signals can be used to apply the [observer pattern](https://en.wikipedia.org/wiki/Observer_pattern) to game logic.  They are also used for notifying interested listeners about events for some of the systems within the engine (e.g. joystick disconnecting). Signals are defined within the base [Node](../python_api/node.md#methods) class.
 
 ```python
-from roll.nodes import AnimatedSprite
+from seika.nodes import AnimatedSprite
 
 class Seika(AnimatedSprite):
 	def _start(self) -> None:

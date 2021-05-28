@@ -99,7 +99,7 @@ class ProjectProperties {
         inputActionsConfigurations = loadInputActionsConfigurations;
     }
   public:
-    std::string gameTitle = "Roll Back Engine";
+    std::string gameTitle = "Seika Engine";
     int windowWidth = 800;
     int windowHeight = 600;
     Color backgroundDrawColor = Color(20.f / 255.0f, 20.f / 255.0f, 20.f / 255.0f);
