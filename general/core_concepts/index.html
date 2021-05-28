@@ -148,7 +148,7 @@
 <p>Scenes that are made active when the game is initialized.  They will stay active during the duration of the game unless <code>queue_deletion()</code> is called on them.</p>
 <h2 id="signal">Signal</h2>
 <p>Signals can be used to apply the <a href="https://en.wikipedia.org/wiki/Observer_pattern">observer pattern</a> to game logic.  They are also used for notifying interested listeners about events for some of the systems within the engine (e.g. joystick disconnecting). Signals are defined within the base <a href="../../python_api/node/#methods">Node</a> class.</p>
-<pre><code class="language-python">from roll.nodes import AnimatedSprite
+<pre><code class="language-python">from seika.nodes import AnimatedSprite
 
 class Seika(AnimatedSprite):
     def _start(self) -&gt; None:
