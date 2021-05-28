@@ -1,5 +1,8 @@
 # Seika Engine
 
+
+![Seika Idle Animation](https://raw.githubusercontent.com/Chukobyte/seika-engine/main/assets/images/seika_idle.gif)
+
 An open source 2D/3D game engine.  Windows only for now, but may support other platforms in the future.  Full documentation can be found [here](https://chukobyte.github.io/seika-engine/).
 
 ### Dependencies & Tools

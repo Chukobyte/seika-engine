@@ -1,0 +1,117 @@
+{
+  "name": "Seika",
+  "type": "AnimatedSprite",
+  "tags": [],
+  "external_scene_source": "",
+  "components": [
+    {
+      "transform2D": {
+        "position": {
+          "x": 300,
+          "y": 200
+        },
+        "scale": {
+          "x": 4,
+          "y": 4
+        },
+        "rotation": 0,
+        "z_index": 0,
+        "z_index_relative_to_parent": false,
+        "ignore_camera": false
+      }
+    },
+    {
+      "animated_sprite": {
+        "current_animation": "swim",
+        "is_playing": true,
+        "flip_x": false,
+        "flip_y": false,
+        "animations": [
+          {
+            "name": "swim",
+            "speed": 100,
+            "frames": [
+              {
+                "frame": 0,
+                "texture_path": "assets/game_projects/sots_demo/assets/images/seika_idle_sprite_sheet.png",
+                "draw_source": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "width": 48.0,
+                  "height": 48.0
+                }
+              },
+              {
+                "frame": 1,
+                "texture_path": "assets/game_projects/sots_demo/assets/images/seika_idle_sprite_sheet.png",
+                "draw_source": {
+                  "x": 48.0,
+                  "y": 0.0,
+                  "width": 48.0,
+                  "height": 48.0
+                }
+              },
+              {
+                "frame": 2,
+                "texture_path": "assets/game_projects/sots_demo/assets/images/seika_idle_sprite_sheet.png",
+                "draw_source": {
+                  "x": 96.0,
+                  "y": 0.0,
+                  "width": 48.0,
+                  "height": 48.0
+                }
+              },
+              {
+                "frame": 3,
+                "texture_path": "assets/game_projects/sots_demo/assets/images/seika_idle_sprite_sheet.png",
+                "draw_source": {
+                  "x": 144.0,
+                  "y": 0.0,
+                  "width": 48.0,
+                  "height": 48.0
+                }
+              },
+              {
+                "frame": 4,
+                "texture_path": "assets/game_projects/sots_demo/assets/images/seika_idle_sprite_sheet.png",
+                "draw_source": {
+                  "x": 192.0,
+                  "y": 0.0,
+                  "width": 48.0,
+                  "height": 48.0
+                }
+              },
+              {
+                "frame": 5,
+                "texture_path": "assets/game_projects/sots_demo/assets/images/seika_idle_sprite_sheet.png",
+                "draw_source": {
+                  "x": 240.0,
+                  "y": 0.0,
+                  "width": 48.0,
+                  "height": 48.0
+                }
+              },
+              {
+                "frame": 6,
+                "texture_path": "assets/game_projects/sots_demo/assets/images/seika_idle_sprite_sheet.png",
+                "draw_source": {
+                  "x": 288.0,
+                  "y": 0.0,
+                  "width": 48.0,
+                  "height": 48.0
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "scriptable_class": {
+        "class_path": "assets.game_projects.sots_demo.src.seika",
+        "class_name": "Seika"
+      }
+    }
+  ],
+  "children": []
+}
