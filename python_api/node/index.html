@@ -7,7 +7,7 @@
 <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link href="../../img/favicon.ico" rel="shortcut icon"/>
-<title>Node - Roll Back Engine</title>
+<title>Node - Seika Engine</title>
 <link href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" rel="stylesheet">
 <link href="../../css/theme.css" rel="stylesheet"/>
 <link href="../../css/theme_extra.css" rel="stylesheet"/>
@@ -28,7 +28,7 @@
 <nav class="wy-nav-side stickynav" data-toggle="wy-nav-shift">
 <div class="wy-side-scroll">
 <div class="wy-side-nav-search">
-<a class="icon icon-home" href="../.."> Roll Back Engine</a>
+<a class="icon icon-home" href="../.."> Seika Engine</a>
 <div role="search">
 <form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
 <input name="q" placeholder="Search docs" title="Type search term here" type="text"/>
@@ -138,7 +138,7 @@
 <section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
 <nav aria-label="top navigation" class="wy-nav-top" role="navigation">
 <i class="fa fa-bars" data-toggle="wy-nav-top"></i>
-<a href="../..">Roll Back Engine</a>
+<a href="../..">Seika Engine</a>
 </nav>
 <div class="wy-nav-content">
 <div class="rst-content">
@@ -154,7 +154,7 @@
 </div>
 <div role="main">
 <div class="section">
-<h1 id="rollnode">roll.node</h1>
+<h1 id="seikanode">seika.node</h1>
 <h2 id="node">Node</h2>
 <p><strong>Inherits</strong>: N/A.</p>
 <p>Class used as an interface for scene node functionality.  Base class for all scene node types.</p>
@@ -176,13 +176,13 @@
 <pre><code class="language-python">add_child(node: Node) -&gt; None:
 </code></pre>
 <p>Adds a node as a child to the current node.</p>
-<pre><code class="language-python">get_node(name: str) -&gt; roll.node.Node:
+<pre><code class="language-python">get_node(name: str) -&gt; seika.node.Node:
 </code></pre>
 <p>Returns a node with the given name.  Will be <code>None</code> if node is not found.</p>
 <pre><code class="language-python">create_signal(signal_id: str) -&gt; None:
 </code></pre>
 <p>Creates a signal for subscribers to listen to.</p>
-<pre><code class="language-python">connect_signal(signal_id: str, listener_node: roll.node.Node, function_name: str) -&gt; None:
+<pre><code class="language-python">connect_signal(signal_id: str, listener_node: seika.node.Node, function_name: str) -&gt; None:
 </code></pre>
 <p>Connects source node's signal to listener node.</p>
 <pre><code class="language-python">emit_signal(signal_id: str, args=[]) -&gt; None:
@@ -202,7 +202,7 @@
 <p><strong>Inherits</strong>: <a href="#node">Node</a></p>
 <p>Class used as an interface for scene 2D functionality.  Base class for all 2D scene node types.</p>
 <h3 id="properties_1">Properties</h3>
-<pre><code class="language-python">position: roll.math.Vector2
+<pre><code class="language-python">position: seika.math.Vector2
 </code></pre>
 <p>Current position of entity.</p>
 <pre><code class="language-python">rotation: float
@@ -213,13 +213,13 @@
 <p>None.</p>
 <hr/>
 <h3 id="methods_1">Methods</h3>
-<pre><code class="language-python">get_position() -&gt; roll.math.Vector2:
+<pre><code class="language-python">get_position() -&gt; seika.math.Vector2:
 </code></pre>
 <p>Get node's current position.</p>
-<pre><code class="language-python">set_position(value: roll.math.Vector2) -&gt; None:
+<pre><code class="language-python">set_position(value: seika.math.Vector2) -&gt; None:
 </code></pre>
 <p>Set node's current position.</p>
-<pre><code class="language-python">add_to_position(value: roll.math.Vector2) -&gt; None:
+<pre><code class="language-python">add_to_position(value: seika.math.Vector2) -&gt; None:
 </code></pre>
 <p>Add to node's current position.  For example, if this line of code is within the <code>_process</code> function, the output of this line of code <code>node.add_to_position(Vector(5, 10))</code> within 3 frames will be <code>[(5, 10), (10, 20), (15, 30)]</code>.</p>
 <hr/>
@@ -289,7 +289,7 @@
 <pre><code class="language-python">text: str
 </code></pre>
 <p>Text Label's text.</p>
-<pre><code class="language-python">color: roll.color.Color
+<pre><code class="language-python">color: seika.color.Color
 </code></pre>
 <p>Color of the text.</p>
 <hr/>
@@ -309,10 +309,10 @@
 <p><strong>Inherits</strong>: <a href="#node2d">Node2D</a> -&gt; <a href="#node">Node</a></p>
 <p>Class used to define collision shapes defined as rectangles.  May add other collision shapes in the future.</p>
 <h3 id="properties_5">Properties</h3>
-<pre><code class="language-python">collider_rect: roll.math.Rect2
+<pre><code class="language-python">collider_rect: seika.math.Rect2
 </code></pre>
 <p>Collision shape's colliding rectangle.</p>
-<pre><code class="language-python">color: roll.color.Color
+<pre><code class="language-python">color: seika.color.Color
 </code></pre>
 <p>A collider's color.  Only shown when <code>colliders_visible</code> is enabled in <a href="../../general/project_properties/">project properties</a>.</p>
 <hr/>
@@ -320,10 +320,10 @@
 <p>None.</p>
 <hr/>
 <h3 id="methods_5">Methods</h3>
-<pre><code class="language-python">add_collision_exception(node: roll.node.Node) -&gt; None:
+<pre><code class="language-python">add_collision_exception(node: seika.node.Node) -&gt; None:
 </code></pre>
 <p>Adds a node to an exception list to ignore collisions.</p>
-<pre><code class="language-python">remove_collision_exception(node: roll.node.Node) -&gt; None:
+<pre><code class="language-python">remove_collision_exception(node: seika.node.Node) -&gt; None:
 </code></pre>
 <p>Removes a node from an exception list. Collisions between nodes are enabled.</p>
 <hr/>
