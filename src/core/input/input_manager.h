@@ -15,6 +15,7 @@ class InputManager {
     InputEventState inputEventState;
     std::map<std::string, InputAction*> inputActions;
     MouseInput *mouseInput = nullptr;
+    JoystickInput *joystickInput = nullptr;
 
     InputManager();
   public:

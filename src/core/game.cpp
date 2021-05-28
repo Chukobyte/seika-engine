@@ -47,7 +47,7 @@ void Game::InitializeSDL() {
         return;
     }
 
-    if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
         logger->Error("SDL_mixer could not initialized!");
         return;
     }

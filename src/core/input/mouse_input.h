@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #include <SDL2/SDL.h>
 
@@ -56,7 +57,7 @@ class MouseInput {
         return mousePosition;
     }
 
-    void ProcessSDLEvent(InputEvent inputEvent) {
+    void ProcessSDLEvent(InputEvent &inputEvent) {
         switch(inputEvent.sdlType) {
         // Mouse
         case SDL_MOUSEMOTION:
@@ -95,9 +96,7 @@ class MouseAction {
     std::vector<std::string> mouseValues;
     MouseInput *mouseInput = nullptr;
   public:
-    MouseAction() {
-        mouseInput = MouseInput::GetInstance();
-    }
+    MouseAction() : mouseInput(MouseInput::GetInstance()) {}
 
     static bool IsMouseValue(const std::string &actionValue) {
         if (actionValue == MOUSE_BUTTON_LEFT || actionValue == MOUSE_BUTTON_RIGHT) {
@@ -113,12 +112,7 @@ class MouseAction {
     }
 
     bool HasValue(const std::string &actionValue) {
-        for (const std::string &value : mouseValues) {
-            if (value == actionValue) {
-                return true;
-            }
-        }
-        return false;
+        return std::find(mouseValues.begin(), mouseValues.end(), actionValue) != mouseValues.end();
     }
 
     bool IsActionPressed() {

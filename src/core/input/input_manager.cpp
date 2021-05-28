@@ -5,9 +5,11 @@ InputManager *InputManager::instance = nullptr;
 
 InputManager::InputManager() {
     mouseInput = MouseInput::GetInstance();
+    joystickInput = JoystickInput::GetInstance();
 }
 
 void InputManager::LoadProjectInputActions() {
+    joystickInput->LoadJoysticks();
     ProjectProperties *projectProperties = ProjectProperties::GetInstance();
     InputActionsConfigurations inputActionsConfigurations = projectProperties->GetInputActionsConfigurations();
 
@@ -59,6 +61,7 @@ void InputManager::ProcessInputs(SDL_Event &event) {
 
     const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
     mouseInput->ProcessSDLEvent(inputEvent);
+    joystickInput->ProcessSDLEvent(inputEvent);
     for (auto const &pair : inputActions) {
         const std::string &actionName = pair.first;
         InputAction *inputAction = pair.second;
@@ -68,6 +71,7 @@ void InputManager::ProcessInputs(SDL_Event &event) {
 
 void InputManager::ClearInputFlags() {
     mouseInput->ClearInputFlags();
+    joystickInput->ClearInputFlags();
     for (auto const &pair : inputActions) {
         const std::string &actionName = pair.first;
         InputAction *inputAction = pair.second;

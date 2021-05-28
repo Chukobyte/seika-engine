@@ -20,6 +20,13 @@ struct InputEvent {
     Vector2 mouseMotion;
     bool mousePressed;
     Uint8 mouseButton;
+    // Joystick
+    Uint8 controllerId;
+    Uint8 axis;
+    Sint16 buttonValue;
+    bool buttonPressed = false;
+    Uint8 hat;
+    Uint8 hatValue;
     // Keyboard
     bool keyPressed;
     SDL_Scancode keyScancode;
@@ -48,6 +55,26 @@ class InputEventState {
             inputEvent.type = InputEventType_MOUSE;
             inputEvent.mousePressed = false;
             inputEvent.mouseButton = event.button.button;
+            break;
+        // Joystick
+        case SDL_JOYAXISMOTION:
+            inputEvent.type = InputEventType_JOYSTICK;
+            inputEvent.controllerId = event.jaxis.which;
+            inputEvent.axis = event.jaxis.axis;
+            inputEvent.buttonValue = event.jaxis.value;
+            break;
+        case SDL_JOYBUTTONDOWN:
+        case SDL_JOYBUTTONUP:
+            inputEvent.type = InputEventType_JOYSTICK;
+            inputEvent.controllerId = event.jbutton.which;
+            inputEvent.buttonValue = event.jbutton.button;
+            inputEvent.buttonPressed = event.jbutton.state == SDL_PRESSED;
+            break;
+        case SDL_JOYHATMOTION:
+            inputEvent.type = InputEventType_JOYSTICK;
+            inputEvent.controllerId = event.jhat.which;
+            inputEvent.hat = event.jhat.hat;
+            inputEvent.hatValue = event.jhat.value;
             break;
         // Keyboard
         case SDL_KEYDOWN:
