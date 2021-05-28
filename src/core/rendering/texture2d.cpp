@@ -2,11 +2,27 @@
 
 #include <stb_image/stb_image.h>
 
-#include <iostream>
-
 Logger *Texture2D::logger = Logger::GetInstance();
 
-Texture2D::Texture2D(const char* fileName) : width(0), height(0), internalFormat(GL_RGBA), imageFormat(GL_RGBA), wrapS(GL_CLAMP_TO_BORDER), wrapT(GL_CLAMP_TO_BORDER), filterMin(GL_NEAREST), filterMax(GL_NEAREST) {
+Texture2D::Texture2D(const char* fileName) {
+    Initialize(fileName);
+}
+
+Texture2D::Texture2D(const char* fileName, unsigned int wrapS, unsigned int wrapT, unsigned int filterMax, unsigned int filterMin) :
+    wrapS(wrapS), wrapT(wrapT), filterMax(filterMax), filterMin(filterMin) {
+    Initialize(fileName);
+}
+
+Texture2D::Texture2D(void *buffer, size_t bufferSize) {
+    Initialize(buffer, bufferSize);
+}
+
+Texture2D::~Texture2D() {
+    stbi_image_free(this->data);
+    this->data = nullptr;
+}
+
+void Texture2D::Initialize(const char* fileName) {
     this->fileName = std::string(fileName);
     // load image, create texture, and generate mipmaps
     stbi_set_flip_vertically_on_load(false);
@@ -18,7 +34,7 @@ Texture2D::Texture2D(const char* fileName) : width(0), height(0), internalFormat
     }
 }
 
-Texture2D::Texture2D(void *buffer, size_t bufferSize) : width(0), height(0), internalFormat(GL_RGBA), imageFormat(GL_RGBA), wrapS(GL_REPEAT), wrapT(GL_REPEAT), filterMin(GL_NEAREST), filterMax(GL_NEAREST) {
+void Texture2D::Initialize(void *buffer, size_t bufferSize) {
     // load image, create texture, and generate mipmaps
     stbi_set_flip_vertically_on_load(false);
     this->data = stbi_load_from_memory((unsigned char*) buffer, bufferSize, &width, &height, &nrChannels, 0);
@@ -27,11 +43,6 @@ Texture2D::Texture2D(void *buffer, size_t bufferSize) : width(0), height(0), int
     } else {
         logger->Error("Texture failed to load at texture from memory!");
     }
-}
-
-Texture2D::~Texture2D() {
-    stbi_image_free(this->data);
-    this->data = nullptr;
 }
 
 void Texture2D::Generate() {
