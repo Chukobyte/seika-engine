@@ -1,4 +1,4 @@
-# roll.network
+# seika.network
 
 ## Network
 
@@ -51,7 +51,7 @@ Emitted once a client fails to connect to a [Server](#server).
 ### Methods
 
 ```python
-connect_signal(signal_id: str, listener_node: roll.node.Node, function_name: str) -> None:
+connect_signal(signal_id: str, listener_node: seika.node.Node, function_name: str) -> None:
 ```
 
 Connects to network related signal.

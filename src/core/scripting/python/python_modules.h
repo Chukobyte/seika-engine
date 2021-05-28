@@ -366,8 +366,8 @@ static struct PyMethodDef rollApiMethods[] = {
     {nullptr, nullptr, 0,nullptr },
 };
 
-static struct PyModuleDef rollEngineAPIModDef = {
-    PyModuleDef_HEAD_INIT, "roll_engine_api", nullptr, -1, rollApiMethods,
+static struct PyModuleDef seikaEngineAPIModDef = {
+    PyModuleDef_HEAD_INIT, "seika_engine_api", nullptr, -1, rollApiMethods,
     nullptr, nullptr, nullptr, nullptr
 };
 
@@ -414,8 +414,8 @@ static char *clientConnectKWList[] = {"endpoint", "port", nullptr};
 
 static char *networkSendMessageKWList[] = {"message", nullptr};
 
-static PyObject* PyInit_rollEngineAPI(void) {
-    return PyModule_Create(&rollEngineAPIModDef);
+static PyObject* PyInit_seikaEngineAPI(void) {
+    return PyModule_Create(&seikaEngineAPIModDef);
 }
 
 #endif //PYTHON_MODULES_H

@@ -1,6 +1,6 @@
 import json
 
-from roll.math import Vector2
+from seika.math import Vector2
 
 # These will be stored by frame
 class AnimationStateData:

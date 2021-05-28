@@ -1,8 +1,8 @@
-# Welcome to Roll Back Engine Documentation
+# Welcome to Seika Engine Documentation
 
 ### About
 
-[Roll Back Engine](https://github.com/Chukobyte/roll-back-engine) is a 2D game engine made for an upcoming online fighting game.  Use the left panel to navigate the documentation.
+[Seika Engine](https://github.com/Chukobyte/seika-engine) is an open source 2D/3D game engine.  Use the left panel to navigate the documentation.
 
 ### Features
 

@@ -1,14 +1,14 @@
-import roll_engine_api
+import seika_engine_api
 
-from roll.node import CollisionShape2D
-from roll.physics import Collision
+from seika.node import CollisionShape2D
+from seika.physics import Collision
 
 
 class HitBox(CollisionShape2D):
     # TODO: Investigate way to make child not have to implement
     @classmethod
     def new(cls):
-        return roll_engine_api.node_new(
+        return seika_engine_api.node_new(
             class_path=f"{__name__}",
             class_name=f"{cls.__name__}",
             node_type=f"{cls.extract_valid_inheritance_node()}",

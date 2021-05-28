@@ -1,12 +1,12 @@
 import json
 import random
 
-from roll.camera import Camera
-from roll.input import Input
-from roll.math import Vector2
-from roll.network import Server, Network, Client
-from roll.node import Node2D
-from roll.scene import SceneTree
+from seika.camera import Camera
+from seika.input import Input
+from seika.math import Vector2
+from seika.network import Server, Network, Client
+from seika.node import Node2D
+from seika.scene import SceneTree
 
 from assets.game_projects.fighter.src.network_message import (
     NetworkMessage,

@@ -1,5 +1,5 @@
-from roll.math import Vector2
-from roll.node import AnimatedSprite, TextLabel
+from seika.math import Vector2
+from seika.node import AnimatedSprite, TextLabel
 
 from assets.game_projects.fighter.src.input_buffer import InputBuffer
 from assets.game_projects.fighter.src.model.fighter_direction import FighterDirection

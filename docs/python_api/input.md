@@ -1,4 +1,4 @@
-# roll.input
+# seika.input
 
 ## Input
 

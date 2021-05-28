@@ -2,11 +2,11 @@
 
 ## Node
 
-Nodes are the basic building block of a game in Roll Back Engine.  There are many different node types that inherit from the base `Node` class and more information about their API usage can be found [here](../python_api/node.md).  Python scripts can be attached to Nodes to add to their functionality.
+Nodes are the basic building block of a game in Seika Engine.  There are many different node types that inherit from the base `Node` class and more information about their API usage can be found [here](../python_api/node.md).  Python scripts can be attached to Nodes to add to their functionality.
 
 ## Scene
 
-A scene is a collection of nodes.  Must contain a root node and there can only be one root node per scene.  Scenes can be instanced.  When a scene is destroyed the root node as well as all it's children will also be removed.  In Roll Back Engine all scenes are stored as json files.  Here is an example of how a scene with just a root node is serialized to json.
+A scene is a collection of nodes.  Must contain a root node and there can only be one root node per scene.  Scenes can be instanced.  When a scene is destroyed the root node as well as all it's children will also be removed.  In Seika Engine all scenes are stored as json files.  Here is an example of how a scene with just a root node is serialized to json.
 
 ```json
 {

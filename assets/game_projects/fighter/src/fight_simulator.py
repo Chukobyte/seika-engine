@@ -1,5 +1,5 @@
-from roll.color import Color
-from roll.math import Vector2, Rect2
+from seika.color import Color
+from seika.math import Vector2, Rect2
 
 from assets.game_projects.fighter.src.hit_box import Attack
 from assets.game_projects.fighter.src.input_buffer import InputBuffer

@@ -5,7 +5,7 @@ L_FLAGS := -lmingw32 -lSDL2main -lSDL2_mixer -lSDL2 -lpython37 -lfreetype -lwsoc
 C_FLAGS := -w -std=c++14 -Wfatal-errors
 LIBRARIES := -L"${SDL2_HOME}/lib" -L"${PYTHON_HOME}/libs" -L"${FREETYPE_HOME}/lib"
 
-PROJECT_NAME := roll_back_engine
+PROJECT_NAME := seika_engine
 BUILD_OBJECT := $(PROJECT_NAME).exe
 TEST_BUILD_OBJECT := test_$(PROJECT_NAME).exe
 

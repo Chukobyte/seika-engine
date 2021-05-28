@@ -1,4 +1,4 @@
-# roll.scene
+# seika.scene
 
 ## Scene Tree
 
@@ -25,7 +25,7 @@ change_scene(scene_path: str) -> None:
 Change the scene to the current scene defined by `scene_path`.
 
 ```python
-get_current_scene_node() -> roll.node.Node:
+get_current_scene_node() -> seika.node.Node:
 ```
 
 Returns the root node of the current scene.

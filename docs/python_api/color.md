@@ -1,4 +1,4 @@
-# roll.color
+# seika.color
 
 ## Color
 

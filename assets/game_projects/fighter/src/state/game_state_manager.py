@@ -1,4 +1,4 @@
-from roll.node import Node
+from seika.node import Node
 
 from assets.game_projects.fighter.src.game_properties import PropertyValue
 from assets.game_projects.fighter.src.input_buffer import (

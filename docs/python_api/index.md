@@ -1,6 +1,6 @@
 # Python API
 
-Contains information about the Python scripting API used for Roll Back Engine.
+Contains information about the Python scripting API used for Seika Engine.
 
 * [Node](node.md)
 * [Math](math.md)

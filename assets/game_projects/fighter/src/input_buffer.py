@@ -1,7 +1,7 @@
 from enum import Enum
 
-from roll.input import Input
-from roll.network import Server, Client
+from seika.input import Input
+from seika.network import Server, Client
 
 from assets.game_projects.fighter.src.game_properties import GameProperties
 from assets.game_projects.fighter.src.network_message import NetworkMessage

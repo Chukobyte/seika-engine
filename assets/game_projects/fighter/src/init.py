@@ -1,5 +1,5 @@
-from roll.node import Node2D
-from roll.scene import SceneTree
+from seika.node import Node2D
+from seika.scene import SceneTree
 
 
 class Init(Node2D):

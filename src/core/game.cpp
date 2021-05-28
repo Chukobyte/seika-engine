@@ -30,7 +30,7 @@ Game::Game() {
 }
 
 void Game::Initialize() {
-    logger->Debug("Roll Back Engine v" + engineContext->GetEngineVersion() + " started!");
+    logger->Debug("Seika Engine v" + engineContext->GetEngineVersion() + " started!");
     projectProperties->LoadProjectConfigurations();
     InitializeSDL();
     InitializeRendering();
@@ -269,5 +269,5 @@ void Game::Destroy() {
     SDL_GL_DeleteContext(renderContext->gl_context);
     SDL_DestroyWindow(renderContext->window);
     SDL_Quit();
-    logger->Debug("Roll Back Engine stopped!");
+    logger->Debug("Seika Engine stopped!");
 }

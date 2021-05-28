@@ -1,4 +1,4 @@
-# roll.math
+# seika.math
 
 ## Math
 
@@ -53,13 +53,13 @@ None.
 ### Methods
 
 ```python
-dot_product(value: roll.math.Vector2) -> float:
+dot_product(value: seika.math.Vector2) -> float:
 ```
 
 Returns the dot product of two Vector2 items.
 
 ```python
-lerp(source: roll.math.Vector2, destination: roll.math.Vector2, amount: float) -> roll.math.Vector2:
+lerp(source: seika.math.Vector2, destination: seika.math.Vector2, amount: float) -> seika.math.Vector2:
 ```
 
 Returns the linearly interpolated value of two points.

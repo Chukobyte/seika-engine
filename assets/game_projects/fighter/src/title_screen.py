@@ -1,10 +1,10 @@
 from enum import auto
 
-from roll.node import Node2D
-from roll.scene import SceneTree
-from roll.input import Input
-from roll.engine import Engine
-from roll.color import Color
+from seika.node import Node2D
+from seika.scene import SceneTree
+from seika.input import Input
+from seika.engine import Engine
+from seika.color import Color
 
 
 from assets.game_projects.fighter.src.auto_enum import AutoName

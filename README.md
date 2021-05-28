@@ -1,6 +1,6 @@
-# Roll Back Engine
+# Seika Engine
 
-A 2D game engine that's used for a work in progress fighting game.  Windows only for now, but may support other platforms in the future.  Full documentation can be found [here](https://chukobyte.github.io/roll-back-engine/).
+An open source 2D/3D game engine.  Windows only for now, but may support other platforms in the future.  Full documentation can be found [here](https://chukobyte.github.io/seika-engine/).
 
 ### Dependencies & Tools
 
@@ -44,7 +44,7 @@ A 2D game engine that's used for a work in progress fighting game.  Windows only
 
 To help with developing within IDEs, a helper module can be installed to provide a 'Mock' version of the python API.
 
-`pip install -i https://test.pypi.org/simple/ roll-engine-api-test`
+`pip install -i https://test.pypi.org/simple/ seika-engine-api-test`
 
 *Note: Kept up to date with the latest release version of the engine.  Support for previous versions may be limited.*
 
@@ -58,7 +58,7 @@ There are 3 main ways to contribute to the engine.
 
 It's simple to contribute to roll-back engine, follow the easy steps below:
 
-1. Create a fork of the roll-back-engine repo.
+1. Create a fork of the seika-engine repo.
 2. Make sure to pull the latest from main before pushing up changes.
 3. Submit a pull request to the main branch stating the reason for the change.
 4. Once a pull request is submitted, changes may be requested and/or additional information may be requested.

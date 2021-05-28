@@ -1,4 +1,4 @@
-# roll.physics
+# seika.physics
 
 ## Collision
 
@@ -19,7 +19,7 @@ None.
 ### Methods
 
 ```python
-get_collided_nodes(node: roll.node.Node) -> bool:
+get_collided_nodes(node: seika.node.Node) -> bool:
 ```
 
 Returns a `list` of nodes that collided with the passed in `node`.

@@ -1,4 +1,4 @@
-# roll.camera
+# seika.camera
 
 ## Camera
 
@@ -20,37 +20,37 @@ None.
 ### Methods
 
 ```python
-set_zoom(zoom: rool.math.Vector2) -> None:
+set_zoom(zoom: seika.math.Vector2) -> None:
 ```
 
 Sets the camera's zoom.
 
 ```python
-get_zoom() -> rool.math.Vector2:
+get_zoom() -> seika.math.Vector2:
 ```
 
 Gets the camera's zoom.
 
 ```python
-set_viewport_position(zoom: rool.math.Vector2) -> None:
+set_viewport_position(zoom: seika.math.Vector2) -> None:
 ```
 
 Sets the camera's viewport position.
 
 ```python
-get_viewport_position() -> rool.math.Vector2:
+get_viewport_position() -> seika.math.Vector2:
 ```
 
 Gets the camera's viewport position.
 
 ```python
-set_offset(zoom: rool.math.Vector2) -> None:
+set_offset(zoom: seika.math.Vector2) -> None:
 ```
 
 Sets the camera's offset.
 
 ```python
-get_offset() -> rool.math.Vector2:
+get_offset() -> seika.math.Vector2:
 ```
 
 Gets the camera's offset.
