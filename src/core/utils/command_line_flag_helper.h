@@ -3,16 +3,23 @@
 
 #include "logger.h"
 
+struct CommandLineFlagResult {
+    std::string projectFilePath = "project.json";
+};
+
 class CommandLineFlagHelper {
   private:
     int argv;
     char** args;
+    CommandLineFlagResult commandLineFlagResult;
     Logger *logger = nullptr;
 
     const std::string FLAG_SET_LOG_LEVEL0 = "-l";
     const std::string FLAG_SET_LOG_LEVEL1 = "-log-level";
+    const std::string FLAG_SET_PROJECT_FILE_PATH0 = "-p";
+    const std::string FLAG_SET_PROJECT_FILE_PATH1 = "-project-file";
 
-    void ProcessArgument(int argumentIndex) {
+    CommandLineFlagResult ProcessArgument(int argumentIndex) {
         const std::string &argString = std::string(this->args[argumentIndex]);
         if (argString == FLAG_SET_LOG_LEVEL0 || argString == FLAG_SET_LOG_LEVEL1) {
             const std::string &logLevelString = std::string(this->args[argumentIndex + 1]);
@@ -21,12 +28,14 @@ class CommandLineFlagHelper {
             } else {
                 logger->Warn("'" + logLevelString + "' is an invalid log level!");
             }
+        } else if(argString == FLAG_SET_PROJECT_FILE_PATH0 || argString == FLAG_SET_PROJECT_FILE_PATH1) {
+            commandLineFlagResult.projectFilePath = std::string(this->args[argumentIndex + 1]);
         }
     }
   public:
     CommandLineFlagHelper() : logger(Logger::GetInstance()) {}
 
-    void ProcessCommandLineArgs(int argv, char** args) {
+    CommandLineFlagResult ProcessCommandLineArgs(int argv, char** args) {
         this->argv = argv;
         this->args = args;
 
@@ -35,6 +44,7 @@ class CommandLineFlagHelper {
                 ProcessArgument(argumentIndex);
             }
         }
+        return this->commandLineFlagResult;
     }
 };
 

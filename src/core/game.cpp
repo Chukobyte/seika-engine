@@ -31,8 +31,8 @@ Game::Game() {
 
 void Game::Initialize(int argv, char** args) {
     logger->Info("Seika Engine v" + engineContext->GetEngineVersion() + " started!");
-    commandLineFlagHelper.ProcessCommandLineArgs(argv, args);
-    projectProperties->LoadProjectConfigurations();
+    CommandLineFlagResult commandLineFlagResult = commandLineFlagHelper.ProcessCommandLineArgs(argv, args);
+    projectProperties->LoadProjectConfigurations(commandLineFlagResult.projectFilePath);
     InitializeSDL();
     InitializeRendering();
     GD::GetContainer()->assetManager->LoadProjectAssets(); // TODO: clean up

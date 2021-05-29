@@ -136,8 +136,8 @@ class ProjectProperties {
         return inputActionsConfigurations;
     }
 
-    void LoadProjectConfigurations() {
-        nlohmann::json projectConfigurationsJson = JsonFileHelper::LoadJsonFile("project.json");
+    void LoadProjectConfigurations(const std::string projectFilePath) {
+        nlohmann::json projectConfigurationsJson = JsonFileHelper::LoadJsonFile(projectFilePath);
 
         gameTitle = projectConfigurationsJson["game_title"].get<std::string>();
         initialScenePath = projectConfigurationsJson["initial_scene"].get<std::string>();
