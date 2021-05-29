@@ -40,37 +40,43 @@
       {
          "name": "quit",
          "values": [
-            "esc"
+            "esc",
+            "joystick_button_back"
          ]
       },
       {
          "name": "one_left",
          "values": [
-            "left"
+            "left",
+            "joystick_keypad_left"
          ]
       },
       {
          "name": "one_right",
          "values": [
-            "right"
+            "right",
+            "joystick_keypad_right"
          ]
       },
       {
          "name": "one_up",
          "values": [
-            "up"
+            "up",
+            "joystick_keypad_up"
          ]
       },
       {
          "name": "one_down",
          "values": [
-            "down"
+            "down",
+            "joystick_keypad_down"
          ]
       },
       {
          "name": "one_weak_punch",
          "values": [
-            "space"
+            "space",
+            "joystick_button_a"
          ]
       },
       {
@@ -133,7 +139,10 @@
       },
       {
          "name": "confirm",
-         "values": ["return"]
+         "values": [
+            "return",
+            "joystick_button_start"
+         ]
       }
    ]
 }
