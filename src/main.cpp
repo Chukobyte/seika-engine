@@ -3,7 +3,7 @@
 
 int main(int argv, char** args) {
     static Game *gameEngine = new Game();
-    gameEngine->Initialize();
+    gameEngine->Initialize(argv, args);
 
     while (gameEngine->IsRunning()) {
         gameEngine->ProcessInput();

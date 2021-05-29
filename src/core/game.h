@@ -8,6 +8,7 @@
 #include "project_properties.h"
 #include "input/input_manager.h"
 #include "networking/network_context.h"
+#include "utils/command_line_flag_helper.h"
 
 class Game {
   private:
@@ -18,6 +19,7 @@ class Game {
     ProjectProperties *projectProperties = nullptr;
     InputManager *inputManager = nullptr;
     NetworkContext *networkContext = nullptr;
+    CommandLineFlagHelper commandLineFlagHelper;
 
     void InitializeSDL();
 
@@ -31,7 +33,7 @@ class Game {
   public:
     Game();
 
-    void Initialize();
+    void Initialize(int argv, char** args);
 
     void ProcessInput();
 

@@ -18,7 +18,7 @@ class Logger {
     void LogEntry(const std::string &logLevelPrefix, const std::string &logMessage) const;
   public:
 
-    LogLevel logLevel = LogLevel_DEBUG;
+    LogLevel logLevel = LogLevel_INFO;
 
     static Logger* GetInstance() {
         if (!instance) {

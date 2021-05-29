@@ -29,8 +29,9 @@ Game::Game() {
     networkContext = GD::GetContainer()->networkContext;
 }
 
-void Game::Initialize() {
-    logger->Debug("Seika Engine v" + engineContext->GetEngineVersion() + " started!");
+void Game::Initialize(int argv, char** args) {
+    logger->Info("Seika Engine v" + engineContext->GetEngineVersion() + " started!");
+    commandLineFlagHelper.ProcessCommandLineArgs(argv, args);
     projectProperties->LoadProjectConfigurations();
     InitializeSDL();
     InitializeRendering();
@@ -269,5 +270,5 @@ void Game::Destroy() {
     SDL_GL_DeleteContext(renderContext->gl_context);
     SDL_DestroyWindow(renderContext->window);
     SDL_Quit();
-    logger->Debug("Seika Engine stopped!");
+    logger->Info("Seika Engine stopped!");
 }
