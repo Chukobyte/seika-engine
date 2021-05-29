@@ -7,15 +7,15 @@
 <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link href="../../img/favicon.ico" rel="shortcut icon"/>
-<title>Project Properties - Seika Engine</title>
+<title>Command Line Flags - Seika Engine</title>
 <link href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" rel="stylesheet">
 <link href="../../css/theme.css" rel="stylesheet"/>
 <link href="../../css/theme_extra.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet"/>
 <script>
     // Current page data
-    var mkdocs_page_name = "Project Properties";
-    var mkdocs_page_input_path = "general/project_properties.md";
+    var mkdocs_page_name = "Command Line Flags";
+    var mkdocs_page_input_path = "general/command_line_flags.md";
     var mkdocs_page_url = null;
   </script>
 <script defer="" src="../../js/jquery-2.1.1.min.js"></script>
@@ -42,15 +42,13 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../core_concepts/">Core Concepts</a>
 </li>
-<li class="toctree-l1 current"><a class="reference internal current" href="./">Project Properties</a>
-<ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="#format">Format</a>
+<li class="toctree-l1"><a class="reference internal" href="../project_properties/">Project Properties</a>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#properties">Properties</a>
+<li class="toctree-l1 current"><a class="reference internal current" href="./">Command Line Flags</a>
+<ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="#log-level">Log Level</a>
 </li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../command_line_flags/">Command Line Flags</a>
 </li>
 </ul>
 <p class="caption"><span class="caption-text">Python API</span></p>
@@ -92,7 +90,7 @@
 <ul class="wy-breadcrumbs">
 <li><a href="../..">Docs</a> »</li>
 <li>General »</li>
-<li>Project Properties</li>
+<li>Command Line Flags</li>
 <li class="wy-breadcrumbs-aside">
 </li>
 </ul>
@@ -100,77 +98,18 @@
 </div>
 <div role="main">
 <div class="section">
-<h1 id="project-properties">Project Properties</h1>
-<p>Project properties define how the game will be configured before running.  An example of the file is found below:</p>
-<h3 id="format">Format</h3>
-<pre><code class="language-json">{
-  "game_title": "Fighting Game Proto",
-  "initial_scene": "scenes/init.json",
-  "base_resolution": {
-    "width": 800,
-    "height": 600
-  },
-  "colliders_visible": true,
-  "target_fps": 60,
-  "background_color": {
-    "red": 0.1,
-    "green": 0.1,
-    "blue": 0.1
-  },
-  "assets": [
-    {
-      "type": "texture",
-      "file_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png"
-    },
-    {
-      "type": "font",
-      "file_path": "assets/fonts/bruh.ttf",
-      "size": 60
-    },
-    {
-      "type": "music",
-      "file_path": "assets/audio/music/test_music.wav"
-    },
-    {
-      "type": "sound",
-      "file_path": "assets/audio/sound/test_sound_effect.wav"
-    }
-  ],
-  "input_actions": [
-    {
-      "name": "quit",
-      "values": ["esc"]
-    },
-    {
-      "name": "confirm",
-      "values": ["return"]
-    }
-  ]
-}
+<h1 id="command-line-flags">Command Line Flags</h1>
+<h2 id="log-level">Log Level</h2>
+<p><code>-l</code> <code>-log-level</code></p>
+<pre><code>[SEIKA_ENGINE] [LOG_LEVEL_FLAG] [LOG_LEVEL]
 </code></pre>
-<h3 id="properties">Properties</h3>
-<p><code>game_title</code></p>
-<p>Title of the game window.</p>
-<p><code>initial_scene</code></p>
-<p>First scene loaded for the game.</p>
-<p><code>base_resolution</code></p>
-<p>Base resolution of the game</p>
-<p><code>colliders_visible</code></p>
-<p>If true, will render a visible box for colliders.</p>
-<p><code>target_fps</code></p>
-<p>The FPS that the current game tries to achieve.</p>
-<p><code>background_color</code></p>
-<p>The background draw color of the renderer.</p>
-<p><code>assets</code></p>
-<p>Textures, fonts, music, and sound effect assets are defined here.</p>
-<p><code>input_actions</code></p>
-<p>Key bindings are defined here.</p>
+<p>Sets the log level of the engine to either <code>DEBUG</code>, <code>WARN</code> ,<code>INFO</code>, <code>ERROR</code>.</p>
 </div>
 </div>
 <footer>
 <div aria-label="footer navigation" class="rst-footer-buttons" role="navigation">
-<a class="btn btn-neutral float-right" href="../command_line_flags/" title="Command Line Flags">Next <span class="icon icon-circle-arrow-right"></span></a>
-<a class="btn btn-neutral" href="../core_concepts/" title="Core Concepts"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+<a class="btn btn-neutral float-right" href="../../python_api/" title="Index">Next <span class="icon icon-circle-arrow-right"></span></a>
+<a class="btn btn-neutral" href="../project_properties/" title="Project Properties"><span class="icon icon-circle-arrow-left"></span> Previous</a>
 </div>
 <hr/>
 <div role="contentinfo">
@@ -185,8 +124,8 @@
 </div>
 <div aria-label="versions" class="rst-versions" role="note">
 <span class="rst-current-version" data-toggle="rst-current-version">
-<span><a href="../core_concepts/" style="color: #fcfcfc;">« Previous</a></span>
-<span style="margin-left: 15px"><a href="../command_line_flags/" style="color: #fcfcfc">Next »</a></span>
+<span><a href="../project_properties/" style="color: #fcfcfc;">« Previous</a></span>
+<span style="margin-left: 15px"><a href="../../python_api/" style="color: #fcfcfc">Next »</a></span>
 </span>
 </div>
 <script>var base_url = '../..';</script>
