@@ -11,3 +11,4 @@
 * Python scripting
 * Networking system for online multiplayer
 * Collision system
+* Keyboard, Mouse, and Joystick input management.
