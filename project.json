@@ -7,6 +7,11 @@
    },
    "colliders_visible": true,
    "target_fps": 66,
+   "background_color": {
+      "red": 0.1,
+      "green": 0.1,
+      "blue": 0.1
+   },
    "assets": [
       {
          "type": "texture",

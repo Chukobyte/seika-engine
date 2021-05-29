@@ -14,6 +14,11 @@ Project properties define how the game will be configured before running.  An ex
   },
   "colliders_visible": true,
   "target_fps": 60,
+  "background_color": {
+    "red": 0.1,
+    "green": 0.1,
+    "blue": 0.1
+  },
   "assets": [
     {
       "type": "texture",
@@ -63,6 +68,14 @@ Base resolution of the game
 `colliders_visible`
 
 If true, will render a visible box for colliders.
+
+`target_fps`
+
+The FPS that the current game tries to achieve.
+
+`background_color`
+
+The background draw color of the renderer.
 
 `assets`
 

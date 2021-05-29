@@ -1,0 +1,139 @@
+{
+  "game_title": "Fighting Game Proto",
+  "initial_scene": "assets/game_projects/fighter/scenes/init.json",
+  "base_resolution": {
+    "width": 800,
+    "height": 600
+  },
+  "colliders_visible": true,
+  "target_fps": 66,
+  "background_color": {
+    "red": 0.1,
+    "green": 0.1,
+    "blue": 0.1
+  },
+  "assets": [
+    {
+      "type": "texture",
+      "file_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png"
+    },
+    {
+      "type": "font",
+      "file_path": "assets/fonts/bruh.ttf",
+      "size": 60
+    },
+    {
+      "type": "font",
+      "file_path": "assets/game_projects/fighter/assets/fonts/bruh_large.ttf",
+      "size": 120
+    },
+    {
+      "type": "music",
+      "file_path": "assets/audio/music/test_music.wav"
+    },
+    {
+      "type": "sound",
+      "file_path": "assets/audio/sound/test_sound_effect.wav"
+    }
+  ],
+  "input_actions": [
+    {
+      "name": "quit",
+      "values": [
+        "esc"
+      ]
+    },
+    {
+      "name": "one_left",
+      "values": [
+        "left"
+      ]
+    },
+    {
+      "name": "one_right",
+      "values": [
+        "right"
+      ]
+    },
+    {
+      "name": "one_up",
+      "values": [
+        "up"
+      ]
+    },
+    {
+      "name": "one_down",
+      "values": [
+        "down"
+      ]
+    },
+    {
+      "name": "one_weak_punch",
+      "values": [
+        "space"
+      ]
+    },
+    {
+      "name": "two_left",
+      "values": [
+        "a"
+      ]
+    },
+    {
+      "name": "two_right",
+      "values": [
+        "d"
+      ]
+    },
+    {
+      "name": "two_up",
+      "values": [
+        "w"
+      ]
+    },
+    {
+      "name": "two_down",
+      "values": [
+        "s"
+      ]
+    },
+    {
+      "name": "two_weak_punch",
+      "values": [
+        "q"
+      ]
+    },
+    {
+      "name": "zoom_in",
+      "values": ["o"]
+    },
+    {
+      "name": "zoom_out",
+      "values": ["p"]
+    },
+    {
+      "name": "camera_left",
+      "values": ["j"]
+    },
+    {
+      "name": "camera_right",
+      "values": ["l"]
+    },
+    {
+      "name": "camera_up",
+      "values": ["i"]
+    },
+    {
+      "name": "camera_down",
+      "values": ["k"]
+    },
+    {
+      "name": "camera_shake",
+      "values": ["g"]
+    },
+    {
+      "name": "confirm",
+      "values": ["return"]
+    }
+  ]
+}
