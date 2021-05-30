@@ -69,6 +69,36 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#mouse">Mouse</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#properties_1">Properties</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#signals_1">Signals</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#methods_1">Methods</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#keyboard">Keyboard</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#properties_2">Properties</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#signals_2">Signals</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#methods_2">Methods</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#joystick">Joystick</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#properties_3">Properties</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#signals_3">Signals</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#methods_3">Methods</a>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../engine/">Engine</a>
@@ -110,10 +140,47 @@
 <h2 id="input">Input</h2>
 <p>Class for handling input.</p>
 <h3 id="properties">Properties</h3>
+<p>None.</p>
+<hr/>
+<h3 id="signals">Signals</h3>
+<p>None.</p>
+<hr/>
+<h3 id="methods">Methods</h3>
+<pre><code class="language-python">add_action(action_name: str, value: str) -&gt; None:
+</code></pre>
+<p>Adds an input action.  Multiple input values can be added to the same <code>action_name</code>.  For possible values check <a href="#properties_1">Mouse</a>, <a href="#properties_2">Keyboard</a>, and <a href="#properties_3">Joystick</a> properties.</p>
+<pre><code class="language-python">remove_action(action_name: str) -&gt; None:
+</code></pre>
+<p>Completely removes action.</p>
+<pre><code class="language-python">is_action_pressed(action_name: str) -&gt; bool:
+</code></pre>
+<p>Returns true if an action input is currently being held down.</p>
+<pre><code class="language-python">is_action_just_pressed(action_name: str) -&gt; bool:
+</code></pre>
+<p>Returns true if an action input was just pressed.</p>
+<pre><code class="language-python">is_action_just_released(action_name: str) -&gt; bool:
+</code></pre>
+<p>Returns true if an action input was just released.</p>
+<hr/>
+<h2 id="mouse">Mouse</h2>
+<p>Class interface for mouse inputs.</p>
+<h3 id="properties_1">Properties</h3>
 <p>Mouse Action Values</p>
 <pre><code>Mouse.LEFT_BUTTON = "mb_left"   # Left Mouse Button
 Mouse.RIGHT_BUTTON = "mb_right" # Right Mouse Button
 </code></pre>
+<hr/>
+<h3 id="signals_1">Signals</h3>
+<p>None.</p>
+<hr/>
+<h3 id="methods_1">Methods</h3>
+<pre><code class="language-python">get_position() -&gt; seika.math.Vector2:
+</code></pre>
+<p>Returns mouse position.</p>
+<hr/>
+<h2 id="keyboard">Keyboard</h2>
+<p>Class interface for keyboard inputs.</p>
+<h3 id="properties_2">Properties</h3>
 <p>Keyboard Action Values</p>
 <pre><code>Keyboard.NUM_0 = 0 # Zero
 Keyboard.NUM_1 = 1 # One
@@ -174,6 +241,16 @@ Keyboard.F10 = "f10"
 Keyboard.F11 = "f11"
 Keyboard.F12 = "f12"
 </code></pre>
+<hr/>
+<h3 id="signals_2">Signals</h3>
+<p>None.</p>
+<hr/>
+<h3 id="methods_2">Methods</h3>
+<p>None.</p>
+<hr/>
+<h2 id="joystick">Joystick</h2>
+<p>Class interface for joystick inputs.</p>
+<h3 id="properties_3">Properties</h3>
 <p>Joystick Action Values</p>
 <pre><code>Joystick.A_BUTTON = "joystick_button_a" # XBOX A
 Joystick.B_BUTTON = "joystick_button_b" # XBOX B
@@ -205,25 +282,11 @@ Joystick.TRIGGER_LEFT = "joystick_left_trigger"
 Joystick.TRIGGER_RIGHT = "joystick_right_trigger"
 </code></pre>
 <hr/>
-<h3 id="signals">Signals</h3>
+<h3 id="signals_3">Signals</h3>
 <p>None.</p>
 <hr/>
-<h3 id="methods">Methods</h3>
-<pre><code class="language-python">add_action(action_name: str, value: str) -&gt; None:
-</code></pre>
-<p>Adds an input action.  Multiple input values can be added to the same <code>action_name</code>.  See <a href="#properties">Properties</a> for possible values.</p>
-<pre><code class="language-python">remove_action(action_name: str) -&gt; None:
-</code></pre>
-<p>Completely removes action.</p>
-<pre><code class="language-python">is_action_pressed(action_name: str) -&gt; bool:
-</code></pre>
-<p>Returns true if an action input is currently being held down.</p>
-<pre><code class="language-python">is_action_just_pressed(action_name: str) -&gt; bool:
-</code></pre>
-<p>Returns true if an action input was just pressed.</p>
-<pre><code class="language-python">is_action_just_released(action_name: str) -&gt; bool:
-</code></pre>
-<p>Returns true if an action input was just released.</p>
+<h3 id="methods_3">Methods</h3>
+<p>None.</p>
 <hr/>
 </div>
 </div>
