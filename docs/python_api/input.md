@@ -6,12 +6,87 @@ Class for handling input.
 
 ### Properties
 
+None.
+
+---
+
+### Signals
+
+None.
+
+---
+
+### Methods
+
+```python
+add_action(action_name: str, value: str) -> None:
+```
+
+Adds an input action.  Multiple input values can be added to the same `action_name`.  For possible values check [Mouse](#properties_1), [Keyboard](#properties_2), and [Joystick](#properties_3) properties.
+
+```python
+remove_action(action_name: str) -> None:
+```
+
+Completely removes action.
+
+
+```python
+is_action_pressed(action_name: str) -> bool:
+```
+
+Returns true if an action input is currently being held down.
+
+```python
+is_action_just_pressed(action_name: str) -> bool:
+```
+
+Returns true if an action input was just pressed.
+
+```python
+is_action_just_released(action_name: str) -> bool:
+```
+
+Returns true if an action input was just released.
+
+---
+
+## Mouse
+
+Class interface for mouse inputs.
+
+### Properties
+
 Mouse Action Values
 
 ```
 Mouse.LEFT_BUTTON = "mb_left"   # Left Mouse Button
 Mouse.RIGHT_BUTTON = "mb_right" # Right Mouse Button
 ```
+
+---
+
+### Signals
+
+None.
+
+---
+
+### Methods
+
+```python
+get_position() -> seika.math.Vector2:
+```
+
+Returns mouse position.
+
+---
+
+## Keyboard
+
+Class interface for keyboard inputs.
+
+### Properties
 
 Keyboard Action Values
 
@@ -76,6 +151,26 @@ Keyboard.F11 = "f11"
 Keyboard.F12 = "f12"
 ```
 
+---
+
+### Signals
+
+None.
+
+---
+
+### Methods
+
+None.
+
+---
+
+## Joystick
+
+Class interface for joystick inputs.
+
+### Properties
+
 Joystick Action Values
 
 ```
@@ -119,35 +214,6 @@ None.
 
 ### Methods
 
-```python
-add_action(action_name: str, value: str) -> None:
-```
-
-Adds an input action.  Multiple input values can be added to the same `action_name`.  See [Properties](#properties) for possible values.
-
-```python
-remove_action(action_name: str) -> None:
-```
-
-Completely removes action.
-
-
-```python
-is_action_pressed(action_name: str) -> bool:
-```
-
-Returns true if an action input is currently being held down.
-
-```python
-is_action_just_pressed(action_name: str) -> bool:
-```
-
-Returns true if an action input was just pressed.
-
-```python
-is_action_just_released(action_name: str) -> bool:
-```
-
-Returns true if an action input was just released.
+None.
 
 ---

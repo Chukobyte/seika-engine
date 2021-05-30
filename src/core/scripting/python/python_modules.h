@@ -76,6 +76,8 @@ class PythonModules {
     static PyObject* input_is_action_just_pressed(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* input_is_action_just_released(PyObject* self, PyObject* args, PyObject* kwargs);
 
+    static PyObject* mouse_get_position(PyObject* self, PyObject* args);
+
     static PyObject* scene_tree_change_scene(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* scene_tree_get_current_scene_node(PyObject* self, PyObject* args);
 
@@ -321,6 +323,10 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "input_is_action_just_released", (PyCFunction) PythonModules::input_is_action_just_released,
         METH_VARARGS | METH_KEYWORDS, "Checks if action has been just released."
+    },
+    {
+        "mouse_get_position", PythonModules::mouse_get_position,
+        METH_VARARGS, "Gets mouse's position."
     },
     // SCENE
     {

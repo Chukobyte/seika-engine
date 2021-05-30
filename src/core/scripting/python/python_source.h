@@ -179,6 +179,7 @@ static PythonSource PYTHON_SOURCE_COLOR_MODULE =
 
 static PythonSource PYTHON_SOURCE_INPUT_MODULE =
     "import seika_engine_api\n"
+    "from seika.math import Vector2\n"
     "\n"
     "class Input:\n"
     "   @staticmethod\n"
@@ -200,6 +201,11 @@ static PythonSource PYTHON_SOURCE_INPUT_MODULE =
     "class Mouse:\n"
     "   LEFT_BUTTON = \"mb_left\"\n"
     "   RIGHT_BUTTON = \"mb_right\"\n"
+    "\n"
+    "   @staticmethod\n"
+    "   def get_position() -> Vector2:\n"
+    "       mouse_x, mouse_y = seika_engine_api.mouse_get_position()\n"
+    "       return Vector2(mouse_x, mouse_y)\n"
     "\n"
     "class Keyboard:\n"
     "   NUM_0 = \"0\"\n"

@@ -761,6 +761,12 @@ PyObject* PythonModules::input_is_action_just_released(PyObject *self, PyObject 
     return nullptr;
 }
 
+// MOUSE
+PyObject* PythonModules::mouse_get_position(PyObject *self, PyObject *args) {
+    static MouseInput *mouseInput = MouseInput::GetInstance();
+    return Py_BuildValue("(ff)", mouseInput->GetMousePosition().x, mouseInput->GetMousePosition().x);
+}
+
 // SCENE
 PyObject* PythonModules::scene_tree_change_scene(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
