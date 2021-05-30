@@ -107,7 +107,7 @@ static std::map<std::string, SDL_GameControllerButton> ACTION_BUTTON_MAPPINGS = 
     {JOYSTICK_RIGHT_ANALOG_LEFT, SDL_CONTROLLER_BUTTON_INVALID}
 };
 
-const int JOYSTICK_AXIS_DEAD_ZONE = 7000;
+const int JOYSTICK_AXIS_DEAD_ZONE = 10000;
 const int JOYSTICK_TRIGGER_DEAD_ZONE = 8000;
 
 struct JoystickButtonState {
@@ -165,7 +165,7 @@ class JoystickInput {
 
     void ProcessJoyhatMotion(InputEvent &inputEvent);
 
-    void ProcessAxisMotion(InputEvent &inputEvent);
+    void ProcessAxisMotion();
 
   public:
     static JoystickInput* GetInstance() {

@@ -22,7 +22,6 @@ struct InputEvent {
     Uint8 mouseButton;
     // Joystick
     Uint8 controllerId;
-    Uint8 axis;
     Sint16 buttonValue;
     bool buttonPressed = false;
     Uint8 hat;
@@ -57,12 +56,6 @@ class InputEventState {
             inputEvent.mouseButton = event.button.button;
             break;
         // Joystick
-        case SDL_JOYAXISMOTION:
-            inputEvent.type = InputEventType_JOYSTICK;
-            inputEvent.controllerId = event.jaxis.which;
-            inputEvent.axis = event.jaxis.axis;
-            inputEvent.buttonValue = event.jaxis.value;
-            break;
         case SDL_JOYBUTTONDOWN:
         case SDL_JOYBUTTONUP:
             inputEvent.type = InputEventType_JOYSTICK;
