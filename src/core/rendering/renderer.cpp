@@ -33,18 +33,18 @@ SpriteRenderer::SpriteRenderer(const glm::mat4 &projection) {
     shader.SetInt("sprite", 0);
 }
 
-void SpriteRenderer::Draw(Texture2D *texture2D, Rect2 *sourceRectangle, Rect2 *destinationRectangle, int zIndex, float rotation, Color color, bool flipX, bool flipY) {
+void SpriteRenderer::Draw(Texture2D *texture2D, Rect2 sourceRectangle, Rect2 destinationRectangle, float rotation, Color color, bool flipX, bool flipY) {
     glDepthMask(false);
 
     // 1. Translation
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(destinationRectangle->x, destinationRectangle->y, 0.0f));  // first translate (transformations are: scale happens first, then rotation, and then final translation happens; reversed order)
+    model = glm::translate(model, glm::vec3(destinationRectangle.x, destinationRectangle.y, 0.0f));  // first translate (transformations are: scale happens first, then rotation, and then final translation happens; reversed order)
     // 2. Rotation
-    model = glm::translate(model, glm::vec3(0.5f * destinationRectangle->w, 0.5f * destinationRectangle->h, 0.0f)); // move origin of rotation to center of quad
+    model = glm::translate(model, glm::vec3(0.5f * destinationRectangle.w, 0.5f * destinationRectangle.h, 0.0f)); // move origin of rotation to center of quad
     model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f)); // then rotate
-    model = glm::translate(model, glm::vec3(-0.5f * destinationRectangle->w, -0.5f * destinationRectangle->h, 0.0f)); // move origin back
+    model = glm::translate(model, glm::vec3(-0.5f * destinationRectangle.w, -0.5f * destinationRectangle.h, 0.0f)); // move origin back
     // 3. Scaling
-    model = glm::scale(model, glm::vec3(destinationRectangle->w, destinationRectangle->h, 1.0f)); // last scale
+    model = glm::scale(model, glm::vec3(destinationRectangle.w, destinationRectangle.h, 1.0f)); // last scale
 
     glBindVertexArray(quadVAO);
     glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
@@ -58,10 +58,10 @@ void SpriteRenderer::Draw(Texture2D *texture2D, Rect2 *sourceRectangle, Rect2 *d
 
     // render subimage based on source rectangle
     glPixelStorei(GL_UNPACK_ROW_LENGTH, texture2D->width);
-    glPixelStorei(GL_UNPACK_SKIP_PIXELS, sourceRectangle->x);
-    glPixelStorei(GL_UNPACK_SKIP_ROWS, sourceRectangle->y);
+    glPixelStorei(GL_UNPACK_SKIP_PIXELS, sourceRectangle.x);
+    glPixelStorei(GL_UNPACK_SKIP_ROWS, sourceRectangle.y);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sourceRectangle->w, sourceRectangle->h, 0, texture2D->imageFormat, GL_UNSIGNED_BYTE, texture2D->data);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sourceRectangle.w, sourceRectangle.h, 0, texture2D->imageFormat, GL_UNSIGNED_BYTE, texture2D->data);
 
     glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
     glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
@@ -189,10 +189,48 @@ void Renderer::Initialize() {
     fontRenderer = new FontRenderer();
 }
 
-void Renderer::DrawSprite(Texture2D *texture2D, Rect2 *sourceRectangle, Rect2 *destinationRectangle, int zIndex, float rotation, Color color, bool flipX, bool flipY) {
-    spriteRenderer->Draw(texture2D, sourceRectangle, destinationRectangle, zIndex, rotation, color, flipX, flipY);
+void Renderer::DrawSprite(Texture2D *texture2D, Rect2 sourceRectangle, Rect2 destinationRectangle, float rotation, Color color, bool flipX, bool flipY) {
+    spriteRenderer->Draw(texture2D, sourceRectangle, destinationRectangle, rotation, color, flipX, flipY);
 }
 
 void Renderer::DrawFont(Font *font, const std::string &text, float x, float y, float scale, Color color) {
     fontRenderer->Draw(font, text, x, y, scale, color);
+}
+
+void Renderer::BatchDrawSprite(Texture2D *texture2D, Rect2 sourceRectangle, Rect2 destinationRectangle, int zIndex, float rotation, Color color, bool flipX, bool flipY) {
+    AddSpriteToBatch(SpriteDrawBatch{
+        .texture2D = texture2D,
+        .sourceRectangle = sourceRectangle,
+        .destinationRectangle = destinationRectangle,
+        .rotation = rotation,
+        .color = color,
+        .flipX = flipX,
+        .flipY = flipY
+    },
+    zIndex);
+}
+
+void Renderer::BatchDrawFont(Font *font, const std::string &text, float x, float y, int zIndex, float scale, Color color) {
+    AddFontToBatch(FontDrawBatch{
+        .font = font,
+        .text = text,
+        .x = x,
+        .y = y,
+        .scale = scale,
+        .color = color
+    },
+    zIndex);
+}
+
+void Renderer::FlushBatches() {
+    for (const auto &pair : drawBatches2D) {
+        ZIndexDrawBatch zIndexDrawBatch = pair.second;
+        for (const FontDrawBatch &fontDrawBatch : zIndexDrawBatch.fontDrawBatches) {
+            fontRenderer->Draw(fontDrawBatch.font, fontDrawBatch.text, fontDrawBatch.x, fontDrawBatch.y, fontDrawBatch.scale, fontDrawBatch.color);
+        }
+        for (const SpriteDrawBatch &spriteDrawBatch : zIndexDrawBatch.spriteDrawBatches) {
+            spriteRenderer->Draw(spriteDrawBatch.texture2D, spriteDrawBatch.sourceRectangle, spriteDrawBatch.destinationRectangle, spriteDrawBatch.rotation, spriteDrawBatch.color, spriteDrawBatch.flipX, spriteDrawBatch.flipY);
+        }
+    }
+    drawBatches2D.clear();
 }

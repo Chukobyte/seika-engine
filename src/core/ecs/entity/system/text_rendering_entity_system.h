@@ -32,7 +32,15 @@ class TextRenderingEntitySystem : public EntitySystem {
                 Vector2 textLabelPosition = transform2DComponent.position - (!transform2DComponent.ignoreCamera ? (camera.viewport + camera.offset) * camera.zoom * Vector2(1.0, 1.25) : Vector2(0, 0));
                 TextLabelComponent textLabelComponent = componentManager->GetComponent<TextLabelComponent>(entity);
                 Vector2 textLabelScale = !transform2DComponent.ignoreCamera ? transform2DComponent.scale * camera.zoom : transform2DComponent.scale;
-                renderer->DrawFont(textLabelComponent.font, textLabelComponent.text, textLabelPosition.x, textLabelPosition.y, textLabelScale.x, textLabelComponent.color);
+                renderer->BatchDrawFont(
+                    textLabelComponent.font,
+                    textLabelComponent.text,
+                    textLabelPosition.x,
+                    textLabelPosition.y,
+                    transform2DComponent.zIndex,
+                    textLabelScale.x,
+                    textLabelComponent.color
+                );
             }
         }
     }

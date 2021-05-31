@@ -259,6 +259,8 @@ void Game::Render() {
         collisionEntitySystem->Render();
     }
 
+    renderer->FlushBatches();
+
     SDL_GL_SwapWindow(renderContext->window);
 }
 
