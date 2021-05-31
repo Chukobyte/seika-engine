@@ -6,9 +6,16 @@
 
 ### Features
 
-* Entity Component System
-* Scene System
-* Python scripting
-* Networking system for online multiplayer
-* Collision system
+* Entity Component System.
+* Scene System.
+* Python scripting.
+* Networking system for online multiplayer.
+* Collision system.
 * Keyboard, Mouse, and Joystick input management.
+
+### Upcoming Stuff
+
+* Fully integrated editor.
+* Particle system.
+* 3D Feature with Python API, model importing, and more...
+* Tutorials and example projects.
