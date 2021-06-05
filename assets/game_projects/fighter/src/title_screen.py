@@ -120,5 +120,5 @@ class TitleScreen(Node2D):
                     PropertyValue.PLAYER_OPPONENT_MODE_CLIENT_PLAYER_VS_PLAYER
                 )
             SceneTree.change_scene(
-                scene_path="assets/game_projects/fighter/scenes/fight.json"
+                scene_path="assets/game_projects/fighter/scenes/fight.sscn"
             )

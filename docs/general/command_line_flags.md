@@ -18,4 +18,4 @@ Sets the log level of the engine to either `DEBUG`, `WARN` ,`INFO`, `ERROR`.
 [SEIKA_ENGINE] [PROJECT_FILE_FLAG] [PROJECT_FILE_PATH]
 ```
 
-Overrides the default path (`project.json`) with the value that's passed in.
+Overrides the default path (`project.scfg`) with the value that's passed in.

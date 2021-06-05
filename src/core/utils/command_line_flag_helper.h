@@ -4,7 +4,7 @@
 #include "logger.h"
 
 struct CommandLineFlagResult {
-    std::string projectFilePath = "project.json";
+    std::string projectFilePath = "project.scfg";
 };
 
 class CommandLineFlagHelper {

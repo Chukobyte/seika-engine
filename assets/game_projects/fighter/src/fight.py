@@ -61,7 +61,7 @@ class Fight(Node2D):
             ):
                 Client.disconnect()
             SceneTree.change_scene(
-                scene_path="assets/game_projects/fighter/scenes/title_screen.json"
+                scene_path="assets/game_projects/fighter/scenes/title_screen.sscn"
             )
             # Engine.exit()
 

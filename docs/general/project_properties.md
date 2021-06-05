@@ -7,7 +7,7 @@ Project properties define how the game will be configured before running.  An ex
 ```json
 {
   "game_title": "Fighting Game Proto",
-  "initial_scene": "scenes/init.json",
+  "initial_scene": "scenes/init.sscn",
   "base_resolution": {
     "width": 800,
     "height": 600
