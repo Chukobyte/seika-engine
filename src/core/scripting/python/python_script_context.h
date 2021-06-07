@@ -49,9 +49,13 @@ class PythonScriptContext : public ScriptContext {
     }
 
     void PhysicsProcess(Entity entity, double deltaTime) override {
-        if (PyObject_HasAttr(pythonCache->GetClassInstance(entity), physicsProcessFunctionName)) {
-            CPyObject processCallValue = PyObject_CallMethod(pythonCache->GetClassInstance(entity), "_physics_process", "(f)", deltaTime);
+        PyGILState_STATE pyGilStateState = PyGILState_Ensure();
+        {
+            if (PyObject_HasAttr(pythonCache->GetClassInstance(entity), physicsProcessFunctionName)) {
+                CPyObject processCallValue = PyObject_CallMethod(pythonCache->GetClassInstance(entity), "_physics_process", "(f)", deltaTime);
+            }
         }
+        PyGILState_Release(pyGilStateState);
         PyErr_Print();
     }
 
