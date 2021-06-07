@@ -59,6 +59,7 @@ endif
 	copy *.dll $(EXPORT_PACKAGE_DIR)
 	copy *.zip $(EXPORT_PACKAGE_DIR)
 	copy *.json $(EXPORT_PACKAGE_DIR)
+	copy *.scfg $(EXPORT_PACKAGE_DIR)
 	Xcopy /E /I assets $(EXPORT_PACKAGE_DIR)\assets
 	cd $(EXPORT_PACKAGE_DIR) && echo %cd% && 7z a $(PROJECT_NAME).zip *
 
