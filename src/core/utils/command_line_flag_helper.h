@@ -19,6 +19,8 @@ class CommandLineFlagHelper {
     const std::string FLAG_SET_LOG_LEVEL1 = "-log-level";
     const std::string FLAG_SET_PROJECT_FILE_PATH0 = "-p";
     const std::string FLAG_SET_PROJECT_FILE_PATH1 = "-project-file";
+    const std::string FLAG_SET_PROJECT_STARTING_DIRECTORY0 = "-sd";
+    const std::string FLAG_SET_PROJECT_STARTING_DIRECTORY1 = "-starting-directory";
     const std::string FLAG_SET_PROJECT_WORKING_DIRECTORY0 = "-d";
     const std::string FLAG_SET_PROJECT_WORKING_DIRECTORY1 = "-working-directory";
 
@@ -33,6 +35,8 @@ class CommandLineFlagHelper {
             }
         } else if(argString == FLAG_SET_PROJECT_FILE_PATH0 || argString == FLAG_SET_PROJECT_FILE_PATH1) {
             commandLineFlagResult.projectFilePath = std::string(this->args[argumentIndex + 1]);
+        } else if(argString == FLAG_SET_PROJECT_STARTING_DIRECTORY0 || argString == FLAG_SET_PROJECT_STARTING_DIRECTORY1) {
+            FileHelper::ChangeDirectory(this->args[argumentIndex + 1]);
         } else if(argString == FLAG_SET_PROJECT_WORKING_DIRECTORY0 || argString == FLAG_SET_PROJECT_WORKING_DIRECTORY1) {
             commandLineFlagResult.workingDirectoryOverride = this->args[argumentIndex + 1];
         }
