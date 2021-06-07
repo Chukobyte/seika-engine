@@ -5,6 +5,7 @@
 
 struct CommandLineFlagResult {
     std::string projectFilePath = "project.scfg";
+    std::string workingDirectoryOverride;
 };
 
 class CommandLineFlagHelper {
@@ -18,6 +19,8 @@ class CommandLineFlagHelper {
     const std::string FLAG_SET_LOG_LEVEL1 = "-log-level";
     const std::string FLAG_SET_PROJECT_FILE_PATH0 = "-p";
     const std::string FLAG_SET_PROJECT_FILE_PATH1 = "-project-file";
+    const std::string FLAG_SET_PROJECT_WORKING_DIRECTORY0 = "-d";
+    const std::string FLAG_SET_PROJECT_WORKING_DIRECTORY1 = "-working-directory";
 
     CommandLineFlagResult ProcessArgument(int argumentIndex) {
         const std::string &argString = std::string(this->args[argumentIndex]);
@@ -30,6 +33,8 @@ class CommandLineFlagHelper {
             }
         } else if(argString == FLAG_SET_PROJECT_FILE_PATH0 || argString == FLAG_SET_PROJECT_FILE_PATH1) {
             commandLineFlagResult.projectFilePath = std::string(this->args[argumentIndex + 1]);
+        } else if(argString == FLAG_SET_PROJECT_WORKING_DIRECTORY0 || argString == FLAG_SET_PROJECT_WORKING_DIRECTORY1) {
+            commandLineFlagResult.workingDirectoryOverride = this->args[argumentIndex + 1];
         }
     }
   public:

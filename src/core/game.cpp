@@ -32,11 +32,16 @@ Game::Game() {
 void Game::Initialize(int argv, char** args) {
     logger->Info("Seika Engine v" + engineContext->GetEngineVersion() + " started!");
     CommandLineFlagResult commandLineFlagResult = commandLineFlagHelper.ProcessCommandLineArgs(argv, args);
-    projectProperties->LoadProjectConfigurations(commandLineFlagResult.projectFilePath);
+    projectProperties->LoadProjectConfigurations(commandLineFlagResult.workingDirectoryOverride + commandLineFlagResult.projectFilePath);
     InitializeSDL();
     InitializeRendering();
-    GD::GetContainer()->assetManager->LoadProjectAssets(); // TODO: clean up
+    AssetManager *assetManager = GD::GetContainer()->assetManager;
+    assetManager->LoadEngineAssets();
     inputManager->LoadProjectInputActions();
+    if (!commandLineFlagResult.workingDirectoryOverride.empty()) {
+        FileHelper::ChangeDirectory(commandLineFlagResult.workingDirectoryOverride);
+    }
+    assetManager->LoadProjectAssets();
     InitializeECS();
     engineContext->SetRunning(true);
     engineContext->StartFPSCounter();

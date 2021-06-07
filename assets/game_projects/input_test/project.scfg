@@ -1,6 +1,6 @@
 {
   "game_title": "Input Test",
-  "initial_scene": "assets/game_projects/input_test/scenes/main.json",
+  "initial_scene": "scenes/main.sscn",
   "base_resolution": {
     "width": 800,
     "height": 600

@@ -44,6 +44,8 @@ class AssetManager {
 
     std::map<std::string, Mix_Chunk*> GetAllSounds();
 
+    void LoadEngineAssets();
+
     void LoadProjectAssets();
 };
 

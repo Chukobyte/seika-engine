@@ -9,6 +9,10 @@ class FileHelper {
         struct stat buffer;
         return(stat(name.c_str(), &buffer) == 0);
     }
+
+    static void ChangeDirectory(const std::string &newDirectory) {
+        chdir(newDirectory.c_str());
+    }
 };
 
 #endif //FILE_HELPER_H
