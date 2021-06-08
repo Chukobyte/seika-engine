@@ -16,23 +16,14 @@ class CollisionEntitySystem : public EntitySystem {
     Texture2D *colliderTexture = nullptr;
     Rect2 colliderDrawSource = Rect2(0.0f, 0.0f, 4.0f, 4.0f);
 
-    Transform2DComponent GetParentTransform(Entity entity) {
-        Entity parentEntity = sceneManager->GetParent(entity);
-        if (parentEntity == NO_ENTITY) {
-            return Transform2DComponent{};
-        } else {
-            return componentManager->GetComponent<Transform2DComponent>(parentEntity);
-        }
-    }
-
     Rect2 GetCollisionRectangle(Entity entity) {
         Transform2DComponent transform2DComponent = componentManager->GetComponent<Transform2DComponent>(entity);
         ColliderComponent colliderComponent = componentManager->GetComponent<ColliderComponent>(entity);
-        Vector2 parentPosition = GetParentTransform(entity).position;
-        return Rect2(transform2DComponent.position.x + parentPosition.x + (colliderComponent.collider.x * transform2DComponent.scale.x),
-                     transform2DComponent.position.y + parentPosition.y + (colliderComponent.collider.y * transform2DComponent.scale.y),
-                     transform2DComponent.scale.x * colliderComponent.collider.w,
-                     transform2DComponent.scale.y * colliderComponent.collider.h);
+        Transform2DComponent parentTransform = SceneNodeHelper::GetCombinedParentsTransforms(sceneManager, componentManager, entity);
+        return Rect2(transform2DComponent.position.x + parentTransform.position.x + colliderComponent.collider.x,
+                     transform2DComponent.position.y + parentTransform.position.y + colliderComponent.collider.y,
+                     transform2DComponent.scale.x * parentTransform.scale.x * colliderComponent.collider.w,
+                     transform2DComponent.scale.y * parentTransform.scale.y * colliderComponent.collider.h);
     }
 
     bool IsTargetCollisionEntityInExceptionList(Entity sourceEntity, Entity targetEntity) {
@@ -88,15 +79,14 @@ class CollisionEntitySystem : public EntitySystem {
         for (Entity entity : entities) {
             Transform2DComponent transform2DComponent = componentManager->GetComponent<Transform2DComponent>(entity);
             ColliderComponent colliderComponent = componentManager->GetComponent<ColliderComponent>(entity);
-            Transform2DComponent parentTransform = GetParentTransform(entity);
+            Transform2DComponent parentTransform = SceneNodeHelper::GetCombinedParentsTransforms(sceneManager, componentManager, entity);
             Vector2 parentPosition = parentTransform.position;
-            Vector2 drawDestinationPosition = SpaceHandler::WorldToScreen(Vector2(
-                                                  transform2DComponent.position.x + parentPosition.x + (colliderComponent.collider.x * transform2DComponent.scale.x),
-                                                  transform2DComponent.position.y + parentPosition.y + (colliderComponent.collider.y * transform2DComponent.scale.y)),
+            Vector2 colliderPosition = Vector2(colliderComponent.collider.x, colliderComponent.collider.y);
+            Vector2 drawDestinationPosition = SpaceHandler::WorldToScreen(transform2DComponent.position + parentPosition + colliderPosition,
                                               transform2DComponent.ignoreCamera);
             Rect2 colliderDrawDestination = Rect2(drawDestinationPosition,
-                                                  Vector2(transform2DComponent.scale.x * colliderComponent.collider.w,
-                                                          transform2DComponent.scale.y * colliderComponent.collider.h));
+                                                  Vector2(transform2DComponent.scale.x * parentTransform.scale.x * colliderComponent.collider.w,
+                                                          transform2DComponent.scale.y * parentTransform.scale.y * colliderComponent.collider.h));
             if (!transform2DComponent.ignoreCamera) {
                 Camera camera = cameraManager->GetCurrentCamera();
                 colliderDrawDestination.w *= camera.zoom.x;

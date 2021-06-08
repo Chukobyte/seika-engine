@@ -103,7 +103,7 @@ class FightSimulator:
                         elif input == InputBuffer.Value.WEAK_PUNCH.value:
                             weak_punch_attack = Attack.new()
                             weak_punch_attack.collider_rect = Rect2(
-                                x=32 + (65 * player_state.direction), y=32, w=64, h=64
+                                x=32 + (65 * player_state.direction), y=32, w=16, h=16
                             )
                             weak_punch_attack.color = Color(1.0, 0.0, 0.0, 0.75)
                             player_state.node.add_child(child_node=weak_punch_attack)

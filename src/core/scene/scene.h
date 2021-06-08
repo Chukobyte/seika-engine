@@ -330,4 +330,24 @@ class SceneManager {
     }
 };
 
+class SceneNodeHelper {
+  public:
+    static Transform2DComponent GetCombinedParentsTransforms(SceneManager *sceneManager, ComponentManager *componentManager, Entity entity) {
+        SceneNode sceneNode = sceneManager->GetEntitySceneNode(entity);
+        Transform2DComponent combinedTransform = Transform2DComponent{};
+        Entity currentParent = sceneNode.parent;
+        while (currentParent != NO_ENTITY) {
+            SceneNode nodeParent = sceneManager->GetEntitySceneNode(currentParent);
+            if (componentManager->HasComponent<Transform2DComponent>(nodeParent.entity)) {
+                Transform2DComponent parentTransform = componentManager->GetComponent<Transform2DComponent>(nodeParent.entity);
+                combinedTransform.position += parentTransform.position;
+                combinedTransform.scale *= parentTransform.scale;
+                combinedTransform.zIndex += parentTransform.zIndex;
+            }
+            currentParent = nodeParent.parent;
+        }
+        return combinedTransform;
+    }
+};
+
 #endif //SCENE_H

@@ -31,6 +31,12 @@ class Vector2 {
         return Vector2(this->x * otherVector.x, this->y * otherVector.y);
     }
 
+    Vector2 operator*=(const Vector2 &otherVector) {
+        this->x *= otherVector.x;
+        this->y *= otherVector.y;
+        return *this;
+    }
+
     Vector2 operator*(float value) {
         return Vector2(this->x * value, this->y * value);
     }

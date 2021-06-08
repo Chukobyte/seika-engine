@@ -8,11 +8,13 @@
 class TextRenderingEntitySystem : public EntitySystem {
   private:
     Renderer *renderer = nullptr;
+    SceneManager *sceneManager = nullptr;
     ComponentManager *componentManager = nullptr;
     CameraManager *cameraManager = nullptr;
   public:
     TextRenderingEntitySystem() {
         renderer = GD::GetContainer()->renderer;
+        sceneManager = GD::GetContainer()->sceneManager;
         componentManager = GD::GetContainer()->componentManager;
         cameraManager = GD::GetContainer()->cameraManager;
         enabled = true;
@@ -29,9 +31,10 @@ class TextRenderingEntitySystem : public EntitySystem {
                 Transform2DComponent transform2DComponent = componentManager->GetComponent<Transform2DComponent>(entity);
                 Camera camera = cameraManager->GetCurrentCamera();
                 // TODO: fix camera offset applied to textLabelPosition to align y
-                Vector2 textLabelPosition = transform2DComponent.position - (!transform2DComponent.ignoreCamera ? (camera.viewport + camera.offset) * camera.zoom * Vector2(1.0, 1.25) : Vector2(0, 0));
+                Transform2DComponent parentTransform = SceneNodeHelper::GetCombinedParentsTransforms(sceneManager, componentManager, entity);
+                Vector2 textLabelPosition = transform2DComponent.position + parentTransform.position - (!transform2DComponent.ignoreCamera ? (camera.viewport + camera.offset) * camera.zoom * Vector2(1.0, 1.25) : Vector2(0, 0));
                 TextLabelComponent textLabelComponent = componentManager->GetComponent<TextLabelComponent>(entity);
-                Vector2 textLabelScale = !transform2DComponent.ignoreCamera ? transform2DComponent.scale * camera.zoom : transform2DComponent.scale;
+                Vector2 textLabelScale = !transform2DComponent.ignoreCamera ? transform2DComponent.scale * parentTransform.scale * camera.zoom : transform2DComponent.scale * parentTransform.scale;
                 renderer->BatchDrawFont(
                     textLabelComponent.font,
                     textLabelComponent.text,
