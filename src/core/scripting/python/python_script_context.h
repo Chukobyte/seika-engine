@@ -59,6 +59,10 @@ class PythonScriptContext : public ScriptContext {
         PyErr_Print();
     }
 
+    void FlushStdOutBuffer() override {
+        PyRun_SimpleString("sys.stdout.flush()");
+    }
+
     void ReceiveSubscribedSignal(Entity subscriberEntity, const std::string &subscriberFunctionName, SignalArguments args) override {
         if (!args.pyArgs) {
             args.pyArgs = Py_BuildValue("[]");

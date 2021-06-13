@@ -76,6 +76,7 @@ class ScriptEntitySystem : public EntitySystem {
             for (Entity entity : entities) {
                 scriptContext->PhysicsProcess(entity, deltaTime);
             }
+            scriptContext->FlushStdOutBuffer();
         }
     }
 
