@@ -51,10 +51,10 @@ class SceneManager {
             sceneNode = SceneNode{.entity = entityManager->CreateEntity(), .parent = nodeJson["parent_entity_id"].get<unsigned int>()};
         }
 
-        std::string nodeName = nodeJson["name"].get<std::string>();
-        std::string nodeType = nodeJson["type"].get<std::string>();
+        const std::string &nodeName = nodeJson["name"].get<std::string>();
+        const std::string &nodeType = nodeJson["type"].get<std::string>();
         nlohmann::json nodeTagsJsonArray = nodeJson["tags"].get<nlohmann::json>();
-        std::string nodeExternalSceneSource = nodeJson["external_scene_source"].get<std::string>();
+        const std::string &nodeExternalSceneSource = nodeJson["external_scene_source"].get<std::string>();
         nlohmann::json nodeComponentJsonArray = nodeJson["components"].get<nlohmann::json>();
         nlohmann::json nodeChildrenJsonArray = nodeJson["children"].get<nlohmann::json>();
 
@@ -73,17 +73,17 @@ class SceneManager {
         // Rest of components
         for (nlohmann::json nodeComponentJson : nodeComponentJsonArray) {
             nlohmann::json::iterator it = nodeComponentJson.begin();
-            std::string nodeComponentType = it.key();
+            const std::string &nodeComponentType = it.key();
             nlohmann::json nodeComponentObjectJson = it.value();
             if (nodeComponentType == "transform2D") {
                 nlohmann::json nodeTransform2DPosition = nodeComponentObjectJson["position"].get<nlohmann::json>();
                 nlohmann::json nodeTransform2DScale = nodeComponentObjectJson["scale"].get<nlohmann::json>();
-                Vector2 nodePosition = Vector2(nodeTransform2DPosition["x"].get<float>(),nodeTransform2DPosition["y"].get<float>());
-                Vector2 nodeScale = Vector2(nodeTransform2DScale["x"].get<float>(), nodeTransform2DScale["y"].get<float>());
-                float nodeRotation = nodeComponentObjectJson["rotation"];
-                int nodeZIndex = nodeComponentObjectJson["z_index"].get<int>();
-                bool nodeZIndexIsRelativeToParent = nodeComponentObjectJson["z_index_relative_to_parent"].get<bool>();
-                bool nodeIgnoreCamera = nodeComponentObjectJson["ignore_camera"].get<bool>();
+                const Vector2 nodePosition = Vector2(nodeTransform2DPosition["x"].get<float>(),nodeTransform2DPosition["y"].get<float>());
+                const Vector2 nodeScale = Vector2(nodeTransform2DScale["x"].get<float>(), nodeTransform2DScale["y"].get<float>());
+                const float nodeRotation = nodeComponentObjectJson["rotation"];
+                const int nodeZIndex = nodeComponentObjectJson["z_index"].get<int>();
+                const bool nodeZIndexIsRelativeToParent = nodeComponentObjectJson["z_index_relative_to_parent"].get<bool>();
+                const bool nodeIgnoreCamera = nodeComponentObjectJson["ignore_camera"].get<bool>();
 
                 componentManager->AddComponent(sceneNode.entity, Transform2DComponent{
                     .position = nodePosition,
@@ -97,51 +97,52 @@ class SceneManager {
                 signature.set(componentManager->GetComponentType<Transform2DComponent>(), true);
                 entityManager->SetSignature(sceneNode.entity, signature);
             } else if (nodeComponentType == "timer") {
-                Uint32 nodeWaitTimeInMilliseconds = (Uint32) nodeComponentObjectJson["wait_time"].get<float>() * 1000;
-                bool nodeLoops = nodeComponentObjectJson["loops"].get<bool>();
+                const Uint32 nodeWaitTimeInMilliseconds = (Uint32) nodeComponentObjectJson["wait_time"].get<float>() * 1000;
+                const bool nodeLoops = nodeComponentObjectJson["loops"].get<bool>();
                 componentManager->AddComponent(sceneNode.entity, TimerComponent{
                     .timer = timerManager->GenerateTimer(sceneNode.entity, nodeWaitTimeInMilliseconds, nodeLoops)
                 });
             } else if (nodeComponentType == "sprite") {
-                std::string nodeTexturePath = nodeComponentObjectJson["texture_path"].get<std::string>();
+                const std::string &nodeTexturePath = nodeComponentObjectJson["texture_path"].get<std::string>();
                 nlohmann::json nodeDrawSourceJson = nodeComponentObjectJson["draw_source"].get<nlohmann::json>();
-                float nodeDrawSourceX = nodeDrawSourceJson["x"].get<float>();
-                float nodeDrawSourceY = nodeDrawSourceJson["y"].get<float>();
-                float nodeDrawSourceWidth = nodeDrawSourceJson["width"].get<float>();
-                float nodeDrawSourceHeight = nodeDrawSourceJson["height"].get<float>();
-                bool nodeFlipX = nodeComponentObjectJson["flip_x"].get<bool>();
-                bool nodeFlipY = nodeComponentObjectJson["flip_y"].get<bool>();
+                const float nodeDrawSourceX = nodeDrawSourceJson["x"].get<float>();
+                const float nodeDrawSourceY = nodeDrawSourceJson["y"].get<float>();
+                const float nodeDrawSourceWidth = nodeDrawSourceJson["width"].get<float>();
+                const float nodeDrawSourceHeight = nodeDrawSourceJson["height"].get<float>();
+                const bool nodeFlipX = nodeComponentObjectJson["flip_x"].get<bool>();
+                const bool nodeFlipY = nodeComponentObjectJson["flip_y"].get<bool>();
 
                 componentManager->AddComponent(sceneNode.entity, SpriteComponent{
-                    .texture = assetManager->GetTexture(nodeTexturePath),
+                    .texture = nodeTexturePath.empty() ? nullptr : assetManager->GetTexture(nodeTexturePath),
                     .drawSource = Rect2(nodeDrawSourceX, nodeDrawSourceY, nodeDrawSourceWidth, nodeDrawSourceHeight),
                     .flipX = nodeFlipX,
                     .flipY = nodeFlipY
                 });
                 auto signature = entityManager->GetSignature(sceneNode.entity);
-                signature.set(componentManager->GetComponentType<SpriteComponent>(), true);
+                const bool isSpriteEnabled = nodeTexturePath.empty() ? false : true;
+                signature.set(componentManager->GetComponentType<SpriteComponent>(), isSpriteEnabled);
                 entityManager->SetSignature(sceneNode.entity, signature);
             } else if (nodeComponentType == "animated_sprite") {
-                std::string nodeCurrentAnimationName = nodeComponentObjectJson["current_animation"].get<std::string>();
-                bool nodeIsPlaying = nodeComponentObjectJson["is_playing"].get<bool>();
-                bool nodeFlipX = nodeComponentObjectJson["flip_x"].get<bool>();
-                bool nodeFlipY = nodeComponentObjectJson["flip_y"].get<bool>();
+                const std::string &nodeCurrentAnimationName = nodeComponentObjectJson["current_animation"].get<std::string>();
+                const bool nodeIsPlaying = nodeComponentObjectJson["is_playing"].get<bool>();
+                const bool nodeFlipX = nodeComponentObjectJson["flip_x"].get<bool>();
+                const bool nodeFlipY = nodeComponentObjectJson["flip_y"].get<bool>();
                 nlohmann::json nodeAnimationsJsonArray = nodeComponentObjectJson["animations"].get<nlohmann::json>();
                 std::map<std::string, Animation> nodeAnimations;
 
                 for (nlohmann::json nodeAnimationJson : nodeAnimationsJsonArray) {
-                    std::string nodeAnimationName = nodeAnimationJson["name"].get<std::string>();
-                    int nodeAnimationSpeed = nodeAnimationJson["speed"].get<int>();
+                    const std::string &nodeAnimationName = nodeAnimationJson["name"].get<std::string>();
+                    const int nodeAnimationSpeed = nodeAnimationJson["speed"].get<int>();
                     nlohmann::json nodeAnimationFramesJsonArray = nodeAnimationJson["frames"].get<nlohmann::json>();
                     std::map<unsigned int, AnimationFrame> animationFrames;
                     for (nlohmann::json nodeAnimationFrameJson : nodeAnimationFramesJsonArray) {
-                        int nodeAnimationFrameNumber = nodeAnimationFrameJson["frame"].get<int>();
-                        std::string nodeAnimationTexturePath = nodeAnimationFrameJson["texture_path"].get<std::string>();
+                        const int nodeAnimationFrameNumber = nodeAnimationFrameJson["frame"].get<int>();
+                        const std::string &nodeAnimationTexturePath = nodeAnimationFrameJson["texture_path"].get<std::string>();
                         nlohmann::json nodeAnimationFrameDrawSourceJson = nodeAnimationFrameJson["draw_source"].get<nlohmann::json>();
-                        float nodeAnimationFrameDrawSourceX = nodeAnimationFrameDrawSourceJson["x"].get<float>();
-                        float nodeAnimationFrameDrawSourceY = nodeAnimationFrameDrawSourceJson["y"].get<float>();
-                        float nodeAnimationFrameDrawSourceWidth = nodeAnimationFrameDrawSourceJson["width"].get<float>();
-                        float nodeAnimationFrameDrawSourceHeight = nodeAnimationFrameDrawSourceJson["height"].get<float>();
+                        const float nodeAnimationFrameDrawSourceX = nodeAnimationFrameDrawSourceJson["x"].get<float>();
+                        const float nodeAnimationFrameDrawSourceY = nodeAnimationFrameDrawSourceJson["y"].get<float>();
+                        const float nodeAnimationFrameDrawSourceWidth = nodeAnimationFrameDrawSourceJson["width"].get<float>();
+                        const float nodeAnimationFrameDrawSourceHeight = nodeAnimationFrameDrawSourceJson["height"].get<float>();
                         AnimationFrame nodeAnimationFrame = {
                             .texture = assetManager->GetTexture(nodeAnimationTexturePath),
                             .drawSource = Rect2(nodeAnimationFrameDrawSourceX, nodeAnimationFrameDrawSourceY, nodeAnimationFrameDrawSourceWidth, nodeAnimationFrameDrawSourceHeight),
@@ -168,13 +169,15 @@ class SceneManager {
                     .flipY = nodeFlipY
                 });
                 auto signature = entityManager->GetSignature(sceneNode.entity);
-                signature.set(componentManager->GetComponentType<AnimatedSpriteComponent>(), true);
+                // Editor won't allow animations with empty textures
+                const bool isAnimatedSpriteEnabled = nodeAnimations.empty() ? false : true;
+                signature.set(componentManager->GetComponentType<AnimatedSpriteComponent>(), isAnimatedSpriteEnabled);
                 entityManager->SetSignature(sceneNode.entity, signature);
             } else if (nodeComponentType == "text_label") {
-                std::string nodeText = nodeComponentObjectJson["text"].get<std::string>();
-                std::string nodeFontPath = nodeComponentObjectJson["font_path"].get<std::string>();
+                const std::string &nodeText = nodeComponentObjectJson["text"].get<std::string>();
+                const std::string &nodeFontPath = nodeComponentObjectJson["font_path"].get<std::string>();
                 nlohmann::json nodeColorJson = nodeComponentObjectJson["color"].get<nlohmann::json>();
-                Color nodeColor = Color(
+                const Color nodeColor = Color(
                                       nodeColorJson["red"].get<float>(),
                                       nodeColorJson["green"].get<float>(),
                                       nodeColorJson["blue"].get<float>(),
@@ -183,28 +186,29 @@ class SceneManager {
 
                 componentManager->AddComponent(sceneNode.entity, TextLabelComponent{
                     .text = nodeText,
-                    .font = assetManager->GetFont(nodeFontPath),
+                    .font = nodeFontPath.empty() ? nullptr : assetManager->GetFont(nodeFontPath),
                     .color = nodeColor
                 });
                 auto signature = entityManager->GetSignature(sceneNode.entity);
-                signature.set(componentManager->GetComponentType<TextLabelComponent>(), true);
+                const bool isTextLabelEnabled = nodeFontPath.empty() ? false : true;
+                signature.set(componentManager->GetComponentType<TextLabelComponent>(), isTextLabelEnabled);
                 entityManager->SetSignature(sceneNode.entity, signature);
             } else if (nodeComponentType == "collider") {
                 nlohmann::json nodeRectangleJson = nodeComponentObjectJson["rectangle"].get<nlohmann::json>();
-                float nodeX = nodeRectangleJson["x"].get<float>();
-                float nodeY = nodeRectangleJson["y"].get<float>();
-                float nodeWidth = nodeRectangleJson["width"].get<float>();
-                float nodeHeight = nodeRectangleJson["height"].get<float>();
+                const float nodeX = nodeRectangleJson["x"].get<float>();
+                const float nodeY = nodeRectangleJson["y"].get<float>();
+                const float nodeWidth = nodeRectangleJson["width"].get<float>();
+                const float nodeHeight = nodeRectangleJson["height"].get<float>();
 
                 ColliderComponent colliderComponent = ColliderComponent{
                     .collider = Rect2(nodeX, nodeY, nodeWidth, nodeHeight),
                     .collisionExceptions = { sceneNode.entity }
                 };
                 if (nodeComponentObjectJson.contains("color")) {
-                    float nodeColorRed = nodeComponentObjectJson["color"]["red"].get<float>();
-                    float nodeColorGreen = nodeComponentObjectJson["color"]["green"].get<float>();
-                    float nodeColorBlue = nodeComponentObjectJson["color"]["blue"].get<float>();
-                    float nodeColorAlpha = nodeComponentObjectJson["color"]["alpha"].get<float>();
+                    const float nodeColorRed = nodeComponentObjectJson["color"]["red"].get<float>();
+                    const float nodeColorGreen = nodeComponentObjectJson["color"]["green"].get<float>();
+                    const float nodeColorBlue = nodeComponentObjectJson["color"]["blue"].get<float>();
+                    const float nodeColorAlpha = nodeComponentObjectJson["color"]["alpha"].get<float>();
                     colliderComponent.color = Color(nodeColorRed, nodeColorGreen, nodeColorBlue, nodeColorAlpha);
                 }
                 componentManager->AddComponent(sceneNode.entity, colliderComponent);
@@ -212,14 +216,15 @@ class SceneManager {
                 signature.set(componentManager->GetComponentType<ColliderComponent>(), true);
                 entityManager->SetSignature(sceneNode.entity, signature);
             } else if (nodeComponentType == "scriptable_class") {
-                std::string nodeClassPath = nodeComponentObjectJson["class_path"].get<std::string>();
-                std::string nodeClassName = nodeComponentObjectJson["class_name"].get<std::string>();
+                const std::string &nodeClassPath = nodeComponentObjectJson["class_path"].get<std::string>();
+                const std::string &nodeClassName = nodeComponentObjectJson["class_name"].get<std::string>();
 
                 componentManager->AddComponent(sceneNode.entity, ScriptableClassComponent{
                     .classPath = nodeClassPath,
                     .className = nodeClassName
                 });
                 auto signature = entityManager->GetSignature(sceneNode.entity);
+                // Editor will validate the scriptable component is valid
                 signature.set(componentManager->GetComponentType<ScriptableClassComponent>(), true);
                 entityManager->SetSignature(sceneNode.entity, signature);
             }
