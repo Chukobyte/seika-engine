@@ -178,11 +178,11 @@ class SceneManager {
                 const std::string &nodeFontPath = nodeComponentObjectJson["font_path"].get<std::string>();
                 nlohmann::json nodeColorJson = nodeComponentObjectJson["color"].get<nlohmann::json>();
                 const Color nodeColor = Color(
-                                      nodeColorJson["red"].get<float>(),
-                                      nodeColorJson["green"].get<float>(),
-                                      nodeColorJson["blue"].get<float>(),
-                                      nodeColorJson["alpha"].get<float>()
-                                  );
+                                            nodeColorJson["red"].get<float>(),
+                                            nodeColorJson["green"].get<float>(),
+                                            nodeColorJson["blue"].get<float>(),
+                                            nodeColorJson["alpha"].get<float>()
+                                        );
 
                 componentManager->AddComponent(sceneNode.entity, TextLabelComponent{
                     .text = nodeText,
