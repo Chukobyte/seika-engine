@@ -1,7 +1,7 @@
 # Seika Engine
 
 
-![Seika Engine Editor Screenshot](https://github.com/Chukobyte/seika-engine/blob/main/assets/images/seika_engine_editor_screenshot.png)
+![Seika Engine Editor Screenshot](https://github.com/Chukobyte/seika-engine/blob/main/assets/images/docs/seika_engine_editor_preview.gif)
 
 An open source 2D/3D game engine.  Windows only for now, but may support other platforms in the future.  Full documentation can be found [here](https://chukobyte.github.io/seika-engine/).
 
