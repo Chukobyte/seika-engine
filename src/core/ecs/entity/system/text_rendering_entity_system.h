@@ -30,9 +30,8 @@ class TextRenderingEntitySystem : public EntitySystem {
             for (Entity entity : entities) {
                 Transform2DComponent transform2DComponent = componentManager->GetComponent<Transform2DComponent>(entity);
                 Camera camera = cameraManager->GetCurrentCamera();
-                // TODO: fix camera offset applied to textLabelPosition to align y
                 Transform2DComponent parentTransform = SceneNodeHelper::GetCombinedParentsTransforms(sceneManager, componentManager, entity);
-                Vector2 textLabelPosition = transform2DComponent.position + parentTransform.position - (!transform2DComponent.ignoreCamera ? (camera.viewport + camera.offset) * camera.zoom * Vector2(1.0, 1.25) : Vector2(0, 0));
+                Vector2 textLabelPosition = transform2DComponent.position + parentTransform.position - (!transform2DComponent.ignoreCamera ? (camera.viewport + camera.offset) * camera.zoom  : Vector2(0, 0));
                 TextLabelComponent textLabelComponent = componentManager->GetComponent<TextLabelComponent>(entity);
                 Vector2 textLabelScale = !transform2DComponent.ignoreCamera ? transform2DComponent.scale * parentTransform.scale * camera.zoom : transform2DComponent.scale * parentTransform.scale;
                 renderer->BatchDrawFont(

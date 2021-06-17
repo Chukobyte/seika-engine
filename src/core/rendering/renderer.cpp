@@ -125,6 +125,7 @@ void FontRenderer::Draw(Font *font, const std::string &text, float x, float y, f
     glBindVertexArray(font->VAO);
 
     ProjectProperties *projectProperties = ProjectProperties::GetInstance();
+    y += 64.0f;
     y = ConvertMinMax(y, static_cast<float>(projectProperties->windowWidth), 0, 0, static_cast<float>(projectProperties->windowHeight));
 
     // iterate through all characters
@@ -132,7 +133,7 @@ void FontRenderer::Draw(Font *font, const std::string &text, float x, float y, f
     for(c = text.begin(); c != text.end(); c++) {
         Character ch = font->characters[*c];
 
-        float xPos = x + ch.bearing.x * currentScale.x;
+        float xPos = x - (ch.bearing.x * currentScale.x) / 2;
         float yPos = y - (ch.size.y - ch.bearing.y) * currentScale.y;
 
         float w = ch.size.x * currentScale.x;
