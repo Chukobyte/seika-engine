@@ -133,7 +133,7 @@ void FontRenderer::Draw(Font *font, const std::string &text, float x, float y, f
         Character ch = font->characters[*c];
 
         float xPos = x + ch.bearing.x * currentScale.x;
-        float yPos = y - (ch.size.y) * currentScale.y;
+        float yPos = y - (ch.size.y - ch.bearing.y) * currentScale.y;
 
         float w = ch.size.x * currentScale.x;
         float h = ch.size.y * currentScale.y;
