@@ -36,9 +36,9 @@ class ScriptEntitySystem : public EntitySystem {
     T* InstallScriptContext() {
         const char *typeName = typeid(T).name();
         assert(HasScriptContext<T>() && "Installing script context more than once");
-        auto scriptContext = new T();
+        auto *scriptContext = new T();
         scriptContexts.emplace(typeName, scriptContext);
-
+        return scriptContext;
     }
 
     template<typename T>

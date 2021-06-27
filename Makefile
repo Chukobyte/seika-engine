@@ -4,6 +4,7 @@ I_FLAGS := -I"./include" -I"${SDL2_HOME}/include" -I"${PYTHON_HOME}/include"
 L_FLAGS := -lmingw32 -lSDL2main -lSDL2_mixer -lSDL2 -lpython37 -lfreetype -lwsock32 -lws2_32 -static-libgcc -static-libstdc++
 C_FLAGS := -w -std=c++14 -Wfatal-errors
 LIBRARIES := -L"${SDL2_HOME}/lib" -L"${PYTHON_HOME}/libs" -L"${FREETYPE_HOME}/lib"
+RELEASE_FLAGS = -DHAVE_SNPRINTF=1
 
 PROJECT_NAME := seika_engine
 BUILD_OBJECT := $(PROJECT_NAME).exe
@@ -28,11 +29,11 @@ all: clean format build
 
 %.o: %.cpp
 	@echo "Compiling " $< " into " $@
-	@$(CXX) -c $(C_FLAGS) $< -o $@ $(I_FLAGS) -DHAVE_SNPRINTF=1
+	@$(CXX) -c $(C_FLAGS) $< -o $@ $(I_FLAGS) $(RELEASE_FLAGS)
 
 %.o: %.c
 	@echo "Compiling " $< " into " $@
-	@$(CC) -c $(C_FLAGS) $< -o $@ $(I_FLAGS) -DHAVE_SNPRINTF=1
+	@$(CC) -c $(C_FLAGS) $< -o $@ $(I_FLAGS) $(RELEASE_FLAGS)
 
 build: $(OBJ) $(OBJ_C)
 	@echo "Linking " $@
@@ -63,6 +64,7 @@ endif
 	Xcopy /E /I assets $(EXPORT_PACKAGE_DIR)\assets
 	cd $(EXPORT_PACKAGE_DIR) && echo %cd% && 7z a $(PROJECT_NAME).zip *
 
+package: RELEASE_FLAGS +=  -O2
 package: clean build package-without-clean
 
 # Tests

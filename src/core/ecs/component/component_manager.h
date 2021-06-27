@@ -62,7 +62,7 @@ class ComponentManager {
 
     template<typename T>
     T& GetComponent(Entity entity) {
-        GetComponentArray<T>()->GetData(entity);
+        return GetComponentArray<T>()->GetData(entity);
     }
 
     template<typename T>
