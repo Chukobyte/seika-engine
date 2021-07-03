@@ -51,17 +51,6 @@ To help with developing within IDEs, a helper module can be installed to provide
 
 *Note: Kept up to date with the latest release version of the engine.  Support for previous versions may be limited.*
 
-### How To Contribute
+### Prepackaged Builds with Editor
 
-There are 3 main ways to contribute to the engine.
-
-1. Code changes to the engine
-2. A project within the `assets/game_projects` directory.
-3. Documentation additions and changes within the `docs` folder.
-
-It's simple to contribute to seika engine, follow the easy steps below:
-
-1. Create a fork of the seika-engine repo.
-2. Make sure to pull the latest from main before pushing up changes.
-3. Submit a pull request to the main branch stating the reason for the change.
-4. Once a pull request is submitted, changes may be requested and/or additional information may be requested.
+I have recently released packages that contains both the engine and editor and can be found [here on itch.io](https://chukobyte.itch.io/seika).  The combined engine and editor will use a different version scheme and will effectively use v0.x for alpha (current state) and v1.x once it becomes stable.  This is the recommended path to build games with the engine as setting up a scene is more streamlined in the editor.
