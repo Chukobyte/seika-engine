@@ -5,6 +5,7 @@
 #include "../../ecs/component/components/transform2D_component.h"
 #include "../../input/input_manager.h"
 #include "../../audio/audio_helper.h"
+#include "../../utils/helper.h"
 #include "../../signal_manager.h"
 
 // ENGINE
@@ -104,7 +105,8 @@ PyObject* PythonModules::camera_set_viewport_position(PyObject *self, PyObject *
     float x, y;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "ff", cameraVector2SetKWList, &x, &y)) {
         Camera camera = cameraManager->GetCurrentCamera();
-        camera.viewport = Vector2(x, y);
+        camera.viewport.x = Helper::Clamp(x, camera.boundary.x, camera.boundary.w);
+        camera.viewport.y = Helper::Clamp(y, camera.boundary.y, camera.boundary.h);
         cameraManager->UpdateCurrentCamera(camera);
         Py_RETURN_NONE;
     }

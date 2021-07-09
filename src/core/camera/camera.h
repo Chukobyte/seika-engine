@@ -14,8 +14,8 @@ enum _CameraMode {
 struct Camera {
     unsigned int id;
     CameraMode mode = CameraMode_FREE;
-    Rect2 boundary;
-    Vector2 viewport;
+    Rect2 boundary = Rect2(-10000000.0f, -10000000.0f, 10000000.0f, 10000000.0f);
+    Vector2 viewport = Vector2(0.0f, 0.0f);
     Vector2 zoom = Vector2(1.0f, 1.0f);
     Vector2 offset = Vector2(0.0f, 0.0f);
 };
