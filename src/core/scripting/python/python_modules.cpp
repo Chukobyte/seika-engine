@@ -922,3 +922,44 @@ PyObject* PythonModules::client_send_message_to_server(PyObject *self, PyObject 
     }
     return nullptr;
 }
+
+// RENDERER
+PyObject* PythonModules::renderer_draw_texture(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static Renderer *renderer = GD::GetContainer()->renderer;
+    static AssetManager *assetManager = GD::GetContainer()->assetManager;
+    char *pyTexturePath;
+    float pySourceRectX;
+    float pySourceRectY;
+    float pySourceRectW;
+    float pySourceRectH;
+    float pyDestRectX;
+    float pyDestRectY;
+    float pyDestRectW;
+    float pyDestRectH;
+    int pyZIndex;
+    float pyRotation;
+    float pyColorRed;
+    float pyColorGreen;
+    float pyColorBlue;
+    float pyColorAlpha;
+    bool pyFlipX;
+    bool pyFlipY;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "sffffffffifffffbb", rendererDrawTextureKWList,
+                                    &pyTexturePath, &pySourceRectX, &pySourceRectY, &pySourceRectW, &pySourceRectH,
+                                    &pyDestRectX, &pyDestRectY, &pyDestRectW, &pyDestRectH,
+                                    &pyZIndex, &pyRotation, &pyColorRed, &pyColorGreen, &pyColorBlue, &pyColorAlpha,
+                                    &pyFlipX, &pyFlipY)) {
+        renderer->BatchDrawSprite(
+            assetManager->GetTexture(std::string(pyTexturePath)),
+            Rect2(pySourceRectX, pySourceRectY, pySourceRectW, pySourceRectH),
+            Rect2(pyDestRectX, pyDestRectY, pyDestRectW, pyDestRectH),
+            pyZIndex,
+            pyRotation,
+            Color(pyColorRed, pyColorGreen, pyColorBlue, pyColorAlpha),
+            pyFlipX,
+            pyFlipY
+        );
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}

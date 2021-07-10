@@ -722,6 +722,44 @@ static PythonSource PYTHON_SOURCE_NETWORK_MODULE =
     "\n"
     "";
 
+static PythonSource PYTHON_SOURCE_RENDERER_MODULE =
+    "import seika_engine_api\n"
+    "from seika.math import Rect2\n"
+    "from seika.color import Color\n"
+    "\n"
+    "class Renderer:\n"
+    "   @staticmethod\n"
+    "   def draw_texture(\n"
+    "       texture_path: str,\n"
+    "       source_rect: Rect2,\n"
+    "       dest_rect: Rect2,\n"
+    "       z_index=0,\n"
+    "       rotation=0.0,\n"
+    "       color=Color(1.0, 1.0, 1.0, 1.0),\n"
+    "       flip_x=False,\n"
+    "       flip_y=False,\n"
+    "   ) -> None:\n"
+    "       seika_engine_api.renderer_draw_texture(\n"
+    "           texture_path=texture_path,\n"
+    "           source_rect_x=source_rect.x,\n"
+    "           source_rect_y=source_rect.y,\n"
+    "           source_rect_w=source_rect.w,\n"
+    "           source_rect_h=source_rect.h,\n"
+    "           dest_rect_x=dest_rect.x,\n"
+    "           dest_rect_y=dest_rect.y,\n"
+    "           dest_rect_w=dest_rect.w,\n"
+    "           dest_rect_h=dest_rect.h,\n"
+    "           z_index=z_index,\n"
+    "           rotation=rotation,\n"
+    "           color_red=color.r,\n"
+    "           color_green=color.g,\n"
+    "           color_blue=color.b,\n"
+    "           color_alpha=color.a,\n"
+    "           flip_x=flip_x,\n"
+    "           flip_y=flip_y,\n"
+    "       )\n"
+    "\n";
+
 static PythonSource PYTHON_SOURCE_LOAD_SOURCE_IMPORTER_SNIPPET =
     "import sys\n"
     "import importlib\n"
@@ -803,6 +841,10 @@ static PythonSource PYTHON_SOURCE_IMPORT_ENGINE_MODULE_SNIPPET =
 
     "\"seika.network\": \"\"\"\n"
     + PYTHON_SOURCE_NETWORK_MODULE +
+    "\"\"\",\n"
+
+    "\"seika.renderer\": \"\"\"\n"
+    + PYTHON_SOURCE_RENDERER_MODULE +
     "\"\"\",\n"
 
     "}\n"

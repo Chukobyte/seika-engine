@@ -18,6 +18,7 @@ nav:
       - Physics: python_api/physics.md
       - Math: python_api/math.md
       - Color: python_api/color.md
+      - Renderer: python_api/renderer.md
 
 plugins:
   - search

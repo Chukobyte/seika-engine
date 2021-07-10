@@ -94,6 +94,8 @@ class PythonModules {
     static PyObject* client_connect(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* client_disconnect(PyObject* self, PyObject* args);
     static PyObject* client_send_message_to_server(PyObject* self, PyObject* args, PyObject* kwargs);
+
+    static PyObject* renderer_draw_texture(PyObject* self, PyObject* args, PyObject* kwargs);
 };
 
 static struct PyMethodDef rollApiMethods[] = {
@@ -388,6 +390,11 @@ static struct PyMethodDef rollApiMethods[] = {
         "client_send_message_to_server", (PyCFunction) PythonModules::client_send_message_to_server,
         METH_VARARGS | METH_KEYWORDS, "Sends a message through the network to the server."
     },
+    // RENDERER
+    {
+        "renderer_draw_texture", (PyCFunction) PythonModules::renderer_draw_texture,
+        METH_VARARGS | METH_KEYWORDS, "Renders a texture."
+    },
 
     {nullptr, nullptr, 0,nullptr },
 };
@@ -439,6 +446,15 @@ static char *serverStartKWList[] = {"port", nullptr};
 static char *clientConnectKWList[] = {"endpoint", "port", nullptr};
 
 static char *networkSendMessageKWList[] = {"message", nullptr};
+
+static char *rendererDrawTextureKWList[] = {"texture_path",
+                                            "source_rect_x", "source_rect_y", "source_rect_w", "source_rect_h",
+                                            "dest_rect_x", "dest_rect_y", "dest_rect_w", "dest_rect_h",
+                                            "z_index", "rotation",
+                                            "color_red", "color_green", "color_blue", "color_alpha",
+                                            "flip_x", "flip_y",
+                                            nullptr
+                                           };
 
 static PyObject* PyInit_seikaEngineAPI(void) {
     return PyModule_Create(&seikaEngineAPIModDef);
