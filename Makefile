@@ -64,7 +64,7 @@ endif
 	Xcopy /E /I assets $(EXPORT_PACKAGE_DIR)\assets
 	cd $(EXPORT_PACKAGE_DIR) && echo %cd% && 7z a $(PROJECT_NAME).zip *
 
-package: RELEASE_FLAGS +=  -O2
+#package: RELEASE_FLAGS +=  -O2
 package: clean build package-without-clean
 
 # Tests
