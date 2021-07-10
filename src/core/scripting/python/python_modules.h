@@ -43,11 +43,15 @@ class PythonModules {
     static PyObject* sprite_set_flip_h(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* sprite_get_flip_v(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* sprite_set_flip_v(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* sprite_get_modulate(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* sprite_set_modulate(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* animated_sprite_play(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_set_animation(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_stop(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_is_playing(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* animated_sprite_get_modulate(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* animated_sprite_set_modulate(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_get_frame(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_set_frame(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_get_animation_frames(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -219,6 +223,14 @@ static struct PyMethodDef rollApiMethods[] = {
         "sprite_set_flip_v", (PyCFunction) PythonModules::sprite_set_flip_v,
         METH_VARARGS | METH_KEYWORDS, "Sets a sprite's flip v."
     },
+    {
+        "sprite_get_modulate", (PyCFunction) PythonModules::sprite_get_modulate,
+        METH_VARARGS | METH_KEYWORDS, "Gets a sprite's color."
+    },
+    {
+        "sprite_set_modulate", (PyCFunction) PythonModules::sprite_set_modulate,
+        METH_VARARGS | METH_KEYWORDS, "Sets a sprite's color."
+    },
     // ANIMATED_SPRITE
     {
         "animated_sprite_play", (PyCFunction) PythonModules::animated_sprite_play,
@@ -235,6 +247,14 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "animated_sprite_is_playing", (PyCFunction) PythonModules::animated_sprite_is_playing,
         METH_VARARGS | METH_KEYWORDS, "Returns if an animations is playing."
+    },
+    {
+        "animated_sprite_get_modulate", (PyCFunction) PythonModules::animated_sprite_get_modulate,
+        METH_VARARGS | METH_KEYWORDS, "Gets an animated sprite's color."
+    },
+    {
+        "animated_sprite_set_modulate", (PyCFunction) PythonModules::animated_sprite_set_modulate,
+        METH_VARARGS | METH_KEYWORDS, "Sets an animated sprite's color."
     },
     {
         "animated_sprite_get_frame", (PyCFunction) PythonModules::animated_sprite_get_frame,

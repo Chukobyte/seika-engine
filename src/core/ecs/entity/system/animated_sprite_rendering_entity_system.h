@@ -60,7 +60,7 @@ class AnimatedSpriteRenderingEntitySystem : public EntitySystem {
                     drawDestination,
                     transform2DComponent.zIndex,
                     transform2DComponent.rotation,
-                    Color(1.0f, 1.0f, 1.0f),
+                    animatedSpriteComponent.modulate,
                     animatedSpriteComponent.flipX,
                     animatedSpriteComponent.flipY
                 );

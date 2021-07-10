@@ -407,6 +407,33 @@ PyObject* PythonModules::sprite_set_flip_v(PyObject *self, PyObject *args, PyObj
     return nullptr;
 }
 
+PyObject* PythonModules::sprite_get_modulate(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        SpriteComponent spriteComponent = entityComponentOrchestrator->GetComponent<SpriteComponent>(entity);
+        return Py_BuildValue("(ffff)",
+                             spriteComponent.modulate.r,
+                             spriteComponent.modulate.g,
+                             spriteComponent.modulate.b,
+                             spriteComponent.modulate.a);
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::sprite_set_modulate(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    float red, green, blue, alpha;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "iffff", nodeSetColorKWList, &entity, &red, &green, &blue, &alpha)) {
+        SpriteComponent spriteComponent = entityComponentOrchestrator->GetComponent<SpriteComponent>(entity);
+        spriteComponent.modulate = Color(red, green, blue, alpha);
+        entityComponentOrchestrator->UpdateComponent<SpriteComponent>(entity, spriteComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
 // ANIMATED_SPRITE
 PyObject* PythonModules::animated_sprite_play(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
@@ -462,6 +489,33 @@ PyObject* PythonModules::animated_sprite_is_playing(PyObject *self, PyObject *ar
             Py_RETURN_TRUE;
         }
         Py_RETURN_FALSE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::animated_sprite_get_modulate(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        AnimatedSpriteComponent animatedSpriteComponent = entityComponentOrchestrator->GetComponent<AnimatedSpriteComponent>(entity);
+        return Py_BuildValue("(ffff)",
+                             animatedSpriteComponent.modulate.r,
+                             animatedSpriteComponent.modulate.g,
+                             animatedSpriteComponent.modulate.b,
+                             animatedSpriteComponent.modulate.a);
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::animated_sprite_set_modulate(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    float red, green, blue, alpha;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "iffff", nodeSetColorKWList, &entity, &red, &green, &blue, &alpha)) {
+        AnimatedSpriteComponent animatedSpriteComponent = entityComponentOrchestrator->GetComponent<AnimatedSpriteComponent>(entity);
+        animatedSpriteComponent.modulate = Color(red, green, blue, alpha);
+        entityComponentOrchestrator->UpdateComponent<AnimatedSpriteComponent>(entity, animatedSpriteComponent);
+        Py_RETURN_NONE;
     }
     return nullptr;
 }

@@ -44,7 +44,7 @@ class SpriteRenderingEntitySystem : public EntitySystem {
                     spriteComponent.drawDestination,
                     transform2DComponent.zIndex,
                     0.0f,
-                    Color(1.0f, 1.0f, 1.0f),
+                    spriteComponent.modulate,
                     spriteComponent.flipX,
                     spriteComponent.flipY
                 );
