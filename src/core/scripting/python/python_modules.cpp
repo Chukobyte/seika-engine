@@ -292,6 +292,43 @@ PyObject* PythonModules::node_signal_emit(PyObject *self, PyObject *args, PyObje
     return nullptr;
 }
 
+PyObject* PythonModules::node_get_tags(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        NodeComponent nodeComponent = entityComponentOrchestrator->GetComponent<NodeComponent>(entity);
+        CPyObject pTagList = PyList_New(0);
+        pTagList.AddRef();
+        assert(pTagList != nullptr && "node list empty!");
+        for (const std::string &tagText : nodeComponent.tags) {
+            if (PyList_Append(pTagList, Py_BuildValue("s", tagText.c_str())) == -1) {
+                PyErr_Print();
+            }
+        }
+        return pTagList;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::node_set_tags(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    PyObject *pyObject = nullptr;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "iO", nodeSetTagsKWList, &entity, &pyObject)) {
+        NodeComponent nodeComponent = entityComponentOrchestrator->GetComponent<NodeComponent>(entity);
+        std::vector<std::string> nodeTags = {};
+        for (int i = 0; i < PyList_Size(pyObject); i++) {
+            CPyObject listItem = PyList_GetItem(pyObject, i);
+            const std::string &newTag = std::string(PyUnicode_AsUTF8(listItem));
+            nodeTags.emplace_back(newTag);
+        }
+        nodeComponent.tags = nodeTags;
+        entityComponentOrchestrator->UpdateComponent<NodeComponent>(entity, nodeComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
 // NODE2D
 PyObject* PythonModules::node2D_get_position(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;

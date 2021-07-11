@@ -32,6 +32,8 @@ class PythonModules {
     static PyObject* node_signal_create(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_signal_connect(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_signal_emit(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* node_get_tags(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* node_set_tags(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* node2D_get_position(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node2D_set_position(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -186,6 +188,14 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "node_signal_emit", (PyCFunction) PythonModules::node_signal_emit,
         METH_VARARGS | METH_KEYWORDS, "Emits a signal."
+    },
+    {
+        "node_get_tags", (PyCFunction) PythonModules::node_get_tags,
+        METH_VARARGS | METH_KEYWORDS, "Gets a node's tags."
+    },
+    {
+        "node_set_tags", (PyCFunction) PythonModules::node_set_tags,
+        METH_VARARGS | METH_KEYWORDS, "Sets a node's tags."
     },
     // NODE2D
     {
@@ -419,6 +429,7 @@ static char *nodeGetNodeKWList[] = {"name", nullptr};
 static char *nodeSignalCreateKWList[] = {"entity_id", "signal_id", nullptr};
 static char *nodeSignalConnectKWList[] = {"entity_id", "signal_id", "listener_entity_id", "function_name", nullptr};
 static char *nodeSignalEmitKWList[] = {"entity_id", "signal_id", "args", nullptr};
+static char *nodeSetTagsKWList[] = {"entity_id", "tags", nullptr};
 
 static char *nodeSetColorKWList[] = {"entity_id", "red", "green", "blue", "alpha", nullptr};
 
