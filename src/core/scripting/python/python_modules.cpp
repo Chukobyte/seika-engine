@@ -27,8 +27,9 @@ PyObject* PythonModules::engine_get_fps(PyObject *self, PyObject *args) {
 // AUDIO
 PyObject* PythonModules::audio_play_music(PyObject *self, PyObject *args, PyObject *kwargs) {
     char *musicId;
-    if (PyArg_ParseTupleAndKeywords(args, kwargs, "s", audioPlayMusicKWList, &musicId)) {
-        AudioHelper::PlayMusic(std::string(musicId));
+    bool musicLoops;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "sb", audioPlayMusicKWList, &musicId, &musicLoops)) {
+        AudioHelper::PlayMusic(std::string(musicId), musicLoops);
         Py_RETURN_NONE;
     }
     return nullptr;

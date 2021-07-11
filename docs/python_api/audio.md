@@ -19,10 +19,10 @@ None.
 ### Methods
 
 ```python
-play_music(music_id: str) -> None:
+play_music(music_id: str, loops=True) -> None:
 ```
 
-Plays music.
+Plays music, will loop is `loops` is set to `True`.
 
 
 ```python

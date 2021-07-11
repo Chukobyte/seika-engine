@@ -416,7 +416,7 @@ static struct PyModuleDef seikaEngineAPIModDef = {
 
 static char *engineExitKWList[] = {"code", nullptr};
 
-static char *audioPlayMusicKWList[] = {"music_id", nullptr};
+static char *audioPlayMusicKWList[] = {"music_id", "loops", nullptr};
 static char *audioPlaySoundKWList[] = {"sound_id", nullptr};
 static char *audioSetVolumeKWList[] = {"volume", nullptr};
 

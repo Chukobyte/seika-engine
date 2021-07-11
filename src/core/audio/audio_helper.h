@@ -5,9 +5,10 @@
 
 class AudioHelper {
   public:
-    static void PlayMusic(const std::string &musicId) {
+    static void PlayMusic(const std::string &musicId, bool loops = true) {
         static AssetManager *assetManager = GD::GetContainer()->assetManager;
-        Mix_PlayMusic(assetManager->GetMusic(musicId), -1);
+        int loopNumber = loops ? -1 : 0;
+        Mix_PlayMusic(assetManager->GetMusic(musicId), loopNumber);
     }
 
     static void StopMusic() {
