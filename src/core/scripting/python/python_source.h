@@ -660,7 +660,7 @@ static PythonSource PYTHON_SOURCE_PHYSICS_MODULE =
     "\n"
     "class Collision:\n"
     "   @staticmethod\n"
-    "   def get_collided_nodes(node : Node) -> list:\n"
+    "   def get_collided_nodes(node: Node) -> list:\n"
     "       collided_nodes_from_engine = seika_engine_api.collision_get_collided_nodes(entity_id=node.entity_id)\n"
     "       collided_nodes = []\n"
     "       for collided_node in collided_nodes_from_engine:\n"
@@ -668,8 +668,8 @@ static PythonSource PYTHON_SOURCE_PHYSICS_MODULE =
     "       return collided_nodes\n"
     "\n"
     "   @staticmethod\n"
-    "   def update_collisions() -> None:\n"
-    "       seika_engine_api.collision_update_collisions()\n"
+    "   def update_collisions(node: Node) -> None:\n"
+    "       seika_engine_api.collision_update_collisions(entity_id=node.entity_id)\n"
     "\n"
     "";
 

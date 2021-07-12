@@ -808,10 +808,14 @@ PyObject* PythonModules::collision_get_collided_nodes(PyObject *self, PyObject *
     return nullptr;
 }
 
-PyObject* PythonModules::collision_update_collisions(PyObject *self, PyObject *args) {
+PyObject* PythonModules::collision_update_collisions(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     static CollisionEntitySystem *collisionEntitySystem = entityComponentOrchestrator->GetSystem<CollisionEntitySystem>();
-    collisionEntitySystem->ProcessCollisions();
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        collisionEntitySystem->ProcessEntityCollisions(entity);
+    }
+
     Py_RETURN_NONE;
 }
 

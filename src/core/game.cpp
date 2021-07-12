@@ -225,7 +225,7 @@ void Game::FixedTimeStep() {
 
         // Check Collisions
         static CollisionEntitySystem *collisionEntitySystem = (CollisionEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<CollisionEntitySystem>();
-        collisionEntitySystem->ProcessCollisions();
+//        collisionEntitySystem->ProcessCollisions(); // TODO: fix this, calling on python side for now
 
         scriptEntitySystem->PhysicsProcess(PHYSICS_DELTA_TIME);
 

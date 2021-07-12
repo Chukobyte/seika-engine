@@ -76,7 +76,7 @@ class PythonModules {
     static PyObject* collision_shape2d_set_color(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* collision_get_collided_nodes(PyObject* self, PyObject* args, PyObject* kwargs);
-    static PyObject* collision_update_collisions(PyObject* self, PyObject* args);
+    static PyObject* collision_update_collisions(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* input_add_action(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* input_is_action_pressed(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -341,8 +341,8 @@ static struct PyMethodDef rollApiMethods[] = {
         METH_VARARGS | METH_KEYWORDS, "Gets nodes entity collided with."
     },
     {
-        "collision_update_collisions", PythonModules::collision_update_collisions,
-        METH_VARARGS, "Forces an update of collision data."
+        "collision_update_collisions", (PyCFunction) PythonModules::collision_update_collisions,
+        METH_VARARGS | METH_KEYWORDS, "Forces an update of collision data."
     },
     // INPUT
     {
