@@ -667,6 +667,10 @@ static PythonSource PYTHON_SOURCE_PHYSICS_MODULE =
     "           collided_nodes.append(Node.parse_scene_node_from_engine(scene_node=collided_node))\n"
     "       return collided_nodes\n"
     "\n"
+    "   @staticmethod\n"
+    "   def update_collisions() -> None:\n"
+    "       seika_engine_api.collision_update_collisions()\n"
+    "\n"
     "";
 
 static PythonSource PYTHON_SOURCE_SCENE_MODULE =

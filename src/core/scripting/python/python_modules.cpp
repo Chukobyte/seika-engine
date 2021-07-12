@@ -7,6 +7,7 @@
 #include "../../audio/audio_helper.h"
 #include "../../utils/helper.h"
 #include "../../signal_manager.h"
+#include "../../ecs/entity/system/collision_entity_system.h"
 
 // ENGINE
 PyObject* PythonModules::engine_exit(PyObject *self, PyObject *args, PyObject *kwargs) {
@@ -805,6 +806,13 @@ PyObject* PythonModules::collision_get_collided_nodes(PyObject *self, PyObject *
         return pCollidedNodesList;
     }
     return nullptr;
+}
+
+PyObject* PythonModules::collision_update_collisions(PyObject *self, PyObject *args) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    static CollisionEntitySystem *collisionEntitySystem = entityComponentOrchestrator->GetSystem<CollisionEntitySystem>();
+    collisionEntitySystem->ProcessCollisions();
+    Py_RETURN_NONE;
 }
 
 // INPUT
