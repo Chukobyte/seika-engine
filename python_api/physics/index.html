@@ -110,7 +110,7 @@
 <div class="section">
 <h1 id="seikaphysics">seika.physics</h1>
 <h2 id="collision">Collision</h2>
-<p>Interface for collisions between entities.</p>
+<p>Interface for collisions between entities.  This interface most likely will be updated in the near future.</p>
 <h3 id="properties">Properties</h3>
 <p>None.</p>
 <hr/>
@@ -121,6 +121,9 @@
 <pre><code class="language-python">get_collided_nodes(node: seika.node.Node) -&gt; bool:
 </code></pre>
 <p>Returns a <code>list</code> of nodes that collided with the passed in <code>node</code>.</p>
+<pre><code class="language-python">update_collisions(node: seika.node.Node) -&gt; None:
+</code></pre>
+<p>Updates collision data for a <code>node</code>.</p>
 <hr/>
 </div>
 </div>
