@@ -54,3 +54,7 @@ To help with developing within IDEs, a helper module can be installed to provide
 ### Prepackaged Builds with Editor
 
 I have recently released packages that contains both the engine and editor and can be found [here on itch.io](https://chukobyte.itch.io/seika).  The combined engine and editor will use a different version scheme and will effectively use v0.x for alpha (current state) and v1.x once it becomes stable.  This is the recommended path to build games with the engine as setting up a scene is more streamlined in the editor.
+
+### Games made with Seika
+
+[Cave Salamander](https://github.com/Chukobyte/cave-salamander)

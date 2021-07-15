@@ -14,6 +14,7 @@ struct AnimatedSpriteComponent {
     bool isPlaying;
     bool flipX = false;
     bool flipY = false;
+    Color modulate = Color(1.0f, 1.0f, 1.0f, 1.0f);
 };
 
 #endif //ANIMATED_SPRITE_COMPONENT_H

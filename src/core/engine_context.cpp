@@ -1,5 +1,6 @@
 #include "engine_context.h"
 #include "utils/json_file_helper.h"
+#include "utils/logger.h"
 
 void EngineContext::SetRunning(bool value) {
     running = value;
@@ -11,6 +12,7 @@ bool EngineContext::IsRunning() const {
 std::string EngineContext::GetEngineVersion() {
     if (engineVersion.empty()) {
         const std::string &versionFilePath = "version.json";
+        Logger::GetInstance()->Debug("version file path = " + versionFilePath);
         nlohmann::json versionJson = JsonFileHelper::LoadJsonFile(versionFilePath);
         engineVersion = versionJson["version"].get<std::string>();
     }

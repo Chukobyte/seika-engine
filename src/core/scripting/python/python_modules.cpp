@@ -7,6 +7,7 @@
 #include "../../audio/audio_helper.h"
 #include "../../utils/helper.h"
 #include "../../signal_manager.h"
+#include "../../ecs/entity/system/collision_entity_system.h"
 
 // ENGINE
 PyObject* PythonModules::engine_exit(PyObject *self, PyObject *args, PyObject *kwargs) {
@@ -27,8 +28,9 @@ PyObject* PythonModules::engine_get_fps(PyObject *self, PyObject *args) {
 // AUDIO
 PyObject* PythonModules::audio_play_music(PyObject *self, PyObject *args, PyObject *kwargs) {
     char *musicId;
-    if (PyArg_ParseTupleAndKeywords(args, kwargs, "s", audioPlayMusicKWList, &musicId)) {
-        AudioHelper::PlayMusic(std::string(musicId));
+    bool musicLoops;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "sb", audioPlayMusicKWList, &musicId, &musicLoops)) {
+        AudioHelper::PlayMusic(std::string(musicId), musicLoops);
         Py_RETURN_NONE;
     }
     return nullptr;
@@ -292,6 +294,43 @@ PyObject* PythonModules::node_signal_emit(PyObject *self, PyObject *args, PyObje
     return nullptr;
 }
 
+PyObject* PythonModules::node_get_tags(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        NodeComponent nodeComponent = entityComponentOrchestrator->GetComponent<NodeComponent>(entity);
+        CPyObject pTagList = PyList_New(0);
+        pTagList.AddRef();
+        assert(pTagList != nullptr && "node list empty!");
+        for (const std::string &tagText : nodeComponent.tags) {
+            if (PyList_Append(pTagList, Py_BuildValue("s", tagText.c_str())) == -1) {
+                PyErr_Print();
+            }
+        }
+        return pTagList;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::node_set_tags(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    PyObject *pyObject = nullptr;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "iO", nodeSetTagsKWList, &entity, &pyObject)) {
+        NodeComponent nodeComponent = entityComponentOrchestrator->GetComponent<NodeComponent>(entity);
+        std::vector<std::string> nodeTags = {};
+        for (int i = 0; i < PyList_Size(pyObject); i++) {
+            CPyObject listItem = PyList_GetItem(pyObject, i);
+            const std::string &newTag = std::string(PyUnicode_AsUTF8(listItem));
+            nodeTags.emplace_back(newTag);
+        }
+        nodeComponent.tags = nodeTags;
+        entityComponentOrchestrator->UpdateComponent<NodeComponent>(entity, nodeComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
 // NODE2D
 PyObject* PythonModules::node2D_get_position(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
@@ -407,6 +446,33 @@ PyObject* PythonModules::sprite_set_flip_v(PyObject *self, PyObject *args, PyObj
     return nullptr;
 }
 
+PyObject* PythonModules::sprite_get_modulate(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        SpriteComponent spriteComponent = entityComponentOrchestrator->GetComponent<SpriteComponent>(entity);
+        return Py_BuildValue("(ffff)",
+                             spriteComponent.modulate.r,
+                             spriteComponent.modulate.g,
+                             spriteComponent.modulate.b,
+                             spriteComponent.modulate.a);
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::sprite_set_modulate(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    float red, green, blue, alpha;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "iffff", nodeSetColorKWList, &entity, &red, &green, &blue, &alpha)) {
+        SpriteComponent spriteComponent = entityComponentOrchestrator->GetComponent<SpriteComponent>(entity);
+        spriteComponent.modulate = Color(red, green, blue, alpha);
+        entityComponentOrchestrator->UpdateComponent<SpriteComponent>(entity, spriteComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
 // ANIMATED_SPRITE
 PyObject* PythonModules::animated_sprite_play(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
@@ -462,6 +528,33 @@ PyObject* PythonModules::animated_sprite_is_playing(PyObject *self, PyObject *ar
             Py_RETURN_TRUE;
         }
         Py_RETURN_FALSE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::animated_sprite_get_modulate(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        AnimatedSpriteComponent animatedSpriteComponent = entityComponentOrchestrator->GetComponent<AnimatedSpriteComponent>(entity);
+        return Py_BuildValue("(ffff)",
+                             animatedSpriteComponent.modulate.r,
+                             animatedSpriteComponent.modulate.g,
+                             animatedSpriteComponent.modulate.b,
+                             animatedSpriteComponent.modulate.a);
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::animated_sprite_set_modulate(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    float red, green, blue, alpha;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "iffff", nodeSetColorKWList, &entity, &red, &green, &blue, &alpha)) {
+        AnimatedSpriteComponent animatedSpriteComponent = entityComponentOrchestrator->GetComponent<AnimatedSpriteComponent>(entity);
+        animatedSpriteComponent.modulate = Color(red, green, blue, alpha);
+        entityComponentOrchestrator->UpdateComponent<AnimatedSpriteComponent>(entity, animatedSpriteComponent);
+        Py_RETURN_NONE;
     }
     return nullptr;
 }
@@ -715,6 +808,17 @@ PyObject* PythonModules::collision_get_collided_nodes(PyObject *self, PyObject *
     return nullptr;
 }
 
+PyObject* PythonModules::collision_update_collisions(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    static CollisionEntitySystem *collisionEntitySystem = entityComponentOrchestrator->GetSystem<CollisionEntitySystem>();
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        collisionEntitySystem->ProcessEntityCollisions(entity);
+    }
+
+    Py_RETURN_NONE;
+}
+
 // INPUT
 PyObject* PythonModules::input_add_action(PyObject *self, PyObject *args, PyObject *kwargs) {
     static InputManager *inputManager = InputManager::GetInstance();
@@ -864,6 +968,47 @@ PyObject* PythonModules::client_send_message_to_server(PyObject *self, PyObject 
     char *pyMessage;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "s", networkSendMessageKWList, &pyMessage)) {
         networkContext->ClientSendMessageToServer(std::string(pyMessage));
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+// RENDERER
+PyObject* PythonModules::renderer_draw_texture(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static Renderer *renderer = GD::GetContainer()->renderer;
+    static AssetManager *assetManager = GD::GetContainer()->assetManager;
+    char *pyTexturePath;
+    float pySourceRectX;
+    float pySourceRectY;
+    float pySourceRectW;
+    float pySourceRectH;
+    float pyDestRectX;
+    float pyDestRectY;
+    float pyDestRectW;
+    float pyDestRectH;
+    int pyZIndex;
+    float pyRotation;
+    float pyColorRed;
+    float pyColorGreen;
+    float pyColorBlue;
+    float pyColorAlpha;
+    bool pyFlipX;
+    bool pyFlipY;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "sffffffffifffffbb", rendererDrawTextureKWList,
+                                    &pyTexturePath, &pySourceRectX, &pySourceRectY, &pySourceRectW, &pySourceRectH,
+                                    &pyDestRectX, &pyDestRectY, &pyDestRectW, &pyDestRectH,
+                                    &pyZIndex, &pyRotation, &pyColorRed, &pyColorGreen, &pyColorBlue, &pyColorAlpha,
+                                    &pyFlipX, &pyFlipY)) {
+        renderer->BatchDrawSprite(
+            assetManager->GetTexture(std::string(pyTexturePath)),
+            Rect2(pySourceRectX, pySourceRectY, pySourceRectW, pySourceRectH),
+            Rect2(pyDestRectX, pyDestRectY, pyDestRectW, pyDestRectH),
+            pyZIndex,
+            pyRotation,
+            Color(pyColorRed, pyColorGreen, pyColorBlue, pyColorAlpha),
+            pyFlipX,
+            pyFlipY
+        );
         Py_RETURN_NONE;
     }
     return nullptr;

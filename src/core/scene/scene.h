@@ -111,12 +111,19 @@ class SceneManager {
                 const float nodeDrawSourceHeight = nodeDrawSourceJson["height"].get<float>();
                 const bool nodeFlipX = nodeComponentObjectJson["flip_x"].get<bool>();
                 const bool nodeFlipY = nodeComponentObjectJson["flip_y"].get<bool>();
+                const Color nodeModulate = Color(
+                                               nodeComponentObjectJson["modulate"]["red"].get<float>(),
+                                               nodeComponentObjectJson["modulate"]["green"].get<float>(),
+                                               nodeComponentObjectJson["modulate"]["blue"].get<float>(),
+                                               nodeComponentObjectJson["modulate"]["alpha"].get<float>()
+                                           );
 
                 componentManager->AddComponent(sceneNode.entity, SpriteComponent{
                     .texture = nodeTexturePath.empty() ? nullptr : assetManager->GetTexture(nodeTexturePath),
                     .drawSource = Rect2(nodeDrawSourceX, nodeDrawSourceY, nodeDrawSourceWidth, nodeDrawSourceHeight),
                     .flipX = nodeFlipX,
-                    .flipY = nodeFlipY
+                    .flipY = nodeFlipY,
+                    .modulate = nodeModulate
                 });
                 auto signature = entityManager->GetSignature(sceneNode.entity);
                 const bool isSpriteEnabled = nodeTexturePath.empty() ? false : true;
@@ -127,6 +134,12 @@ class SceneManager {
                 const bool nodeIsPlaying = nodeComponentObjectJson["is_playing"].get<bool>();
                 const bool nodeFlipX = nodeComponentObjectJson["flip_x"].get<bool>();
                 const bool nodeFlipY = nodeComponentObjectJson["flip_y"].get<bool>();
+                const Color nodeModulate = Color(
+                                               nodeComponentObjectJson["modulate"]["red"].get<float>(),
+                                               nodeComponentObjectJson["modulate"]["green"].get<float>(),
+                                               nodeComponentObjectJson["modulate"]["blue"].get<float>(),
+                                               nodeComponentObjectJson["modulate"]["alpha"].get<float>()
+                                           );
                 nlohmann::json nodeAnimationsJsonArray = nodeComponentObjectJson["animations"].get<nlohmann::json>();
                 std::map<std::string, Animation> nodeAnimations;
 
@@ -166,7 +179,8 @@ class SceneManager {
                     .currentFrameIndex = 0,
                     .isPlaying = nodeIsPlaying,
                     .flipX = nodeFlipX,
-                    .flipY = nodeFlipY
+                    .flipY = nodeFlipY,
+                    .modulate = nodeModulate
                 });
                 auto signature = entityManager->GetSignature(sceneNode.entity);
                 // Editor won't allow animations with empty textures

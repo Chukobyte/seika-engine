@@ -14,15 +14,16 @@ class EntitySystemManager {
     std::unordered_map<const char*, EntitySystem*> systems{};
     Logger *logger = nullptr;
 
+  public:
+    EntitySystemManager() {
+        logger = Logger::GetInstance();
+    }
+
     template<typename T>
     T* GetSystem() {
         const char *typeName = typeid(T).name();
         assert(HasSystem<T>() && "System used before registered.");
-        return systems[typeName];
-    }
-  public:
-    EntitySystemManager() {
-        logger = Logger::GetInstance();
+        return (T*) systems[typeName];
     }
 
     template<typename T>

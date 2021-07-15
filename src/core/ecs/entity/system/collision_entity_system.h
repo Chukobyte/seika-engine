@@ -75,6 +75,28 @@ class CollisionEntitySystem : public EntitySystem {
         }
     }
 
+    void ProcessEntityCollisions(Entity sourceEntity) {
+        collisionContext->ClearCollisionData();
+        std::vector<Entity> collidedEntities;
+        for (Entity targetEntity : entities) {
+            if (!IsTargetCollisionEntityInExceptionList(sourceEntity, targetEntity)) {
+                Rect2 sourceCollisionRectangle = GetCollisionRectangle(sourceEntity);
+                Rect2 targetCollisionRectangle = GetCollisionRectangle(targetEntity);
+                if (CollisionResolver::DoesRectanglesCollide(sourceCollisionRectangle, targetCollisionRectangle)) {
+                    collidedEntities.emplace_back(targetEntity);
+                    // TODO: emit signal if Area2D like functionality for entering and exiting is required
+                }
+            }
+        }
+        if (collidedEntities.size() > 0) {
+            collisionContext->RegisterCollisionResult(
+            CollisionResult{
+                .sourceEntity = sourceEntity,
+                .collidedEntities = collidedEntities
+            });
+        }
+    }
+
     void Render() {
         for (Entity entity : entities) {
             Transform2DComponent transform2DComponent = componentManager->GetComponent<Transform2DComponent>(entity);

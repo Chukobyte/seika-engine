@@ -148,13 +148,19 @@ Class used to render a sprite entity.
 flip_h: bool
 ```
 
-Detemines whether the x axis is flipped.
+Determines whether the x axis is flipped.
 
 ```python
 flip_v: bool
 ```
 
-Detemines whether the y axis is flipped.
+Determines whether the y axis is flipped.
+
+```python
+modulate: seika.color.Color
+```
+
+Node's color modulation.
 
 ---
 
@@ -184,6 +190,12 @@ is_playing: bool
 ```
 
 Returns `True` if an animation is currently playing.
+
+```python
+modulate: seika.color.Color
+```
+
+Node's color modulation.
 
 ```python
 frame: int

@@ -32,6 +32,8 @@ class PythonModules {
     static PyObject* node_signal_create(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_signal_connect(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_signal_emit(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* node_get_tags(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* node_set_tags(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* node2D_get_position(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node2D_set_position(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -43,11 +45,15 @@ class PythonModules {
     static PyObject* sprite_set_flip_h(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* sprite_get_flip_v(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* sprite_set_flip_v(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* sprite_get_modulate(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* sprite_set_modulate(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* animated_sprite_play(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_set_animation(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_stop(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_is_playing(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* animated_sprite_get_modulate(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* animated_sprite_set_modulate(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_get_frame(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_set_frame(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_get_animation_frames(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -70,6 +76,7 @@ class PythonModules {
     static PyObject* collision_shape2d_set_color(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* collision_get_collided_nodes(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* collision_update_collisions(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* input_add_action(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* input_is_action_pressed(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -90,6 +97,8 @@ class PythonModules {
     static PyObject* client_connect(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* client_disconnect(PyObject* self, PyObject* args);
     static PyObject* client_send_message_to_server(PyObject* self, PyObject* args, PyObject* kwargs);
+
+    static PyObject* renderer_draw_texture(PyObject* self, PyObject* args, PyObject* kwargs);
 };
 
 static struct PyMethodDef rollApiMethods[] = {
@@ -181,6 +190,14 @@ static struct PyMethodDef rollApiMethods[] = {
         "node_signal_emit", (PyCFunction) PythonModules::node_signal_emit,
         METH_VARARGS | METH_KEYWORDS, "Emits a signal."
     },
+    {
+        "node_get_tags", (PyCFunction) PythonModules::node_get_tags,
+        METH_VARARGS | METH_KEYWORDS, "Gets a node's tags."
+    },
+    {
+        "node_set_tags", (PyCFunction) PythonModules::node_set_tags,
+        METH_VARARGS | METH_KEYWORDS, "Sets a node's tags."
+    },
     // NODE2D
     {
         "node2D_get_position", (PyCFunction) PythonModules::node2D_get_position,
@@ -219,6 +236,14 @@ static struct PyMethodDef rollApiMethods[] = {
         "sprite_set_flip_v", (PyCFunction) PythonModules::sprite_set_flip_v,
         METH_VARARGS | METH_KEYWORDS, "Sets a sprite's flip v."
     },
+    {
+        "sprite_get_modulate", (PyCFunction) PythonModules::sprite_get_modulate,
+        METH_VARARGS | METH_KEYWORDS, "Gets a sprite's color."
+    },
+    {
+        "sprite_set_modulate", (PyCFunction) PythonModules::sprite_set_modulate,
+        METH_VARARGS | METH_KEYWORDS, "Sets a sprite's color."
+    },
     // ANIMATED_SPRITE
     {
         "animated_sprite_play", (PyCFunction) PythonModules::animated_sprite_play,
@@ -235,6 +260,14 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "animated_sprite_is_playing", (PyCFunction) PythonModules::animated_sprite_is_playing,
         METH_VARARGS | METH_KEYWORDS, "Returns if an animations is playing."
+    },
+    {
+        "animated_sprite_get_modulate", (PyCFunction) PythonModules::animated_sprite_get_modulate,
+        METH_VARARGS | METH_KEYWORDS, "Gets an animated sprite's color."
+    },
+    {
+        "animated_sprite_set_modulate", (PyCFunction) PythonModules::animated_sprite_set_modulate,
+        METH_VARARGS | METH_KEYWORDS, "Sets an animated sprite's color."
     },
     {
         "animated_sprite_get_frame", (PyCFunction) PythonModules::animated_sprite_get_frame,
@@ -307,6 +340,10 @@ static struct PyMethodDef rollApiMethods[] = {
         "collision_get_collided_nodes", (PyCFunction) PythonModules::collision_get_collided_nodes,
         METH_VARARGS | METH_KEYWORDS, "Gets nodes entity collided with."
     },
+    {
+        "collision_update_collisions", (PyCFunction) PythonModules::collision_update_collisions,
+        METH_VARARGS | METH_KEYWORDS, "Forces an update of collision data."
+    },
     // INPUT
     {
         "input_add_action", (PyCFunction) PythonModules::input_add_action,
@@ -368,6 +405,11 @@ static struct PyMethodDef rollApiMethods[] = {
         "client_send_message_to_server", (PyCFunction) PythonModules::client_send_message_to_server,
         METH_VARARGS | METH_KEYWORDS, "Sends a message through the network to the server."
     },
+    // RENDERER
+    {
+        "renderer_draw_texture", (PyCFunction) PythonModules::renderer_draw_texture,
+        METH_VARARGS | METH_KEYWORDS, "Renders a texture."
+    },
 
     {nullptr, nullptr, 0,nullptr },
 };
@@ -379,7 +421,7 @@ static struct PyModuleDef seikaEngineAPIModDef = {
 
 static char *engineExitKWList[] = {"code", nullptr};
 
-static char *audioPlayMusicKWList[] = {"music_id", nullptr};
+static char *audioPlayMusicKWList[] = {"music_id", "loops", nullptr};
 static char *audioPlaySoundKWList[] = {"sound_id", nullptr};
 static char *audioSetVolumeKWList[] = {"volume", nullptr};
 
@@ -392,6 +434,7 @@ static char *nodeGetNodeKWList[] = {"name", nullptr};
 static char *nodeSignalCreateKWList[] = {"entity_id", "signal_id", nullptr};
 static char *nodeSignalConnectKWList[] = {"entity_id", "signal_id", "listener_entity_id", "function_name", nullptr};
 static char *nodeSignalEmitKWList[] = {"entity_id", "signal_id", "args", nullptr};
+static char *nodeSetTagsKWList[] = {"entity_id", "tags", nullptr};
 
 static char *nodeSetColorKWList[] = {"entity_id", "red", "green", "blue", "alpha", nullptr};
 
@@ -419,6 +462,15 @@ static char *serverStartKWList[] = {"port", nullptr};
 static char *clientConnectKWList[] = {"endpoint", "port", nullptr};
 
 static char *networkSendMessageKWList[] = {"message", nullptr};
+
+static char *rendererDrawTextureKWList[] = {"texture_path",
+                                            "source_rect_x", "source_rect_y", "source_rect_w", "source_rect_h",
+                                            "dest_rect_x", "dest_rect_y", "dest_rect_w", "dest_rect_h",
+                                            "z_index", "rotation",
+                                            "color_red", "color_green", "color_blue", "color_alpha",
+                                            "flip_x", "flip_y",
+                                            nullptr
+                                           };
 
 static PyObject* PyInit_seikaEngineAPI(void) {
     return PyModule_Create(&seikaEngineAPIModDef);

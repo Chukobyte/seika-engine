@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "utils/json_file_helper.h"
+#include "utils/logger.h"
 
 #include "color.h"
 
@@ -137,6 +138,7 @@ class ProjectProperties {
     }
 
     void LoadProjectConfigurations(const std::string projectFilePath) {
+        Logger::GetInstance()->Debug("Loading project config from path " + projectFilePath);
         nlohmann::json projectConfigurationsJson = JsonFileHelper::LoadJsonFile(projectFilePath);
 
         gameTitle = projectConfigurationsJson["game_title"].get<std::string>();
