@@ -1,148 +1,120 @@
 {
-   "game_title": "Fighting Game Proto",
-   "initial_scene": "assets/game_projects/fighter/scenes/init.sscn",
+   "game_title": "Input Test",
+   "initial_scene": "assets/game_projects/input_test/scenes/main.sscn",
    "base_resolution": {
       "width": 800,
       "height": 600
    },
-   "colliders_visible": true,
+   "colliders_visible": false,
    "target_fps": 66,
    "background_color": {
       "red": 0.1,
       "green": 0.1,
       "blue": 0.1
    },
-   "assets": [
-      {
-         "type": "texture",
-         "file_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png"
-      },
-      {
-         "type": "font",
-         "file_path": "assets/fonts/bruh.ttf",
-         "size": 60
-      },
-      {
-         "type": "font",
-         "file_path": "assets/game_projects/fighter/assets/fonts/bruh_large.ttf",
-         "size": 120
-      },
-      {
-         "type": "music",
-         "file_path": "assets/audio/music/test_music.wav"
-      },
-      {
-         "type": "sound",
-         "file_path": "assets/audio/sound/test_sound_effect.wav"
-      }
-   ],
+   "assets": [],
    "input_actions": [
       {
          "name": "quit",
          "values": [
-            "esc",
-            "joystick_button_back"
+            "esc"
          ]
       },
       {
-         "name": "one_left",
-         "values": [
-            "left",
-            "joystick_keypad_left"
-         ]
+         "name": "a_left_left",
+         "values": ["joystick_left_analog_left"]
       },
       {
-         "name": "one_right",
-         "values": [
-            "right",
-            "joystick_keypad_right"
-         ]
+         "name": "a_left_right",
+         "values": ["joystick_left_analog_right"]
       },
       {
-         "name": "one_up",
-         "values": [
-            "up",
-            "joystick_keypad_up"
-         ]
+         "name": "a_left_up",
+         "values": ["joystick_left_analog_up"]
       },
       {
-         "name": "one_down",
-         "values": [
-            "down",
-            "joystick_keypad_down"
-         ]
+         "name": "a_left_down",
+         "values": ["joystick_left_analog_down"]
       },
       {
-         "name": "one_weak_punch",
-         "values": [
-            "space",
-            "joystick_button_a"
-         ]
+         "name": "a_right_left",
+         "values": ["joystick_right_analog_left"]
       },
       {
-         "name": "two_left",
-         "values": [
-            "a"
-         ]
+         "name": "a_right_right",
+         "values": ["joystick_right_analog_right"]
       },
       {
-         "name": "two_right",
-         "values": [
-            "d"
-         ]
+         "name": "a_right_up",
+         "values": ["joystick_right_analog_up"]
       },
       {
-         "name": "two_up",
-         "values": [
-            "w"
-         ]
+         "name": "a_right_down",
+         "values": ["joystick_right_analog_down"]
       },
       {
-         "name": "two_down",
-         "values": [
-            "s"
-         ]
+         "name": "keypad_left",
+         "values": ["joystick_keypad_left"]
       },
       {
-         "name": "two_weak_punch",
-         "values": [
-            "q"
-         ]
+         "name": "keypad_right",
+         "values": ["joystick_keypad_right"]
       },
       {
-         "name": "zoom_in",
-         "values": ["o"]
+         "name": "keypad_up",
+         "values": ["joystick_keypad_up"]
       },
       {
-         "name": "zoom_out",
-         "values": ["p"]
+         "name": "keypad_down",
+         "values": ["joystick_keypad_down"]
       },
       {
-         "name": "camera_left",
-         "values": ["j"]
+         "name": "button_a",
+         "values": ["joystick_button_a"]
       },
       {
-         "name": "camera_right",
-         "values": ["l"]
+         "name": "button_b",
+         "values": ["joystick_button_b"]
       },
       {
-         "name": "camera_up",
-         "values": ["i"]
+         "name": "button_x",
+         "values": ["joystick_button_x"]
       },
       {
-         "name": "camera_down",
-         "values": ["k"]
+         "name": "button_y",
+         "values": ["joystick_button_y"]
       },
       {
-         "name": "camera_shake",
-         "values": ["g"]
+         "name": "button_start",
+         "values": ["joystick_button_start"]
       },
       {
-         "name": "confirm",
-         "values": [
-            "return",
-            "joystick_button_start"
-         ]
+         "name": "button_back",
+         "values": ["joystick_button_back"]
+      },
+      {
+         "name": "left_shoulder",
+         "values": ["joystick_left_shoulder"]
+      },
+      {
+         "name": "right_shoulder",
+         "values": ["joystick_right_shoulder"]
+      },
+      {
+         "name": "left_trigger",
+         "values": ["joystick_left_trigger"]
+      },
+      {
+         "name": "right_trigger",
+         "values": ["joystick_right_trigger"]
+      },
+      {
+         "name": "left_analog_button",
+         "values": ["joystick_left_analog"]
+      },
+      {
+         "name": "right_analog_button",
+         "values": ["joystick_right_analog"]
       }
    ]
 }

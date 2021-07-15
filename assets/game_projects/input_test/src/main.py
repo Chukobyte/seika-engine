@@ -4,8 +4,8 @@ from seika.engine import Engine
 
 
 class Main(Node):
-    def _create(self) -> None:
-        pass
+    def _start(self) -> None:
+        print("No game project selected, running default gamepad input test...")
 
     def _physics_process(self, delta_time: float) -> None:
         if Input.is_action_just_pressed(action_name="quit"):
