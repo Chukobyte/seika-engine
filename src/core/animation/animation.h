@@ -3,11 +3,11 @@
 
 #include <map>
 
-#include "../rendering/texture2d.h"
+#include "../rendering/texture.h"
 #include "../math/rect2.h"
 
 struct AnimationFrame {
-    Texture2D *texture = nullptr;
+    Texture *texture = nullptr;
     Rect2 drawSource;
     int frame;
 };

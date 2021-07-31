@@ -33,7 +33,7 @@ SpriteRenderer::SpriteRenderer(const glm::mat4 &projection) {
     shader.SetInt("sprite", 0);
 }
 
-void SpriteRenderer::Draw(Texture2D *texture2D, Rect2 sourceRectangle, Rect2 destinationRectangle, float rotation, Color color, bool flipX, bool flipY) {
+void SpriteRenderer::Draw(Texture *texture2D, Rect2 sourceRectangle, Rect2 destinationRectangle, float rotation, Color color, bool flipX, bool flipY) {
     glDepthMask(false);
 
     // 1. Translation
@@ -190,7 +190,7 @@ void Renderer::Initialize() {
     fontRenderer = new FontRenderer();
 }
 
-void Renderer::DrawSprite(Texture2D *texture2D, Rect2 sourceRectangle, Rect2 destinationRectangle, float rotation, Color color, bool flipX, bool flipY) {
+void Renderer::DrawSprite(Texture *texture2D, Rect2 sourceRectangle, Rect2 destinationRectangle, float rotation, Color color, bool flipX, bool flipY) {
     spriteRenderer->Draw(texture2D, sourceRectangle, destinationRectangle, rotation, color, flipX, flipY);
 }
 
@@ -198,7 +198,7 @@ void Renderer::DrawFont(Font *font, const std::string &text, float x, float y, f
     fontRenderer->Draw(font, text, x, y, scale, color);
 }
 
-void Renderer::BatchDrawSprite(Texture2D *texture2D, Rect2 sourceRectangle, Rect2 destinationRectangle, int zIndex, float rotation, Color color, bool flipX, bool flipY) {
+void Renderer::BatchDrawSprite(Texture *texture2D, Rect2 sourceRectangle, Rect2 destinationRectangle, int zIndex, float rotation, Color color, bool flipX, bool flipY) {
     AddSpriteToBatch(SpriteDrawBatch{
         .texture2D = texture2D,
         .sourceRectangle = sourceRectangle,

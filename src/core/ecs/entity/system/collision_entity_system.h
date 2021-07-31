@@ -13,7 +13,7 @@ class CollisionEntitySystem : public EntitySystem {
     CameraManager *cameraManager = nullptr;
     SceneManager *sceneManager = nullptr;
     Renderer *renderer = nullptr;
-    Texture2D *colliderTexture = nullptr;
+    Texture *colliderTexture = nullptr;
     Rect2 colliderDrawSource = Rect2(0.0f, 0.0f, 4.0f, 4.0f);
 
     Rect2 GetCollisionRectangle(Entity entity) {

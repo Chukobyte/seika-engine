@@ -17,6 +17,7 @@
 
 #include "scripting/python/python_script_context.h"
 #include "ecs/entity/system/timer_entity_system.h"
+#include "rendering/renderer3d.h"
 
 Game::Game() {
     logger = Logger::GetInstance();
@@ -267,6 +268,9 @@ void Game::Render() {
     }
 
     renderer->FlushBatches();
+
+    static Renderer3D *renderer3D = new Renderer3D();
+    renderer3D->Render();
 
     SDL_GL_SwapWindow(renderContext->window);
 }

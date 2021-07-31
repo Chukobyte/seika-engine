@@ -8,9 +8,9 @@
    "colliders_visible": false,
    "target_fps": 66,
    "background_color": {
-      "red": 0.1,
-      "green": 0.1,
-      "blue": 0.1
+      "red": 0.2,
+      "green": 0.3,
+      "blue": 0.3
    },
    "assets": [],
    "input_actions": [

@@ -5,7 +5,7 @@
 
 #include "../utils/logger.h"
 
-class Texture2D {
+class Texture {
   private:
     static Logger *logger;
     std::string fileName;
@@ -16,7 +16,7 @@ class Texture2D {
 
     void Generate();
   protected:
-    Texture2D() {}
+    Texture() {}
   public:
     GLuint ID = 0;
     unsigned char* data = nullptr;
@@ -32,13 +32,15 @@ class Texture2D {
     unsigned int filterMin = GL_NEAREST;
     unsigned int filterMax = GL_NEAREST;
 
-    Texture2D(const char* fileName);
+    Texture(const char* fileName);
 
-    Texture2D(const char* fileName, unsigned int wrapS, unsigned int wrapT, unsigned int filterMax, unsigned int filterMin);
+    Texture(const char* fileName, unsigned int wrapS, unsigned int wrapT, unsigned int filterMax, unsigned int filterMin);
 
-    Texture2D(void *buffer, size_t bufferSize);
+    Texture(const char* fileName, unsigned int wrapS, unsigned int wrapT, unsigned int filterMax, unsigned int filterMin, unsigned int imageFormat);
 
-    ~Texture2D();
+    Texture(void *buffer, size_t bufferSize);
+
+    ~Texture();
 
     void Bind() const;
 

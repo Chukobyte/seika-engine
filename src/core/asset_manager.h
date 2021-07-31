@@ -6,14 +6,14 @@
 
 #include <SDL2/SDL_mixer.h>
 
-#include "rendering/texture2d.h"
+#include "rendering/texture.h"
 #include "rendering/font.h"
 
 static const std::string &DEFAULT_COLLIDER_ASSET_ID = "assets/images/collider_base.png";
 
 class AssetManager {
   private:
-    std::map<std::string, Texture2D*> textures;
+    std::map<std::string, Texture*> textures;
     std::map<std::string, Font*> fonts;
     std::map<std::string, Mix_Music*> music;
     std::map<std::string, Mix_Chunk*> sounds;
@@ -25,7 +25,7 @@ class AssetManager {
     // TEXTURE
     void LoadTexture(const std::string &textureId, const std::string &filePath);
 
-    Texture2D* GetTexture(const std::string &textureId);
+    Texture* GetTexture(const std::string &textureId);
 
     // FONT
     void LoadFont(const std::string &fontId, const std::string &fontPath, int size);
