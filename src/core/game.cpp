@@ -270,8 +270,8 @@ void Game::Render() {
     renderer->FlushBatches();
 
     // TODO: Implement 3D Renderer
-//    static Renderer3D *renderer3D = new Renderer3D();
-//    renderer3D->Render();
+    static Renderer3D *renderer3D = new Renderer3D();
+    renderer3D->Render();
 
     SDL_GL_SwapWindow(renderContext->window);
 }
