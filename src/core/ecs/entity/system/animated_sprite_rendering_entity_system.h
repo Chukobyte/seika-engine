@@ -47,7 +47,7 @@ class AnimatedSpriteRenderingEntitySystem : public EntitySystem {
                         componentManager->UpdateComponent(entity, animatedSpriteComponent);
                     }
                 }
-                Camera camera = cameraManager->GetCurrentCamera();
+                Camera2D camera = cameraManager->GetCurrentCamera2D();
                 Transform2DComponent parentTransform = SceneNodeHelper::GetCombinedParentsTransforms(sceneManager, componentManager, entity);
                 Vector2 drawDestinationPosition = SpaceHandler::WorldToScreen(transform2DComponent.position + parentTransform.position, transform2DComponent.ignoreCamera);
                 Vector2 drawScale = !transform2DComponent.ignoreCamera ? transform2DComponent.scale * parentTransform.scale * camera.zoom : transform2DComponent.scale * parentTransform.scale;

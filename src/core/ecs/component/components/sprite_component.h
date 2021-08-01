@@ -3,10 +3,10 @@
 
 #include "../component.h"
 #include "../../../math/rect2.h"
-#include "../../../rendering/texture2d.h"
+#include "../../../rendering/texture.h"
 
 struct SpriteComponent {
-    Texture2D* texture = nullptr;
+    Texture* texture = nullptr;
     Rect2 drawSource;
     bool flipX = false;
     bool flipY = false;

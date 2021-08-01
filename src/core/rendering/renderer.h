@@ -8,7 +8,7 @@
 
 #include <glm/glm.hpp>
 
-#include "texture2d.h"
+#include "texture.h"
 #include "font.h"
 #include "shader/shader.h"
 #include "../color.h"
@@ -25,7 +25,7 @@ class SpriteRenderer {
   public:
     SpriteRenderer(const glm::mat4 &projection);
 
-    void Draw(Texture2D *texture2D, Rect2 sourceRectangle, Rect2 destinationRectangle, float rotation = 0.0f, Color color = Color(1.0f, 1.0f, 1.0f, 1.0f), bool flipX = false, bool flipY = false);
+    void Draw(Texture *texture2D, Rect2 sourceRectangle, Rect2 destinationRectangle, float rotation = 0.0f, Color color = Color(1.0f, 1.0f, 1.0f, 1.0f), bool flipX = false, bool flipY = false);
 
     void UpdateProjection(const glm::mat4 &projection);
 };
@@ -45,7 +45,7 @@ class FontRenderer {
 };
 
 struct SpriteDrawBatch {
-    Texture2D *texture2D = nullptr;
+    Texture *texture2D = nullptr;
     Rect2 sourceRectangle;
     Rect2 destinationRectangle;
     float rotation = 0.0f;
@@ -98,11 +98,11 @@ class Renderer {
 
     void Initialize();
 
-    void DrawSprite(Texture2D *texture2D, Rect2 sourceRectangle, Rect2 destinationRectangle, float rotation = 0.0f, Color color = Color(1.0f, 1.0f, 1.0f, 1.0f), bool flipX = false, bool flipY = false);
+    void DrawSprite(Texture *texture2D, Rect2 sourceRectangle, Rect2 destinationRectangle, float rotation = 0.0f, Color color = Color(1.0f, 1.0f, 1.0f, 1.0f), bool flipX = false, bool flipY = false);
 
     void DrawFont(Font *font, const std::string &text, float x, float y, float scale = 1.0f, Color color = Color(1.0f, 1.0f, 1.0f, 1.0f));
 
-    void BatchDrawSprite(Texture2D *texture2D, Rect2 sourceRectangle, Rect2 destinationRectangle, int zIndex = 0, float rotation = 0.0f, Color color = Color(1.0f, 1.0f, 1.0f, 1.0f), bool flipX = false, bool flipY = false);
+    void BatchDrawSprite(Texture *texture2D, Rect2 sourceRectangle, Rect2 destinationRectangle, int zIndex = 0, float rotation = 0.0f, Color color = Color(1.0f, 1.0f, 1.0f, 1.0f), bool flipX = false, bool flipY = false);
 
     void BatchDrawFont(Font *font, const std::string &text, float x, float y, int zIndex = 0, float scale = 1.0f, Color color = Color(1.0f, 1.0f, 1.0f, 1.0f));
 

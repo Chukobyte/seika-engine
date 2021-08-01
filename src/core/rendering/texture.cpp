@@ -1,28 +1,33 @@
-#include "texture2d.h"
+#include "texture.h"
 
 #include <stb_image/stb_image.h>
 
-Logger *Texture2D::logger = Logger::GetInstance();
+Logger *Texture::logger = Logger::GetInstance();
 
-Texture2D::Texture2D(const char* fileName) {
+Texture::Texture(const char* fileName) {
     Initialize(fileName);
 }
 
-Texture2D::Texture2D(const char* fileName, unsigned int wrapS, unsigned int wrapT, unsigned int filterMax, unsigned int filterMin) :
+Texture::Texture(const char* fileName, unsigned int wrapS, unsigned int wrapT, unsigned int filterMax, unsigned int filterMin) :
     wrapS(wrapS), wrapT(wrapT), filterMax(filterMax), filterMin(filterMin) {
     Initialize(fileName);
 }
 
-Texture2D::Texture2D(void *buffer, size_t bufferSize) {
+Texture::Texture(const char* fileName, unsigned int wrapS, unsigned int wrapT, unsigned int filterMax, unsigned int filterMin, unsigned int imageFormat) :
+    wrapS(wrapS), wrapT(wrapT), filterMax(filterMax), filterMin(filterMin), imageFormat(imageFormat) {
+    Initialize(fileName);
+}
+
+Texture::Texture(void *buffer, size_t bufferSize) {
     Initialize(buffer, bufferSize);
 }
 
-Texture2D::~Texture2D() {
+Texture::~Texture() {
     stbi_image_free(this->data);
     this->data = nullptr;
 }
 
-void Texture2D::Initialize(const char* fileName) {
+void Texture::Initialize(const char* fileName) {
     this->fileName = std::string(fileName);
     // load image, create texture, and generate mipmaps
     stbi_set_flip_vertically_on_load(false);
@@ -34,7 +39,7 @@ void Texture2D::Initialize(const char* fileName) {
     }
 }
 
-void Texture2D::Initialize(void *buffer, size_t bufferSize) {
+void Texture::Initialize(void *buffer, size_t bufferSize) {
     // load image, create texture, and generate mipmaps
     stbi_set_flip_vertically_on_load(false);
     this->data = stbi_load_from_memory((unsigned char*) buffer, bufferSize, &width, &height, &nrChannels, 0);
@@ -45,7 +50,7 @@ void Texture2D::Initialize(void *buffer, size_t bufferSize) {
     }
 }
 
-void Texture2D::Generate() {
+void Texture::Generate() {
     // Create texture
     glGenTextures(1, &this->ID);
     Bind();
@@ -60,16 +65,16 @@ void Texture2D::Generate() {
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Texture2D::Bind() const {
+void Texture::Bind() const {
     glBindTexture(GL_TEXTURE_2D, this->ID);
     logger->LogOpenGLError("glBindTexture");
 }
 
-std::string Texture2D::GetFilePath() const {
+std::string Texture::GetFilePath() const {
     return fileName;
 }
 
-bool Texture2D::IsValid() const {
+bool Texture::IsValid() const {
     if(this->data) {
         return true;
     }

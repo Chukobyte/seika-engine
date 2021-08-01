@@ -77,57 +77,144 @@ PyObject* PythonModules::audio_set_all_volume(PyObject *self, PyObject *args, Py
     return nullptr;
 }
 
-// CAMERA
-PyObject* PythonModules::camera_get_zoom(PyObject *self, PyObject *args) {
+// CAMERA 2D
+PyObject* PythonModules::camera2d_get_zoom(PyObject *self, PyObject *args) {
     static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
-    Camera camera = cameraManager->GetCurrentCamera();
+    Camera2D camera = cameraManager->GetCurrentCamera2D();
     return Py_BuildValue("(ff)", camera.zoom.x, camera.zoom.y);
 }
 
-PyObject* PythonModules::camera_set_zoom(PyObject *self, PyObject *args, PyObject *kwargs) {
+PyObject* PythonModules::camera2d_set_zoom(PyObject *self, PyObject *args, PyObject *kwargs) {
     static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
     float x, y;
-    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ff", cameraVector2SetKWList, &x, &y)) {
-        Camera camera = cameraManager->GetCurrentCamera();
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ff", camera2dVector2SetKWList, &x, &y)) {
+        Camera2D camera = cameraManager->GetCurrentCamera2D();
         camera.zoom = Vector2(x, y);
-        cameraManager->UpdateCurrentCamera(camera);
+        cameraManager->UpdateCurrentCamera2D(camera);
         Py_RETURN_NONE;
     }
     return nullptr;
 }
 
-PyObject* PythonModules::camera_get_viewport_position(PyObject *self, PyObject *args) {
+PyObject* PythonModules::camera2d_get_viewport_position(PyObject *self, PyObject *args) {
     static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
-    Camera camera = cameraManager->GetCurrentCamera();
+    Camera2D camera = cameraManager->GetCurrentCamera2D();
     return Py_BuildValue("(ff)", camera.viewport.x, camera.viewport.y);
 }
 
-PyObject* PythonModules::camera_set_viewport_position(PyObject *self, PyObject *args, PyObject *kwargs) {
+PyObject* PythonModules::camera2d_set_viewport_position(PyObject *self, PyObject *args, PyObject *kwargs) {
     static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
     float x, y;
-    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ff", cameraVector2SetKWList, &x, &y)) {
-        Camera camera = cameraManager->GetCurrentCamera();
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ff", camera2dVector2SetKWList, &x, &y)) {
+        Camera2D camera = cameraManager->GetCurrentCamera2D();
         camera.viewport.x = Helper::Clamp(x, camera.boundary.x, camera.boundary.w);
         camera.viewport.y = Helper::Clamp(y, camera.boundary.y, camera.boundary.h);
-        cameraManager->UpdateCurrentCamera(camera);
+        cameraManager->UpdateCurrentCamera2D(camera);
         Py_RETURN_NONE;
     }
     return nullptr;
 }
 
-PyObject* PythonModules::camera_get_offset(PyObject *self, PyObject *args) {
+PyObject* PythonModules::camera2d_get_offset(PyObject *self, PyObject *args) {
     static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
-    Camera camera = cameraManager->GetCurrentCamera();
+    Camera2D camera = cameraManager->GetCurrentCamera2D();
     return Py_BuildValue("(ff)", camera.offset.x, camera.offset.y);
 }
 
-PyObject* PythonModules::camera_set_offset(PyObject *self, PyObject *args, PyObject *kwargs) {
+PyObject* PythonModules::camera2d_set_offset(PyObject *self, PyObject *args, PyObject *kwargs) {
     static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
     float x, y;
-    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ff", cameraVector2SetKWList, &x, &y)) {
-        Camera camera = cameraManager->GetCurrentCamera();
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ff", camera2dVector2SetKWList, &x, &y)) {
+        Camera2D camera = cameraManager->GetCurrentCamera2D();
         camera.offset = Vector2(x, y);
-        cameraManager->UpdateCurrentCamera(camera);
+        cameraManager->UpdateCurrentCamera2D(camera);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+// CAMERA 3D
+PyObject* PythonModules::camera3d_move_left(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
+    float speed;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "f", camera3dMoveKWList, &speed)) {
+        Camera3D camera = cameraManager->GetCurrentCamera3D();
+        camera.position -= glm::normalize(glm::cross(camera.front.ToGLM(), camera.up.ToGLM())) * speed;
+        cameraManager->UpdateCurrentCamera3D(camera);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::camera3d_move_right(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
+    float speed;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "f", camera3dMoveKWList, &speed)) {
+        Camera3D camera = cameraManager->GetCurrentCamera3D();
+        camera.position += glm::normalize(glm::cross(camera.front.ToGLM(), camera.up.ToGLM())) * speed;
+        cameraManager->UpdateCurrentCamera3D(camera);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::camera3d_move_up(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
+    float speed;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "f", camera3dMoveKWList, &speed)) {
+        Camera3D camera = cameraManager->GetCurrentCamera3D();
+        camera.position += camera.front * speed;
+        cameraManager->UpdateCurrentCamera3D(camera);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::camera3d_move_down(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
+    float speed;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "f", camera3dMoveKWList, &speed)) {
+        Camera3D camera = cameraManager->GetCurrentCamera3D();
+        camera.position -= camera.front * speed;
+        cameraManager->UpdateCurrentCamera3D(camera);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::camera3d_add_yaw(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
+    float yaw;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "f", camera3dAddYawKWList, &yaw)) {
+        Camera3D camera = cameraManager->GetCurrentCamera3D();
+        camera.yaw += yaw;
+        camera.front.x = cos(glm::radians(camera.yaw)) * cos(glm::radians(camera.pitch));
+        camera.front.y = sin(glm::radians(camera.pitch));
+        camera.front.z = sin(glm::radians(camera.yaw)) * cos(glm::radians(camera.pitch));
+        camera.front.Normalize();
+        cameraManager->UpdateCurrentCamera3D(camera);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::camera3d_add_pitch(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
+    float pitch;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "f", camera3dAddPitchKWList, &pitch)) {
+        Camera3D camera = cameraManager->GetCurrentCamera3D();
+        if (pitch > 89.0f) {
+            pitch = 89.0f;
+        }
+        if (pitch < -89.0f) {
+            pitch = -89.0f;
+        }
+        camera.pitch += pitch;
+        camera.front.x = cos(glm::radians(camera.yaw)) * cos(glm::radians(camera.pitch));
+        camera.front.y = sin(glm::radians(camera.pitch));
+        camera.front.z = sin(glm::radians(camera.yaw)) * cos(glm::radians(camera.pitch));
+        camera.front.Normalize();
+        cameraManager->UpdateCurrentCamera3D(camera);
         Py_RETURN_NONE;
     }
     return nullptr;

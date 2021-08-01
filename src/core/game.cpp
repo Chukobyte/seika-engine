@@ -17,6 +17,7 @@
 
 #include "scripting/python/python_script_context.h"
 #include "ecs/entity/system/timer_entity_system.h"
+#include "rendering/renderer3d.h"
 
 Game::Game() {
     logger = Logger::GetInstance();
@@ -191,9 +192,9 @@ void Game::Update() {
     // Change Scene
     if (entityComponentOrchestrator->HasSceneToSwitchTo()) {
         CameraManager *cameraManager = GD::GetContainer()->cameraManager;
-        Camera currentCamera = cameraManager->GetCurrentCamera();
+        Camera2D currentCamera = cameraManager->GetCurrentCamera2D();
         currentCamera.viewport = Vector2(0.0f, 0.0f);
-        cameraManager->UpdateCurrentCamera(currentCamera);
+        cameraManager->UpdateCurrentCamera2D(currentCamera);
         entityComponentOrchestrator->ChangeSceneTo();
     }
 
@@ -267,6 +268,10 @@ void Game::Render() {
     }
 
     renderer->FlushBatches();
+
+    // TODO: Implement 3D Renderer
+//    static Renderer3D *renderer3D = new Renderer3D();
+//    renderer3D->Render();
 
     SDL_GL_SwapWindow(renderContext->window);
 }

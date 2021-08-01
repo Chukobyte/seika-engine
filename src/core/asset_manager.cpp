@@ -12,12 +12,12 @@ AssetManager::AssetManager() {
 
 // TEXTURE
 void AssetManager::LoadTexture(const std::string &textureId, const std::string &filePath) {
-    Texture2D *texture = new Texture2D(filePath.c_str());
+    Texture *texture = new Texture(filePath.c_str());
     assert(texture->data != nullptr);
     textures.emplace(textureId, texture);
 }
 
-Texture2D* AssetManager::GetTexture(const std::string &textureId) {
+Texture* AssetManager::GetTexture(const std::string &textureId) {
     assert(textures.count(textureId) > 0 && "Texture Id not found!");
     return textures[textureId];
 }

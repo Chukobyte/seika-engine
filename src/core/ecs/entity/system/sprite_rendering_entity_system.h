@@ -32,7 +32,7 @@ class SpriteRenderingEntitySystem : public EntitySystem {
             for (Entity entity : entities) {
                 Transform2DComponent transform2DComponent = componentManager->GetComponent<Transform2DComponent>(entity);
                 SpriteComponent spriteComponent = componentManager->GetComponent<SpriteComponent>(entity);
-                Camera camera = cameraManager->GetCurrentCamera();
+                Camera2D camera = cameraManager->GetCurrentCamera2D();
                 Transform2DComponent parentTransform = SceneNodeHelper::GetCombinedParentsTransforms(sceneManager, componentManager, entity);
                 Vector2 drawDestinationPosition = SpaceHandler::WorldToScreen(transform2DComponent.position + parentTransform.position, transform2DComponent.ignoreCamera);
                 Vector2 drawScale = !transform2DComponent.ignoreCamera ? transform2DComponent.scale * parentTransform.scale * camera.zoom : transform2DComponent.scale * parentTransform.scale;

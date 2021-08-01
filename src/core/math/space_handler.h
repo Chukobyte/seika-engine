@@ -10,7 +10,7 @@ class SpaceHandler {
             return worldPosition;
         }
         static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
-        Camera camera = cameraManager->GetCurrentCamera();
+        Camera2D camera = cameraManager->GetCurrentCamera2D();
         return (worldPosition - camera.viewport + camera.offset) * camera.zoom;
     }
 
@@ -19,7 +19,7 @@ class SpaceHandler {
             return screenPosition;
         }
         static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
-        Camera camera = cameraManager->GetCurrentCamera();
+        Camera2D camera = cameraManager->GetCurrentCamera2D();
         return (screenPosition - camera.viewport + camera.offset) * camera.zoom;
     }
 };
