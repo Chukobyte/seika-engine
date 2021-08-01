@@ -17,8 +17,11 @@ Renderer3D::Renderer3D() {
     glBindVertexArray(cube.VAO);
 
     // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*) nullptr);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*) nullptr);
     glEnableVertexAttribArray(0);
+    // normal attribute
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*) (3 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(1);
 
     // LIGHT
     glGenVertexArrays(1, &light.VAO);
@@ -27,7 +30,7 @@ Renderer3D::Renderer3D() {
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
     // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*) nullptr);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*) nullptr);
     glEnableVertexAttribArray(0);
 
     // Shader
@@ -50,10 +53,21 @@ void Renderer3D::Render() {
     // world transformation
     glm::mat4 model = glm::mat4(1.0f);
 
+    // Update light position
+    float time = SDL_GetTicks() / 256.0f;
+//    light.position.x = 1.0f + sin(time) * 2.0f;
+    light.position.x = sin(time) * 2.0f;
+    light.position.y = sin(time / 2.0f) * 1.0f;
+//    light.position.z = -1.0f + cos(time) * 2.0f;
+    light.position.z = cos(time) * 2.0f;
+
     // CUBE
     cube.shader.Use();
-    cube.shader.SetVec3Float("objectColor", Color(1.0f, 0.5f, 0.31f));
-    cube.shader.SetVec3Float("lightColor", Color(1.0f, 1.0f, 1.0f));
+    cube.shader.SetVec3Float("objectColor", cube.color);
+    cube.shader.SetVec3Float("lightColor", light.color);
+    cube.shader.SetVec3Float("lightPos", light.position);
+    cube.shader.SetVec3Float("viewPos", camera.position);
+
     cube.shader.SetMatrix4Float("projection", projection);
     cube.shader.SetMatrix4Float("view", view);
     cube.shader.SetMatrix4Float("model", model);
