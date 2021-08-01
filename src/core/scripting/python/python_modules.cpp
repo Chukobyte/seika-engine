@@ -189,7 +189,7 @@ PyObject* PythonModules::camera3d_add_yaw(PyObject *self, PyObject *args, PyObje
         Camera3D camera = cameraManager->GetCurrentCamera3D();
         camera.yaw += yaw;
         camera.front.x = cos(glm::radians(camera.yaw)) * cos(glm::radians(camera.pitch));
-        camera.front.y = cos(glm::radians(camera.pitch));
+        camera.front.y = sin(glm::radians(camera.pitch));
         camera.front.z = sin(glm::radians(camera.yaw)) * cos(glm::radians(camera.pitch));
         camera.front.Normalize();
         cameraManager->UpdateCurrentCamera3D(camera);
@@ -211,7 +211,7 @@ PyObject* PythonModules::camera3d_add_pitch(PyObject *self, PyObject *args, PyOb
         }
         camera.pitch += pitch;
         camera.front.x = cos(glm::radians(camera.yaw)) * cos(glm::radians(camera.pitch));
-        camera.front.y = cos(glm::radians(camera.pitch));
+        camera.front.y = sin(glm::radians(camera.pitch));
         camera.front.z = sin(glm::radians(camera.yaw)) * cos(glm::radians(camera.pitch));
         camera.front.Normalize();
         cameraManager->UpdateCurrentCamera3D(camera);
