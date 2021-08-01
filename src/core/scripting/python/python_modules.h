@@ -29,6 +29,8 @@ class PythonModules {
     static PyObject* camera3d_move_right(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* camera3d_move_up(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* camera3d_move_down(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* camera3d_add_yaw(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* camera3d_add_pitch(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* node_new(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_add_child(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -182,6 +184,14 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "camera3d_move_down", (PyCFunction) PythonModules::camera3d_move_down,
         METH_VARARGS | METH_KEYWORDS, "Move camera down."
+    },
+    {
+        "camera3d_add_yaw", (PyCFunction) PythonModules::camera3d_add_yaw,
+        METH_VARARGS | METH_KEYWORDS, "Add yaw to camera."
+    },
+    {
+        "camera3d_add_pitch", (PyCFunction) PythonModules::camera3d_add_pitch,
+        METH_VARARGS | METH_KEYWORDS, "Add pitch to camera."
     },
     // NODE
     {
@@ -450,6 +460,8 @@ static char *audioSetVolumeKWList[] = {"volume", nullptr};
 static char *camera2dVector2SetKWList[] = {"x", "y", nullptr};
 
 static char *camera3dMoveKWList[] = {"speed", nullptr};
+static char *camera3dAddYawKWList[] = {"yaw", nullptr};
+static char *camera3dAddPitchKWList[] = {"pitch", nullptr};
 
 static char *nodeGetEntityKWList[] = {"entity_id", nullptr};
 static char *nodeNewKWList[] = {"class_path", "class_name", "node_type", nullptr};

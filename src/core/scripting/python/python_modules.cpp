@@ -182,6 +182,44 @@ PyObject* PythonModules::camera3d_move_down(PyObject *self, PyObject *args, PyOb
     return nullptr;
 }
 
+PyObject* PythonModules::camera3d_add_yaw(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
+    float yaw;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "f", camera3dAddYawKWList, &yaw)) {
+        Camera3D camera = cameraManager->GetCurrentCamera3D();
+        camera.yaw += yaw;
+        camera.front.x = cos(glm::radians(camera.yaw)) * cos(glm::radians(camera.pitch));
+        camera.front.y = cos(glm::radians(camera.pitch));
+        camera.front.z = sin(glm::radians(camera.yaw)) * cos(glm::radians(camera.pitch));
+        camera.front.Normalize();
+        cameraManager->UpdateCurrentCamera3D(camera);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::camera3d_add_pitch(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
+    float pitch;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "f", camera3dAddPitchKWList, &pitch)) {
+        Camera3D camera = cameraManager->GetCurrentCamera3D();
+        if (pitch > 89.0f) {
+            pitch = 89.0f;
+        }
+        if (pitch < -89.0f) {
+            pitch = -89.0f;
+        }
+        camera.pitch += pitch;
+        camera.front.x = cos(glm::radians(camera.yaw)) * cos(glm::radians(camera.pitch));
+        camera.front.y = cos(glm::radians(camera.pitch));
+        camera.front.z = sin(glm::radians(camera.yaw)) * cos(glm::radians(camera.pitch));
+        camera.front.Normalize();
+        cameraManager->UpdateCurrentCamera3D(camera);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
 // NODE
 PyObject* PythonModules::node_new(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;

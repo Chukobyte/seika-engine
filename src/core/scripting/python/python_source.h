@@ -316,7 +316,15 @@ static PythonSource PYTHON_SOURCE_CAMERA_MODULE =
     "\n"
     "   @staticmethod\n"
     "   def move_down(speed: float) -> None:\n"
-    "       seika_engine_api.camera3d_move_down(speed=speed)"
+    "       seika_engine_api.camera3d_move_down(speed=speed)\n"
+    "\n"
+    "   @staticmethod\n"
+    "   def add_yaw(yaw: float) -> None:\n"
+    "       seika_engine_api.camera3d_add_yaw(yaw=yaw)\n"
+    "\n"
+    "   @staticmethod\n"
+    "   def add_pitch(pitch: float) -> None:\n"
+    "       seika_engine_api.camera3d_add_pitch(pitch=pitch)\n"
     "\n"
     "";
 

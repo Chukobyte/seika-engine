@@ -29,13 +29,13 @@ class Main(Node):
             Camera3D.move_down(speed=camera_move_speed)
 
         if Input.is_action_pressed(action_name="a_right_left"):
-            print("Right Analog pressed left")
+            Camera3D.add_yaw(yaw=-1.0)
 
         if Input.is_action_pressed(action_name="a_right_right"):
-            print("Right Analog pressed right")
+            Camera3D.add_yaw(yaw=1.0)
 
         if Input.is_action_pressed(action_name="a_right_up"):
-            print("Right Analog pressed up")
+            Camera3D.add_pitch(pitch=-1.0)
 
         if Input.is_action_pressed(action_name="a_right_down"):
-            print("Right Analog pressed down")
+            Camera3D.add_pitch(pitch=1.0)
