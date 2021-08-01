@@ -65,9 +65,9 @@ void Renderer3D::Render() {
     // camera/view transformation
     static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
     Camera3D camera = cameraManager->GetCurrentCamera3D();
-    glm::mat4 view = glm::lookAt(glm::vec3(camera.position.x, camera.position.y, camera.position.z),
-                                 glm::vec3(camera.position.x + camera.front.x, camera.position.y + camera.front.y, camera.position.z + camera.front.z),
-                                 glm::vec3(camera.up.x, camera.up.y, camera.up.z));
+    glm::mat4 view = glm::lookAt(camera.position.ToGLM(),
+                                 camera.position.ToGLM() + camera.front.ToGLM(),
+                                 camera.up.ToGLM());
     shader.SetMatrix4Float("view", view);
 
     // render boxes
@@ -78,7 +78,7 @@ void Renderer3D::Render() {
     for (unsigned int i = 0; i < 10; i++) {
         // calculate the model matrix for each object and pass it to shader before drawing
         glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-        model = glm::translate(model, glm::vec3(cubePositions[i].x, cubePositions[i].y, cubePositions[i].z));
+        model = glm::translate(model, cubePositions[i].ToGLM());
         float angle = 20.0f * i + (SDL_GetTicks() / 5.0f);
         model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
         shader.SetMatrix4Float("model", model);

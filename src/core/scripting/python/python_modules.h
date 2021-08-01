@@ -18,12 +18,17 @@ class PythonModules {
     static PyObject* audio_set_sound_volume(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* audio_set_all_volume(PyObject* self, PyObject* args, PyObject* kwargs);
 
-    static PyObject* camera_get_zoom(PyObject* self, PyObject* args);
-    static PyObject* camera_set_zoom(PyObject* self, PyObject* args, PyObject* kwargs);
-    static PyObject* camera_get_viewport_position(PyObject* self, PyObject* args);
-    static PyObject* camera_set_viewport_position(PyObject* self, PyObject* args, PyObject* kwargs);
-    static PyObject* camera_get_offset(PyObject* self, PyObject* args);
-    static PyObject* camera_set_offset(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* camera2d_get_zoom(PyObject* self, PyObject* args);
+    static PyObject* camera2d_set_zoom(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* camera2d_get_viewport_position(PyObject* self, PyObject* args);
+    static PyObject* camera2d_set_viewport_position(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* camera2d_get_offset(PyObject* self, PyObject* args);
+    static PyObject* camera2d_set_offset(PyObject* self, PyObject* args, PyObject* kwargs);
+
+    static PyObject* camera3d_move_left(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* camera3d_move_right(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* camera3d_move_up(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* camera3d_move_down(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* node_new(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_add_child(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -136,30 +141,47 @@ static struct PyMethodDef rollApiMethods[] = {
         "audio_set_all_volume", (PyCFunction) PythonModules::audio_set_all_volume,
         METH_VARARGS | METH_KEYWORDS, "Sets all sound volume."
     },
-    // CAMERA
+    // CAMERA 2D
     {
-        "camera_get_zoom", PythonModules::camera_get_zoom,
+        "camera2d_get_zoom", PythonModules::camera2d_get_zoom,
         METH_VARARGS, "Get camera's zoom."
     },
     {
-        "camera_set_zoom", (PyCFunction) PythonModules::camera_set_zoom,
+        "camera2d_set_zoom", (PyCFunction) PythonModules::camera2d_set_zoom,
         METH_VARARGS | METH_KEYWORDS, "Set camera's zoom."
     },
     {
-        "camera_get_viewport_position", PythonModules::camera_get_viewport_position,
+        "camera2d_get_viewport_position", PythonModules::camera2d_get_viewport_position,
         METH_VARARGS, "Get viewport's position."
     },
     {
-        "camera_set_viewport_position", (PyCFunction) PythonModules::camera_set_viewport_position,
+        "camera2d_set_viewport_position", (PyCFunction) PythonModules::camera2d_set_viewport_position,
         METH_VARARGS | METH_KEYWORDS, "Set viewport's position."
     },
     {
-        "camera_get_offset", PythonModules::camera_get_offset,
+        "camera2d_get_offset", PythonModules::camera2d_get_offset,
         METH_VARARGS, "Get camera's offset."
     },
     {
-        "camera_set_offset", (PyCFunction) PythonModules::camera_set_offset,
+        "camera2d_set_offset", (PyCFunction) PythonModules::camera2d_set_offset,
         METH_VARARGS | METH_KEYWORDS, "Set camera's offset."
+    },
+    // CAMERA 3D
+    {
+        "camera3d_move_left", (PyCFunction) PythonModules::camera3d_move_left,
+        METH_VARARGS | METH_KEYWORDS, "Move camera left."
+    },
+    {
+        "camera3d_move_right", (PyCFunction) PythonModules::camera3d_move_right,
+        METH_VARARGS | METH_KEYWORDS, "Move camera right."
+    },
+    {
+        "camera3d_move_up", (PyCFunction) PythonModules::camera3d_move_up,
+        METH_VARARGS | METH_KEYWORDS, "Move camera up."
+    },
+    {
+        "camera3d_move_down", (PyCFunction) PythonModules::camera3d_move_down,
+        METH_VARARGS | METH_KEYWORDS, "Move camera down."
     },
     // NODE
     {
@@ -425,7 +447,9 @@ static char *audioPlayMusicKWList[] = {"music_id", "loops", nullptr};
 static char *audioPlaySoundKWList[] = {"sound_id", nullptr};
 static char *audioSetVolumeKWList[] = {"volume", nullptr};
 
-static char *cameraVector2SetKWList[] = {"x", "y", nullptr};
+static char *camera2dVector2SetKWList[] = {"x", "y", nullptr};
+
+static char *camera3dMoveKWList[] = {"speed", nullptr};
 
 static char *nodeGetEntityKWList[] = {"entity_id", nullptr};
 static char *nodeNewKWList[] = {"class_path", "class_name", "node_type", nullptr};

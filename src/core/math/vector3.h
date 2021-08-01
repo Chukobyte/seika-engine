@@ -4,6 +4,8 @@
 #include <iostream>
 #include <math.h>
 
+#include <glm/glm.hpp>
+
 class Vector3 {
   public:
     float x;
@@ -18,8 +20,36 @@ class Vector3 {
         return Vector3(this->x + otherVector.x, this->y + otherVector.y, this->z + otherVector.z);
     }
 
+    Vector3 operator+=(const Vector3 &otherVector) {
+        this->x += otherVector.x;
+        this->y += otherVector.y;
+        this->z += otherVector.z;
+        return *this;
+    }
+
+    Vector3 operator+=(const glm::vec3 &otherVector) {
+        this->x += otherVector.x;
+        this->y += otherVector.y;
+        this->z += otherVector.z;
+        return *this;
+    }
+
     Vector3 operator-(const Vector3 &otherVector) {
         return Vector3(this->x - otherVector.x, this->y - otherVector.y, this->z - otherVector.z);
+    }
+
+    Vector3 operator-=(const Vector3 &otherVector) {
+        this->x -= otherVector.x;
+        this->y -= otherVector.y;
+        this->z -= otherVector.z;
+        return *this;
+    }
+
+    Vector3 operator-=(const glm::vec3 &otherVector) {
+        this->x -= otherVector.x;
+        this->y -= otherVector.y;
+        this->z -= otherVector.z;
+        return *this;
     }
 
     Vector3 operator*(const Vector3 &otherVector) {
@@ -28,6 +58,10 @@ class Vector3 {
 
     Vector3 operator/(const Vector3 &otherVector) {
         return Vector3(this->x / otherVector.x, this->y / otherVector.y, this->z / otherVector.z);
+    }
+
+    Vector3 operator*(float value) {
+        return Vector3(this->x * value, this->y * value, this->z * value);
     }
 
     Vector3 operator/(float value) {
@@ -69,6 +103,10 @@ class Vector3 {
 
     Vector3 Lerp(Vector3 otherVector, float amount) {
         return *this + (otherVector - *this) * Vector3(amount, amount, amount);
+    }
+
+    glm::vec3 ToGLM() {
+        return glm::vec3(x, y, z);
     }
 
     friend std::ostream& operator<<(std::ostream& os, const Vector3 &v);
