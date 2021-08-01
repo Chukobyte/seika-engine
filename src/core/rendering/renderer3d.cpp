@@ -29,14 +29,14 @@ Renderer3D::Renderer3D() {
     shader.SetInt("texture2", 1);
 
     // Load Textures
-    containerTexture = new Texture("temp/assets/container.jpg",
+    containerTexture = new Texture("assets/game_projects/3d_test/assets/container.jpg",
                                    GL_REPEAT,
                                    GL_REPEAT,
                                    GL_LINEAR,
                                    GL_LINEAR,
                                    GL_RGB);
 
-    awesomeFaceTexture = new Texture("temp/assets/awesomeface.png",
+    awesomeFaceTexture = new Texture("assets/game_projects/3d_test/assets/awesomeface.png",
                                      GL_REPEAT,
                                      GL_REPEAT,
                                      GL_LINEAR,

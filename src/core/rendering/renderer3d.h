@@ -7,6 +7,7 @@
 #include "shader/shader.h"
 #include "../math/vector3.h"
 
+// TODO: Finish 3D Renderer (on the feature list)
 class Renderer3D {
   private:
     GLuint VBO;

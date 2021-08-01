@@ -1,6 +1,6 @@
 {
-   "game_title": "3D Test",
-   "initial_scene": "assets/game_projects/3d_test/scenes/main.sscn",
+   "game_title": "Input Test",
+   "initial_scene": "assets/game_projects/input_test/scenes/main.sscn",
    "base_resolution": {
       "width": 800,
       "height": 600
@@ -8,9 +8,9 @@
    "colliders_visible": false,
    "target_fps": 66,
    "background_color": {
-      "red": 0.2,
-      "green": 0.3,
-      "blue": 0.3
+      "red": 0.1,
+      "green": 0.1,
+      "blue": 0.1
    },
    "assets": [],
    "input_actions": [
@@ -22,59 +22,35 @@
       },
       {
          "name": "a_left_left",
-         "values": [
-            "a",
-            "joystick_left_analog_left"
-         ]
+         "values": ["joystick_left_analog_left"]
       },
       {
          "name": "a_left_right",
-         "values": [
-            "d",
-            "joystick_left_analog_right"
-         ]
+         "values": ["joystick_left_analog_right"]
       },
       {
          "name": "a_left_up",
-         "values": [
-            "w",
-            "joystick_left_analog_up"
-         ]
+         "values": ["joystick_left_analog_up"]
       },
       {
          "name": "a_left_down",
-         "values": [
-            "s",
-            "joystick_left_analog_down"
-         ]
+         "values": ["joystick_left_analog_down"]
       },
       {
          "name": "a_right_left",
-         "values": [
-            "left",
-            "joystick_right_analog_left"
-         ]
+         "values": ["joystick_right_analog_left"]
       },
       {
          "name": "a_right_right",
-         "values": [
-            "right",
-            "joystick_right_analog_right"
-         ]
+         "values": ["joystick_right_analog_right"]
       },
       {
          "name": "a_right_up",
-         "values": [
-            "up",
-            "joystick_right_analog_up"
-         ]
+         "values": ["joystick_right_analog_up"]
       },
       {
          "name": "a_right_down",
-         "values": [
-            "down",
-            "joystick_right_analog_down"
-         ]
+         "values": ["joystick_right_analog_down"]
       },
       {
          "name": "keypad_left",
