@@ -29,7 +29,7 @@ class TextRenderingEntitySystem : public EntitySystem {
         if (IsEnabled()) {
             for (Entity entity : entities) {
                 Transform2DComponent transform2DComponent = componentManager->GetComponent<Transform2DComponent>(entity);
-                Camera camera = cameraManager->GetCurrentCamera();
+                Camera2D camera = cameraManager->GetCurrentCamera2D();
                 Transform2DComponent parentTransform = SceneNodeHelper::GetCombinedParentsTransforms(sceneManager, componentManager, entity);
                 Vector2 textLabelPosition = SpaceHandler::WorldToScreen(transform2DComponent.position + parentTransform.position, transform2DComponent.ignoreCamera);
                 TextLabelComponent textLabelComponent = componentManager->GetComponent<TextLabelComponent>(entity);

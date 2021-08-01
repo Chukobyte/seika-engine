@@ -15,9 +15,6 @@ class Renderer3D {
     Texture *awesomeFaceTexture = nullptr;
     Texture *containerTexture = nullptr;
     float fieldOfView = 45.0f;
-    Vector3 cameraPos   = Vector3(0.0f, 0.0f, 3.0f);
-    Vector3 cameraFront = Vector3(0.0f, 0.0f, -1.0f);
-    Vector3 cameraUp    = Vector3(0.0f, 1.0f, 0.0f);
     GLfloat vertices[180] = {-0.5f, -0.5f, -0.5f,  0.0f, 0.0f, // Back face , bottom-left
                              0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right
                              0.5f, -0.5f, -0.5f,  1.0f, 0.0f, // bottom-right

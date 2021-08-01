@@ -110,7 +110,7 @@ class CollisionEntitySystem : public EntitySystem {
                                                   Vector2(transform2DComponent.scale.x * parentTransform.scale.x * colliderComponent.collider.w,
                                                           transform2DComponent.scale.y * parentTransform.scale.y * colliderComponent.collider.h));
             if (!transform2DComponent.ignoreCamera) {
-                Camera camera = cameraManager->GetCurrentCamera();
+                Camera2D camera = cameraManager->GetCurrentCamera2D();
                 colliderDrawDestination.w *= camera.zoom.x;
                 colliderDrawDestination.h *= camera.zoom.y;
             }

@@ -1,6 +1,6 @@
 {
-   "game_title": "Input Test",
-   "initial_scene": "assets/game_projects/input_test/scenes/main.sscn",
+   "game_title": "3D Test",
+   "initial_scene": "assets/game_projects/3d_test/scenes/main.sscn",
    "base_resolution": {
       "width": 800,
       "height": 600

@@ -192,9 +192,9 @@ void Game::Update() {
     // Change Scene
     if (entityComponentOrchestrator->HasSceneToSwitchTo()) {
         CameraManager *cameraManager = GD::GetContainer()->cameraManager;
-        Camera currentCamera = cameraManager->GetCurrentCamera();
+        Camera2D currentCamera = cameraManager->GetCurrentCamera2D();
         currentCamera.viewport = Vector2(0.0f, 0.0f);
-        cameraManager->UpdateCurrentCamera(currentCamera);
+        cameraManager->UpdateCurrentCamera2D(currentCamera);
         entityComponentOrchestrator->ChangeSceneTo();
     }
 

@@ -2,6 +2,8 @@
 
 #include <SDL2/SDL.h>
 
+#include "../global_dependencies.h"
+
 Renderer3D::Renderer3D() {
     glEnable(GL_DEPTH_TEST);
     // Buffer Setup
@@ -61,9 +63,11 @@ void Renderer3D::Render() {
     shader.SetMatrix4Float("projection", projection);
 
     // camera/view transformation
-    glm::mat4 view = glm::lookAt(glm::vec3(cameraPos.x, cameraPos.y, cameraPos.z),
-                                 glm::vec3(cameraPos.x + cameraFront.x, cameraPos.y + cameraFront.y, cameraPos.z + cameraFront.z),
-                                 glm::vec3(cameraUp.x, cameraUp.y, cameraUp.z));
+    static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
+    Camera3D camera = cameraManager->GetCurrentCamera3D();
+    glm::mat4 view = glm::lookAt(glm::vec3(camera.position.x, camera.position.y, camera.position.z),
+                                 glm::vec3(camera.position.x + camera.front.x, camera.position.y + camera.front.y, camera.position.z + camera.front.z),
+                                 glm::vec3(camera.up.x, camera.up.y, camera.up.z));
     shader.SetMatrix4Float("view", view);
 
     // render boxes
@@ -75,7 +79,6 @@ void Renderer3D::Render() {
         // calculate the model matrix for each object and pass it to shader before drawing
         glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
         model = glm::translate(model, glm::vec3(cubePositions[i].x, cubePositions[i].y, cubePositions[i].z));
-//            float angle = 20.0f * i;
         float angle = 20.0f * i + (SDL_GetTicks() / 5.0f);
         model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
         shader.SetMatrix4Float("model", model);

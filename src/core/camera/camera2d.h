@@ -1,5 +1,5 @@
-#ifndef CAMERA_H
-#define CAMERA_H
+#ifndef CAMERA2D_H
+#define CAMERA2D_H
 
 #include "../math/vector2.h"
 #include "../math/rect2.h"
@@ -11,7 +11,7 @@ enum _CameraMode {
     CameraMode_FOCUS_ON_NODE = 1,
 };
 
-struct Camera {
+struct Camera2D {
     unsigned int id;
     CameraMode mode = CameraMode_FREE;
     Rect2 boundary = Rect2(-10000000.0f, -10000000.0f, 10000000.0f, 10000000.0f);
@@ -20,4 +20,4 @@ struct Camera {
     Vector2 offset = Vector2(0.0f, 0.0f);
 };
 
-#endif //CAMERA_H
+#endif //CAMERA2D_H

@@ -80,7 +80,7 @@ PyObject* PythonModules::audio_set_all_volume(PyObject *self, PyObject *args, Py
 // CAMERA
 PyObject* PythonModules::camera_get_zoom(PyObject *self, PyObject *args) {
     static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
-    Camera camera = cameraManager->GetCurrentCamera();
+    Camera2D camera = cameraManager->GetCurrentCamera2D();
     return Py_BuildValue("(ff)", camera.zoom.x, camera.zoom.y);
 }
 
@@ -88,9 +88,9 @@ PyObject* PythonModules::camera_set_zoom(PyObject *self, PyObject *args, PyObjec
     static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
     float x, y;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "ff", cameraVector2SetKWList, &x, &y)) {
-        Camera camera = cameraManager->GetCurrentCamera();
+        Camera2D camera = cameraManager->GetCurrentCamera2D();
         camera.zoom = Vector2(x, y);
-        cameraManager->UpdateCurrentCamera(camera);
+        cameraManager->UpdateCurrentCamera2D(camera);
         Py_RETURN_NONE;
     }
     return nullptr;
@@ -98,7 +98,7 @@ PyObject* PythonModules::camera_set_zoom(PyObject *self, PyObject *args, PyObjec
 
 PyObject* PythonModules::camera_get_viewport_position(PyObject *self, PyObject *args) {
     static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
-    Camera camera = cameraManager->GetCurrentCamera();
+    Camera2D camera = cameraManager->GetCurrentCamera2D();
     return Py_BuildValue("(ff)", camera.viewport.x, camera.viewport.y);
 }
 
@@ -106,10 +106,10 @@ PyObject* PythonModules::camera_set_viewport_position(PyObject *self, PyObject *
     static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
     float x, y;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "ff", cameraVector2SetKWList, &x, &y)) {
-        Camera camera = cameraManager->GetCurrentCamera();
+        Camera2D camera = cameraManager->GetCurrentCamera2D();
         camera.viewport.x = Helper::Clamp(x, camera.boundary.x, camera.boundary.w);
         camera.viewport.y = Helper::Clamp(y, camera.boundary.y, camera.boundary.h);
-        cameraManager->UpdateCurrentCamera(camera);
+        cameraManager->UpdateCurrentCamera2D(camera);
         Py_RETURN_NONE;
     }
     return nullptr;
@@ -117,7 +117,7 @@ PyObject* PythonModules::camera_set_viewport_position(PyObject *self, PyObject *
 
 PyObject* PythonModules::camera_get_offset(PyObject *self, PyObject *args) {
     static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
-    Camera camera = cameraManager->GetCurrentCamera();
+    Camera2D camera = cameraManager->GetCurrentCamera2D();
     return Py_BuildValue("(ff)", camera.offset.x, camera.offset.y);
 }
 
@@ -125,9 +125,9 @@ PyObject* PythonModules::camera_set_offset(PyObject *self, PyObject *args, PyObj
     static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
     float x, y;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "ff", cameraVector2SetKWList, &x, &y)) {
-        Camera camera = cameraManager->GetCurrentCamera();
+        Camera2D camera = cameraManager->GetCurrentCamera2D();
         camera.offset = Vector2(x, y);
-        cameraManager->UpdateCurrentCamera(camera);
+        cameraManager->UpdateCurrentCamera2D(camera);
         Py_RETURN_NONE;
     }
     return nullptr;
