@@ -55,13 +55,23 @@
 </li>
 <li class="toctree-l1 current"><a class="reference internal current" href="./">Camera</a>
 <ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="#camera">Camera</a>
+<li class="toctree-l2"><a class="reference internal" href="#camera2d">Camera2D</a>
 <ul>
 <li class="toctree-l3"><a class="reference internal" href="#properties">Properties</a>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#signals">Signals</a>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#methods">Methods</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#camera3d">Camera3D</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#properties_1">Properties</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#signals_1">Signals</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#methods_1">Methods</a>
 </li>
 </ul>
 </li>
@@ -109,8 +119,8 @@
 <div role="main">
 <div class="section">
 <h1 id="seikacamera">seika.camera</h1>
-<h2 id="camera">Camera</h2>
-<p>Engine representation of a camera.</p>
+<h2 id="camera2d">Camera2D</h2>
+<p>Engine representation of a 2D camera.</p>
 <h3 id="properties">Properties</h3>
 <p>None.</p>
 <hr/>
@@ -136,6 +146,28 @@
 <pre><code class="language-python">get_offset() -&gt; seika.math.Vector2:
 </code></pre>
 <p>Gets the camera's offset.</p>
+<hr/>
+<h2 id="camera3d">Camera3D</h2>
+<p>Engine representation of a 3D camera.</p>
+<h3 id="properties_1">Properties</h3>
+<p>None.</p>
+<hr/>
+<h3 id="signals_1">Signals</h3>
+<p>None.</p>
+<hr/>
+<h3 id="methods_1">Methods</h3>
+<pre><code class="language-python">move_left(speed: float) -&gt; None:
+</code></pre>
+<p>Move the camera left by a certain speed.  Should consider <code>delta_time</code>.</p>
+<pre><code class="language-python">move_right(speed: float) -&gt; None:
+</code></pre>
+<p>Move the camera right by a certain speed.  Should consider <code>delta_time</code>.</p>
+<pre><code class="language-python">move_up(speed: float) -&gt; None:
+</code></pre>
+<p>Move the camera up by a certain speed.  Should consider <code>delta_time</code>.</p>
+<pre><code class="language-python">move_down(speed: float) -&gt; None:
+</code></pre>
+<p>Move the camera down by a certain speed.  Should consider <code>delta_time</code>.</p>
 <hr/>
 </div>
 </div>
