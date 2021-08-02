@@ -45,7 +45,9 @@ Renderer3D::~Renderer3D() {
 }
 
 void Renderer3D::Render() {
-    glm::mat4 projection = glm::perspective(glm::radians(fieldOfView), 800.0f / 600.0f, 0.1f, 100.0f);
+    static ProjectProperties *projectProperties = ProjectProperties::GetInstance();
+    const float aspectRatio = projectProperties->windowWidth / projectProperties->windowHeight;
+    glm::mat4 projection = glm::perspective(glm::radians(fieldOfView), aspectRatio, 0.1f, 100.0f);
     static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
     Camera3D camera = cameraManager->GetCurrentCamera3D();
     glm::mat4 view = CameraHandler::GetCameraViewMatrix(camera);
@@ -55,17 +57,25 @@ void Renderer3D::Render() {
 
     // Update light position
     float time = SDL_GetTicks() / 256.0f;
-//    light.position.x = 1.0f + sin(time) * 2.0f;
     light.position.x = sin(time) * 2.0f;
     light.position.y = sin(time / 2.0f) * 1.0f;
-//    light.position.z = -1.0f + cos(time) * 2.0f;
     light.position.z = cos(time) * 2.0f;
+
+    light.material.diffuse = light.color * 0.5f;
+    light.material.ambient = light.material.diffuse * 0.2f;
 
     // CUBE
     cube.shader.Use();
-    cube.shader.SetVec3Float("objectColor", cube.color);
-    cube.shader.SetVec3Float("lightColor", light.color);
-    cube.shader.SetVec3Float("lightPos", light.position);
+    cube.shader.SetVec3Float("light.position", light.position);
+    cube.shader.SetVec3Float("light.diffuse", light.material.diffuse);
+    cube.shader.SetVec3Float("light.ambient", light.material.ambient);
+    cube.shader.SetVec3Float("light.specular", light.material.specular);
+
+    cube.shader.SetVec3Float("material.ambient", cube.material.ambient);
+    cube.shader.SetVec3Float("material.diffuse", cube.material.diffuse);
+    cube.shader.SetVec3Float("material.specular", cube.material.specular);
+    cube.shader.SetFloat("material.shininess", cube.material.shininess);
+
     cube.shader.SetVec3Float("viewPos", camera.position);
 
     cube.shader.SetMatrix4Float("projection", projection);
