@@ -17,11 +17,14 @@ Renderer3D::Renderer3D() {
     glBindVertexArray(cube.VAO);
 
     // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*) nullptr);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*) nullptr);
     glEnableVertexAttribArray(0);
     // normal attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*) (3 * sizeof(GLfloat)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*) (3 * sizeof(GLfloat)));
     glEnableVertexAttribArray(1);
+    // texture coords
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*) (6 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(2);
 
     // LIGHT
     glGenVertexArrays(1, &light.VAO);
@@ -30,11 +33,20 @@ Renderer3D::Renderer3D() {
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
     // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*) nullptr);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*) nullptr);
     glEnableVertexAttribArray(0);
+
+
+    // Textures
+    cube.material.diffuseMap = new Texture("assets/game_projects/3d_test/assets/container2.png");
+    cube.material.specularMap = new Texture("assets/game_projects/3d_test/assets/container2_specular.png");
 
     // Shader
     cube.shader = Shader("src/core/rendering/shader/opengl_shaders/3d/cube.vs", "src/core/rendering/shader/opengl_shaders/3d/cube.fs");
+    cube.shader.Use();
+    cube.shader.SetInt("material.diffuse", 0);
+    cube.shader.SetInt("material.specular", 1);
+
     light.shader = Shader("src/core/rendering/shader/opengl_shaders/3d/light.vs", "src/core/rendering/shader/opengl_shaders/3d/light.fs");
 }
 
@@ -71,9 +83,6 @@ void Renderer3D::Render() {
     cube.shader.SetVec3Float("light.ambient", light.material.ambient);
     cube.shader.SetVec3Float("light.specular", light.material.specular);
 
-    cube.shader.SetVec3Float("material.ambient", cube.material.ambient);
-    cube.shader.SetVec3Float("material.diffuse", cube.material.diffuse);
-    cube.shader.SetVec3Float("material.specular", cube.material.specular);
     cube.shader.SetFloat("material.shininess", cube.material.shininess);
 
     cube.shader.SetVec3Float("viewPos", camera.position);
@@ -81,6 +90,13 @@ void Renderer3D::Render() {
     cube.shader.SetMatrix4Float("projection", projection);
     cube.shader.SetMatrix4Float("view", view);
     cube.shader.SetMatrix4Float("model", model);
+
+    // bind diffuse map
+    glActiveTexture(GL_TEXTURE0);
+    cube.material.diffuseMap->Bind();
+    // bind specular map
+    glActiveTexture(GL_TEXTURE1);
+    cube.material.specularMap->Bind();
 
     // Render
     glBindVertexArray(cube.VAO);
