@@ -41,7 +41,12 @@ struct CubeEntity {
     GLuint VAO;
     Shader shader;
     Color color = Color(1.0f, 0.5f, 0.31f);
-    EntityMaterial material;
+    EntityMaterial material = EntityMaterial{
+        .ambient = Vector3(1.0f, 0.5f, 0.31f),
+        .diffuse = Vector3(1.0f, 0.5f, 0.31f),
+        .specular = Vector3(0.5f, 0.5f, 0.5f),
+        .shininess = 32.0f
+    };
 };
 
 struct DirectionalLight {
@@ -137,12 +142,6 @@ class Renderer3D {
                                  Vector3(1.5f, 0.2f, -1.5f),
                                  Vector3(-1.3f, 1.0f, -1.5f)
                                 };
-//    const unsigned int POINT_LIGHT_AMOUNT = 4;
-//    Vector3 pointLightPositions[4] = {Vector3(0.7f, 0.2f, 2.0f),
-//                                      Vector3(2.3f, -3.3f, -4.0f),
-//                                      Vector3(-4.0f, 2.0f, -12.0f),
-//                                      Vector3(0.0f, 0.0f, -3.0f)
-//                                     };
 
     // Lights
     DirectionalLight directionalLight;

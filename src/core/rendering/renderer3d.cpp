@@ -38,8 +38,16 @@ Renderer3D::Renderer3D() {
 
 
     // Textures
-    cube.material.diffuseMap = new Texture("assets/game_projects/3d_test/assets/container2.png");
-    cube.material.specularMap = new Texture("assets/game_projects/3d_test/assets/container2_specular.png");
+    cube.material.diffuseMap = new Texture("assets/game_projects/3d_test/assets/container2.png",
+                                           GL_REPEAT,
+                                           GL_REPEAT,
+                                           GL_LINEAR,
+                                           GL_LINEAR);
+    cube.material.specularMap = new Texture("assets/game_projects/3d_test/assets/container2_specular.png",
+                                            GL_REPEAT,
+                                            GL_REPEAT,
+                                            GL_LINEAR,
+                                            GL_LINEAR);
 
     // Shader
     cube.shader = Shader("src/core/rendering/shader/opengl_shaders/3d/cube.vs", "src/core/rendering/shader/opengl_shaders/3d/cube.fs");
@@ -67,15 +75,6 @@ void Renderer3D::Render() {
     // world transformation
     glm::mat4 model = glm::mat4(1.0f);
 
-    // Update light position
-//    float time = SDL_GetTicks() / 256.0f;
-//    light.position.x = sin(time) * 2.0f;
-//    light.position.y = sin(time / 2.0f) * 1.0f;
-//    light.position.z = cos(time) * 2.0f;
-
-    light.material.diffuse = light.color * 0.5f;
-    light.material.ambient = light.material.diffuse * 0.2f;
-
     // CUBE
     cube.shader.Use();
 
@@ -93,8 +92,8 @@ void Renderer3D::Render() {
     cube.shader.SetVec3Float("dirLight.specular", directionalLight.specular);
 
     // Point Lights
-    for (unsigned int i = 0; i < sizeof(pointLights); i++) {
-        const std::string &arrayPrefix = "pointLights[" + std::to_string(i) + "]";
+    for (unsigned int i = 0; i < 4; i++) {
+        const std::string &arrayPrefix = std::string("pointLights[" + std::to_string(i) + "]");
         cube.shader.SetVec3Float(arrayPrefix + ".position", pointLights[i].position);
         cube.shader.SetVec3Float(arrayPrefix + ".ambient", pointLights[i].ambient);
         cube.shader.SetVec3Float(arrayPrefix + ".diffuse", pointLights[i].diffuse);
@@ -143,7 +142,7 @@ void Renderer3D::Render() {
 
     // Render
     glBindVertexArray(light.VAO);
-    for (unsigned int i = 0; i < sizeof(pointLights); i++) {
+    for (unsigned int i = 0; i < 4; i++) {
         model = glm::mat4(1.0f);
         model = glm::translate(model, pointLights[i].position.ToGLM());
         model = glm::scale(model, pointLights[i].scale.ToGLM());
