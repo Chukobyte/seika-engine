@@ -2,9 +2,17 @@
 
 #include <SDL2/SDL.h>
 
-#include "../global_dependencies.h"
+#include "../project_properties.h"
 
-Renderer3D::Renderer3D() {
+Renderer3D::Renderer3D() {}
+
+Renderer3D::~Renderer3D() {
+    glDeleteVertexArrays(1, &cube.VAO);
+    glDeleteVertexArrays(1, &light.VAO);
+    glDeleteBuffers(1, &VBO);
+}
+
+void Renderer3D::Initialize() {
     glEnable(GL_DEPTH_TEST);
     // Buffer Setup
     // CUBE
@@ -58,16 +66,9 @@ Renderer3D::Renderer3D() {
     light.shader = Shader("src/core/rendering/shader/opengl_shaders/3d/light.vs", "src/core/rendering/shader/opengl_shaders/3d/light.fs");
 }
 
-Renderer3D::~Renderer3D() {
-    glDeleteVertexArrays(1, &cube.VAO);
-    glDeleteVertexArrays(1, &light.VAO);
-    glDeleteBuffers(1, &VBO);
-}
-
-void Renderer3D::Render() {
+void Renderer3D::Render(CameraManager *cameraManager) {
     static ProjectProperties *projectProperties = ProjectProperties::GetInstance();
     const float aspectRatio = projectProperties->windowWidth / projectProperties->windowHeight;
-    static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
     Camera3D camera = cameraManager->GetCurrentCamera3D();
     glm::mat4 projection = glm::perspective(glm::radians(camera.fieldOfView), aspectRatio, 0.1f, 100.0f);
     glm::mat4 view = CameraHandler::GetCameraViewMatrix(camera);

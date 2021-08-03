@@ -6,9 +6,25 @@
 #include "texture.h"
 #include "shader/shader.h"
 #include "../math/vector3.h"
-#include "../camera/camera3d.h"
+#include "../camera/camera_manager.h"
 
-// TODO: Finish 3D Renderer (on the feature list)
+struct CubeDrawBatch {};
+
+struct TextureCubeDrawBatch {
+    Vector3 position = Vector3(0.0f);
+    Vector3 scale = Vector3(1.0f);
+    float rotationAngleInDegrees = 0;
+    Vector3 rotationAxisInDegrees = Vector3(0.0f);
+    Texture *diffuseMap = nullptr;
+    Texture *specularMap = nullptr;
+    float shininess = 0.0f;
+};
+
+struct PointLightDrawBatch {
+    Vector3 position = Vector3(0.0f);
+    Vector3 scale = Vector3(1.0f);
+};
+
 struct RenderObject {
     GLuint VAO;
     Shader shader;
@@ -170,7 +186,11 @@ class Renderer3D {
 
     ~Renderer3D();
 
-    void Render();
+    void Initialize();
+
+    void Render(CameraManager *cameraManager);
+
+    void BatchDrawTextureCube();
 };
 
 #endif //RENDERER3D_H

@@ -26,6 +26,7 @@ Game::Game() {
     engineContext = GD::GetContainer()->engineContext;
     renderContext = GD::GetContainer()->renderContext;
     renderer = GD::GetContainer()->renderer;
+    renderer3D = GD::GetContainer()->renderer3D;
     inputManager = InputManager::GetInstance();
     networkContext = GD::GetContainer()->networkContext;
 }
@@ -85,11 +86,11 @@ void Game::InitializeECS() {
     spriteRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<SpriteComponent>(), true);
     entityComponentOrchestrator->SetSystemSignature<SpriteRenderingEntitySystem>(spriteRenderingSystemSignature);
 
-    entityComponentOrchestrator->RegisterSystem<AnimatedSpriteRenderingEntitySystem>();
+    entityComponentOrchestrator->RegisterSystem<TextureCubeRenderingEntitySystem>();
     ComponentSignature animatedSpriteRenderingSystemSignature;
     animatedSpriteRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<Transform2DComponent>(), true);
     animatedSpriteRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<AnimatedSpriteComponent>(), true);
-    entityComponentOrchestrator->SetSystemSignature<AnimatedSpriteRenderingEntitySystem>(animatedSpriteRenderingSystemSignature);
+    entityComponentOrchestrator->SetSystemSignature<TextureCubeRenderingEntitySystem>(animatedSpriteRenderingSystemSignature);
 
     entityComponentOrchestrator->RegisterSystem<TextRenderingEntitySystem>();
     ComponentSignature textRenderingSystemSignature;
@@ -140,6 +141,8 @@ void Game::InitializeRendering() {
     renderContext->InitializeFont();
 
     renderer->Initialize();
+
+    renderer3D->Initialize();
 }
 
 void Game::ProcessInput() {
@@ -256,7 +259,7 @@ void Game::Render() {
     static SpriteRenderingEntitySystem *spriteRenderingEntitySystem = (SpriteRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<SpriteRenderingEntitySystem>();
     spriteRenderingEntitySystem->Render();
 
-    static AnimatedSpriteRenderingEntitySystem *animatedSpriteRenderingEntitySystem = (AnimatedSpriteRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<AnimatedSpriteRenderingEntitySystem>();
+    static TextureCubeRenderingEntitySystem *animatedSpriteRenderingEntitySystem = (TextureCubeRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<TextureCubeRenderingEntitySystem>();
     animatedSpriteRenderingEntitySystem->Render();
 
     static TextRenderingEntitySystem *textRenderingEntitySystem = (TextRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<TextRenderingEntitySystem>();
@@ -269,9 +272,7 @@ void Game::Render() {
 
     renderer->FlushBatches();
 
-    // TODO: Implement 3D Renderer
-    static Renderer3D *renderer3D = new Renderer3D();
-    renderer3D->Render();
+    renderer3D->Render(GD::GetContainer()->cameraManager);
 
     SDL_GL_SwapWindow(renderContext->window);
 }
