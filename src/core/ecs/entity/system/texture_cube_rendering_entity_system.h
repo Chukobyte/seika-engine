@@ -6,7 +6,7 @@
 #include "../../component/components/animated_sprite_component.h"
 #include "../../../math/space_handler.h"
 
-class TextureCubeRenderingEntitySystem : public EntitySystem {
+class TextureCubeRenderingEntitySystem22 : public EntitySystem {
   private:
     Renderer3D *renderer3D = nullptr;
     ComponentManager *componentManager = nullptr;

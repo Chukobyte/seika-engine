@@ -6,7 +6,7 @@
 #include "../../component/components/animated_sprite_component.h"
 #include "../../../math/space_handler.h"
 
-class TextureCubeRenderingEntitySystem : public EntitySystem {
+class AnimatedSpriteRenderingEntitySystem : public EntitySystem {
   private:
     Renderer *renderer = nullptr;
     ComponentManager *componentManager = nullptr;
@@ -15,7 +15,7 @@ class TextureCubeRenderingEntitySystem : public EntitySystem {
 
   public:
 
-    TextureCubeRenderingEntitySystem() {
+    AnimatedSpriteRenderingEntitySystem() {
         renderer = GD::GetContainer()->renderer;
         componentManager = GD::GetContainer()->componentManager;
         cameraManager = GD::GetContainer()->cameraManager;

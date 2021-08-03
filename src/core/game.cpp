@@ -86,11 +86,11 @@ void Game::InitializeECS() {
     spriteRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<SpriteComponent>(), true);
     entityComponentOrchestrator->SetSystemSignature<SpriteRenderingEntitySystem>(spriteRenderingSystemSignature);
 
-    entityComponentOrchestrator->RegisterSystem<TextureCubeRenderingEntitySystem>();
+    entityComponentOrchestrator->RegisterSystem<AnimatedSpriteRenderingEntitySystem>();
     ComponentSignature animatedSpriteRenderingSystemSignature;
     animatedSpriteRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<Transform2DComponent>(), true);
     animatedSpriteRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<AnimatedSpriteComponent>(), true);
-    entityComponentOrchestrator->SetSystemSignature<TextureCubeRenderingEntitySystem>(animatedSpriteRenderingSystemSignature);
+    entityComponentOrchestrator->SetSystemSignature<AnimatedSpriteRenderingEntitySystem>(animatedSpriteRenderingSystemSignature);
 
     entityComponentOrchestrator->RegisterSystem<TextRenderingEntitySystem>();
     ComponentSignature textRenderingSystemSignature;
@@ -259,7 +259,7 @@ void Game::Render() {
     static SpriteRenderingEntitySystem *spriteRenderingEntitySystem = (SpriteRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<SpriteRenderingEntitySystem>();
     spriteRenderingEntitySystem->Render();
 
-    static TextureCubeRenderingEntitySystem *animatedSpriteRenderingEntitySystem = (TextureCubeRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<TextureCubeRenderingEntitySystem>();
+    static AnimatedSpriteRenderingEntitySystem *animatedSpriteRenderingEntitySystem = (AnimatedSpriteRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<AnimatedSpriteRenderingEntitySystem>();
     animatedSpriteRenderingEntitySystem->Render();
 
     static TextRenderingEntitySystem *textRenderingEntitySystem = (TextRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<TextRenderingEntitySystem>();
