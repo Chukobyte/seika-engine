@@ -180,6 +180,7 @@ Renderer::~Renderer() {
 
 void Renderer::Initialize() {
     // OpenGL State
+    // TODO: Enable cull face after fixing 3D object order of vertices
 //    glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

@@ -6,8 +6,14 @@
 #include "texture.h"
 #include "shader/shader.h"
 #include "../math/vector3.h"
+#include "../camera/camera3d.h"
 
 // TODO: Finish 3D Renderer (on the feature list)
+struct RenderObject {
+    GLuint VAO;
+    Shader shader;
+};
+
 struct EntityMaterial {
     Vector3 ambient = Vector3(1.0f, 0.5f, 0.31f);
     Vector3 diffuse = Vector3(1.0f, 0.5f, 0.31f);
@@ -84,10 +90,12 @@ struct SpotLight {
 class Renderer3D {
   private:
     GLuint VBO;
+    RenderObject lightRenderObject;
+    RenderObject cubeRenderObject;
     LightEntity light;
     CubeEntity cube;
-    float fieldOfView = 45.0f;
-    // position           //normals            // texture coords
+
+    // [0 - 2] = position, [3 - 5] = normals, [6 - 7] = texture coordinates
     GLfloat vertices[360] = {-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
                              0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
                              0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
@@ -152,6 +160,10 @@ class Renderer3D {
         PointLight{.position = Vector3(0.0f, 0.0f, -3.0f)}
     };
     SpotLight spotLight;
+
+    void RenderTextureCubes(glm::mat4 &projection, glm::mat4 &view, Camera3D &camera);
+
+    void RenderPointLights(glm::mat4 &projection, glm::mat4 &view);
 
   public:
     Renderer3D();

@@ -67,11 +67,17 @@ Renderer3D::~Renderer3D() {
 void Renderer3D::Render() {
     static ProjectProperties *projectProperties = ProjectProperties::GetInstance();
     const float aspectRatio = projectProperties->windowWidth / projectProperties->windowHeight;
-    glm::mat4 projection = glm::perspective(glm::radians(fieldOfView), aspectRatio, 0.1f, 100.0f);
     static CameraManager *cameraManager = GD::GetContainer()->cameraManager;
     Camera3D camera = cameraManager->GetCurrentCamera3D();
+    glm::mat4 projection = glm::perspective(glm::radians(camera.fieldOfView), aspectRatio, 0.1f, 100.0f);
     glm::mat4 view = CameraHandler::GetCameraViewMatrix(camera);
 
+    RenderTextureCubes(projection, view, camera);
+
+    RenderPointLights(projection, view);
+}
+
+void Renderer3D::RenderTextureCubes(glm::mat4 &projection, glm::mat4 &view, Camera3D &camera) {
     // world transformation
     glm::mat4 model = glm::mat4(1.0f);
 
@@ -134,7 +140,9 @@ void Renderer3D::Render() {
 
         glDrawArrays(GL_TRIANGLES, 0, 36);
     }
+}
 
+void Renderer3D::RenderPointLights(glm::mat4 &projection, glm::mat4 &view) {
     // POINT LIGHTS
     light.shader.Use();
     light.shader.SetMatrix4Float("projection", projection);
@@ -143,7 +151,7 @@ void Renderer3D::Render() {
     // Render
     glBindVertexArray(light.VAO);
     for (unsigned int i = 0; i < 4; i++) {
-        model = glm::mat4(1.0f);
+        glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, pointLights[i].position.ToGLM());
         model = glm::scale(model, pointLights[i].scale.ToGLM());
         light.shader.SetMatrix4Float("model", model);
