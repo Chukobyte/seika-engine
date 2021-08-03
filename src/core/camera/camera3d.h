@@ -9,7 +9,8 @@ struct Camera3D {
     Vector3 position = Vector3(0.0f, 0.0f, 3.0f);
     Vector3 front = Vector3(0.0f, 0.0f, -1.0f);
     Vector3 up = Vector3(0.0f, 1.0f, 0.0f);
-    Vector2 zoom = Vector2(1.0f, 1.0f);
+    float fieldOfView = 45.0f;
+//    Vector2 zoom = Vector2(1.0f, 1.0f);
     float yaw = -90.0f;
     float pitch = 0.0f;
 };

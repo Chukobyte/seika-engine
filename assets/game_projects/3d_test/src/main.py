@@ -7,6 +7,7 @@ from seika.camera import Camera3D
 class Main(Node):
     def _start(self) -> None:
         print("3D test start!")
+        self.pitch_yaw_sensitivity = 0.5
 
     def _physics_process(self, delta_time: float) -> None:
         if Input.is_action_just_pressed(action_name="quit"):
@@ -15,7 +16,7 @@ class Main(Node):
         self._process_inputs(delta_time=delta_time)
 
     def _process_inputs(self, delta_time: float) -> None:
-        camera_move_speed = 50 * delta_time
+        camera_move_speed = 10 * delta_time
         if Input.is_action_pressed(action_name="a_left_left"):
             Camera3D.move_left(speed=camera_move_speed)
 
@@ -29,13 +30,13 @@ class Main(Node):
             Camera3D.move_down(speed=camera_move_speed)
 
         if Input.is_action_pressed(action_name="a_right_left"):
-            Camera3D.add_yaw(yaw=-1.0)
+            Camera3D.add_yaw(yaw=-self.pitch_yaw_sensitivity)
 
         if Input.is_action_pressed(action_name="a_right_right"):
-            Camera3D.add_yaw(yaw=1.0)
+            Camera3D.add_yaw(yaw=self.pitch_yaw_sensitivity)
 
         if Input.is_action_pressed(action_name="a_right_up"):
-            Camera3D.add_pitch(pitch=-1.0)
+            Camera3D.add_pitch(pitch=self.pitch_yaw_sensitivity)
 
         if Input.is_action_pressed(action_name="a_right_down"):
-            Camera3D.add_pitch(pitch=1.0)
+            Camera3D.add_pitch(pitch=-self.pitch_yaw_sensitivity)

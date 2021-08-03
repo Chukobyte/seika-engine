@@ -51,7 +51,9 @@ class Shader {
 
     void SetVec3Float(const std::string &name, const glm::vec3 &value) const;
 
-    void SetVec3Float(const std::string &name, const Color &color) const;
+    void SetVec3Float(const std::string &name, const Color &value) const;
+
+    void SetVec3Float(const std::string &name, const Vector3 &value) const;
 
     void SetVec3Float(const std::string &name, float v1, float v2, float v3) const;
 

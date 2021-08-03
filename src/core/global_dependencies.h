@@ -4,6 +4,7 @@
 #include "engine_context.h"
 #include "rendering/render_context.h"
 #include "rendering/renderer.h"
+#include "rendering/renderer3d.h"
 #include "asset_manager.h"
 #include "ecs/entity/entity_manager.h"
 #include "ecs/entity/system/entity_system_manager.h"
@@ -27,6 +28,7 @@ class GD {
     RenderContext *renderContext = nullptr;
     CollisionContext *collisionContext = nullptr;
     Renderer *renderer = nullptr;
+    Renderer3D *renderer3D = nullptr;
     AssetManager *assetManager = nullptr;
     EntityManager *entityManager = nullptr;
     EntitySystemManager *entitySystemManager = nullptr;

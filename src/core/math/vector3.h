@@ -6,6 +6,8 @@
 
 #include <glm/glm.hpp>
 
+#include "../color.h"
+
 class Vector3 {
   public:
     float x;
@@ -13,6 +15,8 @@ class Vector3 {
     float z;
 
     Vector3(): x(0.0f), y(0.0f), z(0.0f) {}
+
+    Vector3(float value): x(value), y(value), z(value) {}
 
     Vector3(float x, float y, float z): x(x), y(y), z(z) {}
 
@@ -78,6 +82,13 @@ class Vector3 {
 
     bool operator!=(const Vector3 &otherVector) const {
         return !(*this == otherVector);
+    }
+
+    Vector3 operator=(const Color &color) {
+        this->x = color.r;
+        this->y = color.g;
+        this->z = color.b;
+        return *this;
     }
 
     float DotProduct(const Vector3 &otherVector) {

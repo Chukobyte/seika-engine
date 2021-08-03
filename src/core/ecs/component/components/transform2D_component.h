@@ -1,5 +1,5 @@
-#ifndef TRANSFORM_COMPONENT_H
-#define TRANSFORM_COMPONENT_H
+#ifndef TRANSFORM2D_COMPONENT_H
+#define TRANSFORM2D_COMPONENT_H
 
 #include "../component.h"
 #include "../../../math/vector2.h"
@@ -13,4 +13,4 @@ struct Transform2DComponent {
     bool ignoreCamera = false; // TODO: Remove if UI component is added
 };
 
-#endif //TRANSFORM_COMPONENT_H
+#endif //TRANSFORM2D_COMPONENT_H

@@ -5,6 +5,7 @@
 #include "engine_context.h"
 #include "rendering/render_context.h"
 #include "rendering/renderer.h"
+#include "rendering/renderer3D.h"
 #include "project_properties.h"
 #include "input/input_manager.h"
 #include "networking/network_context.h"
@@ -16,6 +17,7 @@ class Game {
     EngineContext *engineContext = nullptr;
     RenderContext *renderContext = nullptr;
     Renderer *renderer = nullptr;
+    Renderer3D *renderer3D = nullptr;
     ProjectProperties *projectProperties = nullptr;
     InputManager *inputManager = nullptr;
     NetworkContext *networkContext = nullptr;

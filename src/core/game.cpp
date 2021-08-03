@@ -26,6 +26,7 @@ Game::Game() {
     engineContext = GD::GetContainer()->engineContext;
     renderContext = GD::GetContainer()->renderContext;
     renderer = GD::GetContainer()->renderer;
+    renderer3D = GD::GetContainer()->renderer3D;
     inputManager = InputManager::GetInstance();
     networkContext = GD::GetContainer()->networkContext;
 }
@@ -140,6 +141,8 @@ void Game::InitializeRendering() {
     renderContext->InitializeFont();
 
     renderer->Initialize();
+
+    renderer3D->Initialize();
 }
 
 void Game::ProcessInput() {
@@ -269,9 +272,58 @@ void Game::Render() {
 
     renderer->FlushBatches();
 
-    // TODO: Implement 3D Renderer
-//    static Renderer3D *renderer3D = new Renderer3D();
-//    renderer3D->Render();
+    // Temp 3D Test TODO: Finish implementing 3D renderer
+    /*
+    // Texture Cubes
+    static Texture *diffuseMap = new Texture("assets/game_projects/3d_test/assets/container2.png",
+            GL_REPEAT,
+            GL_REPEAT,
+            GL_LINEAR,
+            GL_LINEAR);
+    static Texture *specularMap = new Texture("assets/game_projects/3d_test/assets/container2_specular.png",
+            GL_REPEAT,
+            GL_REPEAT,
+            GL_LINEAR,
+            GL_LINEAR);
+    static Vector3 textureCubePositions[10] = {Vector3(0.0f, 0.0f, 0.0f),
+                                               Vector3(2.0f, 5.0f, -15.0f),
+                                               Vector3(-1.5f, -2.2f, -2.5f),
+                                               Vector3(-3.8f, -2.0f, -12.3f),
+                                               Vector3(-2.4f, -0.4f, -3.5f),
+                                               Vector3(-1.7f, 3.0f, -7.5f),
+                                               Vector3(1.3f, -2.0f, -2.5f),
+                                               Vector3(1.5f, 2.0f, -2.5f),
+                                               Vector3(1.5f, 0.2f, -1.5f),
+                                               Vector3(-1.3f, 1.0f, -1.5f)
+                                              };
+    for (int i = 0; i < 10; i++) {
+        renderer3D->AddTextureCubeDrawBatch(TextureCubeDrawBatch{
+            .position = textureCubePositions[i],
+            .scale = Vector3(1.0f),
+            .rotationAngleInDegrees = i * 20.0f,
+            .rotationAxisInDegrees = Vector3(1.0f, 0.3f, 0.5f),
+            .diffuseMap = diffuseMap,
+            .specularMap = specularMap,
+            .shininess = 32.0f
+        });
+    }
+
+    // Point Lights
+    static Vector3 pointLightPositions[4] = {Vector3(0.0f, 0.0f, 0.0f),
+                                             Vector3(2.0f, 5.0f, -15.0f),
+                                             Vector3(-1.5f, -2.2f, -2.5f),
+                                             Vector3(-3.8f, -2.0f, -12.3f)
+                                            };
+    for (int i = 0; i < 4; i++) {
+        renderer3D->AddPointLightDrawBatch(
+        PointLightDrawBatch{
+            .position = pointLightPositions[i],
+            .scale = Vector3(0.2f)
+        });
+    }
+
+    renderer3D->Render(GD::GetContainer()->cameraManager);
+    */
 
     SDL_GL_SwapWindow(renderContext->window);
 }

@@ -26,4 +26,13 @@ class CameraManager {
     }
 };
 
+class CameraHandler {
+  public:
+    static glm::mat4 GetCameraViewMatrix(Camera3D &camera3D) {
+        return glm::lookAt(camera3D.position.ToGLM(),
+                           camera3D.position.ToGLM() + camera3D.front.ToGLM(),
+                           camera3D.up.ToGLM());
+    }
+};
+
 #endif //CAMERA_MANAGER_H
