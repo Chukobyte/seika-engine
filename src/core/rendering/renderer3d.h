@@ -1,6 +1,8 @@
 #ifndef RENDERER3D_H
 #define RENDERER3D_H
 
+#include <vector>
+
 #include <glad/glad.h>
 
 #include "texture.h"
@@ -155,6 +157,9 @@ class Renderer3D {
                              -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
                             };
 
+    std::vector<TextureCubeDrawBatch> textureCubeDrawBatches;
+    std::vector<PointLightDrawBatch> pointLightDrawBatches;
+
     Vector3 cubePositions[10] = {Vector3(0.0f, 0.0f, 0.0f),
                                  Vector3(2.0f, 5.0f, -15.0f),
                                  Vector3(-1.5f, -2.2f, -2.5f),
@@ -189,6 +194,10 @@ class Renderer3D {
     void Initialize();
 
     void Render(CameraManager *cameraManager);
+
+    void AddTextureCubeDrawBatch(TextureCubeDrawBatch textureCubeDrawBatch);
+
+    void AddPointLightDrawBatch(PointLightDrawBatch pointLightDrawBatch);
 
     void BatchDrawTextureCube();
 };

@@ -76,6 +76,9 @@ void Renderer3D::Render(CameraManager *cameraManager) {
     RenderTextureCubes(projection, view, camera);
 
     RenderPointLights(projection, view);
+
+    textureCubeDrawBatches.clear();
+    pointLightDrawBatches.clear();
 }
 
 void Renderer3D::RenderTextureCubes(glm::mat4 &projection, glm::mat4 &view, Camera3D &camera) {
@@ -89,7 +92,6 @@ void Renderer3D::RenderTextureCubes(glm::mat4 &projection, glm::mat4 &view, Came
     cube.shader.SetMatrix4Float("projection", projection);
     cube.shader.SetMatrix4Float("view", view);
     cube.shader.SetVec3Float("viewPos", camera.position);
-    cube.shader.SetFloat("material.shininess", cube.material.shininess);
 
     // LIGHTS
     // Directional Light
@@ -122,15 +124,26 @@ void Renderer3D::RenderTextureCubes(glm::mat4 &projection, glm::mat4 &view, Came
     cube.shader.SetFloat("spotLight.cutOff", glm::cos(glm::radians(spotLight.cutoff)));
     cube.shader.SetFloat("spotLight.outerCutOff", glm::cos(glm::radians(spotLight.outerCutoff)));
 
-    // bind diffuse map
-    glActiveTexture(GL_TEXTURE0);
-    cube.material.diffuseMap->Bind();
-    // bind specular map
-    glActiveTexture(GL_TEXTURE1);
-    cube.material.specularMap->Bind();
-
     // Render
     glBindVertexArray(cube.VAO);
+    for (TextureCubeDrawBatch &textureCubeDrawBatch : textureCubeDrawBatches) {
+        // bind diffuse map
+        glActiveTexture(GL_TEXTURE0);
+        textureCubeDrawBatch.diffuseMap->Bind();
+        // bind specular map
+        glActiveTexture(GL_TEXTURE1);
+        textureCubeDrawBatch.specularMap->Bind();
+
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, textureCubeDrawBatch.position.ToGLM());
+        model = glm::rotate(model, glm::radians(textureCubeDrawBatch.rotationAngleInDegrees), textureCubeDrawBatch.rotationAxisInDegrees.ToGLM());
+        cube.shader.SetMatrix4Float("model", model);
+
+        cube.shader.SetFloat("material.shininess", textureCubeDrawBatch.shininess);
+
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
+
     for (unsigned int i = 0; i < 10; i++) {
         // calculate the model matrix for each object and pass it to shader before drawing
         glm::mat4 model = glm::mat4(1.0f);
@@ -151,11 +164,20 @@ void Renderer3D::RenderPointLights(glm::mat4 &projection, glm::mat4 &view) {
 
     // Render
     glBindVertexArray(light.VAO);
-    for (unsigned int i = 0; i < 4; i++) {
+    for (PointLightDrawBatch &pointLightDrawBatch : pointLightDrawBatches) {
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, pointLights[i].position.ToGLM());
-        model = glm::scale(model, pointLights[i].scale.ToGLM());
+        model = glm::translate(model, pointLightDrawBatch.position.ToGLM());
+        model = glm::scale(model, pointLightDrawBatch.scale.ToGLM());
         light.shader.SetMatrix4Float("model", model);
+
         glDrawArrays(GL_TRIANGLES, 0, 36);
     }
+}
+
+void Renderer3D::AddTextureCubeDrawBatch(TextureCubeDrawBatch textureCubeDrawBatch) {
+    textureCubeDrawBatches.emplace_back(textureCubeDrawBatch);
+}
+
+void Renderer3D::AddPointLightDrawBatch(PointLightDrawBatch pointLightDrawBatch) {
+    pointLightDrawBatches.emplace_back(pointLightDrawBatch);
 }
