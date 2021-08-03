@@ -57,11 +57,11 @@ void SpriteRenderer::Draw(Texture *texture2D, Rect2 sourceRectangle, Rect2 desti
     texture2D->Bind();
 
     // render subimage based on source rectangle
-    glPixelStorei(GL_UNPACK_ROW_LENGTH, texture2D->width);
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, texture2D->GetWidth());
     glPixelStorei(GL_UNPACK_SKIP_PIXELS, sourceRectangle.x);
     glPixelStorei(GL_UNPACK_SKIP_ROWS, sourceRectangle.y);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sourceRectangle.w, sourceRectangle.h, 0, texture2D->imageFormat, GL_UNSIGNED_BYTE, texture2D->data);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sourceRectangle.w, sourceRectangle.h, 0, texture2D->GetImageFormat(), GL_UNSIGNED_BYTE, texture2D->GetData());
 
     glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
     glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);

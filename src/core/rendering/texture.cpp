@@ -13,11 +13,6 @@ Texture::Texture(const char* fileName, unsigned int wrapS, unsigned int wrapT, u
     Initialize(fileName);
 }
 
-Texture::Texture(const char* fileName, unsigned int wrapS, unsigned int wrapT, unsigned int filterMax, unsigned int filterMin, unsigned int imageFormat) :
-    wrapS(wrapS), wrapT(wrapT), filterMax(filterMax), filterMin(filterMin), imageFormat(imageFormat) {
-    Initialize(fileName);
-}
-
 Texture::Texture(void *buffer, size_t bufferSize) {
     Initialize(buffer, bufferSize);
 }
@@ -51,6 +46,14 @@ void Texture::Initialize(void *buffer, size_t bufferSize) {
 }
 
 void Texture::Generate() {
+    if (nrChannels == 1) {
+        imageFormat = GL_RED;
+    } else if (nrChannels == 3) {
+        imageFormat = GL_RGB;
+    } else if (nrChannels == 4) {
+        imageFormat = GL_RGBA;
+    }
+
     // Create texture
     glGenTextures(1, &this->ID);
     Bind();
@@ -72,6 +75,22 @@ void Texture::Bind() const {
 
 std::string Texture::GetFilePath() const {
     return fileName;
+}
+
+int Texture::GetWidth() const {
+    return width;
+}
+
+int Texture::GetHeight() const {
+    return height;
+}
+
+unsigned int Texture::GetImageFormat() const {
+    return imageFormat;
+}
+
+unsigned char* Texture::GetData() const {
+    return data;
 }
 
 bool Texture::IsValid() const {

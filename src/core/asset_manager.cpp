@@ -13,7 +13,7 @@ AssetManager::AssetManager() {
 // TEXTURE
 void AssetManager::LoadTexture(const std::string &textureId, const std::string &filePath) {
     Texture *texture = new Texture(filePath.c_str());
-    assert(texture->data != nullptr);
+    assert(texture->IsValid());
     textures.emplace(textureId, texture);
 }
 
