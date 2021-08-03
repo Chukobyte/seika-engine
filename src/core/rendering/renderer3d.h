@@ -29,6 +29,9 @@ struct LightEntity {
         .diffuse = Vector3(1.0f, 0.5f, 0.31f),
         .specular = Vector3(1.0f, 1.0f, 1.0f)
     };
+    float linear = 0.09f;
+    float quadratic = 0.032f;
+    const float constant = 1.0f;
 };
 
 struct CubeEntity {
