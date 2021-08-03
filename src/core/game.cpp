@@ -274,12 +274,12 @@ void Game::Render() {
 
     // Temp 3D Test TODO: Finish implementing 3D renderer
     // Texture Cubes
-    static Texture *diffuseMap = new Texture("assets/game_projects/3d_test/assets/container2.png",
+    static Texture *diffuseMap = new Texture("assets/container2.png",
             GL_REPEAT,
             GL_REPEAT,
             GL_LINEAR,
             GL_LINEAR);
-    static Texture *specularMap = new Texture("assets/game_projects/3d_test/assets/container2_specular.png",
+    static Texture *specularMap = new Texture("assets/container2_specular.png",
             GL_REPEAT,
             GL_REPEAT,
             GL_LINEAR,

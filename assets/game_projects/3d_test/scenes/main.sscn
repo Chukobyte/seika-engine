@@ -6,7 +6,7 @@
   "components": [
     {
       "scriptable_class": {
-        "class_path": "assets.game_projects.3d_test.src.main",
+        "class_path": "src.main",
         "class_name": "Main"
       }
     }
