@@ -24,7 +24,13 @@ struct TextureCubeDrawBatch {
 
 struct PointLightDrawBatch {
     Vector3 position = Vector3(0.0f);
-    Vector3 scale = Vector3(1.0f);
+    Vector3 scale = Vector3(0.2f);
+    Vector3 ambient = Vector3(0.05f);
+    Vector3 diffuse = Vector3(0.8f);
+    Vector3 specular = Vector3(1.0f);
+    float linear = 0.09f;
+    float quadratic = 0.032f;
+    const float constant = 1.0f;
 };
 
 struct RenderObject {
@@ -78,17 +84,6 @@ struct DirectionalLight {
     Vector3 ambient = Vector3(0.05f, 0.05f, 0.05f);
     Vector3 diffuse = Vector3(0.4f, 0.4f, 0.4f);
     Vector3 specular = Vector3(0.5f, 0.5f, 0.5f);
-};
-
-struct PointLight {
-    Vector3 position = Vector3(0.0f);
-    Vector3 ambient = Vector3(0.05f, 0.05f, 0.05f);
-    Vector3 diffuse = Vector3(0.8f, 0.8f, 0.8f);
-    Vector3 specular = Vector3(1.0f, 1.0f, 1.0f);
-    float linear = 0.09f;
-    float quadratic = 0.032f;
-    Vector3 scale = Vector3(0.2f);
-    const float constant = 1.0f;
 };
 
 struct SpotLight {
@@ -174,12 +169,6 @@ class Renderer3D {
 
     // Lights
     DirectionalLight directionalLight;
-    PointLight pointLights[4] = {
-        PointLight{.position = Vector3(0.7f, 0.2f, 2.0f)},
-        PointLight{.position = Vector3(2.3f, -3.3f, -4.0f)},
-        PointLight{.position = Vector3(-4.0f, 2.0f, -12.0f)},
-        PointLight{.position = Vector3(0.0f, 0.0f, -3.0f)}
-    };
     SpotLight spotLight;
 
     void RenderTextureCubes(glm::mat4 &projection, glm::mat4 &view, Camera3D &camera);

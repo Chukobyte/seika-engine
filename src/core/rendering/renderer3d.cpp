@@ -73,9 +73,13 @@ void Renderer3D::Render(CameraManager *cameraManager) {
     glm::mat4 projection = glm::perspective(glm::radians(camera.fieldOfView), aspectRatio, 0.1f, 100.0f);
     glm::mat4 view = CameraHandler::GetCameraViewMatrix(camera);
 
-    RenderTextureCubes(projection, view, camera);
+    if (!textureCubeDrawBatches.empty()) {
+        RenderTextureCubes(projection, view, camera);
+    }
 
-    RenderPointLights(projection, view);
+    if (!pointLightDrawBatches.empty()) {
+        RenderPointLights(projection, view);
+    }
 
     textureCubeDrawBatches.clear();
     pointLightDrawBatches.clear();
@@ -101,15 +105,15 @@ void Renderer3D::RenderTextureCubes(glm::mat4 &projection, glm::mat4 &view, Came
     cube.shader.SetVec3Float("dirLight.specular", directionalLight.specular);
 
     // Point Lights
-    for (unsigned int i = 0; i < 4; i++) {
+    for (unsigned int i = 0; i < pointLightDrawBatches.size(); i++) {
         const std::string &arrayPrefix = std::string("pointLights[" + std::to_string(i) + "]");
-        cube.shader.SetVec3Float(arrayPrefix + ".position", pointLights[i].position);
-        cube.shader.SetVec3Float(arrayPrefix + ".ambient", pointLights[i].ambient);
-        cube.shader.SetVec3Float(arrayPrefix + ".diffuse", pointLights[i].diffuse);
-        cube.shader.SetVec3Float(arrayPrefix + ".specular", pointLights[i].specular);
-        cube.shader.SetFloat(arrayPrefix + ".constant", pointLights[i].constant);
-        cube.shader.SetFloat(arrayPrefix + ".linear", pointLights[i].linear);
-        cube.shader.SetFloat(arrayPrefix + ".quadratic", pointLights[i].quadratic);
+        cube.shader.SetVec3Float(arrayPrefix + ".position", pointLightDrawBatches[i].position);
+        cube.shader.SetVec3Float(arrayPrefix + ".ambient", pointLightDrawBatches[i].ambient);
+        cube.shader.SetVec3Float(arrayPrefix + ".diffuse", pointLightDrawBatches[i].diffuse);
+        cube.shader.SetVec3Float(arrayPrefix + ".specular", pointLightDrawBatches[i].specular);
+        cube.shader.SetFloat(arrayPrefix + ".constant", pointLightDrawBatches[i].constant);
+        cube.shader.SetFloat(arrayPrefix + ".linear", pointLightDrawBatches[i].linear);
+        cube.shader.SetFloat(arrayPrefix + ".quadratic", pointLightDrawBatches[i].quadratic);
     }
 
     // Spot Light
@@ -140,17 +144,6 @@ void Renderer3D::RenderTextureCubes(glm::mat4 &projection, glm::mat4 &view, Came
         cube.shader.SetMatrix4Float("model", model);
 
         cube.shader.SetFloat("material.shininess", textureCubeDrawBatch.shininess);
-
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-    }
-
-    for (unsigned int i = 0; i < 10; i++) {
-        // calculate the model matrix for each object and pass it to shader before drawing
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, cubePositions[i].ToGLM());
-        float angle = 20.0f * i;
-        model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-        cube.shader.SetMatrix4Float("model", model);
 
         glDrawArrays(GL_TRIANGLES, 0, 36);
     }
