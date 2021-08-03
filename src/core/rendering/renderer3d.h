@@ -32,6 +32,9 @@ struct LightEntity {
     float linear = 0.09f;
     float quadratic = 0.032f;
     const float constant = 1.0f;
+    // In Radians
+    float cutoff = 12.5f;
+    float outerCutoff = 17.5f;
 };
 
 struct CubeEntity {
@@ -47,7 +50,7 @@ class Renderer3D {
     LightEntity light;
     CubeEntity cube;
     float fieldOfView = 45.0f;
-                             // position           //normals            // texture coords
+    // position           //normals            // texture coords
     GLfloat vertices[360] = {-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
                              0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
                              0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
@@ -101,7 +104,7 @@ class Renderer3D {
                                  Vector3(1.5f, 2.0f, -2.5f),
                                  Vector3(1.5f, 0.2f, -1.5f),
                                  Vector3(-1.3f, 1.0f, -1.5f)
-    };
+                                };
 
   public:
     Renderer3D();

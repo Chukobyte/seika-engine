@@ -78,13 +78,16 @@ void Renderer3D::Render() {
 
     // CUBE
     cube.shader.Use();
-    cube.shader.SetVec3Float("light.position", light.position);
+    cube.shader.SetVec3Float("light.position", camera.position);
+    cube.shader.SetVec3Float("light.direction", camera.front);
     cube.shader.SetVec3Float("light.diffuse", light.material.diffuse);
     cube.shader.SetVec3Float("light.ambient", light.material.ambient);
     cube.shader.SetVec3Float("light.specular", light.material.specular);
     cube.shader.SetFloat("light.constant", light.constant);
     cube.shader.SetFloat("light.linear", light.linear);
     cube.shader.SetFloat("light.quadratic", light.quadratic);
+    cube.shader.SetFloat("light.cutOff", glm::cos(glm::radians(light.cutoff)));
+    cube.shader.SetFloat("light.outerCutOff", glm::cos(glm::radians(light.outerCutoff)));
 
     cube.shader.SetFloat("material.shininess", cube.material.shininess);
 
@@ -114,16 +117,17 @@ void Renderer3D::Render() {
         glDrawArrays(GL_TRIANGLES, 0, 36);
     }
 
+    // No light object being rendered for spotlight
     // LIGHT
-    model = glm::mat4(1.0f);
-    model = glm::translate(model, light.position.ToGLM());
-    model = glm::scale(model, glm::vec3(light.scale));
-    light.shader.Use();
-    light.shader.SetMatrix4Float("projection", projection);
-    light.shader.SetMatrix4Float("view", view);
-    light.shader.SetMatrix4Float("model", model);
-
-    // Render
-    glBindVertexArray(light.VAO);
-    glDrawArrays(GL_TRIANGLES, 0, 36);
+//    model = glm::mat4(1.0f);
+//    model = glm::translate(model, light.position.ToGLM());
+//    model = glm::scale(model, glm::vec3(light.scale));
+//    light.shader.Use();
+//    light.shader.SetMatrix4Float("projection", projection);
+//    light.shader.SetMatrix4Float("view", view);
+//    light.shader.SetMatrix4Float("model", model);
+//
+//    // Render
+//    glBindVertexArray(light.VAO);
+//    glDrawArrays(GL_TRIANGLES, 0, 36);
 }
