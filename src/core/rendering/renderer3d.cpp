@@ -78,7 +78,7 @@ void Renderer3D::Render() {
 
     // CUBE
     cube.shader.Use();
-    cube.shader.SetVec3Float("light.position", light.position);
+    cube.shader.SetVec3Float("light.direction", light.direction);
     cube.shader.SetVec3Float("light.diffuse", light.material.diffuse);
     cube.shader.SetVec3Float("light.ambient", light.material.ambient);
     cube.shader.SetVec3Float("light.specular", light.material.specular);
@@ -100,18 +100,28 @@ void Renderer3D::Render() {
 
     // Render
     glBindVertexArray(cube.VAO);
-    glDrawArrays(GL_TRIANGLES, 0, 36);
+    for (unsigned int i = 0; i < 10; i++) {
+        // calculate the model matrix for each object and pass it to shader before drawing
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, cubePositions[i].ToGLM());
+        float angle = 20.0f * i;
+        model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+        cube.shader.SetMatrix4Float("model", model);
 
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
+
+    // Not rendering light
     // LIGHT
-    model = glm::mat4(1.0f);
-    model = glm::translate(model, light.position.ToGLM());
-    model = glm::scale(model, glm::vec3(light.scale));
-    light.shader.Use();
-    light.shader.SetMatrix4Float("projection", projection);
-    light.shader.SetMatrix4Float("view", view);
-    light.shader.SetMatrix4Float("model", model);
-
-    // Render
-    glBindVertexArray(light.VAO);
-    glDrawArrays(GL_TRIANGLES, 0, 36);
+//    model = glm::mat4(1.0f);
+//    model = glm::translate(model, light.position.ToGLM());
+//    model = glm::scale(model, glm::vec3(light.scale));
+//    light.shader.Use();
+//    light.shader.SetMatrix4Float("projection", projection);
+//    light.shader.SetMatrix4Float("view", view);
+//    light.shader.SetMatrix4Float("model", model);
+//
+//    // Render
+//    glBindVertexArray(light.VAO);
+//    glDrawArrays(GL_TRIANGLES, 0, 36);
 }
