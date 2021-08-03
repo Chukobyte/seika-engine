@@ -273,7 +273,6 @@ void Game::Render() {
     renderer->FlushBatches();
 
     // Temp 3D Test TODO: Finish implementing 3D renderer
-    /*
     // Texture Cubes
     static Texture *diffuseMap = new Texture("assets/game_projects/3d_test/assets/container2.png",
             GL_REPEAT,
@@ -323,7 +322,6 @@ void Game::Render() {
     }
 
     renderer3D->Render(GD::GetContainer()->cameraManager);
-    */
 
     SDL_GL_SwapWindow(renderContext->window);
 }
