@@ -96,6 +96,7 @@ void Renderer3D::RenderTextureCubes(glm::mat4 &projection, glm::mat4 &view, Came
     cube.shader.SetMatrix4Float("projection", projection);
     cube.shader.SetMatrix4Float("view", view);
     cube.shader.SetVec3Float("viewPos", camera.position);
+    cube.shader.SetInt("numberOfPointLights", (int) pointLightDrawBatches.size());
 
     // LIGHTS
     // Directional Light
@@ -157,11 +158,7 @@ void Renderer3D::RenderPointLights(glm::mat4 &projection, glm::mat4 &view) {
 
     // Render
     glBindVertexArray(light.VAO);
-    static bool testPoint = false;
     for (PointLightDrawBatch &pointLightDrawBatch : pointLightDrawBatches) {
-        if (!testPoint) {
-            Logger::GetInstance()->Debug("Point Light in loop!");
-        }
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, pointLightDrawBatch.position.ToGLM());
         model = glm::scale(model, pointLightDrawBatch.scale.ToGLM());
@@ -169,7 +166,6 @@ void Renderer3D::RenderPointLights(glm::mat4 &projection, glm::mat4 &view) {
 
         glDrawArrays(GL_TRIANGLES, 0, 36);
     }
-    testPoint = true;
 }
 
 void Renderer3D::AddTextureCubeDrawBatch(TextureCubeDrawBatch textureCubeDrawBatch) {
