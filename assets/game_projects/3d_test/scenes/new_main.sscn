@@ -102,7 +102,7 @@
           "point_light": {
             "linear": 0.09,
             "quadratic": 0.032,
-            "constant": 1
+            "constant": 1.0
           }
         },
         {
