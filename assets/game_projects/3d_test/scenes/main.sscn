@@ -1,6 +1,6 @@
 {
   "name": "Main",
-  "type": "Node",
+  "type": "Spatial",
   "tags": [],
   "external_scene_source": "",
   "components": [

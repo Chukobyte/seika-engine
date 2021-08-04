@@ -1,12 +1,13 @@
-from seika.node import Node
+from seika.node import Spatial
 from seika.input import Input
 from seika.engine import Engine
 from seika.camera import Camera3D
 
 
-class Main(Node):
+class Main(Spatial):
     def _start(self) -> None:
         print("3D test start!")
+        print(f"position = {self.position}")
         self.pitch_yaw_sensitivity = 0.5
 
     def _physics_process(self, delta_time: float) -> None:

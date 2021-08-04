@@ -52,7 +52,7 @@ run:
 	./$(BUILD_OBJECT)
 
 run-3d-test:
-	./$(BUILD_OBJECT) -d assets/game_projects/3d_test/ -l debug
+	./$(BUILD_OBJECT) -d assets/game_projects/3d_test/ -l error
 
 package-without-clean:
 ifneq ($(wildcard $(EXPORT_PACKAGE_DIR)/.*),)
