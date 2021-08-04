@@ -257,6 +257,7 @@ void Game::Render() {
                  projectProperties->backgroundDrawColor.a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
+    // 2D Rendering
     static SpriteRenderingEntitySystem *spriteRenderingEntitySystem = (SpriteRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<SpriteRenderingEntitySystem>();
     spriteRenderingEntitySystem->Render();
 
@@ -273,6 +274,7 @@ void Game::Render() {
 
     renderer->FlushBatches();
 
+    // 3D Rendering
     // Temp 3D Test TODO: Finish implementing 3D renderer
     static AssetManager *assetManager = GD::GetContainer()->assetManager;
     // Texture Cubes

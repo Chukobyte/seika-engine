@@ -177,8 +177,8 @@
               "z": 0.5
             },
             "shininess": 32.0,
-            "diffuse_map_texture_path": "",
-            "specular_map_texture_path": ""
+            "diffuse_map_texture_path": "assets/container2.png",
+            "specular_map_texture_path": "assets/container2_specular.png"
           }
         }
       ],
