@@ -15,6 +15,7 @@ struct PointLightComponent {
 
 struct SpotLightComponent {
     Vector3 direction = Vector3(0.0f);
+    bool isAttachedToCamera = false;
     float cutoffInDegrees = 12.5f;
     float outerCutoffInDegrees = 15.0f;
     float linear = 0.09f;

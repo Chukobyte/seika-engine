@@ -43,6 +43,7 @@ struct SpotLight {
 };
 
 #define MAX_POINT_LIGHTS 20
+#define MAX_SPOT_LIGHTS 20
 
 in vec3 FragPos;
 in vec3 Normal;
@@ -52,7 +53,8 @@ uniform vec3 viewPos;
 uniform DirLight dirLight;
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
 uniform int numberOfPointLights;
-uniform SpotLight spotLight;
+uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
+uniform int numberOfSpotLights;
 uniform Material material;
 
 // function prototypes
@@ -78,7 +80,9 @@ void main() {
         result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
     }
     // phase 3: spot light
-    result += CalcSpotLight(spotLight, norm, FragPos, viewDir);
+    for(int i = 0; i < numberOfSpotLights; i++) {
+        result += CalcSpotLight(spotLights[i], norm, FragPos, viewDir);
+    }
 
     FragColor = vec4(result, 1.0);
 }

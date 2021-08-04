@@ -83,6 +83,7 @@ void Renderer3D::Render(CameraManager *cameraManager) {
 
     textureCubeDrawBatches.clear();
     pointLightDrawBatches.clear();
+    spotLightDrawBatches.clear();
 }
 
 void Renderer3D::RenderTextureCubes(glm::mat4 &projection, glm::mat4 &view, Camera3D &camera) {
@@ -97,6 +98,7 @@ void Renderer3D::RenderTextureCubes(glm::mat4 &projection, glm::mat4 &view, Came
     cube.shader.SetMatrix4Float("view", view);
     cube.shader.SetVec3Float("viewPos", camera.position);
     cube.shader.SetInt("numberOfPointLights", (int) pointLightDrawBatches.size());
+    cube.shader.SetInt("numberOfSpotLights", (int) spotLightDrawBatches.size());
 
     // LIGHTS
     // Directional Light
@@ -117,17 +119,27 @@ void Renderer3D::RenderTextureCubes(glm::mat4 &projection, glm::mat4 &view, Came
         cube.shader.SetFloat(arrayPrefix + ".quadratic", pointLightDrawBatches[i].quadratic);
     }
 
-    // Spot Light
-    cube.shader.SetVec3Float("spotLight.position", camera.position);
-    cube.shader.SetVec3Float("spotLight.direction", camera.front);
-    cube.shader.SetVec3Float("spotLight.ambient", spotLight.ambient);
-    cube.shader.SetVec3Float("spotLight.diffuse", spotLight.diffuse);
-    cube.shader.SetVec3Float("spotLight.specular", spotLight.specular);
-    cube.shader.SetFloat("spotLight.constant", spotLight.constant);
-    cube.shader.SetFloat("spotLight.linear", spotLight.linear);
-    cube.shader.SetFloat("spotLight.quadratic", spotLight.quadratic);
-    cube.shader.SetFloat("spotLight.cutOff", glm::cos(glm::radians(spotLight.cutoff)));
-    cube.shader.SetFloat("spotLight.outerCutOff", glm::cos(glm::radians(spotLight.outerCutoff)));
+    // Spot Lights
+    for (unsigned int i = 0; i < spotLightDrawBatches.size(); i++) {
+        const std::string &arrayPrefix = std::string("spotLights[" + std::to_string(i) + "]");
+        Vector3 spotLightPosition = spotLightDrawBatches[i].position;
+        Vector3 spotLightDirection = spotLightDrawBatches[i].direction;
+        // TODO: temp work around, implement in system
+        if (spotLightDrawBatches[i].isAttachedToCamera) {
+            spotLightPosition = camera.position;
+            spotLightDirection = camera.front;
+        }
+        cube.shader.SetVec3Float(arrayPrefix + ".position", spotLightPosition);
+        cube.shader.SetVec3Float(arrayPrefix + ".direction", spotLightDirection);
+        cube.shader.SetVec3Float(arrayPrefix + ".ambient", spotLightDrawBatches[i].ambient);
+        cube.shader.SetVec3Float(arrayPrefix + ".diffuse", spotLightDrawBatches[i].diffuse);
+        cube.shader.SetVec3Float(arrayPrefix + ".specular", spotLightDrawBatches[i].specular);
+        cube.shader.SetFloat(arrayPrefix + ".constant", spotLightDrawBatches[i].constant);
+        cube.shader.SetFloat(arrayPrefix + ".linear", spotLightDrawBatches[i].linear);
+        cube.shader.SetFloat(arrayPrefix + ".quadratic", spotLightDrawBatches[i].quadratic);
+        cube.shader.SetFloat(arrayPrefix + ".cutOff", spotLightDrawBatches[i].cutoff);
+        cube.shader.SetFloat(arrayPrefix + ".outerCutOff", spotLightDrawBatches[i].outerCutoff);
+    }
 
     // Render
     glBindVertexArray(cube.VAO);
@@ -174,4 +186,8 @@ void Renderer3D::AddTextureCubeDrawBatch(TextureCubeDrawBatch textureCubeDrawBat
 
 void Renderer3D::AddPointLightDrawBatch(PointLightDrawBatch pointLightDrawBatch) {
     pointLightDrawBatches.emplace_back(pointLightDrawBatch);
+}
+
+void Renderer3D::AddSpotLightDrawBatch(SpotLightDrawBatch spotLightDrawBatch) {
+    spotLightDrawBatches.emplace_back(spotLightDrawBatch);
 }

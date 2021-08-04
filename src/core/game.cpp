@@ -316,6 +316,9 @@ void Game::Render() {
         });
     }
 
+    // Spot Light
+    renderer3D->AddSpotLightDrawBatch(SpotLightDrawBatch{.isAttachedToCamera = true});
+
     renderer3D->Render(GD::GetContainer()->cameraManager);
 
     SDL_GL_SwapWindow(renderContext->window);

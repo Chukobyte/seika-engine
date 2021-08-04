@@ -33,6 +33,21 @@ struct PointLightDrawBatch {
     const float constant = 1.0f;
 };
 
+struct SpotLightDrawBatch {
+    bool isAttachedToCamera = false;
+    Vector3 position = Vector3(0.0f);
+    Vector3 direction = Vector3(0.0f);
+    Vector3 ambient = Vector3(0.0f);
+    Vector3 diffuse = Vector3(1.0f);
+    Vector3 specular = Vector3(1.0f);
+    float linear = 0.09f;
+    float quadratic = 0.032f;
+    const float constant = 1.0f;
+    // In Radians
+    float cutoff = 12.5f;
+    float outerCutoff = 15.0f;
+};
+
 struct RenderObject {
     GLuint VAO;
     Shader shader;
@@ -154,6 +169,7 @@ class Renderer3D {
 
     std::vector<TextureCubeDrawBatch> textureCubeDrawBatches;
     std::vector<PointLightDrawBatch> pointLightDrawBatches;
+    std::vector<SpotLightDrawBatch> spotLightDrawBatches;
 
     Vector3 cubePositions[10] = {Vector3(0.0f, 0.0f, 0.0f),
                                  Vector3(2.0f, 5.0f, -15.0f),
@@ -187,6 +203,8 @@ class Renderer3D {
     void AddTextureCubeDrawBatch(TextureCubeDrawBatch textureCubeDrawBatch);
 
     void AddPointLightDrawBatch(PointLightDrawBatch pointLightDrawBatch);
+
+    void AddSpotLightDrawBatch(SpotLightDrawBatch spotLightDrawBatch);
 
     void BatchDrawTextureCube();
 };
