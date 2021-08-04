@@ -9,11 +9,18 @@ class NodeTypeHelper {
   private:
     static const std::string NODE_TYPE_INVALID;
     static const std::string NODE_TYPE_NODE;
+
     static const std::string NODE_TYPE_NODE2D;
     static const std::string NODE_TYPE_SPRITE;
     static const std::string NODE_TYPE_ANIMATED_SPRITE;
     static const std::string NODE_TYPE_TEXT_LABEL;
     static const std::string NODE_TYPE_COLLISION_SHAPE2D;
+
+    static const std::string NODE_TYPE_SPATIAL;
+    static const std::string NODE_TYPE_TEXTURE_CUBE;
+    static const std::string NODE_TYPE_DIRECTIONAL_LIGHT;
+    static const std::string NODE_TYPE_POINT_LIGHT;
+    static const std::string NODE_TYPE_SPOT_LIGHT;
 
     static std::map<NodeType, std::string> NODE_TYPE_TO_STRING_MAP;
     static std::map<std::string, NodeType> NODE_STRING_TO_TYPE_MAP;
