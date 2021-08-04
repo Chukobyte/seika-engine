@@ -303,10 +303,10 @@ void Game::Render() {
     }
 
     // Point Lights
-    static Vector3 pointLightPositions[4] = {Vector3(0.0f, 0.0f, 0.0f),
-                                             Vector3(2.0f, 5.0f, -15.0f),
-                                             Vector3(-1.5f, -2.2f, -2.5f),
-                                             Vector3(-3.8f, -2.0f, -12.3f)
+    static Vector3 pointLightPositions[4] = {Vector3(0.7f, 0.2f, 2.0f),
+                                             Vector3(2.3f, -3.3f, -4.0f),
+                                             Vector3(-4.0f, 2.0f, -12.5f),
+                                             Vector3(0.0f, 0.0f, -3.0f)
                                             };
     for (int i = 0; i < 4; i++) {
         renderer3D->AddPointLightDrawBatch(
