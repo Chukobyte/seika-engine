@@ -73,7 +73,6 @@ class SceneManager {
             .tags = nodeTags
         });
 
-
         // Rest of components
         for (nlohmann::json nodeComponentJson : nodeComponentJsonArray) {
             nlohmann::json::iterator it = nodeComponentJson.begin();
@@ -232,6 +231,32 @@ class SceneManager {
                 componentManager->AddComponent(sceneNode.entity, colliderComponent);
                 auto signature = entityManager->GetSignature(sceneNode.entity);
                 signature.set(componentManager->GetComponentType<ColliderComponent>(), true);
+                entityManager->SetSignature(sceneNode.entity, signature);
+            } else if (nodeComponentType == "transform3D") {
+                Vector3 nodePosition = Vector3(
+                                           nodeComponentObjectJson["position"]["x"].get<float>(),
+                                           nodeComponentObjectJson["position"]["y"].get<float>(),
+                                           nodeComponentObjectJson["position"]["z"].get<float>()
+                                       );
+                Vector3 nodeScale = Vector3(
+                                        nodeComponentObjectJson["scale"]["x"].get<float>(),
+                                        nodeComponentObjectJson["scale"]["y"].get<float>(),
+                                        nodeComponentObjectJson["scale"]["z"].get<float>()
+                                    );
+                const float nodeRotation = nodeComponentObjectJson["rotation"].get<float>();
+                Vector3 nodeRotationAxis = Vector3(
+                                               nodeComponentObjectJson["scale"]["x"].get<float>(),
+                                               nodeComponentObjectJson["scale"]["y"].get<float>(),
+                                               nodeComponentObjectJson["scale"]["z"].get<float>()
+                                           );
+                componentManager->AddComponent(sceneNode.entity, Transform3DComponent{
+                    .position = nodePosition,
+                    .scale = nodeScale,
+                    .rotationAngleInDegrees = nodeRotation,
+                    .rotationAxisInDegrees = nodeRotationAxis
+                });
+                auto signature = entityManager->GetSignature(sceneNode.entity);
+                signature.set(componentManager->GetComponentType<Transform3DComponent>(), true);
                 entityManager->SetSignature(sceneNode.entity, signature);
             } else if (nodeComponentType == "material") {
                 Vector3 nodeAmbient = Vector3(

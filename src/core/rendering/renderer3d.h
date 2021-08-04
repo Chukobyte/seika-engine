@@ -117,6 +117,7 @@ struct SpotLight {
 
 class Renderer3D {
   private:
+    bool initialized = false;
     GLuint VBO;
     RenderObject lightRenderObject;
     RenderObject cubeRenderObject;

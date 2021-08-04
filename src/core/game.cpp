@@ -10,6 +10,7 @@
 #include "ecs/entity/system/text_rendering_entity_system.h"
 #include "ecs/entity/system/script_entity_system.h"
 #include "ecs/entity/system/collision_entity_system.h"
+#include "ecs/entity/system/texture_cube_rendering_entity_system.h"
 
 #include "ecs/component/components/animated_sprite_component.h"
 #include "ecs/component/components/text_label_component.h"
@@ -74,6 +75,9 @@ void Game::InitializeECS() {
     entityComponentOrchestrator->RegisterComponent<TextLabelComponent>();
     entityComponentOrchestrator->RegisterComponent<ScriptableClassComponent>();
     entityComponentOrchestrator->RegisterComponent<ColliderComponent>();
+    entityComponentOrchestrator->RegisterComponent<Transform3DComponent>();
+    entityComponentOrchestrator->RegisterComponent<MaterialComponent>();
+    entityComponentOrchestrator->RegisterComponent<TextureCubeComponent>();
 
     // Systems
     entityComponentOrchestrator->RegisterSystem<TimerEntitySystem>();
@@ -107,8 +111,15 @@ void Game::InitializeECS() {
 
     entityComponentOrchestrator->RegisterSystem<CollisionEntitySystem>();
     ComponentSignature collisionSystemSignature;
-    collisionSystemSignature.set(entityComponentOrchestrator->GetComponentType<ColliderComponent>());
+    collisionSystemSignature.set(entityComponentOrchestrator->GetComponentType<ColliderComponent>(), true);
     entityComponentOrchestrator->SetSystemSignature<CollisionEntitySystem>(collisionSystemSignature);
+
+    entityComponentOrchestrator->RegisterSystem<TextureCubeRenderingEntitySystem>();
+    ComponentSignature textureCubeRenderingSystemSignature;
+    textureCubeRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<Transform3DComponent>(), true);
+    textureCubeRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<MaterialComponent>(), true);
+    textureCubeRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<TextureCubeComponent>(), true);
+    entityComponentOrchestrator->SetSystemSignature<TextureCubeRenderingEntitySystem>(textureCubeRenderingSystemSignature);
 
     entityComponentOrchestrator->InitializeAllSystems();
 
@@ -230,8 +241,8 @@ void Game::FixedTimeStep() {
 
         // Check Collisions
         // TODO: Refactor collision system
-//        static CollisionEntitySystem *collisionEntitySystem = (CollisionEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<CollisionEntitySystem>();
-//        collisionEntitySystem->ProcessCollisions();
+        static CollisionEntitySystem *collisionEntitySystem = (CollisionEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<CollisionEntitySystem>();
+        collisionEntitySystem->ProcessCollisions();
 
         scriptEntitySystem->PhysicsProcess(PHYSICS_DELTA_TIME);
 
@@ -275,34 +286,36 @@ void Game::Render() {
     renderer->FlushBatches();
 
     // 3D Rendering
+    static TextureCubeRenderingEntitySystem *textureCubeRenderingEntitySystem = (TextureCubeRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<TextureCubeRenderingEntitySystem>();
+    textureCubeRenderingEntitySystem->Render();
     // Temp 3D Test TODO: Finish implementing 3D renderer
     static AssetManager *assetManager = GD::GetContainer()->assetManager;
     // Texture Cubes
     static Texture *diffuseMap = assetManager->GetTexture("assets/container2.png");
     static Texture *specularMap = assetManager->GetTexture("assets/container2_specular.png");
 
-    static Vector3 textureCubePositions[10] = {Vector3(0.0f, 0.0f, 0.0f),
-                                               Vector3(2.0f, 5.0f, -15.0f),
-                                               Vector3(-1.5f, -2.2f, -2.5f),
-                                               Vector3(-3.8f, -2.0f, -12.3f),
-                                               Vector3(-2.4f, -0.4f, -3.5f),
-                                               Vector3(-1.7f, 3.0f, -7.5f),
-                                               Vector3(1.3f, -2.0f, -2.5f),
-                                               Vector3(1.5f, 2.0f, -2.5f),
-                                               Vector3(1.5f, 0.2f, -1.5f),
-                                               Vector3(-1.3f, 1.0f, -1.5f)
-                                              };
-    for (int i = 0; i < 10; i++) {
-        renderer3D->AddTextureCubeDrawBatch(TextureCubeDrawBatch{
-            .position = textureCubePositions[i],
-            .scale = Vector3(1.0f),
-            .rotationAngleInDegrees = i * 20.0f,
-            .rotationAxisInDegrees = Vector3(1.0f, 0.3f, 0.5f),
-            .diffuseMap = diffuseMap,
-            .specularMap = specularMap,
-            .shininess = 32.0f
-        });
-    }
+//    static Vector3 textureCubePositions[10] = {Vector3(0.0f, 0.0f, 0.0f),
+//                                               Vector3(2.0f, 5.0f, -15.0f),
+//                                               Vector3(-1.5f, -2.2f, -2.5f),
+//                                               Vector3(-3.8f, -2.0f, -12.3f),
+//                                               Vector3(-2.4f, -0.4f, -3.5f),
+//                                               Vector3(-1.7f, 3.0f, -7.5f),
+//                                               Vector3(1.3f, -2.0f, -2.5f),
+//                                               Vector3(1.5f, 2.0f, -2.5f),
+//                                               Vector3(1.5f, 0.2f, -1.5f), H
+//                                               Vector3(-1.3f, 1.0f, -1.5f)
+//                                              };
+//    for (int i = 0; i < 10; i++) {
+//        renderer3D->AddTextureCubeDrawBatch(TextureCubeDrawBatch{
+//            .position = textureCubePositions[i],
+//            .scale = Vector3(1.0f),
+//            .rotationAngleInDegrees = i * 20.0f,
+//            .rotationAxisInDegrees = Vector3(1.0f, 0.3f, 0.5f),
+//            .diffuseMap = diffuseMap,
+//            .specularMap = specularMap,
+//            .shininess = 32.0f
+//        });
+//    }
 
     // Point Lights
     static Vector3 pointLightPositions[4] = {Vector3(0.7f, 0.2f, 2.0f),

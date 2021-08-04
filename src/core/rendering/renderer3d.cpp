@@ -7,9 +7,11 @@
 Renderer3D::Renderer3D() {}
 
 Renderer3D::~Renderer3D() {
-    glDeleteVertexArrays(1, &cube.VAO);
-    glDeleteVertexArrays(1, &light.VAO);
-    glDeleteBuffers(1, &VBO);
+    if (initialized) {
+        glDeleteVertexArrays(1, &cube.VAO);
+        glDeleteVertexArrays(1, &light.VAO);
+        glDeleteBuffers(1, &VBO);
+    }
 }
 
 void Renderer3D::Initialize() {
@@ -64,6 +66,7 @@ void Renderer3D::Initialize() {
     cube.shader.SetInt("material.specular", 1);
 
     light.shader = Shader("src/core/rendering/shader/opengl_shaders/3d/light.vs", "src/core/rendering/shader/opengl_shaders/3d/light.fs");
+    initialized = true;
 }
 
 void Renderer3D::Render(CameraManager *cameraManager) {

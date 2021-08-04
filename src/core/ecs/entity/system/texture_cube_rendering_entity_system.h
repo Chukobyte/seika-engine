@@ -6,7 +6,7 @@
 #include "../../component/components/animated_sprite_component.h"
 #include "../../../math/space_handler.h"
 
-class TextureCubeRenderingEntitySystem22 : public EntitySystem {
+class TextureCubeRenderingEntitySystem : public EntitySystem {
   private:
     Renderer3D *renderer3D = nullptr;
     ComponentManager *componentManager = nullptr;
@@ -16,7 +16,7 @@ class TextureCubeRenderingEntitySystem22 : public EntitySystem {
   public:
 
     TextureCubeRenderingEntitySystem() {
-        renderer3D = GD::GetContainer()->renderer;
+        renderer3D = GD::GetContainer()->renderer3D;
         componentManager = GD::GetContainer()->componentManager;
         cameraManager = GD::GetContainer()->cameraManager;
         sceneManager = GD::GetContainer()->sceneManager;
@@ -29,7 +29,22 @@ class TextureCubeRenderingEntitySystem22 : public EntitySystem {
     void UnregisterEntity(Entity entity) override {}
 
     void Render() {
-        if (IsEnabled()) {}
+        if (IsEnabled()) {
+            for (Entity entity : entities) {
+                Transform3DComponent transform3DComponent = componentManager->GetComponent<Transform3DComponent>(entity);
+                MaterialComponent materialComponent = componentManager->GetComponent<MaterialComponent>(entity);
+
+                renderer3D->AddTextureCubeDrawBatch(TextureCubeDrawBatch{
+                    .position = transform3DComponent.position,
+                    .scale = transform3DComponent.scale,
+                    .rotationAngleInDegrees = transform3DComponent.rotationAngleInDegrees,
+                    .rotationAxisInDegrees = transform3DComponent.rotationAxisInDegrees,
+                    .diffuseMap = materialComponent.diffuseMap,
+                    .specularMap = materialComponent.specularMap,
+                    .shininess = materialComponent.shininess
+                });
+            }
+        }
     }
 };
 
