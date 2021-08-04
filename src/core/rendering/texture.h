@@ -29,12 +29,34 @@ class Texture {
     void Initialize(void *buffer, size_t bufferSize);
 
     void Generate();
+
+    unsigned int GetWrapFromString(const std::string &wrap) const {
+        if (wrap == "clamp_to_border") {
+            return GL_CLAMP_TO_BORDER;
+        } else if (wrap == "repeat") {
+            return GL_REPEAT;
+        }
+        logger->Error("'" + wrap + "' is an invalid wrap value!");
+        return wrapS;
+    }
+
+    unsigned int GetFilterFromString(const std::string &filter) const {
+        if (filter == "nearest") {
+            return GL_NEAREST;
+        } else if (filter == "linear") {
+            return GL_LINEAR;
+        }
+        logger->Error("'" + filter + "' is an invalid filter value!");
+        return filterMin;
+    }
   protected:
     Texture() {}
   public:
     Texture(const char* fileName);
 
-    Texture(const char* fileName, unsigned int wrapS, unsigned int wrapT, unsigned int filterMax, unsigned int filterMin);
+    Texture(const char* fileName, unsigned int wrapS, unsigned int wrapT, unsigned int filterMin, unsigned int filterMax);
+
+    Texture(const char* fileName, const std::string &wrapS, const std::string &wrapT, const std::string &filterMin, const std::string &filterMax);
 
     Texture(void *buffer, size_t bufferSize);
 

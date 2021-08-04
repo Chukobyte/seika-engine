@@ -11,6 +11,10 @@
 
 struct TextureConfiguration {
     std::string filePath;
+    std::string wrapS;
+    std::string wrapT;
+    std::string filterMin;
+    std::string filterMax;
 };
 
 struct FontConfiguration {
@@ -57,11 +61,19 @@ class ProjectProperties {
     void LoadProjectAssets(nlohmann::json assetsJsonArray) {
         AssetConfigurations loadedAssetConfigurations;
         for (nlohmann::json assetJson : assetsJsonArray) {
-            std::string assetType = assetJson["type"];
-            std::string assetsFilePath = assetJson["file_path"];
+            const std::string &assetType = assetJson["type"].get<std::string>();
+            const std::string &assetsFilePath = assetJson["file_path"].get<std::string>();
             if (assetType == "texture") {
+                const std::string &assetWrapS = assetJson["wrap_s"].get<std::string>();
+                const std::string &assetWrapT = assetJson["wrap_s"].get<std::string>();
+                const std::string &assetFilterMin = assetJson["filter_min"].get<std::string>();
+                const std::string &assetFilterMax = assetJson["filter_max"].get<std::string>();
                 loadedAssetConfigurations.textureConfigurations.emplace_back(TextureConfiguration{
                     .filePath = assetsFilePath,
+                    .wrapS = assetWrapS,
+                    .wrapT = assetWrapT,
+                    .filterMin = assetFilterMin,
+                    .filterMax = assetFilterMax
                 });
             } else if (assetType == "font") {
                 int fontSize = assetJson["size"].get<int>();

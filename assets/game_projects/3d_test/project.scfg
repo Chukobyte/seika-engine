@@ -12,7 +12,24 @@
     "green": 0.1,
     "blue": 0.1
   },
-  "assets": [],
+  "assets": [
+    {
+      "type": "texture",
+      "file_path": "assets/container2.png",
+      "wrap_s": "repeat",
+      "wrap_t": "repeat",
+      "filter_min": "linear",
+      "filter_max": "linear"
+    },
+    {
+      "type": "texture",
+      "file_path": "assets/container2_specular.png",
+      "wrap_s": "repeat",
+      "wrap_t": "repeat",
+      "filter_min": "linear",
+      "filter_max": "linear"
+    }
+  ],
   "input_actions": [
     {
       "name": "quit",

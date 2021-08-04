@@ -8,6 +8,7 @@
 
 #include "rendering/texture.h"
 #include "rendering/font.h"
+#include "project_properties.h"
 
 static const std::string &DEFAULT_COLLIDER_ASSET_ID = "assets/images/collider_base.png";
 
@@ -18,6 +19,8 @@ class AssetManager {
     std::map<std::string, Mix_Music*> music;
     std::map<std::string, Mix_Chunk*> sounds;
     Logger *logger = nullptr;
+
+    void LoadTexture(const TextureConfiguration &textureConfiguration);
 
   public:
     AssetManager();

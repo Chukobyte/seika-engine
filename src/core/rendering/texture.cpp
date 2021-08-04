@@ -8,8 +8,13 @@ Texture::Texture(const char* fileName) {
     Initialize(fileName);
 }
 
-Texture::Texture(const char* fileName, unsigned int wrapS, unsigned int wrapT, unsigned int filterMax, unsigned int filterMin) :
-    wrapS(wrapS), wrapT(wrapT), filterMax(filterMax), filterMin(filterMin) {
+Texture::Texture(const char* fileName, unsigned int wrapS, unsigned int wrapT, unsigned int filterMin, unsigned int filterMax) :
+    wrapS(wrapS), wrapT(wrapT), filterMin(filterMin), filterMax(filterMax) {
+    Initialize(fileName);
+}
+
+Texture::Texture(const char* fileName, const std::string &wrapS, const std::string &wrapT, const std::string &filterMin, const std::string &filterMax) :
+    wrapS(GetWrapFromString(wrapS)), wrapT(GetWrapFromString(wrapT)), filterMin(GetFilterFromString(filterMin)), filterMax(GetFilterFromString(filterMax)) {
     Initialize(fileName);
 }
 

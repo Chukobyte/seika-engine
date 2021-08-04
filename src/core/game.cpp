@@ -43,6 +43,7 @@ void Game::Initialize(int argv, char** args) {
     inputManager->LoadProjectInputActions();
     if (!commandLineFlagResult.workingDirectoryOverride.empty()) {
         FileHelper::ChangeDirectory(commandLineFlagResult.workingDirectoryOverride);
+        logger->Debug("Set project root override to " + commandLineFlagResult.workingDirectoryOverride);
     }
     assetManager->LoadProjectAssets();
     InitializeECS();
@@ -273,17 +274,11 @@ void Game::Render() {
     renderer->FlushBatches();
 
     // Temp 3D Test TODO: Finish implementing 3D renderer
+    static AssetManager *assetManager = GD::GetContainer()->assetManager;
     // Texture Cubes
-    static Texture *diffuseMap = new Texture("assets/container2.png",
-            GL_REPEAT,
-            GL_REPEAT,
-            GL_LINEAR,
-            GL_LINEAR);
-    static Texture *specularMap = new Texture("assets/container2_specular.png",
-            GL_REPEAT,
-            GL_REPEAT,
-            GL_LINEAR,
-            GL_LINEAR);
+    static Texture *diffuseMap = assetManager->GetTexture("assets/container2.png");
+    static Texture *specularMap = assetManager->GetTexture("assets/container2_specular.png");
+
     static Vector3 textureCubePositions[10] = {Vector3(0.0f, 0.0f, 0.0f),
                                                Vector3(2.0f, 5.0f, -15.0f),
                                                Vector3(-1.5f, -2.2f, -2.5f),
