@@ -20,7 +20,7 @@
       "components": [
         {
           "transform3D": {
-            "position" : {
+            "position": {
               "x": 0.7,
               "y": 0.2,
               "z": 2.0
@@ -80,7 +80,7 @@
       "components": [
         {
           "transform3D": {
-            "position" : {
+            "position": {
               "x": 0.7,
               "y": 0.2,
               "z": 2.0
@@ -102,7 +102,7 @@
           "point_light": {
             "linear": 0.09,
             "quadratic": 0.032,
-            "constant": 1.0
+            "constant": 1
           }
         },
         {
@@ -131,6 +131,72 @@
       "children": []
     },
     {
+      "name": "FlashLight",
+      "type": "SpotLight",
+      "tags": [],
+      "external_scene_source": "",
+      "components": [
+        {
+          "transform3D": {
+            "position": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 1.0,
+              "y": 1.0,
+              "z": 1.0
+            },
+            "rotation": 0.0,
+            "rotation_axis": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          }
+        },
+        {
+          "spot_light": {
+            "direction": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "is_attached_to_camera": true,
+            "linear": 0.09,
+            "quadratic": 0.032,
+            "constant": 1.0,
+            "cutoff": 12.5,
+            "outer_cutoff": 15.0
+          }
+        },
+        {
+          "material": {
+            "ambient": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "diffuse": {
+              "x": 1.0,
+              "y": 1.0,
+              "z": 1.0
+            },
+            "specular": {
+              "x": 1.0,
+              "y": 1.0,
+              "z": 1.0
+            },
+            "shininess": 0.0,
+            "diffuse_map_texture_path": "",
+            "specular_map_texture_path": ""
+          }
+        }
+      ],
+      "children": []
+    },
+    {
       "name": "WoodenContainer0",
       "type": "TextureCube",
       "tags": [],
@@ -138,7 +204,7 @@
       "components": [
         {
           "transform3D": {
-            "position" : {
+            "position": {
               "x": 0.7,
               "y": 0.2,
               "z": 2.0
