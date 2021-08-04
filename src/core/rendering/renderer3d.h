@@ -10,8 +10,6 @@
 #include "../math/vector3.h"
 #include "../camera/camera_manager.h"
 
-struct CubeDrawBatch {};
-
 struct TextureCubeDrawBatch {
     Vector3 position = Vector3(0.0f);
     Vector3 scale = Vector3(1.0f);
@@ -20,6 +18,13 @@ struct TextureCubeDrawBatch {
     Texture *diffuseMap = nullptr;
     Texture *specularMap = nullptr;
     float shininess = 0.0f;
+};
+
+struct DirectionalLightDrawBatch {
+    Vector3 direction = Vector3(-0.2f, -1.0f, -0.3f);
+    Vector3 ambient = Vector3(0.05f, 0.05f, 0.05f);
+    Vector3 diffuse = Vector3(0.4f, 0.4f, 0.4f);
+    Vector3 specular = Vector3(0.5f, 0.5f, 0.5f);
 };
 
 struct PointLightDrawBatch {
@@ -46,11 +51,6 @@ struct SpotLightDrawBatch {
     // In Radians
     float cutoff = 12.5f;
     float outerCutoff = 15.0f;
-};
-
-struct RenderObject {
-    GLuint VAO;
-    Shader shader;
 };
 
 struct EntityMaterial {
@@ -119,8 +119,6 @@ class Renderer3D {
   private:
     bool initialized = false;
     GLuint VBO;
-    RenderObject lightRenderObject;
-    RenderObject cubeRenderObject;
     LightEntity light;
     CubeEntity cube;
 
@@ -202,6 +200,9 @@ class Renderer3D {
     void Render(CameraManager *cameraManager);
 
     void AddTextureCubeDrawBatch(TextureCubeDrawBatch textureCubeDrawBatch);
+
+    // TODO: Clean up, for now can only have one directional light
+    void AddDirectionalLightDrawBatch(DirectionalLightDrawBatch directionalLightDrawBatch);
 
     void AddPointLightDrawBatch(PointLightDrawBatch pointLightDrawBatch);
 

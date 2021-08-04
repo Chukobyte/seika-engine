@@ -317,6 +317,15 @@ void Game::Render() {
 //        });
 //    }
 
+    // Directional Light
+    renderer3D->AddDirectionalLightDrawBatch(
+    DirectionalLightDrawBatch{
+        .direction = Vector3(-0.2, -1.0f, -0.3),
+        .ambient = Vector3(0.05f),
+        .diffuse = Vector3(0.4f),
+        .specular = Vector3(0.5f)
+    });
+
     // Point Lights
     static Vector3 pointLightPositions[4] = {Vector3(0.7f, 0.2f, 2.0f),
                                              Vector3(2.3f, -3.3f, -4.0f),

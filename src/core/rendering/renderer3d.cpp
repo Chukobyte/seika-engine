@@ -46,19 +46,6 @@ void Renderer3D::Initialize() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*) nullptr);
     glEnableVertexAttribArray(0);
 
-
-    // Textures
-    cube.material.diffuseMap = new Texture("assets/game_projects/3d_test/assets/container2.png",
-                                           GL_REPEAT,
-                                           GL_REPEAT,
-                                           GL_LINEAR,
-                                           GL_LINEAR);
-    cube.material.specularMap = new Texture("assets/game_projects/3d_test/assets/container2_specular.png",
-                                            GL_REPEAT,
-                                            GL_REPEAT,
-                                            GL_LINEAR,
-                                            GL_LINEAR);
-
     // Shader
     cube.shader = Shader("src/core/rendering/shader/opengl_shaders/3d/cube.vs", "src/core/rendering/shader/opengl_shaders/3d/cube.fs");
     cube.shader.Use();
@@ -185,6 +172,13 @@ void Renderer3D::RenderPointLights(glm::mat4 &projection, glm::mat4 &view) {
 
 void Renderer3D::AddTextureCubeDrawBatch(TextureCubeDrawBatch textureCubeDrawBatch) {
     textureCubeDrawBatches.emplace_back(textureCubeDrawBatch);
+}
+
+void Renderer3D::AddDirectionalLightDrawBatch(DirectionalLightDrawBatch directionalLightDrawBatch) {
+    directionalLight.direction = directionalLightDrawBatch.direction;
+    directionalLight.ambient = directionalLightDrawBatch.ambient;
+    directionalLight.diffuse = directionalLightDrawBatch.diffuse;
+    directionalLight.specular = directionalLightDrawBatch.specular;
 }
 
 void Renderer3D::AddPointLightDrawBatch(PointLightDrawBatch pointLightDrawBatch) {
