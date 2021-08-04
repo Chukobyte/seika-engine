@@ -72,6 +72,7 @@ void Renderer3D::Render(CameraManager *cameraManager) {
     }
 
     textureCubeDrawBatches.clear();
+    directionalLightDrawBatches.clear();
     pointLightDrawBatches.clear();
     spotLightDrawBatches.clear();
 }
@@ -91,11 +92,14 @@ void Renderer3D::RenderTextureCubes(glm::mat4 &projection, glm::mat4 &view, Came
     cube.shader.SetInt("numberOfSpotLights", (int) spotLightDrawBatches.size());
 
     // LIGHTS
-    // Directional Light
-    cube.shader.SetVec3Float("dirLight.direction", directionalLight.direction);
-    cube.shader.SetVec3Float("dirLight.ambient", directionalLight.ambient);
-    cube.shader.SetVec3Float("dirLight.diffuse", directionalLight.diffuse);
-    cube.shader.SetVec3Float("dirLight.specular", directionalLight.specular);
+    // Directional Lights
+    for (unsigned int i = 0; i < directionalLightDrawBatches.size(); i++) {
+        const std::string &arrayPrefix = std::string("directionalLights[" + std::to_string(i) + "]");
+        cube.shader.SetVec3Float(arrayPrefix + ".direction", directionalLightDrawBatches[i].direction);
+        cube.shader.SetVec3Float(arrayPrefix + ".ambient", directionalLightDrawBatches[i].ambient);
+        cube.shader.SetVec3Float(arrayPrefix + ".diffuse", directionalLightDrawBatches[i].diffuse);
+        cube.shader.SetVec3Float(arrayPrefix + ".specular", directionalLightDrawBatches[i].specular);
+    }
 
     // Point Lights
     for (unsigned int i = 0; i < pointLightDrawBatches.size(); i++) {
@@ -175,10 +179,7 @@ void Renderer3D::AddTextureCubeDrawBatch(TextureCubeDrawBatch textureCubeDrawBat
 }
 
 void Renderer3D::AddDirectionalLightDrawBatch(DirectionalLightDrawBatch directionalLightDrawBatch) {
-    directionalLight.direction = directionalLightDrawBatch.direction;
-    directionalLight.ambient = directionalLightDrawBatch.ambient;
-    directionalLight.diffuse = directionalLightDrawBatch.diffuse;
-    directionalLight.specular = directionalLightDrawBatch.specular;
+    directionalLightDrawBatches.emplace_back(directionalLightDrawBatch);
 }
 
 void Renderer3D::AddPointLightDrawBatch(PointLightDrawBatch pointLightDrawBatch) {

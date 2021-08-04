@@ -289,33 +289,6 @@ void Game::Render() {
     static TextureCubeRenderingEntitySystem *textureCubeRenderingEntitySystem = (TextureCubeRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<TextureCubeRenderingEntitySystem>();
     textureCubeRenderingEntitySystem->Render();
     // Temp 3D Test TODO: Finish implementing 3D renderer
-    static AssetManager *assetManager = GD::GetContainer()->assetManager;
-    // Texture Cubes
-    static Texture *diffuseMap = assetManager->GetTexture("assets/container2.png");
-    static Texture *specularMap = assetManager->GetTexture("assets/container2_specular.png");
-
-//    static Vector3 textureCubePositions[10] = {Vector3(0.0f, 0.0f, 0.0f),
-//                                               Vector3(2.0f, 5.0f, -15.0f),
-//                                               Vector3(-1.5f, -2.2f, -2.5f),
-//                                               Vector3(-3.8f, -2.0f, -12.3f),
-//                                               Vector3(-2.4f, -0.4f, -3.5f),
-//                                               Vector3(-1.7f, 3.0f, -7.5f),
-//                                               Vector3(1.3f, -2.0f, -2.5f),
-//                                               Vector3(1.5f, 2.0f, -2.5f),
-//                                               Vector3(1.5f, 0.2f, -1.5f), H
-//                                               Vector3(-1.3f, 1.0f, -1.5f)
-//                                              };
-//    for (int i = 0; i < 10; i++) {
-//        renderer3D->AddTextureCubeDrawBatch(TextureCubeDrawBatch{
-//            .position = textureCubePositions[i],
-//            .scale = Vector3(1.0f),
-//            .rotationAngleInDegrees = i * 20.0f,
-//            .rotationAxisInDegrees = Vector3(1.0f, 0.3f, 0.5f),
-//            .diffuseMap = diffuseMap,
-//            .specularMap = specularMap,
-//            .shininess = 32.0f
-//        });
-//    }
 
     // Directional Light
     renderer3D->AddDirectionalLightDrawBatch(

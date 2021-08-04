@@ -42,6 +42,7 @@ struct SpotLight {
     vec3 specular;
 };
 
+#define MAX_DIRECTIONAL_LIGHTS 20
 #define MAX_POINT_LIGHTS 20
 #define MAX_SPOT_LIGHTS 20
 
@@ -50,7 +51,8 @@ in vec3 Normal;
 in vec2 TexCoords;
 
 uniform vec3 viewPos;
-uniform DirLight dirLight;
+uniform DirLight directionalLights[MAX_DIRECTIONAL_LIGHTS];
+uniform int numberOfDirectionalLights;
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
 uniform int numberOfPointLights;
 uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
@@ -73,8 +75,11 @@ void main() {
     // per lamp. In the main() function we take all the calculated colors and sum them up for
     // this fragment's final color.
     // == =====================================================
+    vec3 result = vec3(0.0f);
     // phase 1: directional lighting
-    vec3 result = CalcDirLight(dirLight, norm, viewDir);
+    for(int i = 0; i < numberOfDirectionalLights; i++) {
+        result += CalcDirLight(directionalLights[i], norm, viewDir);
+    }
     // phase 2: point lights
     for(int i = 0; i < numberOfPointLights; i++) {
         result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
