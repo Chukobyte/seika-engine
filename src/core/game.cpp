@@ -317,21 +317,11 @@ void Game::Render() {
     textureCubeRenderingEntitySystem->Render();
     static DirectionalLightRenderingEntitySystem *directionalLightRenderingEntitySystem = (DirectionalLightRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<DirectionalLightRenderingEntitySystem>();
     directionalLightRenderingEntitySystem->Render();
+    static PointLightRenderingEntitySystem *pointLightRenderingEntitySystem = (PointLightRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<PointLightRenderingEntitySystem>();
+    pointLightRenderingEntitySystem->Render();
+//    static SpotLightRenderingEntitySystem *spotLightRenderingEntitySystem = (SpotLightRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<SpotLightRenderingEntitySystem>();
+//    spriteRenderingEntitySystem->Render();
     // Temp 3D Test TODO: Finish implementing 3D renderer
-
-    // Point Lights
-    static Vector3 pointLightPositions[4] = {Vector3(0.7f, 0.2f, 2.0f),
-                                             Vector3(2.3f, -3.3f, -4.0f),
-                                             Vector3(-4.0f, 2.0f, -12.5f),
-                                             Vector3(0.0f, 0.0f, -3.0f)
-                                            };
-    for (int i = 0; i < 4; i++) {
-        renderer3D->AddPointLightDrawBatch(
-        PointLightDrawBatch{
-            .position = pointLightPositions[i],
-            .scale = Vector3(0.2f)
-        });
-    }
 
     // Spot Light
     renderer3D->AddSpotLightDrawBatch(SpotLightDrawBatch{.isAttachedToCamera = true});
