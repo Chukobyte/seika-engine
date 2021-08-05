@@ -268,8 +268,8 @@ void Game::FixedTimeStep() {
 
         // Check Collisions
         // TODO: Refactor collision system
-        static CollisionEntitySystem *collisionEntitySystem = (CollisionEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<CollisionEntitySystem>();
-        collisionEntitySystem->ProcessCollisions();
+//        static CollisionEntitySystem *collisionEntitySystem = (CollisionEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<CollisionEntitySystem>();
+//        collisionEntitySystem->ProcessCollisions();
 
         scriptEntitySystem->PhysicsProcess(PHYSICS_DELTA_TIME);
 
