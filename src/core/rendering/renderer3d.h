@@ -165,7 +165,6 @@ class Renderer3D {
 
     void AddTextureCubeDrawBatch(TextureCubeDrawBatch textureCubeDrawBatch);
 
-    // TODO: Clean up, for now can only have one directional light
     void AddDirectionalLightDrawBatch(DirectionalLightDrawBatch directionalLightDrawBatch);
 
     void AddPointLightDrawBatch(PointLightDrawBatch pointLightDrawBatch);

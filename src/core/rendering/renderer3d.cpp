@@ -88,6 +88,7 @@ void Renderer3D::RenderTextureCubes(glm::mat4 &projection, glm::mat4 &view, Came
     cube.shader.SetMatrix4Float("projection", projection);
     cube.shader.SetMatrix4Float("view", view);
     cube.shader.SetVec3Float("viewPos", camera.position);
+    cube.shader.SetInt("numberOfDirectionalLights", (int) directionalLightDrawBatches.size());
     cube.shader.SetInt("numberOfPointLights", (int) pointLightDrawBatches.size());
     cube.shader.SetInt("numberOfSpotLights", (int) spotLightDrawBatches.size());
 
