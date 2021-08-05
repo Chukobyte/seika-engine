@@ -319,12 +319,8 @@ void Game::Render() {
     directionalLightRenderingEntitySystem->Render();
     static PointLightRenderingEntitySystem *pointLightRenderingEntitySystem = (PointLightRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<PointLightRenderingEntitySystem>();
     pointLightRenderingEntitySystem->Render();
-//    static SpotLightRenderingEntitySystem *spotLightRenderingEntitySystem = (SpotLightRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<SpotLightRenderingEntitySystem>();
-//    spriteRenderingEntitySystem->Render();
-    // Temp 3D Test TODO: Finish implementing 3D renderer
-
-    // Spot Light
-    renderer3D->AddSpotLightDrawBatch(SpotLightDrawBatch{.isAttachedToCamera = true});
+    static SpotLightRenderingEntitySystem *spotLightRenderingEntitySystem = (SpotLightRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<SpotLightRenderingEntitySystem>();
+    spotLightRenderingEntitySystem->Render();
 
     renderer3D->Render(GD::GetContainer()->cameraManager);
 
