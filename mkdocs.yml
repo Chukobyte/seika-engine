@@ -19,6 +19,8 @@ nav:
       - Math: python_api/math.md
       - Color: python_api/color.md
       - Renderer: python_api/renderer.md
+  - Showcase:
+      - Projects Made With Seika: showcase/projects_made_with_seika.md
 
 plugins:
   - search
