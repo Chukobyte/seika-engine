@@ -315,16 +315,9 @@ void Game::Render() {
     // 3D Rendering
     static TextureCubeRenderingEntitySystem *textureCubeRenderingEntitySystem = (TextureCubeRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<TextureCubeRenderingEntitySystem>();
     textureCubeRenderingEntitySystem->Render();
+    static DirectionalLightRenderingEntitySystem *directionalLightRenderingEntitySystem = (DirectionalLightRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<DirectionalLightRenderingEntitySystem>();
+    directionalLightRenderingEntitySystem->Render();
     // Temp 3D Test TODO: Finish implementing 3D renderer
-
-    // Directional Light
-    renderer3D->AddDirectionalLightDrawBatch(
-    DirectionalLightDrawBatch{
-        .direction = Vector3(-0.2, -1.0f, -0.3),
-        .ambient = Vector3(0.05f),
-        .diffuse = Vector3(0.4f),
-        .specular = Vector3(0.5f)
-    });
 
     // Point Lights
     static Vector3 pointLightPositions[4] = {Vector3(0.7f, 0.2f, 2.0f),
