@@ -7,9 +7,11 @@
 Renderer3D::Renderer3D() {}
 
 Renderer3D::~Renderer3D() {
-    glDeleteVertexArrays(1, &cube.VAO);
-    glDeleteVertexArrays(1, &light.VAO);
-    glDeleteBuffers(1, &VBO);
+    if (initialized) {
+        glDeleteVertexArrays(1, &cube.VAO);
+        glDeleteVertexArrays(1, &light.VAO);
+        glDeleteBuffers(1, &VBO);
+    }
 }
 
 void Renderer3D::Initialize() {
@@ -44,19 +46,6 @@ void Renderer3D::Initialize() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*) nullptr);
     glEnableVertexAttribArray(0);
 
-
-    // Textures
-    cube.material.diffuseMap = new Texture("assets/game_projects/3d_test/assets/container2.png",
-                                           GL_REPEAT,
-                                           GL_REPEAT,
-                                           GL_LINEAR,
-                                           GL_LINEAR);
-    cube.material.specularMap = new Texture("assets/game_projects/3d_test/assets/container2_specular.png",
-                                            GL_REPEAT,
-                                            GL_REPEAT,
-                                            GL_LINEAR,
-                                            GL_LINEAR);
-
     // Shader
     cube.shader = Shader("src/core/rendering/shader/opengl_shaders/3d/cube.vs", "src/core/rendering/shader/opengl_shaders/3d/cube.fs");
     cube.shader.Use();
@@ -64,6 +53,7 @@ void Renderer3D::Initialize() {
     cube.shader.SetInt("material.specular", 1);
 
     light.shader = Shader("src/core/rendering/shader/opengl_shaders/3d/light.vs", "src/core/rendering/shader/opengl_shaders/3d/light.fs");
+    initialized = true;
 }
 
 void Renderer3D::Render(CameraManager *cameraManager) {
@@ -82,7 +72,9 @@ void Renderer3D::Render(CameraManager *cameraManager) {
     }
 
     textureCubeDrawBatches.clear();
+    directionalLightDrawBatches.clear();
     pointLightDrawBatches.clear();
+    spotLightDrawBatches.clear();
 }
 
 void Renderer3D::RenderTextureCubes(glm::mat4 &projection, glm::mat4 &view, Camera3D &camera) {
@@ -96,13 +88,19 @@ void Renderer3D::RenderTextureCubes(glm::mat4 &projection, glm::mat4 &view, Came
     cube.shader.SetMatrix4Float("projection", projection);
     cube.shader.SetMatrix4Float("view", view);
     cube.shader.SetVec3Float("viewPos", camera.position);
+    cube.shader.SetInt("numberOfDirectionalLights", (int) directionalLightDrawBatches.size());
+    cube.shader.SetInt("numberOfPointLights", (int) pointLightDrawBatches.size());
+    cube.shader.SetInt("numberOfSpotLights", (int) spotLightDrawBatches.size());
 
     // LIGHTS
-    // Directional Light
-    cube.shader.SetVec3Float("dirLight.direction", directionalLight.direction);
-    cube.shader.SetVec3Float("dirLight.ambient", directionalLight.ambient);
-    cube.shader.SetVec3Float("dirLight.diffuse", directionalLight.diffuse);
-    cube.shader.SetVec3Float("dirLight.specular", directionalLight.specular);
+    // Directional Lights
+    for (unsigned int i = 0; i < directionalLightDrawBatches.size(); i++) {
+        const std::string &arrayPrefix = std::string("directionalLights[" + std::to_string(i) + "]");
+        cube.shader.SetVec3Float(arrayPrefix + ".direction", directionalLightDrawBatches[i].direction);
+        cube.shader.SetVec3Float(arrayPrefix + ".ambient", directionalLightDrawBatches[i].ambient);
+        cube.shader.SetVec3Float(arrayPrefix + ".diffuse", directionalLightDrawBatches[i].diffuse);
+        cube.shader.SetVec3Float(arrayPrefix + ".specular", directionalLightDrawBatches[i].specular);
+    }
 
     // Point Lights
     for (unsigned int i = 0; i < pointLightDrawBatches.size(); i++) {
@@ -116,17 +114,27 @@ void Renderer3D::RenderTextureCubes(glm::mat4 &projection, glm::mat4 &view, Came
         cube.shader.SetFloat(arrayPrefix + ".quadratic", pointLightDrawBatches[i].quadratic);
     }
 
-    // Spot Light
-    cube.shader.SetVec3Float("spotLight.position", camera.position);
-    cube.shader.SetVec3Float("spotLight.direction", camera.front);
-    cube.shader.SetVec3Float("spotLight.ambient", spotLight.ambient);
-    cube.shader.SetVec3Float("spotLight.diffuse", spotLight.diffuse);
-    cube.shader.SetVec3Float("spotLight.specular", spotLight.specular);
-    cube.shader.SetFloat("spotLight.constant", spotLight.constant);
-    cube.shader.SetFloat("spotLight.linear", spotLight.linear);
-    cube.shader.SetFloat("spotLight.quadratic", spotLight.quadratic);
-    cube.shader.SetFloat("spotLight.cutOff", glm::cos(glm::radians(spotLight.cutoff)));
-    cube.shader.SetFloat("spotLight.outerCutOff", glm::cos(glm::radians(spotLight.outerCutoff)));
+    // Spot Lights
+    for (unsigned int i = 0; i < spotLightDrawBatches.size(); i++) {
+        const std::string &arrayPrefix = std::string("spotLights[" + std::to_string(i) + "]");
+        Vector3 spotLightPosition = spotLightDrawBatches[i].position;
+        Vector3 spotLightDirection = spotLightDrawBatches[i].direction;
+        // TODO: temp work around, implement in system
+        if (spotLightDrawBatches[i].isAttachedToCamera) {
+            spotLightPosition = camera.position;
+            spotLightDirection = camera.front;
+        }
+        cube.shader.SetVec3Float(arrayPrefix + ".position", spotLightPosition);
+        cube.shader.SetVec3Float(arrayPrefix + ".direction", spotLightDirection);
+        cube.shader.SetVec3Float(arrayPrefix + ".ambient", spotLightDrawBatches[i].ambient);
+        cube.shader.SetVec3Float(arrayPrefix + ".diffuse", spotLightDrawBatches[i].diffuse);
+        cube.shader.SetVec3Float(arrayPrefix + ".specular", spotLightDrawBatches[i].specular);
+        cube.shader.SetFloat(arrayPrefix + ".constant", spotLightDrawBatches[i].constant);
+        cube.shader.SetFloat(arrayPrefix + ".linear", spotLightDrawBatches[i].linear);
+        cube.shader.SetFloat(arrayPrefix + ".quadratic", spotLightDrawBatches[i].quadratic);
+        cube.shader.SetFloat(arrayPrefix + ".cutOff", spotLightDrawBatches[i].cutoff);
+        cube.shader.SetFloat(arrayPrefix + ".outerCutOff", spotLightDrawBatches[i].outerCutoff);
+    }
 
     // Render
     glBindVertexArray(cube.VAO);
@@ -171,6 +179,14 @@ void Renderer3D::AddTextureCubeDrawBatch(TextureCubeDrawBatch textureCubeDrawBat
     textureCubeDrawBatches.emplace_back(textureCubeDrawBatch);
 }
 
+void Renderer3D::AddDirectionalLightDrawBatch(DirectionalLightDrawBatch directionalLightDrawBatch) {
+    directionalLightDrawBatches.emplace_back(directionalLightDrawBatch);
+}
+
 void Renderer3D::AddPointLightDrawBatch(PointLightDrawBatch pointLightDrawBatch) {
     pointLightDrawBatches.emplace_back(pointLightDrawBatch);
+}
+
+void Renderer3D::AddSpotLightDrawBatch(SpotLightDrawBatch spotLightDrawBatch) {
+    spotLightDrawBatches.emplace_back(spotLightDrawBatch);
 }

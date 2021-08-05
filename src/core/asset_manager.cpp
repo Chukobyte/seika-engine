@@ -4,16 +4,26 @@
 #include <cassert>
 
 #include "global_dependencies.h"
-#include "project_properties.h"
 
 AssetManager::AssetManager() {
     logger = Logger::GetInstance();
 }
 
 // TEXTURE
+void AssetManager::LoadTexture(const TextureConfiguration &textureConfiguration) {
+    logger->Debug("texture file path = " + textureConfiguration.filePath);
+    Texture *texture = new Texture(textureConfiguration.filePath.c_str(),
+                                   textureConfiguration.wrapS,
+                                   textureConfiguration.wrapT,
+                                   textureConfiguration.filterMin,
+                                   textureConfiguration.filterMax);
+    assert(texture->IsValid());
+    textures.emplace(textureConfiguration.filePath, texture);
+}
+
 void AssetManager::LoadTexture(const std::string &textureId, const std::string &filePath) {
     Texture *texture = new Texture(filePath.c_str());
-    assert(texture->data != nullptr);
+    assert(texture->IsValid());
     textures.emplace(textureId, texture);
 }
 
@@ -77,7 +87,7 @@ void AssetManager::LoadProjectAssets() {
     AssetConfigurations assetConfigurations = projectProperties->GetAssetConfigurations();
 
     for (TextureConfiguration textureConfiguration : assetConfigurations.textureConfigurations) {
-        LoadTexture(textureConfiguration.filePath, textureConfiguration.filePath);
+        LoadTexture(textureConfiguration);
     }
 
     for (FontConfiguration fontConfiguration : assetConfigurations.fontConfigurations) {

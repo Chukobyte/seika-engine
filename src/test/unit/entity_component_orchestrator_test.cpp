@@ -104,9 +104,9 @@ TEST_CASE("Entity Component Orchestrator Tests - System", "[entity_component_orc
     globalDependencies->ResetDependencies();
 }
 
-TEST_CASE("Entity Component Orchestrator Tests - Scene", "[entity_component_orchestrator]") {
-    GD *globalDependencies = GD::GetContainer();
-    EntityComponentOrchestrator *entityComponentOrchestrator = globalDependencies->entityComponentOrchestrator;
+//TEST_CASE("Entity Component Orchestrator Tests - Scene", "[entity_component_orchestrator]") {
+//    GD *globalDependencies = GD::GetContainer();
+//    EntityComponentOrchestrator *entityComponentOrchestrator = globalDependencies->entityComponentOrchestrator;
 
 //    SECTION("Change Scene To Root Entity Scene & Delete Test") {
 //
@@ -133,5 +133,5 @@ TEST_CASE("Entity Component Orchestrator Tests - Scene", "[entity_component_orch
 //        REQUIRE(entityComponentOrchestrator->GetSceneNodeParent(childEntity) == parentEntity);
 //    }
 
-    globalDependencies->ResetDependencies();
-}
+//    globalDependencies->ResetDependencies();
+//}

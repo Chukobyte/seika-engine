@@ -10,8 +10,6 @@
 #include "../math/vector3.h"
 #include "../camera/camera_manager.h"
 
-struct CubeDrawBatch {};
-
 struct TextureCubeDrawBatch {
     Vector3 position = Vector3(0.0f);
     Vector3 scale = Vector3(1.0f);
@@ -20,6 +18,13 @@ struct TextureCubeDrawBatch {
     Texture *diffuseMap = nullptr;
     Texture *specularMap = nullptr;
     float shininess = 0.0f;
+};
+
+struct DirectionalLightDrawBatch {
+    Vector3 direction = Vector3(-0.2f, -1.0f, -0.3f);
+    Vector3 ambient = Vector3(0.05f, 0.05f, 0.05f);
+    Vector3 diffuse = Vector3(0.4f, 0.4f, 0.4f);
+    Vector3 specular = Vector3(0.5f, 0.5f, 0.5f);
 };
 
 struct PointLightDrawBatch {
@@ -33,9 +38,19 @@ struct PointLightDrawBatch {
     const float constant = 1.0f;
 };
 
-struct RenderObject {
-    GLuint VAO;
-    Shader shader;
+struct SpotLightDrawBatch {
+    bool isAttachedToCamera = false;
+    Vector3 position = Vector3(0.0f);
+    Vector3 direction = Vector3(0.0f);
+    Vector3 ambient = Vector3(0.0f);
+    Vector3 diffuse = Vector3(1.0f);
+    Vector3 specular = Vector3(1.0f);
+    float linear = 0.09f;
+    float quadratic = 0.032f;
+    const float constant = 1.0f;
+    // In Radians
+    float cutoff = 12.5f;
+    float outerCutoff = 15.0f;
 };
 
 struct EntityMaterial {
@@ -79,32 +94,10 @@ struct CubeEntity {
     };
 };
 
-struct DirectionalLight {
-    Vector3 direction = Vector3(-0.2f, -1.0f, -0.3f);
-    Vector3 ambient = Vector3(0.05f, 0.05f, 0.05f);
-    Vector3 diffuse = Vector3(0.4f, 0.4f, 0.4f);
-    Vector3 specular = Vector3(0.5f, 0.5f, 0.5f);
-};
-
-struct SpotLight {
-    Vector3 position = Vector3(0.0f);
-    Vector3 direction = Vector3(0.0f);
-    Vector3 ambient = Vector3(0.0f);
-    Vector3 diffuse = Vector3(1.0f);
-    Vector3 specular = Vector3(1.0f);
-    float linear = 0.09f;
-    float quadratic = 0.032f;
-    const float constant = 1.0f;
-    // In Radians
-    float cutoff = 12.5f;
-    float outerCutoff = 15.0f;
-};
-
 class Renderer3D {
   private:
+    bool initialized = false;
     GLuint VBO;
-    RenderObject lightRenderObject;
-    RenderObject cubeRenderObject;
     LightEntity light;
     CubeEntity cube;
 
@@ -153,23 +146,9 @@ class Renderer3D {
                             };
 
     std::vector<TextureCubeDrawBatch> textureCubeDrawBatches;
+    std::vector<DirectionalLightDrawBatch> directionalLightDrawBatches;
     std::vector<PointLightDrawBatch> pointLightDrawBatches;
-
-    Vector3 cubePositions[10] = {Vector3(0.0f, 0.0f, 0.0f),
-                                 Vector3(2.0f, 5.0f, -15.0f),
-                                 Vector3(-1.5f, -2.2f, -2.5f),
-                                 Vector3(-3.8f, -2.0f, -12.3f),
-                                 Vector3(-2.4f, -0.4f, -3.5f),
-                                 Vector3(-1.7f, 3.0f, -7.5f),
-                                 Vector3(1.3f, -2.0f, -2.5f),
-                                 Vector3(1.5f, 2.0f, -2.5f),
-                                 Vector3(1.5f, 0.2f, -1.5f),
-                                 Vector3(-1.3f, 1.0f, -1.5f)
-                                };
-
-    // Lights
-    DirectionalLight directionalLight;
-    SpotLight spotLight;
+    std::vector<SpotLightDrawBatch> spotLightDrawBatches;
 
     void RenderTextureCubes(glm::mat4 &projection, glm::mat4 &view, Camera3D &camera);
 
@@ -186,7 +165,11 @@ class Renderer3D {
 
     void AddTextureCubeDrawBatch(TextureCubeDrawBatch textureCubeDrawBatch);
 
+    void AddDirectionalLightDrawBatch(DirectionalLightDrawBatch directionalLightDrawBatch);
+
     void AddPointLightDrawBatch(PointLightDrawBatch pointLightDrawBatch);
+
+    void AddSpotLightDrawBatch(SpotLightDrawBatch spotLightDrawBatch);
 
     void BatchDrawTextureCube();
 };

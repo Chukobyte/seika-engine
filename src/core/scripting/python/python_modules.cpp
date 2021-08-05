@@ -8,6 +8,9 @@
 #include "../../utils/helper.h"
 #include "../../signal_manager.h"
 #include "../../ecs/entity/system/collision_entity_system.h"
+#include "../../ecs/component/components/transform3D_component.h"
+#include "../../ecs/component/components/texture_cube_component.h"
+#include "../../ecs/component/components/light3D_component.h"
 
 // ENGINE
 PyObject* PythonModules::engine_exit(PyObject *self, PyObject *args, PyObject *kwargs) {
@@ -240,6 +243,7 @@ PyObject* PythonModules::node_new(PyObject *self, PyObject *args, PyObject *kwar
         NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(sceneNode.entity);
         NodeTypeInheritance nodeTypeInheritance = NodeTypeHelper::GetNodeTypeInheritanceInt(nodeComponent.type);
 
+        // TODO: Put this logic into a function
         if ((NodeType_NODE2D & nodeTypeInheritance) == NodeType_NODE2D) {
             componentManager->AddComponent<Transform2DComponent>(sceneNode.entity, Transform2DComponent{});
             auto signature = entityManager->GetSignature(sceneNode.entity);
@@ -269,9 +273,44 @@ PyObject* PythonModules::node_new(PyObject *self, PyObject *args, PyObject *kwar
         }
 
         if ((NodeTypeInheritance_COLLISION_SHAPE2D & nodeTypeInheritance) == NodeTypeInheritance_COLLISION_SHAPE2D) {
-            componentManager->AddComponent<ColliderComponent>(sceneNode.entity, ColliderComponent{.collider = Rect2(), .collisionExceptions { sceneNode.entity }});
+            componentManager->AddComponent<ColliderComponent>(sceneNode.entity, ColliderComponent{.collider = Rect2(), .collisionExceptions = { sceneNode.entity }});
             auto signature = entityManager->GetSignature(sceneNode.entity);
             signature.set(componentManager->GetComponentType<ColliderComponent>(), true);
+            entityManager->SetSignature(sceneNode.entity, signature);
+        }
+
+        if ((NodeTypeInheritance_SPATIAL & nodeTypeInheritance) == NodeTypeInheritance_SPATIAL) {
+            componentManager->AddComponent<Transform3DComponent>(sceneNode.entity, Transform3DComponent{});
+            auto signature = entityManager->GetSignature(sceneNode.entity);
+            signature.set(componentManager->GetComponentType<Transform3DComponent>(), true);
+            entityManager->SetSignature(sceneNode.entity, signature);
+        }
+
+        if ((NodeTypeInheritance_TEXTURE_CUBE & nodeTypeInheritance) == NodeTypeInheritance_TEXTURE_CUBE) {
+            componentManager->AddComponent<TextureCubeComponent>(sceneNode.entity, TextureCubeComponent{});
+            auto signature = entityManager->GetSignature(sceneNode.entity);
+            signature.set(componentManager->GetComponentType<TextureCubeComponent>(), true);
+            entityManager->SetSignature(sceneNode.entity, signature);
+        }
+
+        if ((NodeTypeInheritance_DIRECTIONAL_LIGHT & nodeTypeInheritance) == NodeTypeInheritance_DIRECTIONAL_LIGHT) {
+            componentManager->AddComponent<DirectionalLightComponent>(sceneNode.entity, DirectionalLightComponent{});
+            auto signature = entityManager->GetSignature(sceneNode.entity);
+            signature.set(componentManager->GetComponentType<DirectionalLightComponent>(), true);
+            entityManager->SetSignature(sceneNode.entity, signature);
+        }
+
+        if ((NodeTypeInheritance_POINT_LIGHT & nodeTypeInheritance) == NodeTypeInheritance_POINT_LIGHT) {
+            componentManager->AddComponent<PointLightComponent>(sceneNode.entity, PointLightComponent{});
+            auto signature = entityManager->GetSignature(sceneNode.entity);
+            signature.set(componentManager->GetComponentType<PointLightComponent>(), true);
+            entityManager->SetSignature(sceneNode.entity, signature);
+        }
+
+        if ((NodeTypeInheritance_SPOT_LIGHT & nodeTypeInheritance) == NodeTypeInheritance_SPOT_LIGHT) {
+            componentManager->AddComponent<SpotLightComponent>(sceneNode.entity, SpotLightComponent{});
+            auto signature = entityManager->GetSignature(sceneNode.entity);
+            signature.set(componentManager->GetComponentType<SpotLightComponent>(), true);
             entityManager->SetSignature(sceneNode.entity, signature);
         }
 

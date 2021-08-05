@@ -10,16 +10,17 @@ struct DirectionalLightComponent {
 struct PointLightComponent {
     float linear = 0.09f;
     float quadratic = 0.032f;
-    const float constant = 1.0f;
+    float constant = 1.0f;
 };
 
 struct SpotLightComponent {
     Vector3 direction = Vector3(0.0f);
+    bool isAttachedToCamera = false;
     float cutoffInDegrees = 12.5f;
     float outerCutoffInDegrees = 15.0f;
     float linear = 0.09f;
     float quadratic = 0.032f;
-    const float constant = 1.0f;
+    float constant = 1.0f;
 };
 
 #endif //LIGHT3D_COMPONENT_H

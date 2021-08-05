@@ -19,6 +19,10 @@
 #include "../ecs/component/components/node_component.h"
 #include "../ecs/node_type_helper.h"
 #include "../timer/timer_manager.h"
+#include "../ecs/component/components/transform3D_component.h"
+#include "../ecs/component/components/texture_cube_component.h"
+#include "../ecs/component/components/material_component.h"
+#include "../ecs/component/components/light3D_component.h"
 
 struct SceneNode {
     Entity entity = NO_ENTITY;
@@ -68,7 +72,6 @@ class SceneManager {
             .name = nodeName,
             .tags = nodeTags
         });
-
 
         // Rest of components
         for (nlohmann::json nodeComponentJson : nodeComponentJsonArray) {
@@ -229,6 +232,116 @@ class SceneManager {
                 auto signature = entityManager->GetSignature(sceneNode.entity);
                 signature.set(componentManager->GetComponentType<ColliderComponent>(), true);
                 entityManager->SetSignature(sceneNode.entity, signature);
+            } else if (nodeComponentType == "transform3D") {
+                Vector3 nodePosition = Vector3(
+                                           nodeComponentObjectJson["position"]["x"].get<float>(),
+                                           nodeComponentObjectJson["position"]["y"].get<float>(),
+                                           nodeComponentObjectJson["position"]["z"].get<float>()
+                                       );
+                Vector3 nodeScale = Vector3(
+                                        nodeComponentObjectJson["scale"]["x"].get<float>(),
+                                        nodeComponentObjectJson["scale"]["y"].get<float>(),
+                                        nodeComponentObjectJson["scale"]["z"].get<float>()
+                                    );
+                const float nodeRotation = nodeComponentObjectJson["rotation"].get<float>();
+                Vector3 nodeRotationAxis = Vector3(
+                                               nodeComponentObjectJson["scale"]["x"].get<float>(),
+                                               nodeComponentObjectJson["scale"]["y"].get<float>(),
+                                               nodeComponentObjectJson["scale"]["z"].get<float>()
+                                           );
+                componentManager->AddComponent(sceneNode.entity, Transform3DComponent{
+                    .position = nodePosition,
+                    .scale = nodeScale,
+                    .rotationAngleInDegrees = nodeRotation,
+                    .rotationAxisInDegrees = nodeRotationAxis
+                });
+                auto signature = entityManager->GetSignature(sceneNode.entity);
+                signature.set(componentManager->GetComponentType<Transform3DComponent>(), true);
+                entityManager->SetSignature(sceneNode.entity, signature);
+            } else if (nodeComponentType == "material") {
+                Vector3 nodeAmbient = Vector3(
+                                          nodeComponentObjectJson["ambient"]["x"].get<float>(),
+                                          nodeComponentObjectJson["ambient"]["y"].get<float>(),
+                                          nodeComponentObjectJson["ambient"]["z"].get<float>()
+                                      );
+                Vector3 nodeDiffuse = Vector3(
+                                          nodeComponentObjectJson["diffuse"]["x"].get<float>(),
+                                          nodeComponentObjectJson["diffuse"]["y"].get<float>(),
+                                          nodeComponentObjectJson["diffuse"]["z"].get<float>()
+                                      );
+                Vector3 nodeSpecular = Vector3(
+                                           nodeComponentObjectJson["specular"]["x"].get<float>(),
+                                           nodeComponentObjectJson["specular"]["y"].get<float>(),
+                                           nodeComponentObjectJson["specular"]["z"].get<float>()
+                                       );
+                float nodeShininess = nodeComponentObjectJson["shininess"].get<float>();
+                const std::string &nodeDiffuseMapTexturePath = nodeComponentObjectJson["diffuse_map_texture_path"].get<std::string>();
+                const std::string &nodeSpecularMapTexturePath = nodeComponentObjectJson["specular_map_texture_path"].get<std::string>();
+                componentManager->AddComponent(sceneNode.entity, MaterialComponent{
+                    .ambient = nodeAmbient,
+                    .diffuse = nodeDiffuse,
+                    .specular = nodeSpecular,
+                    .shininess = nodeShininess,
+                    .diffuseMap = nodeDiffuseMapTexturePath.empty() ? nullptr : assetManager->GetTexture(nodeDiffuseMapTexturePath),
+                    .specularMap = nodeSpecularMapTexturePath.empty() ? nullptr : assetManager->GetTexture(nodeSpecularMapTexturePath)
+                });
+                auto signature = entityManager->GetSignature(sceneNode.entity);
+                signature.set(componentManager->GetComponentType<MaterialComponent>(), true);
+                entityManager->SetSignature(sceneNode.entity, signature);
+            } else if (nodeComponentType == "texture_cube") {
+                componentManager->AddComponent(sceneNode.entity, TextureCubeComponent{});
+                auto signature = entityManager->GetSignature(sceneNode.entity);
+                signature.set(componentManager->GetComponentType<TextureCubeComponent>(), true);
+                entityManager->SetSignature(sceneNode.entity, signature);
+            } else if (nodeComponentType == "directional_light") {
+                Vector3 nodeDirection = Vector3(
+                                            nodeComponentObjectJson["direction"]["x"].get<float>(),
+                                            nodeComponentObjectJson["direction"]["y"].get<float>(),
+                                            nodeComponentObjectJson["direction"]["z"].get<float>()
+                                        );
+
+                componentManager->AddComponent(sceneNode.entity, DirectionalLightComponent{.direction = nodeDirection});
+                auto signature = entityManager->GetSignature(sceneNode.entity);
+                signature.set(componentManager->GetComponentType<DirectionalLightComponent>(), true);
+                entityManager->SetSignature(sceneNode.entity, signature);
+            } else if (nodeComponentType == "point_light") {
+                const float nodeLinear = nodeComponentObjectJson["linear"].get<float>();
+                const float nodeQuadratic = nodeComponentObjectJson["quadratic"].get<float>();
+                const float nodeConstant = nodeComponentObjectJson["constant"].get<float>();
+
+                componentManager->AddComponent(sceneNode.entity, PointLightComponent{
+                    .linear = nodeLinear,
+                    .quadratic = nodeQuadratic,
+                    .constant = nodeConstant
+                });
+                auto signature = entityManager->GetSignature(sceneNode.entity);
+                signature.set(componentManager->GetComponentType<PointLightComponent>(), true);
+                entityManager->SetSignature(sceneNode.entity, signature);
+            } else if (nodeComponentType == "spot_light") {
+                Vector3 nodeDirection = Vector3(
+                                            nodeComponentObjectJson["direction"]["x"].get<float>(),
+                                            nodeComponentObjectJson["direction"]["y"].get<float>(),
+                                            nodeComponentObjectJson["direction"]["z"].get<float>()
+                                        );
+                const bool nodeIsAttachedToCamera = nodeComponentObjectJson["is_attached_to_camera"].get<bool>();
+                const float nodeLinear = nodeComponentObjectJson["linear"].get<float>();
+                const float nodeQuadratic = nodeComponentObjectJson["quadratic"].get<float>();
+                const float nodeConstant = nodeComponentObjectJson["constant"].get<float>();
+                const float nodeCutoff = nodeComponentObjectJson["cutoff"].get<float>();
+                const float nodeOuterCutoff = nodeComponentObjectJson["outer_cutoff"].get<float>();
+
+                componentManager->AddComponent(sceneNode.entity, SpotLightComponent{
+                    .direction = nodeDirection,
+                    .isAttachedToCamera = nodeIsAttachedToCamera,
+                    .cutoffInDegrees = nodeCutoff,
+                    .outerCutoffInDegrees = nodeOuterCutoff,
+                    .linear = nodeLinear,
+                    .quadratic = nodeQuadratic,
+                    .constant = nodeConstant
+                });
+                auto signature = entityManager->GetSignature(sceneNode.entity);
+                signature.set(componentManager->GetComponentType<SpotLightComponent>(), true);
+                entityManager->SetSignature(sceneNode.entity, signature);
             } else if (nodeComponentType == "scriptable_class") {
                 const std::string &nodeClassPath = nodeComponentObjectJson["class_path"].get<std::string>();
                 const std::string &nodeClassName = nodeComponentObjectJson["class_name"].get<std::string>();
@@ -362,6 +475,8 @@ class SceneNodeHelper {
                 combinedTransform.position += parentTransform.position;
                 combinedTransform.scale *= parentTransform.scale;
                 combinedTransform.zIndex += parentTransform.zIndex;
+            } else if (componentManager->HasComponent<Transform3DComponent>(nodeParent.entity)) {
+                // TODO: implement...
             }
             currentParent = nodeParent.parent;
         }

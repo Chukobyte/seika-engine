@@ -10,6 +10,7 @@
 #include "ecs/entity/system/text_rendering_entity_system.h"
 #include "ecs/entity/system/script_entity_system.h"
 #include "ecs/entity/system/collision_entity_system.h"
+#include "ecs/entity/system/texture_cube_rendering_entity_system.h"
 
 #include "ecs/component/components/animated_sprite_component.h"
 #include "ecs/component/components/text_label_component.h"
@@ -18,6 +19,9 @@
 #include "scripting/python/python_script_context.h"
 #include "ecs/entity/system/timer_entity_system.h"
 #include "rendering/renderer3d.h"
+#include "ecs/entity/system/directional_light_rendering_entity_system.h"
+#include "ecs/entity/system/point_light_rendering_entity_system.h"
+#include "ecs/entity/system/spot_light_rendering_entity_system.h"
 
 Game::Game() {
     logger = Logger::GetInstance();
@@ -43,6 +47,7 @@ void Game::Initialize(int argv, char** args) {
     inputManager->LoadProjectInputActions();
     if (!commandLineFlagResult.workingDirectoryOverride.empty()) {
         FileHelper::ChangeDirectory(commandLineFlagResult.workingDirectoryOverride);
+        logger->Debug("Set project root override to " + commandLineFlagResult.workingDirectoryOverride);
     }
     assetManager->LoadProjectAssets();
     InitializeECS();
@@ -73,6 +78,12 @@ void Game::InitializeECS() {
     entityComponentOrchestrator->RegisterComponent<TextLabelComponent>();
     entityComponentOrchestrator->RegisterComponent<ScriptableClassComponent>();
     entityComponentOrchestrator->RegisterComponent<ColliderComponent>();
+    entityComponentOrchestrator->RegisterComponent<Transform3DComponent>();
+    entityComponentOrchestrator->RegisterComponent<MaterialComponent>();
+    entityComponentOrchestrator->RegisterComponent<TextureCubeComponent>();
+    entityComponentOrchestrator->RegisterComponent<DirectionalLightComponent>();
+    entityComponentOrchestrator->RegisterComponent<PointLightComponent>();
+    entityComponentOrchestrator->RegisterComponent<SpotLightComponent>();
 
     // Systems
     entityComponentOrchestrator->RegisterSystem<TimerEntitySystem>();
@@ -106,8 +117,36 @@ void Game::InitializeECS() {
 
     entityComponentOrchestrator->RegisterSystem<CollisionEntitySystem>();
     ComponentSignature collisionSystemSignature;
-    collisionSystemSignature.set(entityComponentOrchestrator->GetComponentType<ColliderComponent>());
+    collisionSystemSignature.set(entityComponentOrchestrator->GetComponentType<ColliderComponent>(), true);
     entityComponentOrchestrator->SetSystemSignature<CollisionEntitySystem>(collisionSystemSignature);
+
+    entityComponentOrchestrator->RegisterSystem<TextureCubeRenderingEntitySystem>();
+    ComponentSignature textureCubeRenderingSystemSignature;
+    textureCubeRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<Transform3DComponent>(), true);
+    textureCubeRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<MaterialComponent>(), true);
+    textureCubeRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<TextureCubeComponent>(), true);
+    entityComponentOrchestrator->SetSystemSignature<TextureCubeRenderingEntitySystem>(textureCubeRenderingSystemSignature);
+
+    entityComponentOrchestrator->RegisterSystem<DirectionalLightRenderingEntitySystem>();
+    ComponentSignature directionalLightRenderingSystemSignature;
+    directionalLightRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<Transform3DComponent>(), true);
+    directionalLightRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<MaterialComponent>(), true);
+    directionalLightRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<DirectionalLightComponent>(), true);
+    entityComponentOrchestrator->SetSystemSignature<DirectionalLightRenderingEntitySystem>(directionalLightRenderingSystemSignature);
+
+    entityComponentOrchestrator->RegisterSystem<PointLightRenderingEntitySystem>();
+    ComponentSignature pointLightRenderingSystemSignature;
+    pointLightRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<Transform3DComponent>(), true);
+    pointLightRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<MaterialComponent>(), true);
+    pointLightRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<PointLightComponent>(), true);
+    entityComponentOrchestrator->SetSystemSignature<PointLightRenderingEntitySystem>(pointLightRenderingSystemSignature);
+
+    entityComponentOrchestrator->RegisterSystem<SpotLightRenderingEntitySystem>();
+    ComponentSignature spotLightRenderingSystemSignature;
+    spotLightRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<Transform3DComponent>(), true);
+    spotLightRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<MaterialComponent>(), true);
+    spotLightRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<SpotLightComponent>(), true);
+    entityComponentOrchestrator->SetSystemSignature<SpotLightRenderingEntitySystem>(spotLightRenderingSystemSignature);
 
     entityComponentOrchestrator->InitializeAllSystems();
 
@@ -256,6 +295,7 @@ void Game::Render() {
                  projectProperties->backgroundDrawColor.a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
+    // 2D Rendering
     static SpriteRenderingEntitySystem *spriteRenderingEntitySystem = (SpriteRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<SpriteRenderingEntitySystem>();
     spriteRenderingEntitySystem->Render();
 
@@ -272,58 +312,17 @@ void Game::Render() {
 
     renderer->FlushBatches();
 
-    // Temp 3D Test TODO: Finish implementing 3D renderer
-    /*
-    // Texture Cubes
-    static Texture *diffuseMap = new Texture("assets/game_projects/3d_test/assets/container2.png",
-            GL_REPEAT,
-            GL_REPEAT,
-            GL_LINEAR,
-            GL_LINEAR);
-    static Texture *specularMap = new Texture("assets/game_projects/3d_test/assets/container2_specular.png",
-            GL_REPEAT,
-            GL_REPEAT,
-            GL_LINEAR,
-            GL_LINEAR);
-    static Vector3 textureCubePositions[10] = {Vector3(0.0f, 0.0f, 0.0f),
-                                               Vector3(2.0f, 5.0f, -15.0f),
-                                               Vector3(-1.5f, -2.2f, -2.5f),
-                                               Vector3(-3.8f, -2.0f, -12.3f),
-                                               Vector3(-2.4f, -0.4f, -3.5f),
-                                               Vector3(-1.7f, 3.0f, -7.5f),
-                                               Vector3(1.3f, -2.0f, -2.5f),
-                                               Vector3(1.5f, 2.0f, -2.5f),
-                                               Vector3(1.5f, 0.2f, -1.5f),
-                                               Vector3(-1.3f, 1.0f, -1.5f)
-                                              };
-    for (int i = 0; i < 10; i++) {
-        renderer3D->AddTextureCubeDrawBatch(TextureCubeDrawBatch{
-            .position = textureCubePositions[i],
-            .scale = Vector3(1.0f),
-            .rotationAngleInDegrees = i * 20.0f,
-            .rotationAxisInDegrees = Vector3(1.0f, 0.3f, 0.5f),
-            .diffuseMap = diffuseMap,
-            .specularMap = specularMap,
-            .shininess = 32.0f
-        });
-    }
-
-    // Point Lights
-    static Vector3 pointLightPositions[4] = {Vector3(0.0f, 0.0f, 0.0f),
-                                             Vector3(2.0f, 5.0f, -15.0f),
-                                             Vector3(-1.5f, -2.2f, -2.5f),
-                                             Vector3(-3.8f, -2.0f, -12.3f)
-                                            };
-    for (int i = 0; i < 4; i++) {
-        renderer3D->AddPointLightDrawBatch(
-        PointLightDrawBatch{
-            .position = pointLightPositions[i],
-            .scale = Vector3(0.2f)
-        });
-    }
+    // 3D Rendering
+    static TextureCubeRenderingEntitySystem *textureCubeRenderingEntitySystem = (TextureCubeRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<TextureCubeRenderingEntitySystem>();
+    textureCubeRenderingEntitySystem->Render();
+    static DirectionalLightRenderingEntitySystem *directionalLightRenderingEntitySystem = (DirectionalLightRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<DirectionalLightRenderingEntitySystem>();
+    directionalLightRenderingEntitySystem->Render();
+    static PointLightRenderingEntitySystem *pointLightRenderingEntitySystem = (PointLightRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<PointLightRenderingEntitySystem>();
+    pointLightRenderingEntitySystem->Render();
+    static SpotLightRenderingEntitySystem *spotLightRenderingEntitySystem = (SpotLightRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<SpotLightRenderingEntitySystem>();
+    spotLightRenderingEntitySystem->Render();
 
     renderer3D->Render(GD::GetContainer()->cameraManager);
-    */
 
     SDL_GL_SwapWindow(renderContext->window);
 }
