@@ -1,7 +1,7 @@
 # Seika Engine
 
 
-![Seika Engine Editor Screenshot](https://github.com/Chukobyte/seika-engine/blob/main/assets/images/docs/seika_engine_editor_preview.gif)
+![Seika Engine Editor Screenshot](https://raw.githubusercontent.com/Chukobyte/seika-engine/main/assets/images/docs/seika_engine_editor_preview.gif)
 
 An open source 2D/3D game engine.  Windows only for now, but may support other platforms in the future.  Full documentation can be found [here](https://chukobyte.github.io/seika-engine/).
 
@@ -55,6 +55,6 @@ To help with developing within IDEs, a helper module can be installed to provide
 
 I have recently released packages that contains both the engine and editor and can be found [here on itch.io](https://chukobyte.itch.io/seika).  The combined engine and editor will use a different version scheme and will effectively use v0.x for alpha (current state) and v1.x once it becomes stable.  This is the recommended path to build games with the engine as setting up a scene is more streamlined in the editor.
 
-### Games made with Seika
+### Project Showcase
 
-[Cave Salamander](https://github.com/Chukobyte/cave-salamander)
+Games and projects made with Seika can be found [here](https://chukobyte.github.io/seika-engine/showcase/projects_made_with_seika/).
