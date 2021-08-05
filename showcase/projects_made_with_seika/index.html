@@ -7,15 +7,15 @@
 <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link href="../../img/favicon.ico" rel="shortcut icon"/>
-<title>Command Line Flags - Seika Engine</title>
+<title>Projects Made With Seika - Seika Engine</title>
 <link href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" rel="stylesheet">
 <link href="../../css/theme.css" rel="stylesheet"/>
 <link href="../../css/theme_extra.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet"/>
 <script>
     // Current page data
-    var mkdocs_page_name = "Command Line Flags";
-    var mkdocs_page_input_path = "general/command_line_flags.md";
+    var mkdocs_page_name = "Projects Made With Seika";
+    var mkdocs_page_input_path = "showcase/projects_made_with_seika.md";
     var mkdocs_page_url = null;
   </script>
 <script defer="" src="../../js/jquery-2.1.1.min.js"></script>
@@ -37,24 +37,14 @@
 </div>
 <div aria-label="main navigation" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
 <p class="caption"><span class="caption-text">General</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../core_concepts/">Core Concepts</a>
+<li class="toctree-l1"><a class="reference internal" href="../../general/core_concepts/">Core Concepts</a>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../project_properties/">Project Properties</a>
+<li class="toctree-l1"><a class="reference internal" href="../../general/project_properties/">Project Properties</a>
 </li>
-<li class="toctree-l1 current"><a class="reference internal current" href="./">Command Line Flags</a>
-<ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="#log-level">Log Level</a>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#project-file">Project File</a>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#starting-directory">Starting Directory</a>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#working-directory">Working Directory</a>
-</li>
-</ul>
+<li class="toctree-l1"><a class="reference internal" href="../../general/command_line_flags/">Command Line Flags</a>
 </li>
 </ul>
 <p class="caption"><span class="caption-text">Python API</span></p>
@@ -85,8 +75,30 @@
 </li>
 </ul>
 <p class="caption"><span class="caption-text">Showcase</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal current" href="./">Projects Made With Seika</a>
+<ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="#cave-salamander">Cave Salamander</a>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../showcase/projects_made_with_seika/">Projects Made With Seika</a>
+<li class="toctree-l3"><a class="reference internal" href="#about">About</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#links">Links</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#screenshots">Screenshots</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#3d-demo">3D Demo</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#about_1">About</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#links_1">Links</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#screenshots_1">Screenshots</a>
+</li>
+</ul>
+</li>
+</ul>
 </li>
 </ul>
 </div>
@@ -102,8 +114,8 @@
 <div aria-label="breadcrumbs navigation" role="navigation">
 <ul class="wy-breadcrumbs">
 <li><a href="../..">Docs</a> »</li>
-<li>General »</li>
-<li>Command Line Flags</li>
+<li>Showcase »</li>
+<li>Projects Made With Seika</li>
 <li class="wy-breadcrumbs-aside">
 </li>
 </ul>
@@ -111,33 +123,27 @@
 </div>
 <div role="main">
 <div class="section">
-<h1 id="command-line-flags">Command Line Flags</h1>
-<h2 id="log-level">Log Level</h2>
-<p><code>-l</code> <code>-log-level</code></p>
-<pre><code>[SEIKA_ENGINE] [LOG_LEVEL_FLAG] [LOG_LEVEL]
-</code></pre>
-<p>Sets the log level of the engine to either <code>DEBUG</code>, <code>WARN</code> ,<code>INFO</code>, <code>ERROR</code>.</p>
-<h2 id="project-file">Project File</h2>
-<p><code>-p</code> <code>-project-file</code></p>
-<pre><code>[SEIKA_ENGINE] [PROJECT_FILE_FLAG] [PROJECT_FILE_PATH]
-</code></pre>
-<p>Overrides the default path <code>project.scfg</code> with the value that's passed in.</p>
-<h2 id="starting-directory">Starting Directory</h2>
-<p><code>-sd</code> <code>-starting-directory</code></p>
-<pre><code>[SEIKA_ENGINE] [PROJECT_FILE_FLAG] [ENGINE_EXECUTABLE_DIRECTORY]
-</code></pre>
-<p>Overrides the default directory of the engine on startup.  Mostly to be used by the editor.</p>
-<h2 id="working-directory">Working Directory</h2>
-<p><code>-d</code> <code>-working-directory</code></p>
-<pre><code>[SEIKA_ENGINE] [PROJECT_FILE_FLAG] [PROJECT_WORKING_DIRECTORY]
-</code></pre>
-<p>Overrides the default working path of the game.  Directory must contain a <code>project.scfg</code> file.</p>
+<h1 id="projects-made-with-seika">Projects Made With Seika</h1>
+<h2 id="cave-salamander">Cave Salamander</h2>
+<h3 id="about">About</h3>
+<p>A game made for uniday-jam-2021 a 72 hour game jam.</p>
+<h3 id="links">Links</h3>
+<p><a href="https://chukobyte.itch.io/cave-salamander">itch.io/cave-salamander</a></p>
+<h3 id="screenshots">Screenshots</h3>
+<p><img alt="Seika Engine 3D Demo Screenshot" src="https://github.com/Chukobyte/seika-engine/blob/main/assets/images/docs/screenshots/3d_test_scene.gif"/></p>
+<hr/>
+<h2 id="3d-demo">3D Demo</h2>
+<h3 id="about_1">About</h3>
+<p>A 3D project used to build and test out features.</p>
+<h3 id="links_1">Links</h3>
+<p><a href="https://github.com/Chukobyte/seika-engine/tree/main/assets/game_projects/3d_test">Project Source</a></p>
+<h3 id="screenshots_1">Screenshots</h3>
+<p><img alt="Seika Engine 3D Demo Screenshot" src="https://github.com/Chukobyte/seika-engine/blob/main/assets/images/docs/screenshots/3d_test_scene.gif"/></p>
 </div>
 </div>
 <footer>
 <div aria-label="footer navigation" class="rst-footer-buttons" role="navigation">
-<a class="btn btn-neutral float-right" href="../../python_api/" title="Index">Next <span class="icon icon-circle-arrow-right"></span></a>
-<a class="btn btn-neutral" href="../project_properties/" title="Project Properties"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+<a class="btn btn-neutral" href="../../python_api/renderer/" title="Renderer"><span class="icon icon-circle-arrow-left"></span> Previous</a>
 </div>
 <hr/>
 <div role="contentinfo">
@@ -152,8 +158,7 @@
 </div>
 <div aria-label="versions" class="rst-versions" role="note">
 <span class="rst-current-version" data-toggle="rst-current-version">
-<span><a href="../project_properties/" style="color: #fcfcfc;">« Previous</a></span>
-<span style="margin-left: 15px"><a href="../../python_api/" style="color: #fcfcfc">Next »</a></span>
+<span><a href="../../python_api/renderer/" style="color: #fcfcfc;">« Previous</a></span>
 </span>
 </div>
 <script>var base_url = '../..';</script>
