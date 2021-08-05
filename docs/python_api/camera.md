@@ -80,24 +80,36 @@ None.
 move_left(speed: float) -> None:
 ```
 
-Move the camera left by a certain speed.  Should consider `delta_time`.
+Move the camera left by a certain speed.
 
 ```python
 move_right(speed: float) -> None:
 ```
 
-Move the camera right by a certain speed.  Should consider `delta_time`.
+Move the camera right by a certain speed.
 
 ```python
 move_up(speed: float) -> None:
 ```
 
-Move the camera up by a certain speed.  Should consider `delta_time`.
+Move the camera up by a certain speed.
 
 ```python
 move_down(speed: float) -> None:
 ```
 
-Move the camera down by a certain speed.  Should consider `delta_time`.
+Move the camera down by a certain speed.
+
+```python
+add_yaw(speed: float) -> None:
+```
+
+Adds yaw to the camera to rotate based on the passed in speed.
+
+```python
+add_pitch(speed: float) -> None:
+```
+
+Adds pitch to the camera to rotate based on the passed in speed.
 
 ---

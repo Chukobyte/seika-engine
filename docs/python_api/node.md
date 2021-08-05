@@ -311,8 +311,6 @@ Set node's label text.
 
 ---
 
----
-
 ## CollisionShape2D
 
 **Inherits**: [Node2D](#node2d) -> [Node](#node)
@@ -354,5 +352,151 @@ remove_collision_exception(node: seika.node.Node) -> None:
 ```
 
 Removes a node from an exception list. Collisions between nodes are enabled.
+
+---
+
+## Spatial
+
+**Inherits**: [Node](#node)
+
+Base class for 3D entities.
+
+### Properties
+
+```python
+position: seika.math.Vector3
+```
+
+Spatial's position represented as a `Vector3`.
+
+---
+
+### Signals
+
+None.
+
+---
+
+### Methods
+
+```python
+add_to_position(value: seika.math.Vector3) -> None:
+```
+
+Adds passed in value to the Spatial's position.
+
+---
+
+## TextureCube
+
+**Inherits**: [Spatial](#spatial) -> [Node](#node)
+
+Class that represents 3D cubes with textures.
+
+### Properties
+
+None.
+
+---
+
+### Signals
+
+None.
+
+---
+
+### Methods
+
+None.
+
+---
+
+## DirectionalLight
+
+**Inherits**: [Spatial](#spatial) -> [Node](#node)
+
+Class representing a directional light.
+
+### Properties
+
+```python
+direction: seika.math.Vector3
+```
+
+The direction that the light is pointing.
+
+---
+
+### Signals
+
+None.
+
+---
+
+### Methods
+
+None.
+
+---
+
+## PointLight
+
+**Inherits**: [Spatial](#spatial) -> [Node](#node)
+
+Class representing a directional light.
+
+### Properties
+
+```python
+cutoff: float
+```
+
+The cutoff for the light's inner cone.
+
+```python
+outer_cutoff: float
+```
+
+The cutoff for the light's outer cone.
+
+---
+
+### Signals
+
+None.
+
+---
+
+### Methods
+
+None.
+
+---
+
+## SpotLight
+
+**Inherits**: [Spatial](#spatial) -> [Node](#node)
+
+Class representing a spotlight.
+
+### Properties
+
+```python
+direction: seika.math.Vector3
+```
+
+The direction that the light is pointing.
+
+---
+
+### Signals
+
+None.
+
+---
+
+### Methods
+
+None.
 
 ---
