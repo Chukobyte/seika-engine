@@ -19,6 +19,9 @@
 #include "scripting/python/python_script_context.h"
 #include "ecs/entity/system/timer_entity_system.h"
 #include "rendering/renderer3d.h"
+#include "ecs/entity/system/directional_light_rendering_entity_system.h"
+#include "ecs/entity/system/point_light_rendering_entity_system.h"
+#include "ecs/entity/system/spot_light_rendering_entity_system.h"
 
 Game::Game() {
     logger = Logger::GetInstance();
@@ -78,6 +81,9 @@ void Game::InitializeECS() {
     entityComponentOrchestrator->RegisterComponent<Transform3DComponent>();
     entityComponentOrchestrator->RegisterComponent<MaterialComponent>();
     entityComponentOrchestrator->RegisterComponent<TextureCubeComponent>();
+    entityComponentOrchestrator->RegisterComponent<DirectionalLightComponent>();
+    entityComponentOrchestrator->RegisterComponent<PointLightComponent>();
+    entityComponentOrchestrator->RegisterComponent<SpotLightComponent>();
 
     // Systems
     entityComponentOrchestrator->RegisterSystem<TimerEntitySystem>();
@@ -120,6 +126,27 @@ void Game::InitializeECS() {
     textureCubeRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<MaterialComponent>(), true);
     textureCubeRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<TextureCubeComponent>(), true);
     entityComponentOrchestrator->SetSystemSignature<TextureCubeRenderingEntitySystem>(textureCubeRenderingSystemSignature);
+
+    entityComponentOrchestrator->RegisterSystem<DirectionalLightRenderingEntitySystem>();
+    ComponentSignature directionalLightRenderingSystemSignature;
+    directionalLightRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<Transform3DComponent>(), true);
+    directionalLightRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<MaterialComponent>(), true);
+    directionalLightRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<DirectionalLightComponent>(), true);
+    entityComponentOrchestrator->SetSystemSignature<DirectionalLightRenderingEntitySystem>(directionalLightRenderingSystemSignature);
+
+    entityComponentOrchestrator->RegisterSystem<PointLightRenderingEntitySystem>();
+    ComponentSignature pointLightRenderingSystemSignature;
+    pointLightRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<Transform3DComponent>(), true);
+    pointLightRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<MaterialComponent>(), true);
+    pointLightRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<PointLightComponent>(), true);
+    entityComponentOrchestrator->SetSystemSignature<PointLightRenderingEntitySystem>(pointLightRenderingSystemSignature);
+
+    entityComponentOrchestrator->RegisterSystem<SpotLightRenderingEntitySystem>();
+    ComponentSignature spotLightRenderingSystemSignature;
+    spotLightRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<Transform3DComponent>(), true);
+    spotLightRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<MaterialComponent>(), true);
+    spotLightRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<SpotLightComponent>(), true);
+    entityComponentOrchestrator->SetSystemSignature<SpotLightRenderingEntitySystem>(spotLightRenderingSystemSignature);
 
     entityComponentOrchestrator->InitializeAllSystems();
 
