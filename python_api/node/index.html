@@ -113,6 +113,56 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#spatial">Spatial</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#properties_6">Properties</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#signals_6">Signals</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#methods_6">Methods</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#texturecube">TextureCube</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#properties_7">Properties</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#signals_7">Signals</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#methods_7">Methods</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#directionallight">DirectionalLight</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#properties_8">Properties</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#signals_8">Signals</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#methods_8">Methods</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#pointlight">PointLight</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#properties_9">Properties</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#signals_9">Signals</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#methods_9">Methods</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#spotlight">SpotLight</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#properties_10">Properties</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#signals_10">Signals</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#methods_10">Methods</a>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../camera/">Camera</a>
@@ -319,7 +369,6 @@
 </code></pre>
 <p>Set node's label text.</p>
 <hr/>
-<hr/>
 <h2 id="collisionshape2d">CollisionShape2D</h2>
 <p><strong>Inherits</strong>: <a href="#node2d">Node2D</a> -&gt; <a href="#node">Node</a></p>
 <p>Class used to define collision shapes defined as rectangles.  May add other collision shapes in the future.</p>
@@ -341,6 +390,79 @@
 <pre><code class="language-python">remove_collision_exception(node: seika.node.Node) -&gt; None:
 </code></pre>
 <p>Removes a node from an exception list. Collisions between nodes are enabled.</p>
+<hr/>
+<h2 id="spatial">Spatial</h2>
+<p><strong>Inherits</strong>: <a href="#node">Node</a></p>
+<p>Base class for 3D entities.</p>
+<h3 id="properties_6">Properties</h3>
+<pre><code class="language-python">position: seika.math.Vector3
+</code></pre>
+<p>Spatial's position represented as a <code>Vector3</code>.</p>
+<hr/>
+<h3 id="signals_6">Signals</h3>
+<p>None.</p>
+<hr/>
+<h3 id="methods_6">Methods</h3>
+<pre><code class="language-python">add_to_position(value: seika.math.Vector3) -&gt; None:
+</code></pre>
+<p>Adds passed in value to the Spatial's position.</p>
+<hr/>
+<h2 id="texturecube">TextureCube</h2>
+<p><strong>Inherits</strong>: <a href="#spatial">Spatial</a> -&gt; <a href="#node">Node</a></p>
+<p>Class that represents 3D cubes with textures.</p>
+<h3 id="properties_7">Properties</h3>
+<p>None.</p>
+<hr/>
+<h3 id="signals_7">Signals</h3>
+<p>None.</p>
+<hr/>
+<h3 id="methods_7">Methods</h3>
+<p>None.</p>
+<hr/>
+<h2 id="directionallight">DirectionalLight</h2>
+<p><strong>Inherits</strong>: <a href="#spatial">Spatial</a> -&gt; <a href="#node">Node</a></p>
+<p>Class representing a directional light.</p>
+<h3 id="properties_8">Properties</h3>
+<pre><code class="language-python">direction: seika.math.Vector3
+</code></pre>
+<p>The direction that the light is pointing.</p>
+<hr/>
+<h3 id="signals_8">Signals</h3>
+<p>None.</p>
+<hr/>
+<h3 id="methods_8">Methods</h3>
+<p>None.</p>
+<hr/>
+<h2 id="pointlight">PointLight</h2>
+<p><strong>Inherits</strong>: <a href="#spatial">Spatial</a> -&gt; <a href="#node">Node</a></p>
+<p>Class representing a directional light.</p>
+<h3 id="properties_9">Properties</h3>
+<pre><code class="language-python">cutoff: float
+</code></pre>
+<p>The cutoff for the light's inner cone.</p>
+<pre><code class="language-python">outer_cutoff: float
+</code></pre>
+<p>The cutoff for the light's outer cone.</p>
+<hr/>
+<h3 id="signals_9">Signals</h3>
+<p>None.</p>
+<hr/>
+<h3 id="methods_9">Methods</h3>
+<p>None.</p>
+<hr/>
+<h2 id="spotlight">SpotLight</h2>
+<p><strong>Inherits</strong>: <a href="#spatial">Spatial</a> -&gt; <a href="#node">Node</a></p>
+<p>Class representing a spotlight.</p>
+<h3 id="properties_10">Properties</h3>
+<pre><code class="language-python">direction: seika.math.Vector3
+</code></pre>
+<p>The direction that the light is pointing.</p>
+<hr/>
+<h3 id="signals_10">Signals</h3>
+<p>None.</p>
+<hr/>
+<h3 id="methods_10">Methods</h3>
+<p>None.</p>
 <hr/>
 </div>
 </div>
