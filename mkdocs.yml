@@ -1,4 +1,8 @@
 site_name: Seika Engine
+edit_uri: ""
+site_description: Seika is an open source 2D/3D game engine.
+site_author: Chukobyte
+copyright: 'Copyright &copy; 2021 Chukobyte'
 
 nav:
   - General:

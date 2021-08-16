@@ -74,7 +74,7 @@ public:
         return pyObj;
     }
 
-    bool is() {
+    bool Is() const {
         return pyObj ? true : false;
     }
 
