@@ -7,6 +7,8 @@
 #include "../../component/components/text_label_component.h"
 
 class ScriptEntitySystem : public EntitySystem {
+  private:
+    ScriptContext *activeScriptContext = nullptr;
   public:
     std::unordered_map<const char*, ScriptContext*> scriptContexts;
 
@@ -26,66 +28,56 @@ class ScriptEntitySystem : public EntitySystem {
     void Disable() override {}
 
     void UnregisterEntity(Entity entity) override {
-        for (auto const &pair : scriptContexts) {
-            auto const &scriptContext = pair.second;
-            scriptContext->DeleteEntityInstance(entity);
-        }
+        assert(activeScriptContext != nullptr && "No active script context!");
+        activeScriptContext->DeleteEntityInstance(entity);
     }
 
     template<typename T>
     T* InstallScriptContext() {
         const char *typeName = typeid(T).name();
-        assert(HasScriptContext<T>() && "Installing script context more than once");
+        assert(!HasScriptContext<T>() && "Installing script context more than once");
         auto *scriptContext = new T();
         scriptContexts.emplace(typeName, scriptContext);
+        if (activeScriptContext == nullptr) {
+            SetActiveScriptContext<T>();
+        }
         return scriptContext;
+    }
+
+    template<typename T>
+    void SetActiveScriptContext() {
+        assert(HasScriptContext<T>() && "Script context is not installed!");
+        const char *typeName = typeid(T).name();
+        activeScriptContext = scriptContexts[typeName];
     }
 
     template<typename T>
     bool HasScriptContext() {
         const char *typeName = typeid(T).name();
-        return scriptContexts.find(typeName) == scriptContexts.end();
+        return scriptContexts.find(typeName) != scriptContexts.end();
     }
 
     void CreateEntityInstance(Entity entity) {
-        for (auto const &pair : scriptContexts) {
-            auto const &scriptContext = pair.second;
-            scriptContext->CreateEntityInstance(entity);
-        }
+        assert(activeScriptContext != nullptr && "No active script context!");
+        activeScriptContext->CreateEntityInstance(entity);
     }
 
     void CallStartOnEntityInstance(Entity entity) {
-        for (auto const &pair : scriptContexts) {
-            auto const &scriptContext = pair.second;
-            scriptContext->CallStartOnEntityInstance(entity);
-        }
+        assert(activeScriptContext != nullptr && "No active script context!");
+        activeScriptContext->CallStartOnEntityInstance(entity);
     }
 
-//    void DeleteEntityInstance(Entity entity) {
-//        for (auto const &pair : scriptContexts) {
-//            auto const &type = pair.first;
-//            auto const &scriptContext = pair.second;
-//            scriptContext->DeleteEntityInstance(entity);
-//        }
-//    }
-
     void PhysicsProcess(double deltaTime) {
-        for (auto const &pair : scriptContexts) {
-            auto const &type = pair.first;
-            auto const &scriptContext = pair.second;
-            for (Entity entity : entities) {
-                scriptContext->PhysicsProcess(entity, deltaTime);
-            }
-            scriptContext->FlushStdOutBuffer();
+        assert(activeScriptContext != nullptr && "No active script context!");
+        for (Entity entity : entities) {
+            activeScriptContext->PhysicsProcess(entity, deltaTime);
         }
+        activeScriptContext->FlushStdOutBuffer();
     }
 
     void ReceiveSubscribedSignal(Entity subscriberEntity, const std::string &subscriberFunctionName, SignalArguments args) {
-        for (auto const &pair : scriptContexts) {
-            auto const &type = pair.first;
-            auto const &scriptContext = pair.second;
-            scriptContext->ReceiveSubscribedSignal(subscriberEntity, subscriberFunctionName, args);
-        }
+        assert(activeScriptContext != nullptr && "No active script context!");
+        activeScriptContext->ReceiveSubscribedSignal(subscriberEntity, subscriberFunctionName, args);
     }
 
 };
