@@ -1059,7 +1059,7 @@ PyObject* PythonModules::input_is_action_just_released(PyObject *self, PyObject 
 // MOUSE
 PyObject* PythonModules::mouse_get_position(PyObject *self, PyObject *args) {
     static MouseInput *mouseInput = MouseInput::GetInstance();
-    return Py_BuildValue("(ff)", mouseInput->GetMousePosition().x, mouseInput->GetMousePosition().x);
+    return Py_BuildValue("(ff)", mouseInput->GetMousePosition().x, mouseInput->GetMousePosition().y);
 }
 
 // SCENE
