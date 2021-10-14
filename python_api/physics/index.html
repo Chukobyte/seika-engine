@@ -124,9 +124,12 @@
 <p>None.</p>
 <hr/>
 <h3 id="methods">Methods</h3>
-<pre><code class="language-python">get_collided_nodes(node: seika.node.Node) -&gt; bool:
+<pre><code class="language-python">get_collided_nodes(node: seika.node.Node) -&gt; list:
 </code></pre>
 <p>Returns a <code>list</code> of nodes that collided with the passed in <code>node</code>.</p>
+<pre><code class="language-python">get_nodes_under_mouse() -&gt; list:
+</code></pre>
+<p>Returns a <code>list</code> of nodes (<code>CollisionShape2D</code>) that are under the current mouse's position.</p>
 <hr/>
 </div>
 </div>
