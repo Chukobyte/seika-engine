@@ -87,7 +87,7 @@ class PythonModules {
 
     static PyObject* collision_get_collided_nodes(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* collision_update_collisions(PyObject* self, PyObject* args, PyObject* kwargs);
-    static PyObject* collision_get_nodes_mouse_is_on(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* collision_get_nodes_under_mouse(PyObject* self, PyObject* args);
 
     static PyObject* input_add_action(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* input_is_action_pressed(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -393,8 +393,8 @@ static struct PyMethodDef rollApiMethods[] = {
         METH_VARARGS | METH_KEYWORDS, "Forces an update of collision data."
     },
     {
-        "collision_get_nodes_mouse_is_on", (PyCFunction) PythonModules::collision_get_nodes_mouse_is_on,
-        METH_VARARGS | METH_KEYWORDS, "Gets nodes mouse is hovering over."
+        "collision_get_nodes_under_mouse", PythonModules::collision_get_nodes_under_mouse,
+        METH_VARARGS, "Gets nodes mouse is hovering over."
     },
     // INPUT
     {

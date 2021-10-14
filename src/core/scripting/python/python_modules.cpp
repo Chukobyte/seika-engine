@@ -1008,38 +1008,36 @@ PyObject* PythonModules::collision_update_collisions(PyObject *self, PyObject *a
     Py_RETURN_NONE;
 }
 
-PyObject* PythonModules::collision_get_nodes_mouse_is_on(PyObject *self, PyObject *args, PyObject *kwargs) {
+PyObject* PythonModules::collision_get_nodes_under_mouse(PyObject *self, PyObject *args) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     static CollisionEntitySystem *collisionEntitySystem = entityComponentOrchestrator->GetSystem<CollisionEntitySystem>();
     static PythonCache *pythonCache = PythonCache::GetInstance();
     static ComponentManager *componentManager = GD::GetContainer()->componentManager;
     static MouseInput *mouseInput = MouseInput::GetInstance();
     Entity entity;
-    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
-        CPyObject pCollidedNodesList = PyList_New(0);
-        pCollidedNodesList.AddRef();
-        assert(pCollidedNodesList != nullptr && "node list empty!");
-        for (Entity collidedEntity : collisionEntitySystem->GetEntitiesOnMouse(mouseInput->GetMousePosition())) {
-            if (!entityComponentOrchestrator->IsEntityQueuedForDeletion(collidedEntity)) {
-                if (pythonCache->HasActiveInstance(collidedEntity)) {
-                    CPyObject &pCollidedClassInstance = pythonCache->GetClassInstance(collidedEntity);
-                    pCollidedClassInstance.AddRef();
-                    if (PyList_Append(pCollidedNodesList, pCollidedClassInstance) == -1) {
-                        Logger::GetInstance()->Error("Error appending to list with instance!");
-                        PyErr_Print();
-                    }
-                } else {
-                    NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(collidedEntity);
-                    const std::string &nodeTypeString = NodeTypeHelper::GetNodeTypeString(nodeComponent.type);
-                    if (PyList_Append(pCollidedNodesList, Py_BuildValue("(si)", nodeTypeString.c_str(), collidedEntity)) == -1) {
-                        Logger::GetInstance()->Error("Error appending to list without instance!");
-                        PyErr_Print();
-                    }
+    CPyObject pCollidedNodesList = PyList_New(0);
+    pCollidedNodesList.AddRef();
+    assert(pCollidedNodesList != nullptr && "node list empty!");
+    for (Entity collidedEntity : collisionEntitySystem->GetEntitiesOnMouse(mouseInput->GetMousePosition())) {
+        if (!entityComponentOrchestrator->IsEntityQueuedForDeletion(collidedEntity)) {
+            if (pythonCache->HasActiveInstance(collidedEntity)) {
+                CPyObject &pCollidedClassInstance = pythonCache->GetClassInstance(collidedEntity);
+                pCollidedClassInstance.AddRef();
+                if (PyList_Append(pCollidedNodesList, pCollidedClassInstance) == -1) {
+                    Logger::GetInstance()->Error("Error appending to list with instance!");
+                    PyErr_Print();
+                }
+            } else {
+                NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(collidedEntity);
+                const std::string &nodeTypeString = NodeTypeHelper::GetNodeTypeString(nodeComponent.type);
+                if (PyList_Append(pCollidedNodesList, Py_BuildValue("(si)", nodeTypeString.c_str(), collidedEntity)) == -1) {
+                    Logger::GetInstance()->Error("Error appending to list without instance!");
+                    PyErr_Print();
                 }
             }
         }
-        return pCollidedNodesList;
     }
+    return pCollidedNodesList;
     return nullptr;
 }
 

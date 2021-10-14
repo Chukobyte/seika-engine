@@ -51,6 +51,9 @@ endif
 run:
 	./$(BUILD_OBJECT)
 
+run-2d-test:
+	./$(BUILD_OBJECT) -d assets/game_projects/2d_test/ -l debug
+
 run-3d-test:
 	./$(BUILD_OBJECT) -d assets/game_projects/3d_test/ -l debug
 

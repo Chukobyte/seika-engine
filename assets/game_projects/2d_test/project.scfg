@@ -1,0 +1,40 @@
+{
+  "game_title": "2D Test",
+  "initial_scene": "scenes/main.sscn",
+  "base_resolution": {
+    "width": 800,
+    "height": 600
+  },
+  "colliders_visible": true,
+  "target_fps": 66,
+  "background_color": {
+    "red": 0.1,
+    "green": 0.1,
+    "blue": 0.1
+  },
+  "assets": [
+    {
+      "type": "texture",
+      "file_path": "assets/images/seika_idle.png",
+      "wrap_s": "clamp_to_border",
+      "wrap_t": "clamp_to_border",
+      "filter_min": "nearest",
+      "filter_max": "nearest"
+    }
+  ],
+  "input_actions": [
+    {
+      "name": "quit",
+      "values": [
+        "esc",
+        "joystick_button_back"
+      ]
+    },
+    {
+      "name": "mouse_left_click",
+      "values": [
+        "mb_left"
+      ]
+    }
+  ]
+}
