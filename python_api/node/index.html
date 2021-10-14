@@ -16,7 +16,7 @@
 <script>
     // Current page data
     var mkdocs_page_name = "Node";
-    var mkdocs_page_input_path = "python_api/node.md";
+    var mkdocs_page_input_path = "python_api\\node.md";
     var mkdocs_page_url = null;
   </script>
 <script defer="" src="../../js/jquery-2.1.1.min.js"></script>
@@ -225,6 +225,9 @@
 <pre><code class="language-python">entity_id : int
 </code></pre>
 <p>Unique id of entity.</p>
+<pre><code class="language-pythons">visibility : bool
+</code></pre>
+<p>Visibility of a node.  Also affects a node's children visibility.</p>
 <hr/>
 <h3 id="signals">Signals</h3>
 <p>None.</p>
@@ -248,6 +251,12 @@
 <pre><code class="language-python">emit_signal(signal_id: str, args=[]) -&gt; None:
 </code></pre>
 <p>Emits signal from source node.</p>
+<pre><code class="language-python">show() -&gt; None:
+</code></pre>
+<p>Makes a node visible.</p>
+<pre><code class="language-python">hide() -&gt; None:
+</code></pre>
+<p>Makes a node invisible.</p>
 <pre><code class="language-python">_start() -&gt; None:
 </code></pre>
 <p>Called when entity is loaded into scene tree with all dependencies and children.</p>
