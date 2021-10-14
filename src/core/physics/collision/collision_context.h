@@ -48,8 +48,7 @@ class CollisionContext {
         if (HasEntityCollided(entity)) {
             return collisionResultsMap[entity].collidedEntities;
         }
-        std::vector<Entity> entitiesColliderWith;
-        return entitiesColliderWith;
+        return {};
     }
 };
 

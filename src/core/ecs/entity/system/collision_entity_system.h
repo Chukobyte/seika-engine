@@ -50,30 +50,30 @@ class CollisionEntitySystem : public EntitySystem {
 
     void UnregisterEntity(Entity entity) override {}
 
-    void ProcessCollisions() {
-        collisionContext->ClearCollisionData();
-        // TODO: Come up with a better more efficient solution
-        for (Entity sourceEntity : entities) {
-            std::vector<Entity> collidedEntities;
-            for (Entity targetEntity : entities) {
-                if (!IsTargetCollisionEntityInExceptionList(sourceEntity, targetEntity)) {
-                    Rect2 sourceCollisionRectangle = GetCollisionRectangle(sourceEntity);
-                    Rect2 targetCollisionRectangle = GetCollisionRectangle(targetEntity);
-                    if (CollisionResolver::DoesRectanglesCollide(sourceCollisionRectangle, targetCollisionRectangle)) {
-                        collidedEntities.emplace_back(targetEntity);
-                        // TODO: emit signal if Area2D like functionality for entering and exiting is required
-                    }
-                }
-            }
-            if (collidedEntities.size() > 0) {
-                collisionContext->RegisterCollisionResult(
-                CollisionResult{
-                    .sourceEntity = sourceEntity,
-                    .collidedEntities = collidedEntities
-                });
-            }
-        }
-    }
+//    void ProcessCollisions() {
+//        collisionContext->ClearCollisionData();
+//        // TODO: Come up with a better more efficient solution
+//        for (Entity sourceEntity : entities) {
+//            std::vector<Entity> collidedEntities;
+//            for (Entity targetEntity : entities) {
+//                if (!IsTargetCollisionEntityInExceptionList(sourceEntity, targetEntity)) {
+//                    Rect2 sourceCollisionRectangle = GetCollisionRectangle(sourceEntity);
+//                    Rect2 targetCollisionRectangle = GetCollisionRectangle(targetEntity);
+//                    if (CollisionResolver::DoesRectanglesCollide(sourceCollisionRectangle, targetCollisionRectangle)) {
+//                        collidedEntities.emplace_back(targetEntity);
+//                        // TODO: emit signal if Area2D like functionality for entering and exiting is required
+//                    }
+//                }
+//            }
+//            if (collidedEntities.size() > 0) {
+//                collisionContext->RegisterCollisionResult(
+//                CollisionResult{
+//                    .sourceEntity = sourceEntity,
+//                    .collidedEntities = collidedEntities
+//                });
+//            }
+//        }
+//    }
 
     void ProcessEntityCollisions(Entity sourceEntity) {
         collisionContext->ClearCollisionData();
@@ -95,6 +95,18 @@ class CollisionEntitySystem : public EntitySystem {
                 .collidedEntities = collidedEntities
             });
         }
+    }
+
+    std::vector<Entity> GetEntitiesOnMouse(const Vector2 mousePosition) {
+        std::vector<Entity> entitiesOnMouse;
+        Rect2 mouseRectangle = Rect2(mousePosition, Vector2(1.0f, 1.0f));
+        for (Entity targetEntity : entities) {
+            Rect2 targetCollisionRectangle = GetCollisionRectangle(targetEntity);
+            if (CollisionResolver::DoesRectanglesCollide(mouseRectangle, targetCollisionRectangle)) {
+                entitiesOnMouse.emplace_back(targetEntity);
+            }
+        }
+        return entitiesOnMouse;
     }
 
     void Render() {

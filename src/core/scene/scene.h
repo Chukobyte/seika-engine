@@ -129,7 +129,7 @@ class SceneManager {
                     .modulate = nodeModulate
                 });
                 auto signature = entityManager->GetSignature(sceneNode.entity);
-                const bool isSpriteEnabled = nodeTexturePath.empty() ? false : true;
+                const bool isSpriteEnabled = !nodeTexturePath.empty();
                 signature.set(componentManager->GetComponentType<SpriteComponent>(), isSpriteEnabled);
                 entityManager->SetSignature(sceneNode.entity, signature);
             } else if (nodeComponentType == "animated_sprite") {
@@ -187,7 +187,7 @@ class SceneManager {
                 });
                 auto signature = entityManager->GetSignature(sceneNode.entity);
                 // Editor won't allow animations with empty textures
-                const bool isAnimatedSpriteEnabled = nodeAnimations.empty() ? false : true;
+                const bool isAnimatedSpriteEnabled = !nodeAnimations.empty();
                 signature.set(componentManager->GetComponentType<AnimatedSpriteComponent>(), isAnimatedSpriteEnabled);
                 entityManager->SetSignature(sceneNode.entity, signature);
             } else if (nodeComponentType == "text_label") {
@@ -207,7 +207,7 @@ class SceneManager {
                     .color = nodeColor
                 });
                 auto signature = entityManager->GetSignature(sceneNode.entity);
-                const bool isTextLabelEnabled = nodeFontPath.empty() ? false : true;
+                const bool isTextLabelEnabled = !nodeFontPath.empty();
                 signature.set(componentManager->GetComponentType<TextLabelComponent>(), isTextLabelEnabled);
                 entityManager->SetSignature(sceneNode.entity, signature);
             } else if (nodeComponentType == "collider") {
@@ -416,6 +416,11 @@ class SceneManager {
         }
 //        assert((entityToSceneNodeMap.count(child) <= 0) && "Child already exists!");
         entityToSceneNodeMap.emplace(childNode.entity, childNode);
+    }
+
+    std::vector<Entity> GetAllChildEntities(Entity entity) {
+        std::vector<Entity> childrenEntities;
+        return childrenEntities;
     }
 
     Entity GetParent(Entity entity) {

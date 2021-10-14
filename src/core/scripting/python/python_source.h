@@ -809,6 +809,16 @@ static PythonSource PYTHON_SOURCE_PHYSICS_MODULE =
     "       )\n"
     "       return collided_nodes\n"
     "\n"
+    "   @staticmethod\n"
+    "   def get_nodes_mouse_is_on(node) -> list:\n"
+    "       collided_nodes = []\n"
+    "       collided_nodes_from_engine = seika_engine_api.collision_get_nodes_mouse_is_on(\n"
+    "           entity_id=node.entity_id\n"
+    "       )\n"
+    "       for node in collided_nodes_from_engine:\n"
+    "           collided_nodes.append(Node.parse_scene_node_from_engine(scene_node=node))\n"
+    "       return collided_nodes\n"
+    "\n"
     "";
 
 static PythonSource PYTHON_SOURCE_SCENE_MODULE =
