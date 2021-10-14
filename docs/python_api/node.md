@@ -20,6 +20,12 @@ entity_id : int
 
 Unique id of entity.
 
+```pythons
+visibility : bool
+```
+
+Visibility of a node.  Also affects a node's children visibility.
+
 ---
 
 ### Signals
@@ -65,6 +71,18 @@ emit_signal(signal_id: str, args=[]) -> None:
 ```
 
 Emits signal from source node.
+
+```python
+show() -> None:
+```
+
+Makes a node visible.
+
+```python
+hide() -> None:
+```
+
+Makes a node invisible.
 
 ```python
 _start() -> None:

@@ -15,7 +15,7 @@ class PythonScriptContext : public ScriptContext {
     CPyObject endFunctionName;
     ComponentManager *componentManager = nullptr;
   public:
-    ~PythonScriptContext() {
+    ~PythonScriptContext() override {
         delete pyInstance;
     }
 
@@ -28,18 +28,19 @@ class PythonScriptContext : public ScriptContext {
         componentManager = GD::GetContainer()->componentManager;
     }
 
-    void CreateEntityInstance(Entity entity) override {
+    void CreateEntityInstance(const Entity entity) override {
         ScriptableClassComponent scriptableClassComponent = componentManager->GetComponent<ScriptableClassComponent>(entity);
         pythonCache->CreateClassInstance(scriptableClassComponent.classPath, scriptableClassComponent.className, entity);
     }
 
-    void CallStartOnEntityInstance(Entity entity) override {
+    void CallStartOnEntityInstance(const Entity entity) override {
         if (PyObject_HasAttr(pythonCache->GetClassInstance(entity), startFunctionName)) {
             PyObject_CallMethod(pythonCache->GetClassInstance(entity), "_start", nullptr);
+            PyErr_Print();
         }
     }
 
-    void DeleteEntityInstance(Entity entity) override {
+    void DeleteEntityInstance(const Entity entity) override {
         if (pythonCache->HasActiveInstance(entity)) {
             if (PyObject_HasAttr(pythonCache->GetClassInstance(entity), endFunctionName)) {
                 PyObject_CallMethod(pythonCache->GetClassInstance(entity), "_end", nullptr);
@@ -48,7 +49,7 @@ class PythonScriptContext : public ScriptContext {
         }
     }
 
-    void PhysicsProcess(Entity entity, double deltaTime) override {
+    void PhysicsProcess(const Entity entity, const double deltaTime) override {
         PyGILState_STATE pyGilStateState = PyGILState_Ensure();
         {
             if (PyObject_HasAttr(pythonCache->GetClassInstance(entity), physicsProcessFunctionName)) {
@@ -63,11 +64,12 @@ class PythonScriptContext : public ScriptContext {
         PyRun_SimpleString("sys.stdout.flush()");
     }
 
-    void ReceiveSubscribedSignal(Entity subscriberEntity, const std::string &subscriberFunctionName, SignalArguments args) override {
-        if (!args.pyArgs) {
-            args.pyArgs = Py_BuildValue("[]");
+    void ReceiveSubscribedSignal(const Entity subscriberEntity, const std::string &subscriberFunctionName, const SignalArguments args) override {
+        PyObject *pyArgs = args.pyArgs;
+        if (!pyArgs) {
+            pyArgs = Py_BuildValue("[]");
         }
-        CPyObject processCallValue = PyObject_CallMethod(pythonCache->GetClassInstance(subscriberEntity), subscriberFunctionName.c_str(), "O", args.pyArgs);
+        CPyObject processCallValue = PyObject_CallMethod(pythonCache->GetClassInstance(subscriberEntity), subscriberFunctionName.c_str(), "O", pyArgs);
     }
 
     void Destroy() override {}

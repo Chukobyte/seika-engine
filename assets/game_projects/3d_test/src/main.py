@@ -6,9 +6,13 @@ from seika.camera import Camera3D
 
 class Main(Spatial):
     def _start(self) -> None:
-        print("3D test start!")
-        print(f"position = {self.position}")
+        # print(f"position = {self.position}")
         self.pitch_yaw_sensitivity = 0.5
+        # hide test
+        # for i in range(10):
+        #     wooden_container = self.get_node(name=f"WoodenContainer{i}")
+        #     wooden_container.hide()
+        print("3D test start!")
 
     def _physics_process(self, delta_time: float) -> None:
         if Input.is_action_just_pressed(action_name="quit"):

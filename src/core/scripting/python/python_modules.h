@@ -41,6 +41,9 @@ class PythonModules {
     static PyObject* node_signal_emit(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_get_tags(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_set_tags(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* node_show(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* node_hide(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* node_is_visible(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* node2D_get_position(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node2D_set_position(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -229,6 +232,18 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "node_set_tags", (PyCFunction) PythonModules::node_set_tags,
         METH_VARARGS | METH_KEYWORDS, "Sets a node's tags."
+    },
+    {
+        "node_show", (PyCFunction) PythonModules::node_show,
+        METH_VARARGS | METH_KEYWORDS, "Show a node."
+    },
+    {
+        "node_hide", (PyCFunction) PythonModules::node_hide,
+        METH_VARARGS | METH_KEYWORDS, "Hides a node."
+    },
+    {
+        "node_is_visible", (PyCFunction) PythonModules::node_is_visible,
+        METH_VARARGS | METH_KEYWORDS, "Returns if a node is visible."
     },
     // NODE2D
     {

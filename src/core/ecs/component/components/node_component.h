@@ -47,6 +47,7 @@ struct NodeComponent {
     NodeType type;
     std::string name;
     std::vector<std::string> tags;
+    bool visible = true;
 };
 
 #endif //NODE_COMPONENT_H

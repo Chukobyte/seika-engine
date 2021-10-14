@@ -457,6 +457,69 @@ PyObject* PythonModules::node_set_tags(PyObject *self, PyObject *args, PyObject 
     return nullptr;
 }
 
+PyObject* PythonModules::node_show(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        NodeComponent nodeComponent = entityComponentOrchestrator->GetComponent<NodeComponent>(entity);
+        if (!nodeComponent.visible) {
+            if (entityComponentOrchestrator->HasComponent<SpriteComponent>(entity)) {
+                entityComponentOrchestrator->EnableComponent<SpriteComponent>(entity);
+            }
+            if (entityComponentOrchestrator->HasComponent<AnimatedSpriteComponent>(entity)) {
+                entityComponentOrchestrator->EnableComponent<AnimatedSpriteComponent>(entity);
+            }
+            if (entityComponentOrchestrator->HasComponent<TextLabelComponent>(entity)) {
+                entityComponentOrchestrator->EnableComponent<TextLabelComponent>(entity);
+            }
+            if (entityComponentOrchestrator->HasComponent<TextureCubeComponent>(entity)) {
+                entityComponentOrchestrator->EnableComponent<TextureCubeComponent>(entity);
+            }
+            nodeComponent.visible = true;
+            entityComponentOrchestrator->UpdateComponent<NodeComponent>(entity, nodeComponent);
+        }
+    }
+    Py_RETURN_NONE;
+}
+
+PyObject* PythonModules::node_hide(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        NodeComponent nodeComponent = entityComponentOrchestrator->GetComponent<NodeComponent>(entity);
+        if (nodeComponent.visible) {
+            if (entityComponentOrchestrator->HasComponent<SpriteComponent>(entity)) {
+                entityComponentOrchestrator->DisableComponent<SpriteComponent>(entity);
+            }
+            if (entityComponentOrchestrator->HasComponent<AnimatedSpriteComponent>(entity)) {
+                entityComponentOrchestrator->DisableComponent<AnimatedSpriteComponent>(entity);
+            }
+            if (entityComponentOrchestrator->HasComponent<TextLabelComponent>(entity)) {
+                entityComponentOrchestrator->DisableComponent<TextLabelComponent>(entity);
+            }
+            if (entityComponentOrchestrator->HasComponent<TextureCubeComponent>(entity)) {
+                entityComponentOrchestrator->DisableComponent<TextureCubeComponent>(entity);
+            }
+            nodeComponent.visible = false;
+            entityComponentOrchestrator->UpdateComponent<NodeComponent>(entity, nodeComponent);
+        }
+    }
+    Py_RETURN_NONE;
+}
+
+PyObject* PythonModules::node_is_visible(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        NodeComponent nodeComponent = entityComponentOrchestrator->GetComponent<NodeComponent>(entity);
+        if (nodeComponent.visible) {
+            Py_RETURN_TRUE;
+        }
+        Py_RETURN_FALSE;
+    }
+    return nullptr;
+}
+
 // NODE2D
 PyObject* PythonModules::node2D_get_position(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;

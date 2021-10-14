@@ -27,7 +27,7 @@ class ScriptEntitySystem : public EntitySystem {
 
     void Disable() override {}
 
-    void UnregisterEntity(Entity entity) override {
+    void UnregisterEntity(const Entity entity) override {
         assert(activeScriptContext != nullptr && "No active script context!");
         activeScriptContext->DeleteEntityInstance(entity);
     }
@@ -57,17 +57,17 @@ class ScriptEntitySystem : public EntitySystem {
         return scriptContexts.find(typeName) != scriptContexts.end();
     }
 
-    void CreateEntityInstance(Entity entity) {
+    void CreateEntityInstance(const Entity entity) {
         assert(activeScriptContext != nullptr && "No active script context!");
         activeScriptContext->CreateEntityInstance(entity);
     }
 
-    void CallStartOnEntityInstance(Entity entity) {
+    void CallStartOnEntityInstance(const Entity entity) {
         assert(activeScriptContext != nullptr && "No active script context!");
         activeScriptContext->CallStartOnEntityInstance(entity);
     }
 
-    void PhysicsProcess(double deltaTime) {
+    void PhysicsProcess(const double deltaTime) {
         assert(activeScriptContext != nullptr && "No active script context!");
         for (Entity entity : entities) {
             activeScriptContext->PhysicsProcess(entity, deltaTime);
@@ -75,7 +75,7 @@ class ScriptEntitySystem : public EntitySystem {
         activeScriptContext->FlushStdOutBuffer();
     }
 
-    void ReceiveSubscribedSignal(Entity subscriberEntity, const std::string &subscriberFunctionName, SignalArguments args) {
+    void ReceiveSubscribedSignal(const Entity subscriberEntity, const std::string &subscriberFunctionName, const SignalArguments args) {
         assert(activeScriptContext != nullptr && "No active script context!");
         activeScriptContext->ReceiveSubscribedSignal(subscriberEntity, subscriberFunctionName, args);
     }
