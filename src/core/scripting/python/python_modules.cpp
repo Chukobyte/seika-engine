@@ -420,6 +420,16 @@ PyObject* PythonModules::node_signal_emit(PyObject *self, PyObject *args, PyObje
     return nullptr;
 }
 
+PyObject* PythonModules::node_get_name(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        NodeComponent nodeComponent = entityComponentOrchestrator->GetComponent<NodeComponent>(entity);
+        return Py_BuildValue("s", nodeComponent.name.c_str());
+    }
+    return nullptr;
+}
+
 PyObject* PythonModules::node_get_tags(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     Entity entity;

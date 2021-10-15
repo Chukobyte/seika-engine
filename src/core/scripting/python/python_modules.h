@@ -39,6 +39,7 @@ class PythonModules {
     static PyObject* node_signal_create(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_signal_connect(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_signal_emit(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* node_get_name(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_get_tags(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_set_tags(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_show(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -227,6 +228,10 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "node_signal_emit", (PyCFunction) PythonModules::node_signal_emit,
         METH_VARARGS | METH_KEYWORDS, "Emits a signal."
+    },
+    {
+        "node_get_name", (PyCFunction) PythonModules::node_get_name,
+        METH_VARARGS | METH_KEYWORDS, "Gets a node's unique name."
     },
     {
         "node_get_tags", (PyCFunction) PythonModules::node_get_tags,
