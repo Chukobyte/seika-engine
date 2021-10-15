@@ -520,6 +520,52 @@ PyObject* PythonModules::node_is_visible(PyObject *self, PyObject *args, PyObjec
     return nullptr;
 }
 
+PyObject* PythonModules::node_get_parent(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        Entity parentEntity = entityComponentOrchestrator->GetEntityParent(entity);
+        if (parentEntity != NO_ENTITY) {
+            NodeComponent nodeComponent = entityComponentOrchestrator->GetComponent<NodeComponent>(parentEntity);
+            const std::string &nodeTypeString = NodeTypeHelper::GetNodeTypeString(nodeComponent.type);
+            return Py_BuildValue("(si)", nodeTypeString.c_str(), parentEntity);
+        }
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::node_get_children(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    static PythonCache *pythonCache = PythonCache::GetInstance();
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        CPyObject pCollidedNodesList = PyList_New(0);
+        pCollidedNodesList.AddRef();
+        assert(pCollidedNodesList != nullptr && "node list empty!");
+        for (Entity collidedEntity : entityComponentOrchestrator->GetEntityChildren(entity)) {
+            if (!entityComponentOrchestrator->IsEntityQueuedForDeletion(collidedEntity)) {
+                if (pythonCache->HasActiveInstance(collidedEntity)) {
+                    CPyObject &pCollidedClassInstance = pythonCache->GetClassInstance(collidedEntity);
+                    pCollidedClassInstance.AddRef();
+                    if (PyList_Append(pCollidedNodesList, pCollidedClassInstance) == -1) {
+                        PyErr_Print();
+                    }
+                } else {
+                    NodeComponent nodeComponent = entityComponentOrchestrator->GetComponent<NodeComponent>(collidedEntity);
+                    const std::string &nodeTypeString = NodeTypeHelper::GetNodeTypeString(nodeComponent.type);
+                    if (PyList_Append(pCollidedNodesList, Py_BuildValue("(si)", nodeTypeString.c_str(), collidedEntity)) == -1) {
+                        Logger::GetInstance()->Error("Error appending list");
+                        PyErr_Print();
+                    }
+                }
+            }
+        }
+        return pCollidedNodesList;
+    }
+    return nullptr;
+}
+
 // NODE2D
 PyObject* PythonModules::node2D_get_position(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;

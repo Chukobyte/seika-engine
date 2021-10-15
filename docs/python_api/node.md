@@ -55,6 +55,18 @@ get_node(name: str) -> seika.node.Node:
 Returns a node with the given name.  Will be `None` if node is not found.
 
 ```python
+get_parent() -> seika.node.Node:
+```
+
+Returns the node's parent node.  Will be `None` if node is root.
+
+```python
+get_children() -> list:
+```
+
+Returns the node's children nodes.  Won't return child's children.
+
+```python
 create_signal(signal_id: str) -> None:
 ```
 

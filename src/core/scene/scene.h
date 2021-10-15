@@ -420,6 +420,12 @@ class SceneManager {
 
     std::vector<Entity> GetAllChildEntities(Entity entity) {
         std::vector<Entity> childrenEntities;
+        SceneNode parentNode = GetEntitySceneNode(entity);
+        for (SceneNode childNode : parentNode.children) {
+            if (IsEntityInScene(childNode.entity)) {
+                childrenEntities.emplace_back(childNode.entity);
+            }
+        }
         return childrenEntities;
     }
 

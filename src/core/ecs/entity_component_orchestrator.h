@@ -129,6 +129,14 @@ class EntityComponentOrchestrator {
         return entityManager->GetAliveEntities();
     }
 
+    Entity GetEntityParent(Entity entity) {
+        return sceneManager->GetParent(entity);
+    }
+
+    std::vector<Entity> GetEntityChildren(Entity entity) {
+        return sceneManager->GetAllChildEntities(entity);
+    }
+
     // COMPONENT METHODS
     template<typename T>
     void RegisterComponent() {
@@ -260,10 +268,6 @@ class EntityComponentOrchestrator {
 
     bool IsEntityInCurrentScene(Entity entity) {
         return sceneManager->IsEntityInScene(entity);
-    }
-
-    Entity GetSceneNodeParent(Entity entity) {
-        return sceneManager->GetParent(entity);
     }
 };
 

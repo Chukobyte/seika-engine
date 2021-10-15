@@ -44,6 +44,8 @@ class PythonModules {
     static PyObject* node_show(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_hide(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_is_visible(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* node_get_parent(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* node_get_children(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* node2D_get_position(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node2D_set_position(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -245,6 +247,14 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "node_is_visible", (PyCFunction) PythonModules::node_is_visible,
         METH_VARARGS | METH_KEYWORDS, "Returns if a node is visible."
+    },
+    {
+        "node_get_parent", (PyCFunction) PythonModules::node_get_parent,
+        METH_VARARGS | METH_KEYWORDS, "Returns parent node."
+    },
+    {
+        "node_get_children", (PyCFunction) PythonModules::node_get_children,
+        METH_VARARGS | METH_KEYWORDS, "Returns a node's children."
     },
     // NODE2D
     {

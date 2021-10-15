@@ -1,5 +1,5 @@
 from seika.node import Node2D
-from seika.input import Input, Mouse
+from seika.input import Input
 from seika.engine import Engine
 from seika.physics import Collision
 
