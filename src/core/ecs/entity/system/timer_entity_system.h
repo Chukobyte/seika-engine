@@ -3,13 +3,16 @@
 
 #include "entity_system.h"
 #include "../../../timer/timer_manager.h"
+#include "../../../signal_manager.h"
 
 class TimerEntitySystem : public EntitySystem {
   private:
     TimerManager *timerManager = nullptr;
+    SignalManager *signalManager = nullptr;
   public:
     TimerEntitySystem() {
         timerManager = TimerManager::GetInstance();
+        signalManager = SignalManager::GetInstance();
         enabled = true;
     }
 
@@ -30,7 +33,7 @@ class TimerEntitySystem : public EntitySystem {
             if (timer->HasReachedTimeOut()) {
                 timer->Stop();
                 // Emit signal
-//              signalManager->EmitSignal(entity, "timeout");
+                signalManager->EmitSignal(entity, "timeout");
                 if (timer->DoesLoop()) {
                     timer->Start();
                 } else {
@@ -41,4 +44,4 @@ class TimerEntitySystem : public EntitySystem {
     }
 };
 
-#endif //COLLISION_ENTITY_SYSTEM_H
+#endif //TIMER_ENTITY_SYSTEM_H
