@@ -16,7 +16,9 @@ class TimerEntitySystem : public EntitySystem {
         enabled = true;
     }
 
-    void Initialize() override {}
+    void Initialize() override {
+        timerManager->Initialize();
+    }
 
     void Enable() override {}
 

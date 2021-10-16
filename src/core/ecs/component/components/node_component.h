@@ -12,23 +12,25 @@ using NodeTypeInheritance = std::uint32_t;
 enum _NodeType {
     NodeType_INVALID = 0,
     NodeType_NODE = 2,
+    NodeType_TIMER = 4,
     // 2D
-    NodeType_NODE2D = 4,
-    NodeType_SPRITE = 8,
-    NodeType_ANIMATED_SPRITE = 16,
-    NodeType_TEXT_LABEL = 32,
-    NodeType_COLLISION_SHAPE2D = 64,
+    NodeType_NODE2D = 8,
+    NodeType_SPRITE = 16,
+    NodeType_ANIMATED_SPRITE = 32,
+    NodeType_TEXT_LABEL = 64,
+    NodeType_COLLISION_SHAPE2D = 128,
     // 3D
-    NodeType_SPATIAL = 128,
-    NodeType_TEXTURE_CUBE = 256,
-    NodeType_DIRECTIONAL_LIGHT = 512,
-    NodeType_POINT_LIGHT = 1024,
-    NodeType_SPOT_LIGHT = 2048,
+    NodeType_SPATIAL = 256,
+    NodeType_TEXTURE_CUBE = 512,
+    NodeType_DIRECTIONAL_LIGHT = 1024,
+    NodeType_POINT_LIGHT = 2048,
+    NodeType_SPOT_LIGHT = 4096,
 };
 
 enum _NodeTypeInheritance {
     NodeTypeInheritance_INVALID = NodeType_INVALID,
     NodeTypeInheritance_NODE = NodeType_NODE,
+    NodeTypeInheritance_TIMER = NodeType_TIMER,
     // 2D
     NodeTypeInheritance_NODE2D = NodeType_NODE | NodeType_NODE2D,
     NodeTypeInheritance_SPRITE = NodeType_NODE | NodeType_NODE2D | NodeType_SPRITE,

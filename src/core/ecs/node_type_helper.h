@@ -9,6 +9,7 @@ class NodeTypeHelper {
   private:
     static const std::string NODE_TYPE_INVALID;
     static const std::string NODE_TYPE_NODE;
+    static const std::string NODE_TYPE_TIMER;
 
     static const std::string NODE_TYPE_NODE2D;
     static const std::string NODE_TYPE_SPRITE;
