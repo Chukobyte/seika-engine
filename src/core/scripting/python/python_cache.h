@@ -30,6 +30,12 @@ class PythonCache {
         if (cache.count(classPath) <= 0) {
             CPyObject pName = PyUnicode_FromString(classPath.c_str());
             CPyObject pModule = PyImport_Import(pName);
+            // Fail over to internal import
+            if (pModule == nullptr) {
+                CPyObject fromListObject = PyUnicode_FromString("[*]");
+                pModule = PyImport_ImportModuleEx(classPath.c_str(), nullptr, nullptr, fromListObject);
+                PyErr_Print();
+            }
             assert(pModule != nullptr && "Python module is NULL!");
             std::map<std::string, CPyObject> pClasses;
             cache.emplace(classPath, CachedPythonModule{

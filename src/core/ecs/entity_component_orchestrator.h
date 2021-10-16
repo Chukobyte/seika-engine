@@ -6,6 +6,7 @@
 #include "component/component_manager.h"
 #include "../scene/scene.h"
 #include "entity/system/script_entity_system.h"
+#include "../signal_manager.h"
 
 class EntityComponentOrchestrator {
     /*
@@ -16,6 +17,7 @@ class EntityComponentOrchestrator {
     EntitySystemManager *entitySystemManager = nullptr;
     ComponentManager *componentManager = nullptr;
     SceneManager *sceneManager = nullptr;
+    SignalManager *signalManager = nullptr;
     TimerManager *timerManager = nullptr;
 
     std::string scenePathToSwitchTo;
@@ -106,6 +108,7 @@ class EntityComponentOrchestrator {
                 entityManager->DestroyEntity(entityToRemove);
                 componentManager->EntityDestroyed(entityToRemove);
                 entitySystemManager->EntityDestroyed(entityToRemove);
+                signalManager->RemoveEntitySignals(entityToRemove);
             }
         }
     }

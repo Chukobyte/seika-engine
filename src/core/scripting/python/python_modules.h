@@ -48,6 +48,18 @@ class PythonModules {
     static PyObject* node_get_parent(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node_get_children(PyObject* self, PyObject* args, PyObject* kwargs);
 
+    static PyObject* timer_start(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* timer_stop(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* timer_pause(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* timer_resume(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* timer_get_wait_time(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* timer_set_wait_time(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* timer_get_time_left(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* timer_is_stopped(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* timer_is_paused(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* timer_get_loops(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* timer_set_loops(PyObject* self, PyObject* args, PyObject* kwargs);
+
     static PyObject* node2D_get_position(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node2D_set_position(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* node2D_add_to_position(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -260,6 +272,51 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "node_get_children", (PyCFunction) PythonModules::node_get_children,
         METH_VARARGS | METH_KEYWORDS, "Returns a node's children."
+    },
+    // TIMER
+    {
+        "timer_start", (PyCFunction) PythonModules::timer_start,
+        METH_VARARGS | METH_KEYWORDS, "Starts timer."
+    },
+    {
+        "timer_stop", (PyCFunction) PythonModules::timer_stop,
+        METH_VARARGS | METH_KEYWORDS, "Stops timer."
+    },
+    {
+        "timer_pause", (PyCFunction) PythonModules::timer_pause,
+        METH_VARARGS | METH_KEYWORDS, "Pauses timer."
+    },
+    {
+        "timer_resume", (PyCFunction) PythonModules::timer_resume,
+        METH_VARARGS | METH_KEYWORDS, "Resumes timer."
+    },
+    {
+        "timer_get_wait_time", (PyCFunction) PythonModules::timer_get_wait_time,
+        METH_VARARGS | METH_KEYWORDS, "Returns timer's wait time."
+    },
+    {
+        "timer_set_wait_time", (PyCFunction) PythonModules::timer_set_wait_time,
+        METH_VARARGS | METH_KEYWORDS, "Sets timer's wait time."
+    },
+    {
+        "timer_get_time_left", (PyCFunction) PythonModules::timer_get_time_left,
+        METH_VARARGS | METH_KEYWORDS, "Returns timer's time left."
+    },
+    {
+        "timer_is_stopped", (PyCFunction) PythonModules::timer_is_stopped,
+        METH_VARARGS | METH_KEYWORDS, "Checks if a timer is stopped."
+    },
+    {
+        "timer_is_paused", (PyCFunction) PythonModules::timer_is_paused,
+        METH_VARARGS | METH_KEYWORDS, "Checks if a timer is paused."
+    },
+    {
+        "timer_get_loops", (PyCFunction) PythonModules::timer_get_loops,
+        METH_VARARGS | METH_KEYWORDS, "Checks if a timer loops."
+    },
+    {
+        "timer_set_loops", (PyCFunction) PythonModules::timer_set_loops,
+        METH_VARARGS | METH_KEYWORDS, "Makes a timer loop."
     },
     // NODE2D
     {
@@ -508,6 +565,9 @@ static char *nodeSignalEmitKWList[] = {"entity_id", "signal_id", "args", nullptr
 static char *nodeSetTagsKWList[] = {"entity_id", "tags", nullptr};
 
 static char *nodeSetColorKWList[] = {"entity_id", "red", "green", "blue", "alpha", nullptr};
+
+static char *timerSetWaitTimeKWList[] = {"entity_id", "wait_time", nullptr};
+static char *timerSetLoopsKWList[] = {"entity_id", "loops", nullptr};
 
 static char *node2DUpdatePositionKWList[] = {"entity_id", "x", "y", nullptr};
 static char *node2DSetRotationKWList[] = {"entity_id", "rotation", nullptr};

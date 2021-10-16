@@ -2,6 +2,7 @@
 
 const std::string NodeTypeHelper::NODE_TYPE_INVALID = "Invalid";
 const std::string NodeTypeHelper::NODE_TYPE_NODE = "Node";
+const std::string NodeTypeHelper::NODE_TYPE_TIMER = "Timer";
 //2D
 const std::string NodeTypeHelper::NODE_TYPE_NODE2D = "Node2D";
 const std::string NodeTypeHelper::NODE_TYPE_SPRITE = "Sprite";
@@ -17,6 +18,7 @@ const std::string NodeTypeHelper::NODE_TYPE_SPOT_LIGHT = "SpotLight";
 
 std::map<NodeType, std::string> NodeTypeHelper::NODE_TYPE_TO_STRING_MAP = {
     {NodeType_NODE, NODE_TYPE_NODE},
+    {NodeType_TIMER, NODE_TYPE_TIMER},
     {NodeType_NODE2D, NODE_TYPE_NODE2D},
     {NodeType_SPRITE, NODE_TYPE_SPRITE},
     {NodeType_ANIMATED_SPRITE, NODE_TYPE_ANIMATED_SPRITE},
@@ -31,6 +33,7 @@ std::map<NodeType, std::string> NodeTypeHelper::NODE_TYPE_TO_STRING_MAP = {
 
 std::map<std::string, NodeType> NodeTypeHelper::NODE_STRING_TO_TYPE_MAP = {
     {NODE_TYPE_NODE, NodeType_NODE},
+    {NODE_TYPE_TIMER, NodeType_TIMER},
     {NODE_TYPE_NODE2D, NodeType_NODE2D},
     {NODE_TYPE_SPRITE, NodeType_SPRITE},
     {NODE_TYPE_ANIMATED_SPRITE, NodeType_ANIMATED_SPRITE},
@@ -45,6 +48,7 @@ std::map<std::string, NodeType> NodeTypeHelper::NODE_STRING_TO_TYPE_MAP = {
 
 std::map<NodeType, NodeTypeInheritance> NodeTypeHelper::NODE_TYPE_TO_INHERITANCE_MAP = {
     {NodeType_NODE, NodeTypeInheritance_NODE},
+    {NodeType_TIMER, NodeTypeInheritance_TIMER},
     {NodeType_NODE2D, NodeTypeInheritance_NODE2D},
     {NodeType_SPRITE, NodeTypeInheritance_SPRITE},
     {NodeType_ANIMATED_SPRITE, NodeTypeInheritance_ANIMATED_SPRITE},

@@ -12,10 +12,9 @@
 class TimerManager {
   private:
     static TimerManager *instance;
-    ComponentManager *componentManager = nullptr;
     ProjectProperties *projectProperties = nullptr;
 
-    TimerManager() {}
+    TimerManager() = default;
   public:
     std::map<Entity, Timer*> timers;
     std::map<Entity, Timer*> activeTimers;
@@ -27,104 +26,37 @@ class TimerManager {
         return instance;
     }
 
-    void Initialize(ComponentManager *componentManager) {
-        this->componentManager = componentManager;
-        projectProperties = ProjectProperties::GetInstance();
-    }
+    void Initialize();
 
-    Timer* GenerateTimer(Entity entity, Uint32 waitTimeInMilliseconds, bool loops) {
-        if (timers.count(entity) <= 0) {
-            timers.emplace(entity, new Timer(waitTimeInMilliseconds, loops));
-        }
-        return timers[entity];
-    }
+    Timer* GenerateTimer(Entity entity, Uint32 waitTimeInMilliseconds, bool loops);
 
-    bool HasTimer(Entity entity) {
-        return timers.count(entity) > 0;
-    }
+    bool HasTimer(Entity entity);
 
-    bool HasActiveTimer(Entity entity) {
-        return activeTimers.count(entity) > 0;
-    }
+    bool HasActiveTimer(Entity entity);
 
-    void RemoveTimer(Entity entity) {
-        if (HasTimer(entity)) {
-            activeTimers.erase(entity);
-            timers[entity]->Stop();
-            timers.erase(entity);
+    void RemoveTimer(Entity entity);
 
-            TimerComponent timerComponent = componentManager->GetComponent<TimerComponent>(entity);
-            delete timerComponent.timer;
-        }
-    }
+    void StartTimer(Entity entity);
 
-    void StartTimer(Entity entity) {
-        if (HasActiveTimer(entity)) {
-            TimerComponent timerComponent = componentManager->GetComponent<TimerComponent>(entity);
-            activeTimers.emplace(entity, timerComponent.timer);
-        }
-        activeTimers[entity]->Start();
-    }
+    void StopTimer(Entity entity);
 
-    void StopTimer(Entity entity) {
-        if (HasActiveTimer(entity)) {
-            activeTimers[entity]->Stop();
-            activeTimers.erase(entity);
-        }
-    }
+    void PauseTimer(Entity entity);
 
-    void PauseTimer(Entity entity) {
-        if (HasActiveTimer(entity)) {
-            activeTimers[entity]->Pause();
-        }
-    }
+    void ResumeTimer(Entity entity);
 
-    void ResumeTimer(Entity entity) {
-        if (HasActiveTimer(entity)) {
-            activeTimers[entity]->UnPause();
-        }
-    }
+    float GetTimerWaitTime(Entity entity);
 
-    float GetTimerWaitTime(Entity entity) {
-        if (HasActiveTimer(entity)) {
-            activeTimers[entity]->GetWaitTime() / projectProperties->GetMillisecondsPerTick();
-        }
-        return 0.0f;
-    }
+    void SetTimerWaitTime(Entity entity, float waitTime);
 
-    void SetTimerWaitTime(Entity entity, float waitTime) {
-        if (HasActiveTimer(entity)) {
-            Uint32 waitTimeInMilliSeconds = waitTime * projectProperties->GetMillisecondsPerTick();
-            activeTimers[entity]->SetWaitTime(waitTimeInMilliSeconds);
-        }
-    }
+    float GetTimerTimeLeft(Entity entity);
 
-    bool IsTimerStopped(Entity entity) {
-        if (HasActiveTimer(entity)) {
-            return activeTimers[entity]->HasStopped();
-        }
-        return true;
-    }
+    bool IsTimerStopped(Entity entity);
 
-    bool IsTimerPaused(Entity entity) {
-        if (HasActiveTimer(entity)) {
-            return activeTimers[entity]->IsPaused();
-        }
-        return true;
-    }
+    bool IsTimerPaused(Entity entity);
 
-    bool DoesTimerLoop(Entity entity) {
-        if (HasActiveTimer(entity)) {
-            return activeTimers[entity]->DoesLoop();
-        }
-        return false;
-    }
+    bool DoesTimerLoop(Entity entity);
 
-    void SetTimerLoops(Entity entity, bool loops) {
-        if (HasActiveTimer(entity)) {
-            activeTimers[entity]->SetLoop(loops);
-        }
-    }
+    void SetTimerLoops(Entity entity, bool loops);
 };
 
 #endif //TIMER_MANAGER_H

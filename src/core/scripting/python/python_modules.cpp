@@ -11,6 +11,7 @@
 #include "../../ecs/component/components/transform3D_component.h"
 #include "../../ecs/component/components/texture_cube_component.h"
 #include "../../ecs/component/components/light3D_component.h"
+#include "../../ecs/entity/system/timer_entity_system.h"
 
 // ENGINE
 PyObject* PythonModules::engine_exit(PyObject *self, PyObject *args, PyObject *kwargs) {
@@ -229,6 +230,7 @@ PyObject* PythonModules::node_new(PyObject *self, PyObject *args, PyObject *kwar
     static PythonCache *pythonCache = PythonCache::GetInstance();
     static ComponentManager *componentManager = GD::GetContainer()->componentManager;
     static EntityManager *entityManager = GD::GetContainer()->entityManager;
+    static TimerManager *timerManager = TimerManager::GetInstance();
     char *pyClassPath;
     char *pyClassName;
     char *pyNodeType;
@@ -244,6 +246,15 @@ PyObject* PythonModules::node_new(PyObject *self, PyObject *args, PyObject *kwar
         NodeTypeInheritance nodeTypeInheritance = NodeTypeHelper::GetNodeTypeInheritanceInt(nodeComponent.type);
 
         // TODO: Put this logic into a function
+        if ((NodeType_TIMER & nodeTypeInheritance) == NodeType_TIMER) {
+            // TODO: Place/handle defaults somewhere else
+            const Uint32 defaultTimerWaitTime = 1000;
+            const bool defaultTimerLoops = false;
+            componentManager->AddComponent<TimerComponent>(sceneNode.entity, TimerComponent{
+                .timer = timerManager->GenerateTimer(sceneNode.entity, defaultTimerWaitTime, defaultTimerLoops)
+            });
+        }
+
         if ((NodeType_NODE2D & nodeTypeInheritance) == NodeType_NODE2D) {
             componentManager->AddComponent<Transform2DComponent>(sceneNode.entity, Transform2DComponent{});
             auto signature = entityManager->GetSignature(sceneNode.entity);
@@ -572,6 +583,134 @@ PyObject* PythonModules::node_get_children(PyObject *self, PyObject *args, PyObj
             }
         }
         return pCollidedNodesList;
+    }
+    return nullptr;
+}
+
+// TIMER
+PyObject* PythonModules::timer_start(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    static TimerManager *timerManager = TimerManager::GetInstance();
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        timerManager->StartTimer(entity);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::timer_stop(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    static TimerManager *timerManager = TimerManager::GetInstance();
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        timerManager->StopTimer(entity);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::timer_pause(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    static TimerManager *timerManager = TimerManager::GetInstance();
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        timerManager->PauseTimer(entity);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::timer_resume(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    static TimerManager *timerManager = TimerManager::GetInstance();
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        timerManager->ResumeTimer(entity);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::timer_get_wait_time(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    static TimerManager *timerManager = TimerManager::GetInstance();
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        return Py_BuildValue("f", timerManager->GetTimerWaitTime(entity));
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::timer_set_wait_time(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    static TimerManager *timerManager = TimerManager::GetInstance();
+    Entity entity;
+    float waitTime;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "if", timerSetWaitTimeKWList, &entity, &waitTime)) {
+        timerManager->SetTimerWaitTime(entity, waitTime);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::timer_get_time_left(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    static TimerManager *timerManager = TimerManager::GetInstance();
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        return Py_BuildValue("f", timerManager->GetTimerTimeLeft(entity));
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::timer_is_stopped(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    static TimerManager *timerManager = TimerManager::GetInstance();
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        if (timerManager->IsTimerStopped(entity)) {
+            Py_RETURN_TRUE;
+        }
+        Py_RETURN_FALSE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::timer_is_paused(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    static TimerManager *timerManager = TimerManager::GetInstance();
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        if (timerManager->IsTimerPaused(entity)) {
+            Py_RETURN_TRUE;
+        }
+        Py_RETURN_FALSE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::timer_set_loops(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    static TimerManager *timerManager = TimerManager::GetInstance();
+    Entity entity;
+    bool loops;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ib", timerSetLoopsKWList, &entity, &loops)) {
+        timerManager->SetTimerLoops(entity, loops);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::timer_get_loops(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    static TimerManager *timerManager = TimerManager::GetInstance();
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        if (timerManager->DoesTimerLoop(entity)) {
+            Py_RETURN_TRUE;
+        }
+        Py_RETURN_FALSE;
     }
     return nullptr;
 }
