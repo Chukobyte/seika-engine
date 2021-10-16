@@ -11,7 +11,7 @@ SignalManager* SignalManager::GetInstance() {
     return instance;
 }
 
-void SignalManager::CreateSignal(Entity entity, const std::string &signalName) {
+void SignalManager::CreateSignal(const Entity entity, const std::string &signalName) {
     if (!DoesEntityHaveSignal(entity, signalName)) {
         Signal newSignal = {
             .name = signalName,
@@ -23,7 +23,7 @@ void SignalManager::CreateSignal(Entity entity, const std::string &signalName) {
     }
 }
 
-void SignalManager::SubscribeToSignal(Entity sourceEntity, const std::string &signalName, Entity subscriberEntity, const std::string &subscriberFunctionName) {
+void SignalManager::SubscribeToSignal(const Entity sourceEntity, const std::string &signalName, const Entity subscriberEntity, const std::string &subscriberFunctionName) {
     CreateSignal(sourceEntity, signalName);
     Signal signalToSubscribeTo = entitySignals[sourceEntity][signalName];
     SignalSubscriber signalSubscriber = {
@@ -34,11 +34,9 @@ void SignalManager::SubscribeToSignal(Entity sourceEntity, const std::string &si
     entitySignals[sourceEntity][signalName] = signalToSubscribeTo;
 }
 
-void SignalManager::EmitSignal(Entity entity, const std::string &signalName, SignalArguments args) {
+void SignalManager::EmitSignal(const Entity entity, const std::string &signalName, SignalArguments args) {
     static ScriptEntitySystem *scriptEntitySystem = (ScriptEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<ScriptEntitySystem>();
-    if (!DoesEntityHaveSignal(entity, signalName)) {
-        CreateSignal(entity, signalName);
-    }
+    CreateSignal(entity, signalName);
     Signal signalToEmit = entitySignals[entity][signalName];
     for (auto const &pair : signalToEmit.subscribers) {
         SignalSubscriber signalSubscriber = pair.second;
@@ -49,15 +47,15 @@ void SignalManager::EmitSignal(Entity entity, const std::string &signalName, Sig
     }
 }
 
-void SignalManager::EmitSignal(Entity entity, const std::string &signalName) {
+void SignalManager::EmitSignal(const Entity entity, const std::string &signalName) {
     EmitSignal(entity, signalName, SignalArguments{});
 }
 
-void SignalManager::RemoveEntitySignals(Entity entity) {
+void SignalManager::RemoveEntitySignals(const Entity entity) {
     entitySignals.erase(entity);
 }
 
-bool SignalManager::DoesEntityHaveSignal(Entity entity, const std::string &signalName) {
+bool SignalManager::DoesEntityHaveSignal(const Entity entity, const std::string &signalName) {
     if (entitySignals.count(entity) > 0) {
         std::map<std::string, Signal> entitySignalMap = entitySignals[entity];
         if (entitySignalMap.count(signalName) > 0) {

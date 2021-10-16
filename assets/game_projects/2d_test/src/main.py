@@ -26,4 +26,5 @@ class Main(Node2D):
         self.timeout_count += 1
         print(f"Timer timeout count = {self.timeout_count}!")
         if self.timeout_count >= 5:
-            self.timer.stop()
+            self.timer.queue_deletion()
+            self.timer = None

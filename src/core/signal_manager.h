@@ -26,13 +26,12 @@ class SignalManager {
   private:
     static SignalManager *instance;
     Logger *logger = nullptr;
+    std::map<Entity, std::map<std::string, Signal>> entitySignals;
 
     SignalManager() {
         this->logger = Logger::GetInstance();
     }
-  public:
-    std::map<Entity, std::map<std::string, Signal>> entitySignals;
-
+public:
     static SignalManager* GetInstance();
 
     void CreateSignal(Entity entity, const std::string &signalName);

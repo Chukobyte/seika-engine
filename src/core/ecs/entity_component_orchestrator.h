@@ -59,6 +59,7 @@ class EntityComponentOrchestrator {
     EntityComponentOrchestrator(EntityManager *entityManagerP, EntitySystemManager *entitySystemManagerP, ComponentManager *componentManagerP, SceneManager *sceneManagerP)
         : entityManager(entityManagerP), entitySystemManager(entitySystemManagerP), componentManager(componentManagerP), sceneManager(sceneManagerP) {
         timerManager = TimerManager::GetInstance();
+        signalManager = SignalManager::GetInstance();
     }
     // ENTITY METHODS
     Entity CreateEntity() {
