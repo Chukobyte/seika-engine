@@ -20,9 +20,6 @@ class Main(Spatial):
 
         self._process_inputs(delta_time=delta_time)
 
-        mouse_position = Mouse.get_position()
-        print(f"mouse_position = {mouse_position}")
-
     def _process_inputs(self, delta_time: float) -> None:
         camera_move_speed = 10 * delta_time
         if Input.is_action_pressed(action_name="a_left_left"):

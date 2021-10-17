@@ -7,6 +7,7 @@
 #include "../scene/scene.h"
 #include "entity/system/script_entity_system.h"
 #include "../signal_manager.h"
+#include "../scene/scene_manager.h"
 
 class EntityComponentOrchestrator {
     /*

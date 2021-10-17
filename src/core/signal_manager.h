@@ -31,7 +31,7 @@ class SignalManager {
     SignalManager() {
         this->logger = Logger::GetInstance();
     }
-public:
+  public:
     static SignalManager* GetInstance();
 
     void CreateSignal(Entity entity, const std::string &signalName);
