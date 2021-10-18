@@ -47,12 +47,12 @@ void Renderer3D::Initialize() {
     glEnableVertexAttribArray(0);
 
     // Shader
-    cube.shader = Shader("src/core/rendering/shader/opengl_shaders/3d/cube.vs", "src/core/rendering/shader/opengl_shaders/3d/cube.fs");
+    cube.shader = Shader(OPENGL_SHADER_SOURCE_CUBE);
     cube.shader.Use();
     cube.shader.SetInt("material.diffuse", 0);
     cube.shader.SetInt("material.specular", 1);
 
-    light.shader = Shader("src/core/rendering/shader/opengl_shaders/3d/light.vs", "src/core/rendering/shader/opengl_shaders/3d/light.fs");
+    light.shader = Shader(OPENGL_SHADER_SOURCE_LIGHT);
     initialized = true;
 }
 
