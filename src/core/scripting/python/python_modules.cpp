@@ -230,6 +230,7 @@ PyObject* PythonModules::node_new(PyObject *self, PyObject *args, PyObject *kwar
     static PythonCache *pythonCache = PythonCache::GetInstance();
     static ComponentManager *componentManager = GD::GetContainer()->componentManager;
     static EntityManager *entityManager = GD::GetContainer()->entityManager;
+    static AssetManager *assetManager = GD::GetContainer()->assetManager;
     static TimerManager *timerManager = TimerManager::GetInstance();
     char *pyClassPath;
     char *pyClassName;
@@ -277,7 +278,12 @@ PyObject* PythonModules::node_new(PyObject *self, PyObject *args, PyObject *kwar
         }
 
         if ((NodeTypeInheritance_TEXT_LABEL & nodeTypeInheritance) == NodeTypeInheritance_TEXT_LABEL) {
-            componentManager->AddComponent<TextLabelComponent>(sceneNode.entity, TextLabelComponent{});
+            TextLabelComponent textLabelComponent = TextLabelComponent{
+                .text = "",
+                .font = assetManager->GetFont(DEFAULT_FONT_ASSET_ID)
+            };
+            assert(textLabelComponent.font != nullptr && "Default font for text label is NULL!");
+            componentManager->AddComponent<TextLabelComponent>(sceneNode.entity, textLabelComponent);
             auto signature = entityManager->GetSignature(sceneNode.entity);
             signature.set(componentManager->GetComponentType<TextLabelComponent>(), true);
             entityManager->SetSignature(sceneNode.entity, signature);
@@ -339,13 +345,12 @@ PyObject* PythonModules::node_new(PyObject *self, PyObject *args, PyObject *kwar
             entityComponentOrchestrator->NewEntity(sceneNode);
         }
 
-
         if (pythonCache->HasActiveInstance(sceneNode.entity)) {
             CPyObject &pClassInstance = pythonCache->GetClassInstance(sceneNode.entity);
             pClassInstance.AddRef();
             return pClassInstance;
         }
-        Logger::GetInstance()->Debug("failed to add new python instance");
+        Logger::GetInstance()->Error("failed to add new python instance");
         Py_RETURN_NONE;
     }
     return nullptr;

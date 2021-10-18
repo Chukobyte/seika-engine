@@ -37,6 +37,7 @@ class PythonCache {
                 PyErr_Print();
             }
             assert(pModule != nullptr && "Python module is NULL!");
+            pModule.AddRef();
             std::map<std::string, CPyObject> pClasses;
             cache.emplace(classPath, CachedPythonModule{
                 .module = pModule,
@@ -45,6 +46,7 @@ class PythonCache {
         }
         if (cache[classPath].classes.count(className) <= 0) {
             CPyObject pModuleDict = PyModule_GetDict(cache[classPath].module);
+            assert(pModuleDict != nullptr && "Python module dict is NULL!");
             CPyObject pClass = PyDict_GetItemString(pModuleDict, className.c_str());
             assert(pClass != nullptr && "Python class is NULL!");
             cache[classPath].classes.emplace(className, pClass);

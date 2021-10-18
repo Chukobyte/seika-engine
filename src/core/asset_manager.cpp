@@ -80,6 +80,7 @@ std::map<std::string, Mix_Chunk*> AssetManager::GetAllSounds() {
 
 void AssetManager::LoadEngineAssets() {
     LoadTexture(DEFAULT_COLLIDER_ASSET_ID, DEFAULT_COLLIDER_ASSET_ID);
+    LoadFont(DEFAULT_FONT_ASSET_ID, DEFAULT_FONT_ASSET_ID, DEFAULT_FONT_SIZE);
 }
 
 void AssetManager::LoadProjectAssets() {

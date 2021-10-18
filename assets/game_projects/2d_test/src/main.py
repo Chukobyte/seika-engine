@@ -1,7 +1,8 @@
-from seika.node import Node2D, Timer
+from seika.node import Node2D, Timer, TextLabel
 from seika.input import Input
 from seika.engine import Engine
 from seika.physics import Collision
+from seika.math import Vector2
 
 
 class Main(Node2D):
@@ -14,6 +15,11 @@ class Main(Node2D):
         self.add_child(child_node=self.timer)
         self.timer.start()
         self.timeout_count = 0
+
+        text_label = TextLabel.new()
+        text_label.text = "Test Yeah!"
+        text_label.position = Vector2(100, 100)
+        self.add_child(child_node=text_label)
 
     def _physics_process(self, delta_time: float) -> None:
         if Input.is_action_just_pressed(action_name="quit"):
