@@ -242,6 +242,12 @@
 <pre><code class="language-python">get_node(name: str) -&gt; seika.node.Node:
 </code></pre>
 <p>Returns a node with the given name.  Will be <code>None</code> if node is not found.</p>
+<pre><code class="language-python">get_parent() -&gt; seika.node.Node:
+</code></pre>
+<p>Returns the node's parent node.  Will be <code>None</code> if node is root.</p>
+<pre><code class="language-python">get_children() -&gt; list:
+</code></pre>
+<p>Returns the node's children nodes.  Won't return child's children.</p>
 <pre><code class="language-python">create_signal(signal_id: str) -&gt; None:
 </code></pre>
 <p>Creates a signal for subscribers to listen to.</p>
@@ -389,6 +395,9 @@
 <pre><code class="language-python">color: seika.color.Color
 </code></pre>
 <p>A collider's color.  Only shown when <code>colliders_visible</code> is enabled in <a href="../../general/project_properties/">project properties</a>.</p>
+<pre><code class="language-python">is_under_mouse: bool
+</code></pre>
+<p>Returns <code>True</code> if mouse cursor is on top of <code>collider_rect</code>.</p>
 <hr/>
 <h3 id="signals_5">Signals</h3>
 <p>None.</p>
