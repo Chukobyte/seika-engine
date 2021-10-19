@@ -361,6 +361,12 @@ color: seika.color.Color
 
 A collider's color.  Only shown when `colliders_visible` is enabled in [project properties](../general/project_properties.md).
 
+```python
+is_under_mouse: bool
+```
+
+Returns `True` if mouse cursor is on top of `collider_rect`.
+
 ---
 
 ### Signals

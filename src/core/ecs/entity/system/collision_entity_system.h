@@ -109,6 +109,15 @@ class CollisionEntitySystem : public EntitySystem {
         return entitiesOnMouse;
     }
 
+    bool IsEntityOnMouse(const Entity entity, const Vector2 &mousePosition) {
+        Rect2 entityCollisionRectangle = GetCollisionRectangle(entity);
+        Rect2 mouseRectangle = Rect2(mousePosition, Vector2(1.0f, 1.0f));
+        if (CollisionResolver::DoesRectanglesCollide(entityCollisionRectangle, mouseRectangle)) {
+            return true;
+        }
+        return false;
+    }
+
     void Render() {
         for (Entity entity : entities) {
             Transform2DComponent transform2DComponent = componentManager->GetComponent<Transform2DComponent>(entity);

@@ -247,8 +247,8 @@ PyObject* PythonModules::node_new(PyObject *self, PyObject *args, PyObject *kwar
         NodeTypeInheritance nodeTypeInheritance = NodeTypeHelper::GetNodeTypeInheritanceInt(nodeComponent.type);
 
         // TODO: Put this logic into a function
+        // TODO: Add proper logic for component defaults
         if ((NodeType_TIMER & nodeTypeInheritance) == NodeType_TIMER) {
-            // TODO: Place/handle defaults somewhere else
             const Uint32 defaultTimerWaitTime = 1000;
             const bool defaultTimerLoops = false;
             componentManager->AddComponent<TimerComponent>(sceneNode.entity, TimerComponent{
@@ -1163,6 +1163,20 @@ PyObject* PythonModules::collision_shape2d_set_color(PyObject *self, PyObject *a
     return nullptr;
 }
 
+PyObject* PythonModules::collision_shape2d_is_under_mouse(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    static CollisionEntitySystem *collisionEntitySystem = entityComponentOrchestrator->GetSystem<CollisionEntitySystem>();
+    static MouseInput *mouseInput = MouseInput::GetInstance();
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        if (collisionEntitySystem->IsEntityOnMouse(entity, mouseInput->GetMousePosition())) {
+            Py_RETURN_TRUE;
+        }
+        Py_RETURN_FALSE;
+    }
+    return nullptr;
+}
+
 // COLLISION
 PyObject* PythonModules::collision_get_collided_nodes(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
@@ -1238,7 +1252,6 @@ PyObject* PythonModules::collision_get_nodes_under_mouse(PyObject *self, PyObjec
         }
     }
     return pCollidedNodesList;
-    return nullptr;
 }
 
 // INPUT

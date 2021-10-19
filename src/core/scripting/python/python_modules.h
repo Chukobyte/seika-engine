@@ -99,6 +99,7 @@ class PythonModules {
     static PyObject* collision_shape2d_remove_collision_exception(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* collision_shape2d_get_color(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* collision_shape2d_set_color(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* collision_shape2d_is_under_mouse(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* collision_get_collided_nodes(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* collision_update_collisions(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -454,6 +455,10 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "collision_shape2d_set_color", (PyCFunction) PythonModules::collision_shape2d_set_color,
         METH_VARARGS | METH_KEYWORDS, "Sets a collider's color."
+    },
+    {
+        "collision_shape2d_is_under_mouse", (PyCFunction) PythonModules::collision_shape2d_is_under_mouse,
+        METH_VARARGS | METH_KEYWORDS, "Checks if collision shape 2D is under mouse cursor."
     },
     // COLLISION
     {
