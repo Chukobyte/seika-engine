@@ -26,6 +26,7 @@ struct Character {
 class Font {
   private:
     bool valid = false;
+    std::string uid;
 
     void ConfigureVertex() {
         // configure VAO & VBO texture quads
@@ -46,14 +47,16 @@ class Font {
     std::string filePath;
     int size;
 
-    Font(FT_Library freeTypeLibrary, const char* fileName, int size) {
+    Font(const std::string &uid, FT_Library freeTypeLibrary, const char* fileName, int size) {
+        this->uid = uid;
         this->filePath = std::string(fileName);
         this->size = size;
         LoadFont(freeTypeLibrary, fileName, size);
         ConfigureVertex();
     }
 
-    Font(FT_Library freeTypeLibrary, const char* fileName, int size, void *buffer, size_t bufferSize) {
+    Font(const std::string &uid, FT_Library freeTypeLibrary, const char* fileName, int size, void *buffer, size_t bufferSize) {
+        this->uid = uid;
         this->filePath = std::string(fileName);
         this->size = size;
         LoadFontFromMemory(freeTypeLibrary, buffer, bufferSize, size);
@@ -171,8 +174,12 @@ class Font {
         FT_Done_Face(face);
     }
 
-    bool IsValid() {
+    bool IsValid() const {
         return valid;
+    }
+
+    std::string GetUID() const {
+        return uid;
     }
 };
 

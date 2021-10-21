@@ -19,6 +19,7 @@ struct TextureConfiguration {
 
 struct FontConfiguration {
     std::string filePath;
+    std::string uid;
     int size;
 };
 
@@ -76,9 +77,11 @@ class ProjectProperties {
                     .filterMax = assetFilterMax
                 });
             } else if (assetType == "font") {
+                const std::string &fontId = assetJson["uid"].get<std::string>();
                 int fontSize = assetJson["size"].get<int>();
                 loadedAssetConfigurations.fontConfigurations.emplace_back(FontConfiguration{
                     .filePath = assetsFilePath,
+                    .uid = fontId,
                     .size = fontSize
                 });
             } else if (assetType == "music") {

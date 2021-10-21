@@ -20,6 +20,12 @@
       "wrap_t": "clamp_to_border",
       "filter_min": "nearest",
       "filter_max": "nearest"
+    },
+    {
+          "type": "font",
+          "uid": "verdana-32",
+          "file_path": "assets/fonts/verdana.ttf",
+          "size": 32
     }
   ],
   "input_actions": [

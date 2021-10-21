@@ -11,7 +11,7 @@ AssetManager::AssetManager() {
 
 // TEXTURE
 void AssetManager::LoadTexture(const TextureConfiguration &textureConfiguration) {
-    logger->Debug("texture file path = " + textureConfiguration.filePath);
+    logger->Debug("Load texture file path = " + textureConfiguration.filePath);
     Texture *texture = new Texture(textureConfiguration.filePath.c_str(),
                                    textureConfiguration.wrapS,
                                    textureConfiguration.wrapT,
@@ -35,7 +35,7 @@ Texture* AssetManager::GetTexture(const std::string &textureId) {
 // FONT
 void AssetManager::LoadFont(const std::string &fontId, const std::string &fontPath, int size) {
     static RenderContext *renderContext = GD::GetContainer()->renderContext;
-    Font *font = new Font(renderContext->freeTypeLibrary, fontPath.c_str(), size);
+    Font *font = new Font(fontId, renderContext->freeTypeLibrary, fontPath.c_str(), size);
     fonts.emplace(fontId, font);
 }
 
@@ -80,7 +80,7 @@ std::map<std::string, Mix_Chunk*> AssetManager::GetAllSounds() {
 
 void AssetManager::LoadEngineAssets() {
     LoadTexture(DEFAULT_COLLIDER_ASSET_ID, DEFAULT_COLLIDER_ASSET_ID);
-    LoadFont(DEFAULT_FONT_ASSET_ID, DEFAULT_FONT_ASSET_ID, DEFAULT_FONT_SIZE);
+    LoadFont(DEFAULT_FONT_ASSET_ID, DEFAULT_FONT_ASSET_PATH, DEFAULT_FONT_SIZE);
 }
 
 void AssetManager::LoadProjectAssets() {
@@ -92,7 +92,7 @@ void AssetManager::LoadProjectAssets() {
     }
 
     for (FontConfiguration fontConfiguration : assetConfigurations.fontConfigurations) {
-        LoadFont(fontConfiguration.filePath, fontConfiguration.filePath, fontConfiguration.size);
+        LoadFont(fontConfiguration.uid, fontConfiguration.filePath, fontConfiguration.size);
     }
 
     for (MusicConfiguration musicConfiguration : assetConfigurations.musicConfigurations) {
