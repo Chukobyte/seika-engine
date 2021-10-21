@@ -72,6 +72,8 @@ class PythonModules {
     static PyObject* sprite_set_flip_v(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* sprite_get_modulate(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* sprite_set_modulate(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* sprite_get_texture(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* sprite_set_texture(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* animated_sprite_play(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_set_animation(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -92,6 +94,8 @@ class PythonModules {
     static PyObject* text_label_set_text(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* text_label_get_color(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* text_label_set_color(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* text_label_get_font(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* text_label_set_font(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* collision_shape2d_get_collider_rect(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* collision_shape2d_set_collider_rect(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -365,6 +369,14 @@ static struct PyMethodDef rollApiMethods[] = {
         "sprite_set_modulate", (PyCFunction) PythonModules::sprite_set_modulate,
         METH_VARARGS | METH_KEYWORDS, "Sets a sprite's color."
     },
+    {
+        "sprite_get_texture", (PyCFunction) PythonModules::sprite_get_texture,
+        METH_VARARGS | METH_KEYWORDS, "Gets a sprite's texture."
+    },
+    {
+        "sprite_set_texture", (PyCFunction) PythonModules::sprite_set_texture,
+        METH_VARARGS | METH_KEYWORDS, "Sets a sprite's texture."
+    },
     // ANIMATED_SPRITE
     {
         "animated_sprite_play", (PyCFunction) PythonModules::animated_sprite_play,
@@ -438,6 +450,14 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "text_label_set_color", (PyCFunction) PythonModules::text_label_set_color,
         METH_VARARGS | METH_KEYWORDS, "Sets a text label's color."
+    },
+    {
+        "text_label_get_font", (PyCFunction) PythonModules::text_label_get_font,
+        METH_VARARGS | METH_KEYWORDS, "Gets a text label's font."
+    },
+    {
+        "text_label_set_font", (PyCFunction) PythonModules::text_label_set_font,
+        METH_VARARGS | METH_KEYWORDS, "Sets a text label's font."
     },
     // COLLISION SHAPE2D
     {
@@ -577,13 +597,15 @@ static char *timerSetLoopsKWList[] = {"entity_id", "loops", nullptr};
 static char *node2DUpdatePositionKWList[] = {"entity_id", "x", "y", nullptr};
 static char *node2DSetRotationKWList[] = {"entity_id", "rotation", nullptr};
 
-static char *setSpriteFlipHKWList[] = {"entity_id", "flip_h", nullptr};
-static char *setSpriteFlipVKWList[] = {"entity_id", "flip_v", nullptr};
+static char *spriteSetSpriteFlipHKWList[] = {"entity_id", "flip_h", nullptr};
+static char *spriteSetSpriteFlipVKWList[] = {"entity_id", "flip_v", nullptr};
+static char *spriteSetTextureKWList[] = {"entity_id", "file_path", nullptr};
 
 static char *animatedSpriteAnimationUpdateKWList[] = {"entity_id", "animation_name", nullptr};
 static char *animatedSpriteSetFrameKWList[] = {"entity_id", "frame", nullptr};
 
 static char *textLabelSetTextKWList[] = {"entity_id", "text", nullptr};
+static char *textLabelSetFontKWList[] = {"entity_id", "file_path", nullptr};
 
 static char *collisionShape2DSetColliderRectKWList[] = {"entity_id", "x", "y", "w", "h", nullptr};
 static char *collisionModifyCollisionExceptionKWList[] = {"entity_id", "exception_entity_id", nullptr};

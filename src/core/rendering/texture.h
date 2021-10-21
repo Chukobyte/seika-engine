@@ -74,6 +74,14 @@ class Texture {
 
     unsigned char* GetData() const;
 
+    std::string GetWrapSString() const;
+
+    std::string GetWrapTString() const;
+
+    std::string GetFilterMinString() const;
+
+    std::string GetFilterMaxString() const;
+
     bool IsValid() const;
 };
 

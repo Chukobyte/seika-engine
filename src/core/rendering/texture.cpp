@@ -98,6 +98,46 @@ unsigned char* Texture::GetData() const {
     return data;
 }
 
+std::string Texture::GetWrapSString() const {
+    if (wrapS == GL_CLAMP_TO_BORDER) {
+        return "clamp_to_border";
+    } else if (wrapS == GL_REPEAT) {
+        return "repeat";
+    }
+    logger->Error("Not valid wrap s string!");
+    return "";
+}
+
+std::string Texture::GetWrapTString() const {
+    if (wrapT == GL_CLAMP_TO_BORDER) {
+        return "clamp_to_border";
+    } else if (wrapT == GL_REPEAT) {
+        return "repeat";
+    }
+    logger->Error("Not valid wrap t string!");
+    return "";
+}
+
+std::string Texture::GetFilterMinString() const {
+    if (filterMin == GL_NEAREST) {
+        return "nearest";
+    } else if (filterMin == GL_LINEAR) {
+        return "linear";
+    }
+    logger->Error("Not valid filter min string string!");
+    return "";
+}
+
+std::string Texture::GetFilterMaxString() const {
+    if (filterMin == GL_NEAREST) {
+        return "nearest";
+    } else if (filterMin == GL_LINEAR) {
+        return "linear";
+    }
+    logger->Error("Not valid filter max string string!");
+    return "";
+}
+
 bool Texture::IsValid() const {
     if(this->data) {
         return true;

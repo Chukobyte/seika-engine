@@ -27,6 +27,8 @@ class Font {
   private:
     bool valid = false;
     std::string uid;
+    std::string filePath;
+    int size;
 
     void ConfigureVertex() {
         // configure VAO & VBO texture quads
@@ -44,8 +46,6 @@ class Font {
     std::map<GLchar, Character> characters;
     GLuint VAO;
     GLuint VBO;
-    std::string filePath;
-    int size;
 
     Font(const std::string &uid, FT_Library freeTypeLibrary, const char* fileName, int size) {
         this->uid = uid;
@@ -180,6 +180,14 @@ class Font {
 
     std::string GetUID() const {
         return uid;
+    }
+
+    std::string GetFilePath() const {
+        return filePath;
+    }
+
+    int GetSize() const {
+        return size;
     }
 };
 

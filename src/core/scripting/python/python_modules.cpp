@@ -800,7 +800,7 @@ PyObject* PythonModules::sprite_set_flip_h(PyObject *self, PyObject *args, PyObj
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     Entity entity;
     bool flipH;
-    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ib", setSpriteFlipHKWList, &entity, &flipH)) {
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ib", spriteSetSpriteFlipHKWList, &entity, &flipH)) {
         SpriteComponent spriteComponent = entityComponentOrchestrator->GetComponent<SpriteComponent>(entity);
         spriteComponent.flipX = flipH;
         entityComponentOrchestrator->UpdateComponent<SpriteComponent>(entity, spriteComponent);
@@ -826,7 +826,7 @@ PyObject* PythonModules::sprite_set_flip_v(PyObject *self, PyObject *args, PyObj
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     Entity entity;
     bool flipV;
-    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ib", setSpriteFlipVKWList, &entity, &flipV)) {
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ib", spriteSetSpriteFlipVKWList, &entity, &flipV)) {
         SpriteComponent spriteComponent = entityComponentOrchestrator->GetComponent<SpriteComponent>(entity);
         spriteComponent.flipY = flipV;
         entityComponentOrchestrator->UpdateComponent<SpriteComponent>(entity, spriteComponent);
@@ -856,6 +856,40 @@ PyObject* PythonModules::sprite_set_modulate(PyObject *self, PyObject *args, PyO
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "iffff", nodeSetColorKWList, &entity, &red, &green, &blue, &alpha)) {
         SpriteComponent spriteComponent = entityComponentOrchestrator->GetComponent<SpriteComponent>(entity);
         spriteComponent.modulate = Color(red, green, blue, alpha);
+        entityComponentOrchestrator->UpdateComponent<SpriteComponent>(entity, spriteComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::sprite_get_texture(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        SpriteComponent spriteComponent = entityComponentOrchestrator->GetComponent<SpriteComponent>(entity);
+        Texture *texture = spriteComponent.texture;
+        if (texture == nullptr) {
+            Py_RETURN_NONE;
+        }
+        return Py_BuildValue("(sssss)",
+                             texture->GetFilePath().c_str(),
+                             texture->GetWrapSString().c_str(),
+                             texture->GetWrapTString().c_str(),
+                             texture->GetFilterMinString().c_str(),
+                             texture->GetFilterMaxString().c_str());
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::sprite_set_texture(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    static AssetManager *assetManager = GD::GetContainer()->assetManager;
+    Entity entity;
+    char *pyFilePath;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "is", spriteSetTextureKWList, &entity, &pyFilePath)) {
+        SpriteComponent spriteComponent = entityComponentOrchestrator->GetComponent<SpriteComponent>(entity);
+        Texture *texture = assetManager->GetTexture(std::string(pyFilePath));
+        spriteComponent.texture = texture;
         entityComponentOrchestrator->UpdateComponent<SpriteComponent>(entity, spriteComponent);
         Py_RETURN_NONE;
     }
@@ -1008,7 +1042,7 @@ PyObject* PythonModules::animated_sprite_set_flip_h(PyObject *self, PyObject *ar
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     Entity entity;
     bool flipH;
-    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ib", setSpriteFlipHKWList, &entity, &flipH)) {
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ib", spriteSetSpriteFlipHKWList, &entity, &flipH)) {
         AnimatedSpriteComponent animatedSpriteComponent = entityComponentOrchestrator->GetComponent<AnimatedSpriteComponent>(entity);
         animatedSpriteComponent.flipX = flipH;
         entityComponentOrchestrator->UpdateComponent<AnimatedSpriteComponent>(entity, animatedSpriteComponent);
@@ -1034,7 +1068,7 @@ PyObject* PythonModules::animated_sprite_set_flip_v(PyObject *self, PyObject *ar
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     Entity entity;
     bool flipV;
-    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ib", setSpriteFlipVKWList, &entity, &flipV)) {
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ib", spriteSetSpriteFlipVKWList, &entity, &flipV)) {
         AnimatedSpriteComponent animatedSpriteComponent = entityComponentOrchestrator->GetComponent<AnimatedSpriteComponent>(entity);
         animatedSpriteComponent.flipY = flipV;
         entityComponentOrchestrator->UpdateComponent<AnimatedSpriteComponent>(entity, animatedSpriteComponent);
@@ -1084,6 +1118,37 @@ PyObject* PythonModules::text_label_set_color(PyObject *self, PyObject *args, Py
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "iffff", nodeSetColorKWList, &entity, &red, &green, &blue, &alpha)) {
         TextLabelComponent textLabelComponent = entityComponentOrchestrator->GetComponent<TextLabelComponent>(entity);
         textLabelComponent.color = Color(red, green, blue, alpha);
+        entityComponentOrchestrator->UpdateComponent<TextLabelComponent>(entity, textLabelComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::text_label_get_font(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        TextLabelComponent textLabelComponent = entityComponentOrchestrator->GetComponent<TextLabelComponent>(entity);
+        Font *font = textLabelComponent.font;
+        if (font == nullptr) {
+            Py_RETURN_NONE;
+        }
+        return Py_BuildValue("(ssi)",
+                             font->GetUID().c_str(),
+                             font->GetFilePath().c_str(),
+                             font->GetSize());
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::text_label_set_font(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    static AssetManager *assetManager = GD::GetContainer()->assetManager;
+    Entity entity;
+    char *pyUID;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "is", textLabelSetFontKWList, &entity, &pyUID)) {
+        TextLabelComponent textLabelComponent = entityComponentOrchestrator->GetComponent<TextLabelComponent>(entity);
+        textLabelComponent.font = assetManager->GetFont(std::string(pyUID));
         entityComponentOrchestrator->UpdateComponent<TextLabelComponent>(entity, textLabelComponent);
         Py_RETURN_NONE;
     }
