@@ -20,6 +20,7 @@ class Main(Node2D):
         text_label.text = "Test Yeah!"
         text_label.position = Vector2(100, 100)
         self.add_child(child_node=text_label)
+        print(f"text_label.font = {text_label.font}")
 
         self.seika_collision_shape = self.get_node(name="CollisionShape2D")
 
@@ -28,7 +29,8 @@ class Main(Node2D):
             Engine.exit()
 
         if Input.is_action_just_pressed(action_name="mouse_left_click"):
-            # print(f"collided_node_with_mouse = {Collision.get_nodes_under_mouse()}")
+            seika_node = self.get_node(name="Seika")
+            print(f"seika_node.texture = {seika_node.texture}")
             print(f"collided_node_with_mouse = {self.seika_collision_shape.is_under_mouse}")
 
     def _on_timer_timeout(self, args: list) -> None:
