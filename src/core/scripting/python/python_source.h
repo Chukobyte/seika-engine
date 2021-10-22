@@ -1,6 +1,8 @@
 #ifndef PYTHON_SOURCE_H
 #define PYTHON_SOURCE_H
 
+// Seika Engine API v0.6.0
+
 using PythonSource = const std::string&;
 
 static PythonSource PYTHON_SOURCE_ASSETS_MODULE =
@@ -592,7 +594,7 @@ static PythonSource PYTHON_SOURCE_NODE_MODULE =
     "\n"
     "   @staticmethod\n"
     "   def parse_scene_node_from_engine(scene_node):\n"
-    "       if isinstance(scene_node, Node):\n"
+    "       if not isinstance(scene_node, tuple):\n"
     "           return scene_node\n"
     "       else:\n"
     "           node_type = scene_node[0]\n"
