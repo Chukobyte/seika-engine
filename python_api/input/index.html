@@ -154,19 +154,24 @@
 <p>None.</p>
 <hr/>
 <h3 id="methods">Methods</h3>
-<pre><code class="language-python">add_action(action_name: str, value: str) -&gt; None:
+<pre><code class="language-python">@staticmethod
+add_action(action_name: str, value: str) -&gt; None:
 </code></pre>
 <p>Adds an input action.  Multiple input values can be added to the same <code>action_name</code>.  For possible values check <a href="#properties_1">Mouse</a>, <a href="#properties_2">Keyboard</a>, and <a href="#properties_3">Joystick</a> properties.</p>
-<pre><code class="language-python">remove_action(action_name: str) -&gt; None:
+<pre><code class="language-python">@staticmethod
+remove_action(action_name: str) -&gt; None:
 </code></pre>
 <p>Completely removes action.</p>
-<pre><code class="language-python">is_action_pressed(action_name: str) -&gt; bool:
+<pre><code class="language-python">@staticmethod
+is_action_pressed(action_name: str) -&gt; bool:
 </code></pre>
 <p>Returns true if an action input is currently being held down.</p>
-<pre><code class="language-python">is_action_just_pressed(action_name: str) -&gt; bool:
+<pre><code class="language-python">@staticmethod
+is_action_just_pressed(action_name: str) -&gt; bool:
 </code></pre>
 <p>Returns true if an action input was just pressed.</p>
-<pre><code class="language-python">is_action_just_released(action_name: str) -&gt; bool:
+<pre><code class="language-python">@staticmethod
+is_action_just_released(action_name: str) -&gt; bool:
 </code></pre>
 <p>Returns true if an action input was just released.</p>
 <hr/>
@@ -182,7 +187,8 @@ Mouse.RIGHT_BUTTON = "mb_right" # Right Mouse Button
 <p>None.</p>
 <hr/>
 <h3 id="methods_1">Methods</h3>
-<pre><code class="language-python">get_position() -&gt; seika.math.Vector2:
+<pre><code class="language-python">@staticmethod
+get_position() -&gt; seika.math.Vector2:
 </code></pre>
 <p>Returns mouse position.</p>
 <hr/>

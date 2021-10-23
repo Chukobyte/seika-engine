@@ -8,15 +8,15 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="Chukobyte" name="author"/>
 <link href="../../img/favicon.ico" rel="shortcut icon"/>
-<title>Physics - Seika Engine</title>
+<title>seika.assets - Seika Engine</title>
 <link href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" rel="stylesheet">
 <link href="../../css/theme.css" rel="stylesheet"/>
 <link href="../../css/theme_extra.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet"/>
 <script>
     // Current page data
-    var mkdocs_page_name = "Physics";
-    var mkdocs_page_input_path = "python_api\\physics.md";
+    var mkdocs_page_name = "seika.assets";
+    var mkdocs_page_input_path = "python_api\\assets.md";
     var mkdocs_page_url = null;
   </script>
 <script defer="" src="../../js/jquery-2.1.1.min.js"></script>
@@ -49,7 +49,7 @@
 </li>
 </ul>
 <p class="caption"><span class="caption-text">Python API</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../">Index</a>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../node/">Node</a>
@@ -66,19 +66,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../network/">Network</a>
 </li>
-<li class="toctree-l1 current"><a class="reference internal current" href="./">Physics</a>
-<ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="#collision">Collision</a>
-<ul>
-<li class="toctree-l3"><a class="reference internal" href="#properties">Properties</a>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#signals">Signals</a>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#methods">Methods</a>
-</li>
-</ul>
-</li>
-</ul>
+<li class="toctree-l1"><a class="reference internal" href="../physics/">Physics</a>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../math/">Math</a>
 </li>
@@ -105,8 +93,7 @@
 <div aria-label="breadcrumbs navigation" role="navigation">
 <ul class="wy-breadcrumbs">
 <li><a href="../..">Docs</a> »</li>
-<li>Python API »</li>
-<li>Physics</li>
+<li>seika.assets</li>
 <li class="wy-breadcrumbs-aside">
 </li>
 </ul>
@@ -114,32 +101,62 @@
 </div>
 <div role="main">
 <div class="section">
-<h1 id="seikaphysics">seika.physics</h1>
-<h2 id="collision">Collision</h2>
-<p>Interface for collisions between entities.</p>
+<h1 id="seikaassets">seika.assets</h1>
+<h2 id="texture">Texture</h2>
+<p>Engine representation of a texture.  All properties are read only.</p>
 <h3 id="properties">Properties</h3>
-<p>None.</p>
+<pre><code class="language-python">file_path : str
+</code></pre>
+<p>Texture's relative file path.</p>
+<pre><code class="language-python">wrap_s : str
+</code></pre>
+<p>String representation of texture's <code>GL_TEXTURE_WRAP_S</code>.</p>
+<pre><code class="language-python">wrap_t : str
+</code></pre>
+<p>String representation of texture's <code>GL_TEXTURE_WRAP_T</code>.</p>
+<pre><code class="language-python">filter_min : str
+</code></pre>
+<p>String representation of texture's <code>GL_TEXTURE_MIN_FILTER</code>.</p>
+<pre><code class="language-python">filter_max : str
+</code></pre>
+<p>String representation of texture's <code>GL_TEXTURE_MAG_FILTER</code>.</p>
 <hr/>
 <h3 id="signals">Signals</h3>
 <p>None.</p>
 <hr/>
 <h3 id="methods">Methods</h3>
 <pre><code class="language-python">@staticmethod
-get_collided_nodes(node: seika.node.Node) -&gt; list:
+get(file_path: str) -&gt; seika.assets.Texture:
 </code></pre>
-<p>Returns a <code>list</code> of nodes that collided with the passed in <code>node</code>.</p>
-<pre><code class="language-python">@staticmethod
-get_nodes_under_mouse() -&gt; list:
+<p>Get texture from relative file path.</p>
+<hr/>
+<h2 id="font">Font</h2>
+<p>Engine representation of a texture.  All properties are read only.</p>
+<h3 id="properties_1">Properties</h3>
+<pre><code class="language-python">uid : str
 </code></pre>
-<p>Returns a <code>list</code> of nodes (<code>CollisionShape2D</code>) that are under the current mouse's position.</p>
+<p>Unique id of font.</p>
+<pre><code class="language-python">file_path : str
+</code></pre>
+<p>Relative file path of font.</p>
+<pre><code class="language-python">size : int
+</code></pre>
+<p>Size of the font.</p>
+<hr/>
+<h3 id="signals_1">Signals</h3>
+<p>None.</p>
+<hr/>
+<h3 id="methods_1">Methods</h3>
+<pre><code class="language-python">create(uid: str, file_path: str, size: int) -&gt; seika.assets.Font:
+</code></pre>
+<p>Creates a new font.</p>
+<pre><code class="language-python">get(uid: str) -&gt; seika.assets.Font:
+</code></pre>
+<p>Returns an already existing font.</p>
 <hr/>
 </div>
 </div>
 <footer>
-<div aria-label="footer navigation" class="rst-footer-buttons" role="navigation">
-<a class="btn btn-neutral float-right" href="../math/" title="Math">Next <span class="icon icon-circle-arrow-right"></span></a>
-<a class="btn btn-neutral" href="../network/" title="Network"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-</div>
 <hr/>
 <div role="contentinfo">
 <!-- Copyright etc -->
@@ -155,8 +172,6 @@ get_nodes_under_mouse() -&gt; list:
 <div aria-label="versions" class="rst-versions" role="note">
 <span class="rst-current-version" data-toggle="rst-current-version">
 <a class="fa fa-github" href="https://github.com/Chukobyte/seika-engine" style="float: left; color: #fcfcfc"> GitHub</a>
-<span><a href="../network/" style="color: #fcfcfc;">« Previous</a></span>
-<span style="margin-left: 15px"><a href="../math/" style="color: #fcfcfc">Next »</a></span>
 </span>
 </div>
 <script>var base_url = '../..';</script>
