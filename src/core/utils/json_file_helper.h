@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <json/json.hpp>
+#include <sstream>
 
 class JsonFileHelper {
   public:
@@ -13,8 +14,22 @@ class JsonFileHelper {
         return json;
     }
 
+    static void SaveJsonFile(const std::string &filePath, nlohmann::json outputJson) {
+        std::ofstream myFile(filePath);
+        myFile << outputJson;
+        myFile.close();
+    }
+
     static bool IsJsonValid(const std::string &jsonText) {
         return nlohmann::json::accept(jsonText);
+    }
+
+    static nlohmann::json ConvertStringToJson(const std::string &jsonString) {
+        std::stringstream ss;
+        ss << jsonString;
+        nlohmann::json outputJson;
+        outputJson << ss;
+        return outputJson;
     }
 };
 
