@@ -1,7 +1,7 @@
 #ifndef PYTHON_SOURCE_H
 #define PYTHON_SOURCE_H
 
-// Seika Engine API v0.6.0
+// Seika Engine API v0.6.1
 
 using PythonSource = const std::string&;
 
@@ -66,21 +66,21 @@ static PythonSource PYTHON_SOURCE_ASSETS_MODULE =
     "           filter_max=filter_max,\n"
     "       )\n"
     "\n"
-    "   @staticmethod\n"
-    "   def create(\n"
-    "       file_path: str,\n"
-    "       wrap_s=Wrap.CLAMP_TO_BORDER,\n"
-    "       wrap_t=Wrap.CLAMP_TO_BORDER,\n"
-    "       filter_min=FILTER.NEAREST,\n"
-    "       filter_max=FILTER.NEAREST,\n"
-    "   ):\n"
-    "       return Texture(\n"
-    "           file_path=file_path,\n"
-    "           wrap_s=wrap_s,\n"
-    "           wrap_t=wrap_t,\n"
-    "           filter_min=filter_min,\n"
-    "           filter_max=filter_max,\n"
-    "       )\n"
+    "   # @staticmethod\n"
+    "   # def create(\n"
+    "   #     file_path: str,\n"
+    "   #     wrap_s=Wrap.CLAMP_TO_BORDER,\n"
+    "   #     wrap_t=Wrap.CLAMP_TO_BORDER,\n"
+    "   #     filter_min=FILTER.NEAREST,\n"
+    "   #     filter_max=FILTER.NEAREST,\n"
+    "   # ):\n"
+    "   #     return Texture(\n"
+    "   #         file_path=file_path,\n"
+    "   #         wrap_s=wrap_s,\n"
+    "   #         wrap_t=wrap_t,\n"
+    "   #         filter_min=filter_min,\n"
+    "   #         filter_max=filter_max,\n"
+    "   #     )\n"
     "\n"
     "   def __str__(self):\n"
     "       return f\"Texture(file_path: {self._file_path}, wrap_s: {self._wrap_s}, wrap_t: {self._wrap_t}, filter_min: {self._filter_min}, filter_min: {self._filter_max})\"\n"

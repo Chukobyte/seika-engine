@@ -131,6 +131,8 @@ class PythonModules {
 
     static PyObject* renderer_draw_texture(PyObject* self, PyObject* args, PyObject* kwargs);
 
+    static PyObject* texture_get(PyObject* self, PyObject* args, PyObject* kwargs);
+
     static PyObject* font_create(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* font_get(PyObject* self, PyObject* args, PyObject* kwargs);
 };
@@ -562,6 +564,11 @@ static struct PyMethodDef rollApiMethods[] = {
         "renderer_draw_texture", (PyCFunction) PythonModules::renderer_draw_texture,
         METH_VARARGS | METH_KEYWORDS, "Renders a texture."
     },
+    // TEXTURE
+    {
+        "texture_get", (PyCFunction) PythonModules::texture_get,
+        METH_VARARGS | METH_KEYWORDS, "Gets a texture by path."
+    },
     // FONT
     {
         "font_create", (PyCFunction) PythonModules::font_create,
@@ -641,6 +648,8 @@ static char *rendererDrawTextureKWList[] = {"texture_path",
                                             "flip_x", "flip_y",
                                             nullptr
                                            };
+
+static char *textureGetKWList[] = {"file_path", nullptr};
 
 static char *fontCreateKWList[] = {"uid", "file_path", "size", nullptr};
 static char *fontGetKWList[] = {"uid", nullptr};

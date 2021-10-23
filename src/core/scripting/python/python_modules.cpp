@@ -1514,6 +1514,25 @@ PyObject* PythonModules::renderer_draw_texture(PyObject *self, PyObject *args, P
     return nullptr;
 }
 
+// TEXTURE
+PyObject* PythonModules::texture_get(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static AssetManager *assetManager = GD::GetContainer()->assetManager;
+    char *pyFilePath;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "s", textureGetKWList, &pyFilePath)) {
+        const std::string &textureFilePath = std::string(pyFilePath);
+        if (assetManager->HasTexture(textureFilePath)) {
+            Texture *texture = assetManager->GetTexture(textureFilePath);
+            return Py_BuildValue("(ssss)",
+                                 texture->GetWrapSString().c_str(),
+                                 texture->GetWrapTString().c_str(),
+                                 texture->GetFilterMinString().c_str(),
+                                 texture->GetFilterMaxString().c_str());
+        }
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
 // FONT
 PyObject* PythonModules::font_create(PyObject *self, PyObject *args, PyObject *kwargs) {
     static AssetManager *assetManager = GD::GetContainer()->assetManager;

@@ -1,4 +1,4 @@
-from seika.assets import Font
+from seika.assets import Font, Texture
 from seika.node import Node2D, Timer, TextLabel
 from seika.input import Input
 from seika.engine import Engine
@@ -29,6 +29,9 @@ class Main(Node2D):
         print(f"text_label.font = {text_label.font}")
 
         self.seika_collision_shape = self.get_node(name="CollisionShape2D")
+
+        seika_texture = Texture.get(file_path="assets/images/seika_idle.png")
+        print(f"seika_texture = {seika_texture}")
 
     def _physics_process(self, delta_time: float) -> None:
         if Input.is_action_just_pressed(action_name="quit"):
