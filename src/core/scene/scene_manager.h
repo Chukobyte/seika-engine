@@ -194,7 +194,7 @@ class SceneNodeJsonParser {
 
     void ParseTextLabelComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson) {
         const std::string &nodeText = nodeComponentObjectJson["text"].get<std::string>();
-        const std::string &nodeFontPath = nodeComponentObjectJson["font_path"].get<std::string>();
+        const std::string &nodeFontUID = nodeComponentObjectJson["font_uid"].get<std::string>();
         nlohmann::json nodeColorJson = nodeComponentObjectJson["color"].get<nlohmann::json>();
         const Color nodeColor = Color(
                                     nodeColorJson["red"].get<float>(),
@@ -205,11 +205,11 @@ class SceneNodeJsonParser {
 
         componentManager->AddComponent(sceneNode.entity, TextLabelComponent{
             .text = nodeText,
-            .font = nodeFontPath.empty() ? nullptr : assetManager->GetFont(nodeFontPath),
+            .font = nodeFontUID.empty() ? nullptr : assetManager->GetFont(nodeFontUID),
             .color = nodeColor
         });
         auto signature = entityManager->GetSignature(sceneNode.entity);
-        const bool isTextLabelEnabled = !nodeFontPath.empty();
+        const bool isTextLabelEnabled = !nodeFontUID.empty();
         signature.set(componentManager->GetComponentType<TextLabelComponent>(), isTextLabelEnabled);
         entityManager->SetSignature(sceneNode.entity, signature);
     }
