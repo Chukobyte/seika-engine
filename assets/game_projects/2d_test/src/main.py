@@ -3,7 +3,7 @@ from seika.node import Node2D, Timer, TextLabel
 from seika.input import Input
 from seika.engine import Engine
 from seika.physics import Collision
-from seika.math import Vector2
+from seika.math import Vector2, Rect2
 
 
 class Main(Node2D):

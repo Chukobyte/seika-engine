@@ -74,6 +74,8 @@ class PythonModules {
     static PyObject* sprite_set_modulate(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* sprite_get_texture(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* sprite_set_texture(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* sprite_get_draw_source(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* sprite_set_draw_source(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* animated_sprite_play(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_set_animation(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -382,6 +384,14 @@ static struct PyMethodDef rollApiMethods[] = {
         "sprite_set_texture", (PyCFunction) PythonModules::sprite_set_texture,
         METH_VARARGS | METH_KEYWORDS, "Sets a sprite's texture."
     },
+    {
+        "sprite_get_draw_source", (PyCFunction) PythonModules::sprite_get_draw_source,
+        METH_VARARGS | METH_KEYWORDS, "Gets a sprite's draw source."
+    },
+    {
+        "sprite_set_draw_source", (PyCFunction) PythonModules::sprite_set_draw_source,
+        METH_VARARGS | METH_KEYWORDS, "Sets a sprite's draw source."
+    },
     // ANIMATED_SPRITE
     {
         "animated_sprite_play", (PyCFunction) PythonModules::animated_sprite_play,
@@ -619,6 +629,7 @@ static char *node2DSetRotationKWList[] = {"entity_id", "rotation", nullptr};
 static char *spriteSetSpriteFlipHKWList[] = {"entity_id", "flip_h", nullptr};
 static char *spriteSetSpriteFlipVKWList[] = {"entity_id", "flip_v", nullptr};
 static char *spriteSetTextureKWList[] = {"entity_id", "file_path", nullptr};
+static char *spriteSetDrawSourceKWList[] = {"entity_id", "x", "y", "w", "h", nullptr};
 
 static char *animatedSpriteAnimationUpdateKWList[] = {"entity_id", "animation_name", nullptr};
 static char *animatedSpriteSetFrameKWList[] = {"entity_id", "frame", nullptr};

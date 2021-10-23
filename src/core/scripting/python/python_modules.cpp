@@ -896,6 +896,38 @@ PyObject* PythonModules::sprite_set_texture(PyObject *self, PyObject *args, PyOb
     return nullptr;
 }
 
+PyObject* PythonModules::sprite_get_draw_source(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        SpriteComponent spriteComponent = entityComponentOrchestrator->GetComponent<SpriteComponent>(entity);
+        return Py_BuildValue("(ffff)",
+                             spriteComponent.drawSource.x,
+                             spriteComponent.drawSource.y,
+                             spriteComponent.drawSource.w,
+                             spriteComponent.drawSource.h);
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::sprite_set_draw_source(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    static AssetManager *assetManager = GD::GetContainer()->assetManager;
+    Entity entity;
+    float x;
+    float y;
+    float w;
+    float h;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "iffff", spriteSetDrawSourceKWList, &entity, &x, &y, &w, &h)) {
+        SpriteComponent spriteComponent = entityComponentOrchestrator->GetComponent<SpriteComponent>(entity);
+        spriteComponent.drawSource = Rect2(x, y, w, h);
+        entityComponentOrchestrator->UpdateComponent<SpriteComponent>(entity, spriteComponent);
+        Logger::GetInstance()->Debug("sprite draw source");
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
 // ANIMATED_SPRITE
 PyObject* PythonModules::animated_sprite_play(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;

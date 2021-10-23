@@ -1,7 +1,7 @@
 #ifndef PYTHON_SOURCE_H
 #define PYTHON_SOURCE_H
 
-// Seika Engine API v0.6.1
+// Seika Engine API v0.7.0
 
 using PythonSource = const std::string&;
 
@@ -834,6 +834,22 @@ static PythonSource PYTHON_SOURCE_NODE_MODULE =
     "   def texture(self, value: Texture) -> None:\n"
     "       seika_engine_api.sprite_set_texture(\n"
     "           entity_id=self.entity_id, file_path=value.file_path\n"
+    "       )\n"
+    "\n"
+    "   @property\n"
+    "   def draw_source(self) -> Rect2:\n"
+    "       (\n"
+    "           x,\n"
+    "           y,\n"
+    "           w,\n"
+    "           h,\n"
+    "       ) = seika_engine_api.sprite_get_draw_source(entity_id=self.entity_id)\n"
+    "       return Rect2(x=x, y=y, w=w, h=h)\n"
+    "\n"
+    "   @draw_source.setter\n"
+    "   def draw_source(self, value: Rect2) -> None:\n"
+    "       seika_engine_api.sprite_set_draw_source(\n"
+    "           entity_id=self.entity_id, x=value.x, y=value.y, w=value.w, h=value.h\n"
     "       )\n"
     "\n"
     "\n"
