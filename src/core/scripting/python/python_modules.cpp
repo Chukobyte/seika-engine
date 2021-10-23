@@ -1554,11 +1554,13 @@ PyObject* PythonModules::texture_get(PyObject *self, PyObject *args, PyObject *k
         const std::string &textureFilePath = std::string(pyFilePath);
         if (assetManager->HasTexture(textureFilePath)) {
             Texture *texture = assetManager->GetTexture(textureFilePath);
-            return Py_BuildValue("(ssss)",
+            return Py_BuildValue("(ssssii)",
                                  texture->GetWrapSString().c_str(),
                                  texture->GetWrapTString().c_str(),
                                  texture->GetFilterMinString().c_str(),
-                                 texture->GetFilterMaxString().c_str());
+                                 texture->GetFilterMaxString().c_str(),
+                                 texture->GetWidth(),
+                                 texture->GetHeight());
         }
         Py_RETURN_NONE;
     }

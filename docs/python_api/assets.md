@@ -36,6 +36,18 @@ filter_max : str
 
 String representation of texture's `GL_TEXTURE_MAG_FILTER`.
 
+```python
+width : int
+```
+
+Returns texture's width.
+
+```python
+height : int
+```
+
+Returns texture's height.
+
 ---
 
 ### Signals
