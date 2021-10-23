@@ -1513,3 +1513,30 @@ PyObject* PythonModules::renderer_draw_texture(PyObject *self, PyObject *args, P
     }
     return nullptr;
 }
+
+// FONT
+PyObject* PythonModules::font_create(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static AssetManager *assetManager = GD::GetContainer()->assetManager;
+    char *pyUID;
+    char *pyFilePath;
+    int fontSize;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ssi", fontCreateKWList, &pyUID, &pyFilePath, &fontSize)) {
+        assetManager->LoadFont(std::string(pyUID), std::string(pyFilePath), fontSize);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::font_get(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static AssetManager *assetManager = GD::GetContainer()->assetManager;
+    char *pyUID;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "s", fontGetKWList, &pyUID)) {
+        const std::string fontUID = std::string(pyUID);
+        if (assetManager->HasFont(fontUID)) {
+            Font *font = assetManager->GetFont(pyUID);
+            return Py_BuildValue("(si)", font->GetFilePath().c_str(), font->GetSize());
+        }
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}

@@ -32,6 +32,10 @@ Texture* AssetManager::GetTexture(const std::string &textureId) {
     return textures[textureId];
 }
 
+bool AssetManager::HasTexture(const std::string &textureId) const {
+    return textures.count(textureId) > 0;
+}
+
 // FONT
 void AssetManager::LoadFont(const std::string &fontId, const std::string &fontPath, int size) {
     static RenderContext *renderContext = GD::GetContainer()->renderContext;
@@ -42,6 +46,10 @@ void AssetManager::LoadFont(const std::string &fontId, const std::string &fontPa
 Font* AssetManager::GetFont(const std::string &fontId) {
     assert(fonts.count(fontId) > 0 && "Font hasn't been loaded!");
     return fonts[fontId];
+}
+
+bool AssetManager::HasFont(const std::string &fontId) const {
+    return fonts.count(fontId) > 0;
 }
 
 // MUSIC

@@ -130,6 +130,9 @@ class PythonModules {
     static PyObject* client_send_message_to_server(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* renderer_draw_texture(PyObject* self, PyObject* args, PyObject* kwargs);
+
+    static PyObject* font_create(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* font_get(PyObject* self, PyObject* args, PyObject* kwargs);
 };
 
 static struct PyMethodDef rollApiMethods[] = {
@@ -559,6 +562,15 @@ static struct PyMethodDef rollApiMethods[] = {
         "renderer_draw_texture", (PyCFunction) PythonModules::renderer_draw_texture,
         METH_VARARGS | METH_KEYWORDS, "Renders a texture."
     },
+    // FONT
+    {
+        "font_create", (PyCFunction) PythonModules::font_create,
+        METH_VARARGS | METH_KEYWORDS, "Creates a new font in memory."
+    },
+    {
+        "font_get", (PyCFunction) PythonModules::font_get,
+        METH_VARARGS | METH_KEYWORDS, "Gets an already existing font."
+    },
 
     {nullptr, nullptr, 0,nullptr },
 };
@@ -605,7 +617,7 @@ static char *animatedSpriteAnimationUpdateKWList[] = {"entity_id", "animation_na
 static char *animatedSpriteSetFrameKWList[] = {"entity_id", "frame", nullptr};
 
 static char *textLabelSetTextKWList[] = {"entity_id", "text", nullptr};
-static char *textLabelSetFontKWList[] = {"entity_id", "file_path", nullptr};
+static char *textLabelSetFontKWList[] = {"entity_id", "uid", nullptr};
 
 static char *collisionShape2DSetColliderRectKWList[] = {"entity_id", "x", "y", "w", "h", nullptr};
 static char *collisionModifyCollisionExceptionKWList[] = {"entity_id", "exception_entity_id", nullptr};
@@ -629,6 +641,9 @@ static char *rendererDrawTextureKWList[] = {"texture_path",
                                             "flip_x", "flip_y",
                                             nullptr
                                            };
+
+static char *fontCreateKWList[] = {"uid", "file_path", "size", nullptr};
+static char *fontGetKWList[] = {"uid", nullptr};
 
 static PyObject* PyInit_seikaEngineAPI(void) {
     return PyModule_Create(&seikaEngineAPIModDef);

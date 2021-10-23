@@ -33,10 +33,14 @@ class AssetManager {
 
     Texture* GetTexture(const std::string &textureId);
 
+    bool HasTexture(const std::string &textureId) const;
+
     // FONT
     void LoadFont(const std::string &fontId, const std::string &fontPath, int size);
 
     Font* GetFont(const std::string &fontId);
+
+    bool HasFont(const std::string &fontId) const;
 //
     // MUSIC
     void LoadMusic(const std::string &musicId, const std::string &musicPath);

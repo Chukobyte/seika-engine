@@ -1,3 +1,4 @@
+from seika.assets import Font
 from seika.node import Node2D, Timer, TextLabel
 from seika.input import Input
 from seika.engine import Engine
@@ -16,9 +17,14 @@ class Main(Node2D):
         self.timer.start()
         self.timeout_count = 0
 
+        font = Font.create(uid="verdana-32", file_path="assets/fonts/verdana.ttf", size=32)
+        bruh_font = Font.get(uid="seika_default")
+        print(f"bruh font = {bruh_font}")
+
         text_label = TextLabel.new()
         text_label.text = "Test Yeah!"
         text_label.position = Vector2(100, 100)
+        text_label.font = font
         self.add_child(child_node=text_label)
         print(f"text_label.font = {text_label.font}")
 
