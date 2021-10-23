@@ -13,3 +13,4 @@ Contains information about the Python scripting API used for Seika Engine.
 * [Scene](scene.md)
 * [Network](network.md)
 * [Renderer](renderer.md)
+* [Assets](assets.md)

@@ -51,6 +51,7 @@ Emitted once a client fails to connect to a [Server](#server).
 ### Methods
 
 ```python
+@staticmethod
 connect_signal(signal_id: str, listener_node: seika.node.Node, function_name: str) -> None:
 ```
 
@@ -77,18 +78,21 @@ None.
 ### Methods
 
 ```python
+@staticmethod
 start(port: int) -> None:
 ```
 
 Starts server on designated `port`.
 
 ```python
+@staticmethod
 stop() -> None:
 ```
 
 Stops previously started server.
 
 ```python
+@staticmethod
 send_message_to_all_clients(message: str) -> None:
 ```
 
@@ -115,18 +119,21 @@ None.
 ### Methods
 
 ```python
+@staticmethod
 connect(endpoint: str, port: int) -> None:
 ```
 
 Connects to a server with the passed in `endpoint` and `port`.
 
 ```python
+@staticmethod
 disconnect() -> None:
 ```
 
 Disconnects from a server.
 
 ```python
+@staticmethod
 send_message_to_server(message:str) -> None:
 ```
 

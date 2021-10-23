@@ -19,12 +19,14 @@ None.
 ### Methods
 
 ```python
+@staticmethod
 add_action(action_name: str, value: str) -> None:
 ```
 
 Adds an input action.  Multiple input values can be added to the same `action_name`.  For possible values check [Mouse](#properties_1), [Keyboard](#properties_2), and [Joystick](#properties_3) properties.
 
 ```python
+@staticmethod
 remove_action(action_name: str) -> None:
 ```
 
@@ -32,18 +34,21 @@ Completely removes action.
 
 
 ```python
+@staticmethod
 is_action_pressed(action_name: str) -> bool:
 ```
 
 Returns true if an action input is currently being held down.
 
 ```python
+@staticmethod
 is_action_just_pressed(action_name: str) -> bool:
 ```
 
 Returns true if an action input was just pressed.
 
 ```python
+@staticmethod
 is_action_just_released(action_name: str) -> bool:
 ```
 
@@ -75,6 +80,7 @@ None.
 ### Methods
 
 ```python
+@staticmethod
 get_position() -> seika.math.Vector2:
 ```
 

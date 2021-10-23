@@ -19,6 +19,7 @@ None.
 ### Methods
 
 ```python
+@staticmethod
 draw_texture(texture_path: str,
              source_rect: seika.math.Rect2,
              dest_rect: seika.math.Rect2,

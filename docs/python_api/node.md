@@ -192,6 +192,12 @@ modulate: seika.color.Color
 
 Node's color modulation.
 
+```python
+texture: seika.assets.Texture
+```
+
+Node's [texture](assets.md#texture).
+
 ---
 
 ### Signals
@@ -316,6 +322,12 @@ color: seika.color.Color
 ```
 
 Color of the text.
+
+```python
+font: seika.assets.Font
+```
+
+The [font](assets.md#font) of the text.
 
 ---
 
