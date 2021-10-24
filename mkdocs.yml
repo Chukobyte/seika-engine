@@ -25,6 +25,7 @@ nav:
       - Color: python_api/color.md
       - Renderer: python_api/renderer.md
       - Assets: python_api/assets.md
+      - Data: python_api/data.md
   - Showcase:
       - Projects Made With Seika: showcase/projects_made_with_seika.md
 
