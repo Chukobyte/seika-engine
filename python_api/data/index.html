@@ -86,6 +86,14 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#methods">Methods</a>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#example-usage">Example Usage</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#save-game">Save Game</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#load-game">Load Game</a>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -122,6 +130,9 @@
 <h2 id="configtool">ConfigTool</h2>
 <p>A tool used to save and load game data.  Game data will be saved/loaded from the user directory.  On Windows the default root path is <code>C:\Users\$CURRENT_USER\AppData\Roaming\seika_engine\$GAME_TITLE</code>.</p>
 <h3 id="properties">Properties</h3>
+<pre><code class="language-python">file_path : str
+</code></pre>
+<p>File path of <code>ConfigTool</code>.</p>
 <pre><code class="language-python">data : dict
 </code></pre>
 <p>Current data being stored within <code>ConfigTool</code>.  Should be serializable to JSON.</p>
@@ -142,6 +153,37 @@
 <pre><code class="language-python">does_file_exist() -&gt; bool:
 </code></pre>
 <p>Return <code>True</code> if file exists.</p>
+<h3 id="example-usage">Example Usage</h3>
+<h4 id="save-game">Save Game</h4>
+<pre><code class="language-python">from seika.node import Node2D
+from seika.data import ConfigTool
+
+class Main(Node2D):
+    def _start(self) -&gt; None:
+        # Save File
+        config_tool = ConfigTool(file_path="game.sav", initial_data={"level": 1})
+        config_tool.save()
+
+        # Save Encrypted File
+        config_tool_secrets = ConfigTool(file_path="game_enc.sav", initial_data={"name": "Amaya"})
+        config_tool_secrets.save(encrypted_key="secret_password")
+</code></pre>
+<h4 id="load-game">Load Game</h4>
+<pre><code class="language-python">from seika.node import Node2D
+from seika.data import ConfigTool
+
+class Main(Node2D):
+    def _start(self) -&gt; None:
+        # Load File
+        config_tool = ConfigTool(file_path="game.sav")
+        config_tool.load_file()
+        print(f"game.sav = {config_tool.data}") # prints 'game.sav = {"level":1}'
+
+        # Load Encrypted File
+        config_tool_secrets = ConfigTool(file_path="game_enc.sav")
+        config_tool_secrets.load_file(encrypted_key="secret_password")
+        print(f"game_enc.sav = {config_tool_secrets.data}") # prints 'game_enc.sav = {"level":1}'
+</code></pre>
 <hr/>
 </div>
 </div>
