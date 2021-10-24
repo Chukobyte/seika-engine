@@ -14,8 +14,7 @@ class FileHelper {
     }
   public:
     static bool DoesFileExist(const std::string &name) {
-        struct stat buffer;
-        return(stat(name.c_str(), &buffer) == 0);
+        return EncryptionUtil::DoesFileExist(name);
     }
 
     static void ChangeDirectory(const std::string &newDirectory) {
@@ -29,7 +28,7 @@ class FileHelper {
 
     static bool DoesUserSaveFileExists(const std::string &filePath, const std::string &applicationName) {
         const std::string& savePath = GetSaveDataPath(filePath, applicationName);
-        return EncryptionUtil::DoesFileExist(savePath);
+        return DoesFileExist(savePath);
     }
 
     static void SaveGameData(const std::string &filePath, const std::string &jsonDataString, const std::string &applicationName) {

@@ -1,7 +1,7 @@
 #ifndef PYTHON_SOURCE_H
 #define PYTHON_SOURCE_H
 
-// Seika Engine API v0.7.0
+// Seika Engine API v0.8.1
 
 using PythonSource = const std::string&;
 
@@ -253,6 +253,59 @@ static PythonSource PYTHON_SOURCE_COLOR_MODULE =
     "\n"
     "   def __repr__(self):\n"
     "       return f\"({self.r}, {self.g}, {self.b}, {self.a})\"\n"
+    "\n"
+    "";
+
+static PythonSource PYTHON_SOURCE_DATA_MODULE =
+    "import json\n"
+    "from typing import Optional\n"
+    "\n"
+    "import seika_engine_api\n"
+    "\n"
+    "\n"
+    "class ConfigTool:\n"
+    "   def __init__(self, file_path: str, initial_data: Optional[dict] = None):\n"
+    "       if initial_data is None:\n"
+    "           initial_data = {}\n"
+    "       self._data = initial_data\n"
+    "       self.file_path = file_path\n"
+    "\n"
+    "   @property\n"
+    "   def data(self) -> dict:\n"
+    "       return self._data\n"
+    "\n"
+    "   @data.setter\n"
+    "   def data(self, value: dict) -> None:\n"
+    "       self._data = value\n"
+    "\n"
+    "   def save_file(self, encryption_key: Optional[str] = None) -> bool:\n"
+    "       if len(self._data) > 0:\n"
+    "           if not encryption_key:\n"
+    "               encryption_key = \"\"\n"
+    "           seika_engine_api.config_tool_save_file(\n"
+    "               file_path=self.file_path,\n"
+    "               json_data=json.dumps(self._data),\n"
+    "               encryption_key=encryption_key,\n"
+    "           )\n"
+    "           return True\n"
+    "       return False\n"
+    "\n"
+    "   def load_file(self, encryption_key: Optional[str] = None) -> bool:\n"
+    "       if self.does_file_exist():\n"
+    "           if not encryption_key:\n"
+    "               encryption_key = \"\"\n"
+    "           save_data = seika_engine_api.config_tool_load_file(\n"
+    "               file_path=self.file_path, encryption_key=encryption_key\n"
+    "           )\n"
+    "           self._data = json.loads(save_data)\n"
+    "           return True\n"
+    "       return False\n"
+    "\n"
+    "   def delete_file(self) -> bool:\n"
+    "       return seika_engine_api.config_tool_delete_file(file_path=self.file_path)\n"
+    "\n"
+    "   def does_file_exist(self) -> bool:\n"
+    "       return seika_engine_api.config_tool_does_file_exist(file_path=self.file_path)\n"
     "\n"
     "";
 
@@ -1292,6 +1345,11 @@ static PythonSource PYTHON_SOURCE_IMPORT_ENGINE_MODULE_SNIPPET =
 
     "\"seika.renderer\": \"\"\"\n"
     + PYTHON_SOURCE_RENDERER_MODULE +
+    "\"\"\",\n"
+
+
+    "\"seika.data\": \"\"\"\n"
+    + PYTHON_SOURCE_DATA_MODULE +
     "\"\"\",\n"
 
 

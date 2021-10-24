@@ -137,6 +137,11 @@ class PythonModules {
 
     static PyObject* font_create(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* font_get(PyObject* self, PyObject* args, PyObject* kwargs);
+
+    static PyObject* config_tool_save_file(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* config_tool_load_file(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* config_tool_delete_file(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* config_tool_does_file_exist(PyObject* self, PyObject* args, PyObject* kwargs);
 };
 
 static struct PyMethodDef rollApiMethods[] = {
@@ -588,6 +593,23 @@ static struct PyMethodDef rollApiMethods[] = {
         "font_get", (PyCFunction) PythonModules::font_get,
         METH_VARARGS | METH_KEYWORDS, "Gets an already existing font."
     },
+    // CONFIG_TOOL
+    {
+        "config_tool_save_file", (PyCFunction) PythonModules::config_tool_save_file,
+        METH_VARARGS | METH_KEYWORDS, "Saves a file."
+    },
+    {
+        "config_tool_load_file", (PyCFunction) PythonModules::config_tool_load_file,
+        METH_VARARGS | METH_KEYWORDS, "Loads a file."
+    },
+    {
+        "config_tool_delete_file", (PyCFunction) PythonModules::config_tool_delete_file,
+        METH_VARARGS | METH_KEYWORDS, "Deletes a file."
+    },
+    {
+        "config_tool_does_file_exist", (PyCFunction) PythonModules::config_tool_does_file_exist,
+        METH_VARARGS | METH_KEYWORDS, "Checks if a file exists."
+    },
 
     {nullptr, nullptr, 0,nullptr },
 };
@@ -664,6 +686,10 @@ static char *textureGetKWList[] = {"file_path", nullptr};
 
 static char *fontCreateKWList[] = {"uid", "file_path", "size", nullptr};
 static char *fontGetKWList[] = {"uid", nullptr};
+
+static char *configToolSaveFileKWList[] = {"file_path", "json_data", "encryption_key", nullptr};
+static char *configToolLoadFileKWList[] = {"file_path", "encryption_key", nullptr};
+static char *configToolGetFileKWList[] = {"file_path", nullptr};
 
 static PyObject* PyInit_seikaEngineAPI(void) {
     return PyModule_Create(&seikaEngineAPIModDef);

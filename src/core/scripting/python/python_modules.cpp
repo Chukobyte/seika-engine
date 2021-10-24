@@ -1593,3 +1593,62 @@ PyObject* PythonModules::font_get(PyObject *self, PyObject *args, PyObject *kwar
     }
     return nullptr;
 }
+
+// CONFIG TOOL
+PyObject* PythonModules::config_tool_save_file(PyObject *self, PyObject *args, PyObject *kwargs) {
+    ProjectProperties *projectProperties = ProjectProperties::GetInstance();
+    char *pyFilePath;
+    char *pyJsonData;
+    char *pyEncryptionKey;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "sss", configToolSaveFileKWList, &pyFilePath, &pyJsonData, &pyEncryptionKey)) {
+        const std::string &encryptionKey = std::string(pyEncryptionKey);
+        if (!encryptionKey.empty()) {
+            FileHelper::SaveGameDataEncrypted(std::string(pyFilePath), std::string(pyJsonData), projectProperties->gameTitle, encryptionKey);
+        } else {
+            FileHelper::SaveGameData(std::string(pyFilePath), std::string(pyJsonData), projectProperties->gameTitle);
+        }
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::config_tool_load_file(PyObject *self, PyObject *args, PyObject *kwargs) {
+    ProjectProperties *projectProperties = ProjectProperties::GetInstance();
+    char *pyFilePath;
+    char *pyEncryptionKey;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ss", configToolLoadFileKWList, &pyFilePath, &pyEncryptionKey)) {
+        const std::string &encryptionKey = std::string(pyEncryptionKey);
+        std::string gameDataJson;
+        if (!encryptionKey.empty()) {
+            gameDataJson = FileHelper::LoadGameDataEncrypted(std::string(pyFilePath), projectProperties->gameTitle, encryptionKey);
+        } else {
+            gameDataJson = FileHelper::LoadGameData(std::string(pyFilePath), projectProperties->gameTitle);
+        }
+        return Py_BuildValue("s", gameDataJson.c_str());
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::config_tool_delete_file(PyObject *self, PyObject *args, PyObject *kwargs) {
+    ProjectProperties *projectProperties = ProjectProperties::GetInstance();
+    char *pyFilePath;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "s", configToolGetFileKWList, &pyFilePath)) {
+        if (FileHelper::DeleteGameData(std::string(pyFilePath), projectProperties->gameTitle)) {
+            Py_RETURN_TRUE;
+        }
+        Py_RETURN_FALSE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::config_tool_does_file_exist(PyObject *self, PyObject *args, PyObject *kwargs) {
+    ProjectProperties *projectProperties = ProjectProperties::GetInstance();
+    char *pyFilePath;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "s", configToolGetFileKWList, &pyFilePath)) {
+        if (FileHelper::DoesUserSaveFileExists(std::string(pyFilePath), projectProperties->gameTitle)) {
+            Py_RETURN_TRUE;
+        }
+        Py_RETURN_FALSE;
+    }
+    return nullptr;
+}
