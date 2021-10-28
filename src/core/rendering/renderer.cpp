@@ -133,11 +133,11 @@ void FontRenderer::Draw(Font *font, const std::string &text, float x, float y, f
     for(c = text.begin(); c != text.end(); c++) {
         Character ch = font->characters[*c];
 
-        float xPos = x - (ch.bearing.x * currentScale.x) / 2;
-        float yPos = y - (ch.size.y - ch.bearing.y) * currentScale.y;
+        const float xPos = x + (ch.bearing.x * currentScale.x);
+        const float yPos = y - (ch.size.y - ch.bearing.y) * currentScale.y;
 
-        float w = ch.size.x * currentScale.x;
-        float h = ch.size.y * currentScale.y;
+        const float w = ch.size.x * currentScale.x;
+        const float h = ch.size.y * currentScale.y;
         // update VBO for each character
         GLfloat vertices[6][4] = {
             {xPos,     yPos + h, 0.0f, 0.0f},
@@ -180,8 +180,6 @@ Renderer::~Renderer() {
 
 void Renderer::Initialize() {
     // OpenGL State
-    // TODO: Enable cull face after fixing 3D object order of vertices
-//    glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -225,6 +223,7 @@ void Renderer::BatchDrawFont(Font *font, const std::string &text, float x, float
 }
 
 void Renderer::FlushBatches() {
+    glDepthMask(GL_FALSE);
     for (const auto &pair : drawBatches2D) {
         ZIndexDrawBatch zIndexDrawBatch = pair.second;
         for (const FontDrawBatch &fontDrawBatch : zIndexDrawBatch.fontDrawBatches) {

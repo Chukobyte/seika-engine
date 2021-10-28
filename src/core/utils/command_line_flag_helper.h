@@ -35,10 +35,13 @@ class CommandLineFlagHelper {
             }
         } else if(argString == FLAG_SET_PROJECT_FILE_PATH0 || argString == FLAG_SET_PROJECT_FILE_PATH1) {
             commandLineFlagResult.projectFilePath = std::string(this->args[argumentIndex + 1]);
+            logger->Debug("project file path overridden to '" + commandLineFlagResult.projectFilePath + "'");
         } else if(argString == FLAG_SET_PROJECT_STARTING_DIRECTORY0 || argString == FLAG_SET_PROJECT_STARTING_DIRECTORY1) {
             FileHelper::ChangeDirectory(this->args[argumentIndex + 1]);
+            logger->Debug("Project starting directory overridden to '" + std::string(this->args[argumentIndex + 1]) + "'");
         } else if(argString == FLAG_SET_PROJECT_WORKING_DIRECTORY0 || argString == FLAG_SET_PROJECT_WORKING_DIRECTORY1) {
             commandLineFlagResult.workingDirectoryOverride = this->args[argumentIndex + 1];
+            logger->Debug("Working directory overridden to '" + commandLineFlagResult.workingDirectoryOverride + "'");
         }
     }
   public:

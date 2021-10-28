@@ -253,6 +253,7 @@ class EntityComponentOrchestrator {
     }
 
     void ChangeSceneTo() {
+        Logger::GetInstance()->Debug("Changing scene to path '" + scenePathToSwitchTo + "'!");
         Scene scene = sceneManager->LoadSceneFromFile(scenePathToSwitchTo);
         scenePathToSwitchTo.clear();
         RegisterSceneNodeInstances(scene.rootNode);

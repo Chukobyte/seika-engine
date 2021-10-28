@@ -1,4 +1,5 @@
 from seika.assets import Font, Texture
+from seika.color import Color
 from seika.node import Node2D, Timer, TextLabel
 from seika.input import Input
 from seika.engine import Engine
@@ -24,11 +25,13 @@ class Main(Node2D):
         # bruh_font = Font.get(uid="seika_default")
         # print(f"bruh font = {bruh_font}")
         #
-        # text_label = TextLabel.new()
-        # text_label.text = "Test Yeah!"
-        # text_label.position = Vector2(100, 100)
+        text_label = TextLabel.new()
+        text_label.text = "Test Yeah!"
+        text_label.position = Vector2(200, 100)
+        # text_label.position = Vector2(10, 100)
+        text_label.color = Color(1.0, 0.0, 0.0)
+        self.add_child(child_node=text_label)
         # text_label.font = font
-        # self.add_child(child_node=text_label)
         # print(f"text_label.font = {text_label.font}")
         # config_tool = ConfigTool(file_path="game.sav", initial_data={"test": True})
         # config_tool.save_file()

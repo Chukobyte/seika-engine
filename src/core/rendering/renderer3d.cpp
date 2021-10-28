@@ -16,6 +16,8 @@ Renderer3D::~Renderer3D() {
 
 void Renderer3D::Initialize() {
     glEnable(GL_DEPTH_TEST);
+    // TODO: Enable cull face after fixing 3D object order of vertices
+//    glEnable(GL_CULL_FACE);
     // Buffer Setup
     // CUBE
     glGenVertexArrays(1, &cube.VAO);
@@ -57,6 +59,7 @@ void Renderer3D::Initialize() {
 }
 
 void Renderer3D::Render(CameraManager *cameraManager) {
+    glDepthMask(GL_TRUE);
     static ProjectProperties *projectProperties = ProjectProperties::GetInstance();
     const float aspectRatio = projectProperties->windowWidth / projectProperties->windowHeight;
     Camera3D camera = cameraManager->GetCurrentCamera3D();
