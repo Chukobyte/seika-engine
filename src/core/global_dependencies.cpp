@@ -32,7 +32,7 @@ void GD::ResetDependencies() {
     engineContext = new EngineContext();
     renderContext = new RenderContext();
     collisionContext = new CollisionContext();
-    renderer = new Renderer();
+    renderer = new Renderer2D(renderContext);
     renderer3D = new Renderer3D();
     assetManager = new AssetManager();
     entityManager = new EntityManager();

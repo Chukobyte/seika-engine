@@ -8,7 +8,7 @@
 
 class SpriteRenderingEntitySystem : public EntitySystem {
   private:
-    Renderer *renderer = nullptr;
+    Renderer2D *renderer = nullptr;
     ComponentManager *componentManager = nullptr;
     CameraManager *cameraManager = nullptr;
     SceneManager *sceneManager = nullptr;

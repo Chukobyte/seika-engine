@@ -7,7 +7,7 @@
 
 class TextRenderingEntitySystem : public EntitySystem {
   private:
-    Renderer *renderer = nullptr;
+    Renderer2D *renderer = nullptr;
     SceneManager *sceneManager = nullptr;
     ComponentManager *componentManager = nullptr;
     CameraManager *cameraManager = nullptr;

@@ -4,7 +4,7 @@
 #include "utils/logger.h"
 #include "engine_context.h"
 #include "rendering/render_context.h"
-#include "rendering/renderer.h"
+#include "rendering/renderer2d.h"
 #include "rendering/renderer3D.h"
 #include "project_properties.h"
 #include "input/input_manager.h"
@@ -16,7 +16,7 @@ class Game {
     Logger *logger = nullptr;
     EngineContext *engineContext = nullptr;
     RenderContext *renderContext = nullptr;
-    Renderer *renderer = nullptr;
+    Renderer2D *renderer = nullptr;
     Renderer3D *renderer3D = nullptr;
     ProjectProperties *projectProperties = nullptr;
     InputManager *inputManager = nullptr;

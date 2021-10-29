@@ -172,6 +172,8 @@ void Game::InitializeRendering() {
                                 projectProperties->windowHeight,
                                 renderContext->windowFlags);
     renderContext->gl_context = SDL_GL_CreateContext(renderContext->window);
+    renderContext->currentWindowWidth = projectProperties->windowWidth;
+    renderContext->currentWindowHeight = projectProperties->windowHeight;
 
     if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress)) {
         logger->Error("Couldn't initialize glad");
@@ -194,9 +196,11 @@ void Game::ProcessInput() {
         case SDL_WINDOWEVENT:
             switch (event.window.event) {
             case SDL_WINDOWEVENT_RESIZED:
-                const float windowWidth = event.window.data1;
-                const float windowHeight = event.window.data2;
-                glViewport(0, 0, windowWidth, windowHeight);
+                renderContext->currentWindowWidth = event.window.data1;
+                renderContext->currentWindowHeight = event.window.data2;
+                renderer->UpdateProjection();
+                // TODO: Update 3D Renderer
+                glViewport(0, 0, renderContext->currentWindowWidth, renderContext->currentWindowHeight);
                 break;
             }
             break;

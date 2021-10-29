@@ -22,6 +22,9 @@ class RenderContext {
                                       | SDL_WINDOW_RESIZABLE
                                       | SDL_WINDOW_ALLOW_HIGHDPI
                                   );
+    float currentWindowWidth = 0.0f;
+    float currentWindowHeight = 0.0f;
+
     SDL_GLContext gl_context;
     FT_Library freeTypeLibrary;
 
