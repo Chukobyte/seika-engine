@@ -223,7 +223,7 @@ void Renderer::BatchDrawFont(Font *font, const std::string &text, float x, float
 }
 
 void Renderer::FlushBatches() {
-    glDepthMask(GL_FALSE);
+    glDisable(GL_DEPTH_TEST);
     for (const auto &pair : drawBatches2D) {
         ZIndexDrawBatch zIndexDrawBatch = pair.second;
         for (const FontDrawBatch &fontDrawBatch : zIndexDrawBatch.fontDrawBatches) {
