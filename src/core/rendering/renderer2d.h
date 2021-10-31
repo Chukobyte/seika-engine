@@ -19,23 +19,11 @@ class Renderer2D {
     FontRenderer *fontRenderer = nullptr;
     std::map<int, ZIndexDrawBatch> drawBatches2D;
 
-    void AddFontToBatch(FontDrawBatch fontDrawBatch, int zIndex) {
-        if (!HasDrawBatchIndex(zIndex)) {
-            drawBatches2D.emplace(zIndex, ZIndexDrawBatch{});
-        }
-        drawBatches2D[zIndex].fontDrawBatches.emplace_back(fontDrawBatch);
-    }
+    void AddFontToBatch(FontDrawBatch fontDrawBatch, int zIndex);
 
-    void AddSpriteToBatch(SpriteDrawBatch spriteDrawBatch, int zIndex) {
-        if (!HasDrawBatchIndex(zIndex)) {
-            drawBatches2D.emplace(zIndex, ZIndexDrawBatch{});
-        }
-        drawBatches2D[zIndex].spriteDrawBatches.emplace_back(spriteDrawBatch);
-    }
+    void AddSpriteToBatch(SpriteDrawBatch spriteDrawBatch, int zIndex);
 
-    bool HasDrawBatchIndex(int zIndex) {
-        return drawBatches2D.count(zIndex) > 0;
-    }
+    bool HasDrawBatchIndex(int zIndex) const;
   public:
     Renderer2D(RenderContext *renderContext);
 
@@ -54,6 +42,8 @@ class Renderer2D {
     void BatchDrawFont(Font *font, const std::string &text, float x, float y, int zIndex = 0, float scale = 1.0f, Color color = Color(1.0f, 1.0f, 1.0f, 1.0f));
 
     void FlushBatches();
+
+    glm::mat4 GetProjection() const;
 };
 
 

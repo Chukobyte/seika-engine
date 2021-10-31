@@ -57,6 +57,8 @@ run-2d-test:
 run-3d-test:
 	./$(BUILD_OBJECT) -d assets/game_projects/3d_test/ -l debug
 
+full-build: clean format build
+
 package-without-clean:
 ifneq ($(wildcard $(EXPORT_PACKAGE_DIR)/.*),)
 	rd /S /Q $(EXPORT_PACKAGE_DIR)

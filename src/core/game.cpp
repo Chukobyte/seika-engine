@@ -29,7 +29,7 @@ Game::Game() {
     projectProperties = ProjectProperties::GetInstance();
     engineContext = GD::GetContainer()->engineContext;
     renderContext = GD::GetContainer()->renderContext;
-    renderer = GD::GetContainer()->renderer;
+    renderer = GD::GetContainer()->renderer2D;
     renderer3D = GD::GetContainer()->renderer3D;
     inputManager = InputManager::GetInstance();
     networkContext = GD::GetContainer()->networkContext;

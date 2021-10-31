@@ -15,7 +15,7 @@ class SpriteRenderingEntitySystem : public EntitySystem {
 
   public:
     SpriteRenderingEntitySystem() {
-        renderer = GD::GetContainer()->renderer;
+        renderer = GD::GetContainer()->renderer2D;
         componentManager = GD::GetContainer()->componentManager;
         cameraManager = GD::GetContainer()->cameraManager;
         sceneManager = GD::GetContainer()->sceneManager;

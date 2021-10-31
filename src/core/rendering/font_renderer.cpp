@@ -57,8 +57,7 @@ void FontRenderer::Draw(Font *font, const std::string &text, float x, float y, f
 }
 
 void FontRenderer::UpdateProjection() {
-//    glm::mat4 projection = glm::ortho(0.0f, renderContext->currentWindowWidth, 0.0f, renderContext->currentWindowHeight);
-    glm::mat4 projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f);
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(projectProperties->windowWidth), 0.0f, static_cast<float>(projectProperties->windowHeight));
     shader.Use();
     shader.SetMatrix4Float("projection", projection);
 }

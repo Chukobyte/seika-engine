@@ -13,7 +13,7 @@ class TextRenderingEntitySystem : public EntitySystem {
     CameraManager *cameraManager = nullptr;
   public:
     TextRenderingEntitySystem() {
-        renderer = GD::GetContainer()->renderer;
+        renderer = GD::GetContainer()->renderer2D;
         sceneManager = GD::GetContainer()->sceneManager;
         componentManager = GD::GetContainer()->componentManager;
         cameraManager = GD::GetContainer()->cameraManager;

@@ -17,7 +17,7 @@ void GD::ResetDependencies() {
     delete engineContext;
     delete renderContext;
     delete collisionContext;
-    delete renderer;
+    delete renderer2D;
     delete renderer3D;
     delete assetManager;
     delete entityManager;
@@ -32,7 +32,7 @@ void GD::ResetDependencies() {
     engineContext = new EngineContext();
     renderContext = new RenderContext();
     collisionContext = new CollisionContext();
-    renderer = new Renderer2D(renderContext);
+    renderer2D = new Renderer2D(renderContext);
     renderer3D = new Renderer3D();
     assetManager = new AssetManager();
     entityManager = new EntityManager();

@@ -1,6 +1,7 @@
 #include "sprite_renderer.h"
 
 SpriteRenderer::SpriteRenderer(RenderContext *renderContext) : renderContext(renderContext) {
+    projectProperties = ProjectProperties::GetInstance();
     GLfloat vertices[] = {
         // positions // texture coordinates
         0.0f, 1.0f, 0.0f, 1.0f,
@@ -105,7 +106,10 @@ void SpriteRenderer::Draw(Texture *texture2D, Rect2 sourceRectangle, Rect2 desti
 
 void SpriteRenderer::UpdateProjection() {
     shader.Use();
-//    glm::mat4 projection = glm::ortho(0.0f, renderContext->currentWindowWidth, renderContext->currentWindowHeight, 0.0f, -1.0f, 1.0f);
-    glm::mat4 projection = glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, -1.0f, 1.0f);
+    projection = glm::ortho(0.0f, static_cast<float>(projectProperties->windowWidth), static_cast<float>(projectProperties->windowHeight), 0.0f, -1.0f, 1.0f);
     shader.SetMatrix4Float("projection", projection);
+}
+
+glm::mat4 SpriteRenderer::GetProjection() const {
+    return projection;
 }

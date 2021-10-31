@@ -1507,7 +1507,7 @@ PyObject* PythonModules::client_send_message_to_server(PyObject *self, PyObject 
 
 // RENDERER
 PyObject* PythonModules::renderer_draw_texture(PyObject *self, PyObject *args, PyObject *kwargs) {
-    static Renderer2D *renderer = GD::GetContainer()->renderer;
+    static Renderer2D *renderer = GD::GetContainer()->renderer2D;
     static AssetManager *assetManager = GD::GetContainer()->assetManager;
     char *pyTexturePath;
     float pySourceRectX;

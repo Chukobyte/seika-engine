@@ -27,7 +27,7 @@ class GD {
     EngineContext *engineContext = nullptr;
     RenderContext *renderContext = nullptr;
     CollisionContext *collisionContext = nullptr;
-    Renderer2D *renderer = nullptr;
+    Renderer2D *renderer2D = nullptr;
     Renderer3D *renderer3D = nullptr;
     AssetManager *assetManager = nullptr;
     EntityManager *entityManager = nullptr;

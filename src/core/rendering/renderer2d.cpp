@@ -9,6 +9,24 @@ Renderer2D::~Renderer2D() {
     delete fontRenderer;
 }
 
+void Renderer2D::AddFontToBatch(FontDrawBatch fontDrawBatch, int zIndex) {
+    if (!HasDrawBatchIndex(zIndex)) {
+        drawBatches2D.emplace(zIndex, ZIndexDrawBatch{});
+    }
+    drawBatches2D[zIndex].fontDrawBatches.emplace_back(fontDrawBatch);
+}
+
+void Renderer2D::AddSpriteToBatch(SpriteDrawBatch spriteDrawBatch, int zIndex) {
+    if (!HasDrawBatchIndex(zIndex)) {
+        drawBatches2D.emplace(zIndex, ZIndexDrawBatch{});
+    }
+    drawBatches2D[zIndex].spriteDrawBatches.emplace_back(spriteDrawBatch);
+}
+
+bool Renderer2D::HasDrawBatchIndex(int zIndex) const {
+    return drawBatches2D.count(zIndex) > 0;
+}
+
 void Renderer2D::Initialize() {
     // OpenGL State
     glEnable(GL_BLEND);
@@ -69,4 +87,8 @@ void Renderer2D::FlushBatches() {
         }
     }
     drawBatches2D.clear();
+}
+
+glm::mat4 Renderer2D::GetProjection() const {
+    return spriteRenderer->GetProjection();
 }

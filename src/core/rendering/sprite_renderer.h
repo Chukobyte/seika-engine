@@ -11,6 +11,7 @@
 #include "../color.h"
 #include "../math/vector2.h"
 #include "../math/rect2.h"
+#include "../project_properties.h"
 
 struct SpriteDrawBatch {
     Texture *texture2D = nullptr;
@@ -28,12 +29,16 @@ class SpriteRenderer {
     Shader shader;
     GLuint quadVAO;
     GLuint quadVBO;
+    glm::mat4 projection;
+    ProjectProperties *projectProperties = nullptr;
   public:
     SpriteRenderer(RenderContext *renderContext);
 
     void Draw(Texture *texture2D, Rect2 sourceRectangle, Rect2 destinationRectangle, float rotation = 0.0f, Color color = Color(1.0f, 1.0f, 1.0f, 1.0f), bool flipX = false, bool flipY = false);
 
     void UpdateProjection();
+
+    glm::mat4 GetProjection() const;
 };
 
 

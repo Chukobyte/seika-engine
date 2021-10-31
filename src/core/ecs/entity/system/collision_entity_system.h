@@ -27,17 +27,34 @@ class CollisionEntitySystem : public EntitySystem {
                      transform2DComponent.scale.y * parentTransform.scale.y * colliderComponent.collider.h);
     }
 
-    // TODO: Finish implementing (or place logic elsewhere)
     Rect2 GetScreenCollisionRectangle(Entity entity) {
         Transform2DComponent transform2DComponent = componentManager->GetComponent<Transform2DComponent>(entity);
         ColliderComponent colliderComponent = componentManager->GetComponent<ColliderComponent>(entity);
         Transform2DComponent parentTransform = SceneNodeHelper::GetCombinedParentsTransforms(sceneManager, componentManager, entity);
+        Vector2 collisionPosition = Vector2(transform2DComponent.position.x + parentTransform.position.x + colliderComponent.collider.x,
+                                            transform2DComponent.position.y + parentTransform.position.y + colliderComponent.collider.y);
+
+        glm::vec4 clipSpace = renderer->GetProjection() *
+                              glm::vec4(collisionPosition.x, collisionPosition.y, 0.0f, 1.0f);
+
+        if (clipSpace.w < 0.1f) {
+            return Rect2(Vector2(-10.0f, -10.0f), Vector2(1.0f, 1.0f));
+        }
+
+        glm::vec3 ndcSpace = glm::vec3(clipSpace.x / clipSpace.w, clipSpace.y / clipSpace.w, clipSpace.z / clipSpace.w);
+        const float windowWidth = GD::GetContainer()->renderContext->currentWindowWidth;
+        const float windowHeight = GD::GetContainer()->renderContext->currentWindowHeight;
+        Vector2 collisionScreenPosition = Vector2();
+        collisionScreenPosition.x = (windowWidth / 2 * ndcSpace.x) + (ndcSpace.x + windowWidth / 2);
+        collisionScreenPosition.y = -(windowHeight / 2 * ndcSpace.y) + (ndcSpace.y + windowHeight / 2);
+
         Camera2D camera = cameraManager->GetCurrentCamera2D();
-        Vector2 collisionPosition = Vector2(transform2DComponent.position.x + parentTransform.position.x + colliderComponent.collider.x - camera.viewport.x,
-                                            transform2DComponent.position.y + parentTransform.position.y + colliderComponent.collider.y - camera.viewport.y);
-        return Rect2(collisionPosition,
-                     transform2DComponent.scale.x * parentTransform.scale.x * colliderComponent.collider.w * camera.zoom.x,
-                     transform2DComponent.scale.y * parentTransform.scale.y * colliderComponent.collider.h * camera.zoom.y);
+        Vector2 collisionScreenScale = Vector2(transform2DComponent.scale.x * parentTransform.scale.x * colliderComponent.collider.w * camera.zoom.x,
+                                               transform2DComponent.scale.y * parentTransform.scale.y * colliderComponent.collider.h * camera.zoom.y);
+        ProjectProperties *projectProperties = ProjectProperties::GetInstance();
+        collisionScreenScale.x *= windowWidth / static_cast<float>(projectProperties->windowWidth);
+        collisionScreenScale.y *= windowHeight / static_cast<float>(projectProperties->windowHeight);
+        return Rect2(collisionScreenPosition, collisionScreenScale);
     }
 
     bool IsTargetCollisionEntityInExceptionList(Entity sourceEntity, Entity targetEntity) {
@@ -50,7 +67,7 @@ class CollisionEntitySystem : public EntitySystem {
         componentManager = GD::GetContainer()->componentManager;
         cameraManager = GD::GetContainer()->cameraManager;
         sceneManager = GD::GetContainer()->sceneManager;
-        renderer = GD::GetContainer()->renderer;
+        renderer = GD::GetContainer()->renderer2D;
         renderContext = GD::GetContainer()->renderContext;
         enabled = true;
     }
@@ -116,8 +133,7 @@ class CollisionEntitySystem : public EntitySystem {
         std::vector<Entity> entitiesOnMouse;
         Rect2 mouseRectangle = Rect2(mousePosition, Vector2(1.0f, 1.0f));
         for (Entity targetEntity : entities) {
-            Rect2 targetCollisionRectangle = GetCollisionRectangle(targetEntity);
-//            Rect2 targetCollisionRectangle = GetScreenCollisionRectangle(targetEntity); // TODO: uncomment when function is finished
+            Rect2 targetCollisionRectangle = GetScreenCollisionRectangle(targetEntity);
             if (CollisionResolver::DoesRectanglesCollide(mouseRectangle, targetCollisionRectangle)) {
                 entitiesOnMouse.emplace_back(targetEntity);
             }
@@ -126,11 +142,8 @@ class CollisionEntitySystem : public EntitySystem {
     }
 
     bool IsEntityOnMouse(const Entity entity, const Vector2 &mousePosition) {
-        Rect2 entityCollisionRectangle = GetCollisionRectangle(entity);
-//        Rect2 entityCollisionRectangle = GetScreenCollisionRectangle(entity); // TODO: uncomment when function is finished
+        Rect2 entityCollisionRectangle = GetScreenCollisionRectangle(entity);
         Rect2 mouseRectangle = Rect2(mousePosition, Vector2(1.0f, 1.0f));
-//        std::cout << "entity rect2 = " << entityCollisionRectangle << std::endl;
-//        std::cout << "mouse rect2 = " << mouseRectangle << std::endl;
         if (CollisionResolver::DoesRectanglesCollide(entityCollisionRectangle, mouseRectangle)) {
             return true;
         }
