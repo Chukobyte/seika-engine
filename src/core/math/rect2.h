@@ -20,6 +20,8 @@ class Rect2 {
 
     Rect2(Vector2 position, Vector2 size): x(position.x), y(position.y), w(size.x), h(size.y) {}
 
+    Rect2(Vector2 position, float w, float h): x(position.x), y(position.y), w(w), h(h) {}
+
     bool operator==(const Rect2 &otherRect2) const {
         return this->x == otherRect2.x && this->y == otherRect2.y && this->w == otherRect2.w && this->h == otherRect2.h;
     }

@@ -15,7 +15,6 @@ Renderer3D::~Renderer3D() {
 }
 
 void Renderer3D::Initialize() {
-    glEnable(GL_DEPTH_TEST);
     // TODO: Enable cull face after fixing 3D object order of vertices
 //    glEnable(GL_CULL_FACE);
     // Buffer Setup
@@ -59,8 +58,9 @@ void Renderer3D::Initialize() {
 }
 
 void Renderer3D::Render(CameraManager *cameraManager) {
-    glDepthMask(GL_TRUE);
+    glEnable(GL_DEPTH_TEST);
     static ProjectProperties *projectProperties = ProjectProperties::GetInstance();
+    // TODO: Get screen width and height from RenderContext
     const float aspectRatio = projectProperties->windowWidth / projectProperties->windowHeight;
     Camera3D camera = cameraManager->GetCurrentCamera3D();
     glm::mat4 projection = glm::perspective(glm::radians(camera.fieldOfView), aspectRatio, 0.1f, 100.0f);

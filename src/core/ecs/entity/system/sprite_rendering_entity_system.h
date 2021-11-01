@@ -8,14 +8,14 @@
 
 class SpriteRenderingEntitySystem : public EntitySystem {
   private:
-    Renderer *renderer = nullptr;
+    Renderer2D *renderer = nullptr;
     ComponentManager *componentManager = nullptr;
     CameraManager *cameraManager = nullptr;
     SceneManager *sceneManager = nullptr;
 
   public:
     SpriteRenderingEntitySystem() {
-        renderer = GD::GetContainer()->renderer;
+        renderer = GD::GetContainer()->renderer2D;
         componentManager = GD::GetContainer()->componentManager;
         cameraManager = GD::GetContainer()->cameraManager;
         sceneManager = GD::GetContainer()->sceneManager;
