@@ -1,7 +1,7 @@
 #ifndef PYTHON_SOURCE_H
 #define PYTHON_SOURCE_H
 
-// Seika Engine API v0.8.1
+// Seika Engine API v0.8.2
 
 using PythonSource = const std::string&;
 
@@ -659,7 +659,7 @@ static PythonSource PYTHON_SOURCE_NODE_MODULE =
     "   @classmethod\n"
     "   def new(cls):\n"
     "       return seika_engine_api.node_new(\n"
-    "           class_path=f\"{__name__}\",\n"
+    "           class_path=f\"{cls.__module__}\",\n"
     "           class_name=f\"{cls.__name__}\",\n"
     "           node_type=f\"{cls.extract_valid_inheritance_node()}\",\n"
     "       )\n"
