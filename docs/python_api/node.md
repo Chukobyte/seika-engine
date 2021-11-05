@@ -37,6 +37,12 @@ None.
 ### Methods
 
 ```python
+new() -> seika.node.Node:
+```
+
+Will create a new instance of either `Node` or any class that inherits it.  Must be added to the scene tree from a node that exists within the scene with the `add_child` method.
+
+```python
 queue_deletion() -> None:
 ```
 
