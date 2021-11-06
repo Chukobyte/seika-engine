@@ -16,7 +16,7 @@
 <script>
     // Current page data
     var mkdocs_page_name = "Node";
-    var mkdocs_page_input_path = "python_api\\node.md";
+    var mkdocs_page_input_path = "python_api/node.md";
     var mkdocs_page_url = null;
   </script>
 <script defer="" src="../../js/jquery-2.1.1.min.js"></script>
@@ -237,7 +237,8 @@
 <p>None.</p>
 <hr/>
 <h3 id="methods">Methods</h3>
-<pre><code class="language-python">new() -&gt; seika.node.Node:
+<pre><code class="language-python">@staticmethod
+new() -&gt; seika.node.Node:
 </code></pre>
 <p>Will create a new instance of either <code>Node</code> or any class that inherits it.  Must be added to the scene tree from a node that exists within the scene with the <code>add_child</code> method.</p>
 <pre><code class="language-python">queue_deletion() -&gt; None:

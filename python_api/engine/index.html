@@ -16,7 +16,7 @@
 <script>
     // Current page data
     var mkdocs_page_name = "Engine";
-    var mkdocs_page_input_path = "python_api\\engine.md";
+    var mkdocs_page_input_path = "python_api/engine.md";
     var mkdocs_page_url = null;
   </script>
 <script defer="" src="../../js/jquery-2.1.1.min.js"></script>
@@ -128,10 +128,12 @@
 <p>None.</p>
 <hr/>
 <h3 id="methods">Methods</h3>
-<pre><code class="language-python">exit(code=0) -&gt; None:
+<pre><code class="language-python">@staticmethod
+exit(code=0) -&gt; None:
 </code></pre>
 <p>Exits the engine returning the value of <code>code</code> as the exit code.</p>
-<pre><code class="language-python">get_fps() -&gt; float:
+<pre><code class="language-python">@staticmethod
+get_fps() -&gt; float:
 </code></pre>
 <p>Returns current FPS.</p>
 <hr/>

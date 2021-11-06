@@ -16,7 +16,7 @@
 <script>
     // Current page data
     var mkdocs_page_name = "Camera";
-    var mkdocs_page_input_path = "python_api\\camera.md";
+    var mkdocs_page_input_path = "python_api/camera.md";
     var mkdocs_page_url = null;
   </script>
 <script defer="" src="../../js/jquery-2.1.1.min.js"></script>
@@ -138,22 +138,28 @@
 <p>None.</p>
 <hr/>
 <h3 id="methods">Methods</h3>
-<pre><code class="language-python">set_zoom(zoom: seika.math.Vector2) -&gt; None:
+<pre><code class="language-python">@staticmethod
+set_zoom(zoom: seika.math.Vector2) -&gt; None:
 </code></pre>
 <p>Sets the camera's zoom.</p>
-<pre><code class="language-python">get_zoom() -&gt; seika.math.Vector2:
+<pre><code class="language-python">@staticmethod
+get_zoom() -&gt; seika.math.Vector2:
 </code></pre>
 <p>Gets the camera's zoom.</p>
-<pre><code class="language-python">set_viewport_position(zoom: seika.math.Vector2) -&gt; None:
+<pre><code class="language-python">@staticmethod
+set_viewport_position(zoom: seika.math.Vector2) -&gt; None:
 </code></pre>
 <p>Sets the camera's viewport position.</p>
-<pre><code class="language-python">get_viewport_position() -&gt; seika.math.Vector2:
+<pre><code class="language-python">@staticmethod
+get_viewport_position() -&gt; seika.math.Vector2:
 </code></pre>
 <p>Gets the camera's viewport position.</p>
-<pre><code class="language-python">set_offset(zoom: seika.math.Vector2) -&gt; None:
+<pre><code class="language-python">@staticmethod
+set_offset(zoom: seika.math.Vector2) -&gt; None:
 </code></pre>
 <p>Sets the camera's offset.</p>
-<pre><code class="language-python">get_offset() -&gt; seika.math.Vector2:
+<pre><code class="language-python">@staticmethod
+get_offset() -&gt; seika.math.Vector2:
 </code></pre>
 <p>Gets the camera's offset.</p>
 <hr/>
@@ -166,22 +172,28 @@
 <p>None.</p>
 <hr/>
 <h3 id="methods_1">Methods</h3>
-<pre><code class="language-python">move_left(speed: float) -&gt; None:
+<pre><code class="language-python">@staticmethod
+move_left(speed: float) -&gt; None:
 </code></pre>
 <p>Move the camera left by a certain speed.</p>
-<pre><code class="language-python">move_right(speed: float) -&gt; None:
+<pre><code class="language-python">@staticmethod
+move_right(speed: float) -&gt; None:
 </code></pre>
 <p>Move the camera right by a certain speed.</p>
-<pre><code class="language-python">move_up(speed: float) -&gt; None:
+<pre><code class="language-python">@staticmethod
+move_up(speed: float) -&gt; None:
 </code></pre>
 <p>Move the camera up by a certain speed.</p>
-<pre><code class="language-python">move_down(speed: float) -&gt; None:
+<pre><code class="language-python">@staticmethod
+move_down(speed: float) -&gt; None:
 </code></pre>
 <p>Move the camera down by a certain speed.</p>
-<pre><code class="language-python">add_yaw(speed: float) -&gt; None:
+<pre><code class="language-python">@staticmethod
+add_yaw(speed: float) -&gt; None:
 </code></pre>
 <p>Adds yaw to the camera to rotate based on the passed in speed.</p>
-<pre><code class="language-python">add_pitch(speed: float) -&gt; None:
+<pre><code class="language-python">@staticmethod
+add_pitch(speed: float) -&gt; None:
 </code></pre>
 <p>Adds pitch to the camera to rotate based on the passed in speed.</p>
 <hr/>
