@@ -28,7 +28,7 @@ Game::Game(int argv, char** args) {
     projectProperties = ProjectProperties::GetInstance();
     engineContext = GD::GetContainer()->engineContext;
     renderContext = GD::GetContainer()->renderContext;
-    renderer = GD::GetContainer()->renderer2D;
+    renderer2D = GD::GetContainer()->renderer2D;
     renderer3D = GD::GetContainer()->renderer3D;
     inputManager = InputManager::GetInstance();
     networkContext = GD::GetContainer()->networkContext;
@@ -192,7 +192,7 @@ void Game::InitializeRendering() {
 
     renderContext->InitializeFont();
 
-    renderer->Initialize();
+    renderer2D->Initialize();
 
     renderer3D->Initialize();
 }
@@ -209,7 +209,7 @@ void Game::ProcessInput() {
             case SDL_WINDOWEVENT_RESIZED:
                 renderContext->currentWindowWidth = event.window.data1;
                 renderContext->currentWindowHeight = event.window.data2;
-                renderer->UpdateProjection();
+                renderer2D->UpdateProjection();
                 // TODO: Update 3D Renderer
                 glViewport(0, 0, renderContext->currentWindowWidth, renderContext->currentWindowHeight);
                 break;
@@ -325,7 +325,7 @@ void Game::Render() {
         collisionEntitySystem->Render();
     }
 
-    renderer->FlushBatches();
+    renderer2D->FlushBatches();
 
     // 3D Rendering
     static TextureCubeRenderingEntitySystem *textureCubeRenderingEntitySystem = (TextureCubeRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<TextureCubeRenderingEntitySystem>();

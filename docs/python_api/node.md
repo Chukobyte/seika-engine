@@ -37,6 +37,7 @@ None.
 ### Methods
 
 ```python
+@staticmethod
 new() -> seika.node.Node:
 ```
 

@@ -16,7 +16,7 @@ class Game {
     Logger *logger = nullptr;
     EngineContext *engineContext = nullptr;
     RenderContext *renderContext = nullptr;
-    Renderer2D *renderer = nullptr;
+    Renderer2D *renderer2D = nullptr;
     Renderer3D *renderer3D = nullptr;
     ProjectProperties *projectProperties = nullptr;
     InputManager *inputManager = nullptr;
