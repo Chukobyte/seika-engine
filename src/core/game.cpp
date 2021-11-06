@@ -23,9 +23,8 @@
 #include "ecs/entity/system/point_light_rendering_entity_system.h"
 #include "ecs/entity/system/spot_light_rendering_entity_system.h"
 
-Game::Game() {
+Game::Game(int argv, char** args) {
     logger = Logger::GetInstance();
-    logger->SetLogLevel(LogLevel_DEBUG);
     projectProperties = ProjectProperties::GetInstance();
     engineContext = GD::GetContainer()->engineContext;
     renderContext = GD::GetContainer()->renderContext;
@@ -33,6 +32,11 @@ Game::Game() {
     renderer3D = GD::GetContainer()->renderer3D;
     inputManager = InputManager::GetInstance();
     networkContext = GD::GetContainer()->networkContext;
+    Initialize(argv, args);
+}
+
+Game::~Game() {
+    Destroy();
 }
 
 void Game::Initialize(int argv, char** args) {
@@ -53,6 +57,13 @@ void Game::Initialize(int argv, char** args) {
     InitializeECS();
     engineContext->SetRunning(true);
     engineContext->StartFPSCounter();
+}
+
+void Game::Destroy() {
+    SDL_GL_DeleteContext(renderContext->gl_context);
+    SDL_DestroyWindow(renderContext->window);
+    SDL_Quit();
+    logger->Info("Seika Engine stopped!");
 }
 
 void Game::InitializeSDL() {
@@ -333,11 +344,4 @@ void Game::Render() {
 
 bool Game::IsRunning() {
     return engineContext->IsRunning();
-}
-
-void Game::Destroy() {
-    SDL_GL_DeleteContext(renderContext->gl_context);
-    SDL_DestroyWindow(renderContext->window);
-    SDL_Quit();
-    logger->Info("Seika Engine stopped!");
 }

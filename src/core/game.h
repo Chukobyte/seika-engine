@@ -23,6 +23,10 @@ class Game {
     NetworkContext *networkContext = nullptr;
     CommandLineFlagHelper commandLineFlagHelper;
 
+    void Initialize(int argv, char** args);
+
+    void Destroy();
+
     void InitializeSDL();
 
     void InitializeRendering();
@@ -33,9 +37,9 @@ class Game {
 
     void VariableTimeStep(Uint32 lastFrameTime);
   public:
-    Game();
+    Game(int argv, char** args);
 
-    void Initialize(int argv, char** args);
+    ~Game();
 
     void ProcessInput();
 
@@ -44,8 +48,6 @@ class Game {
     void Render();
 
     bool IsRunning();
-
-    void Destroy();
 };
 
 
