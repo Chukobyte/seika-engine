@@ -37,7 +37,7 @@ None.
 ### Methods
 
 ```python
-@staticmethod
+@classmethod
 new() -> seika.node.Node:
 ```
 
@@ -204,6 +204,12 @@ texture: seika.assets.Texture
 ```
 
 Node's [texture](assets.md#texture).
+
+```python
+draw_source: seika.math.Rect2
+```
+
+Node's draw source represented as a [Rect2](math.md#rect2).  Will draw the loaded texture that's within the bounds of the [Rect2](math.md#rect2).
 
 ---
 
