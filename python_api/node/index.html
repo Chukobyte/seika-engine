@@ -237,7 +237,7 @@
 <p>None.</p>
 <hr/>
 <h3 id="methods">Methods</h3>
-<pre><code class="language-python">@staticmethod
+<pre><code class="language-python">@classmethod
 new() -&gt; seika.node.Node:
 </code></pre>
 <p>Will create a new instance of either <code>Node</code> or any class that inherits it.  Must be added to the scene tree from a node that exists within the scene with the <code>add_child</code> method.</p>
@@ -322,6 +322,9 @@ new() -&gt; seika.node.Node:
 <pre><code class="language-python">texture: seika.assets.Texture
 </code></pre>
 <p>Node's <a href="../assets/#texture">texture</a>.</p>
+<pre><code class="language-python">draw_source: seika.math.Rect2
+</code></pre>
+<p>Node's draw source represented as a <a href="../math/#rect2">Rect2</a>.  Will draw the loaded texture that's within the bounds of the <a href="../math/#rect2">Rect2</a>.</p>
 <hr/>
 <h3 id="signals_2">Signals</h3>
 <p>None.</p>
