@@ -13,12 +13,12 @@ void FontRenderer::Draw(Font *font, const std::string &text, float x, float y, f
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(font->VAO);
 
-    y += 64.0f;
     y = ConvertMinMax(y,
-                      static_cast<float>(projectProperties->windowWidth),
+                      static_cast<float>(projectProperties->windowHeight),
                       0,
                       0,
                       static_cast<float>(projectProperties->windowHeight));
+    y -= font->GetSize() * 0.8f;
 
     // iterate through all characters
     std::string::const_iterator c;
@@ -57,7 +57,7 @@ void FontRenderer::Draw(Font *font, const std::string &text, float x, float y, f
 }
 
 void FontRenderer::UpdateProjection() {
-    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(projectProperties->windowWidth), 0.0f, static_cast<float>(projectProperties->windowHeight));
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(projectProperties->windowWidth), 0.0f, static_cast<float>(projectProperties->windowHeight), -1.0f, 1.0f);
     shader.Use();
     shader.SetMatrix4Float("projection", projection);
 }
