@@ -6,6 +6,7 @@
 struct CommandLineFlagResult {
     std::string projectFilePath = "project.scfg";
     std::string workingDirectoryOverride;
+    bool localAssets = false;
 };
 
 class CommandLineFlagHelper {
@@ -23,6 +24,8 @@ class CommandLineFlagHelper {
     const std::string FLAG_SET_PROJECT_STARTING_DIRECTORY1 = "-starting-directory";
     const std::string FLAG_SET_PROJECT_WORKING_DIRECTORY0 = "-d";
     const std::string FLAG_SET_PROJECT_WORKING_DIRECTORY1 = "-working-directory";
+    const std::string FLAG_SET_LOCAL_ASSETS0 = "-la";
+    const std::string FLAG_SET_LOCAL_ASSETS1 = "-local-assets";
 
     CommandLineFlagResult ProcessArgument(int argumentIndex) {
         const std::string &argString = std::string(this->args[argumentIndex]);
@@ -42,6 +45,16 @@ class CommandLineFlagHelper {
         } else if(argString == FLAG_SET_PROJECT_WORKING_DIRECTORY0 || argString == FLAG_SET_PROJECT_WORKING_DIRECTORY1) {
             commandLineFlagResult.workingDirectoryOverride = this->args[argumentIndex + 1];
             logger->Debug("Working directory overridden to '" + commandLineFlagResult.workingDirectoryOverride + "'");
+        } else if(argString == FLAG_SET_LOCAL_ASSETS0 || argString == FLAG_SET_LOCAL_ASSETS1) {
+            std::string localAssetsFlag = std::string(this->args[argumentIndex + 1]);
+            transform(localAssetsFlag.begin(), localAssetsFlag.end(), localAssetsFlag.begin(), ::tolower);
+            if (localAssetsFlag != "false" && localAssetsFlag != "0") {
+                commandLineFlagResult.localAssets = true;
+                logger->Debug("Setting local assets flag to 'true'.");
+            } else {
+                commandLineFlagResult.localAssets = false;
+                logger->Debug("Setting local assets flag to 'false'.");
+            }
         }
     }
   public:
