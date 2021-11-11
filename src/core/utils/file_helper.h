@@ -64,6 +64,25 @@ class FileHelper {
         }
         return false;
     }
+
+    static std::string GetFileNameFromPath(const std::string &filePath) {
+        const size_t &fileNamePosition = filePath.find_last_of("/");
+        if (fileNamePosition != std::string::npos) {
+            return filePath.substr(fileNamePosition + 1);
+        }
+        return filePath;
+    }
+
+    static std::string GetFileNameFromPathWithoutExtension(const std::string &filePath) {
+        std::string fileName = GetFileNameFromPath(filePath);
+        const size_t &fileNamePosition = fileName.find_last_of(".");
+        if (fileNamePosition != std::string::npos) {
+            const std::string fileExtension = fileName.substr(fileNamePosition + 1);
+            fileName.resize(fileName.size() - (fileExtension.size() + 1));
+            return fileName;
+        }
+        return fileName;
+    }
 };
 
 #endif //FILE_HELPER_H
