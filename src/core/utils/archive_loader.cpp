@@ -30,7 +30,6 @@ Archive ArchiveLoader::Load(const std::string &filePath) {
     {
         zip_entry_read(packageArchive, &fileBuffer, &fileBufferSize);
     }
-    std::cerr << "fullArchivePath: " << fullArchivePath << std::endl;
     return Archive{
         .fileBuffer = fileBuffer,
         .fileBufferSize = fileBufferSize

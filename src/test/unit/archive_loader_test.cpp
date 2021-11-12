@@ -10,10 +10,9 @@ TEST_CASE("Archive Loader Tests", "[archive_loader]") {
     }
 
     SECTION("Load Archive File") {
-        archiveLoader->PrintArchiveContents();
         Archive archive = archiveLoader->Load("test.txt");
         REQUIRE(archive.fileBuffer != nullptr);
-//        REQUIRE(archive.fileBufferSize > 0);
+        REQUIRE(archive.fileBufferSize > 0);
     }
 
     archiveLoader->ClearArchive();

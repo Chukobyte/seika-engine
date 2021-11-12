@@ -121,6 +121,7 @@ class ProjectProperties {
     Color backgroundDrawColor = Color(20.f / 255.0f, 20.f / 255.0f, 20.f / 255.0f);
     bool areColliderVisible = false;
     std::string initialScenePath;
+    bool isAssetsInMemory = true;
 
     static ProjectProperties* GetInstance();
 
