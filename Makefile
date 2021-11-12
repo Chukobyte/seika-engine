@@ -40,7 +40,7 @@ build: $(OBJ) $(OBJ_C)
 	@$(CXX) -o $(BUILD_OBJECT) $^ $(I_FLAGS) $(L_FLAGS) $(LIBRARIES)
 
 format:
-	astyle -n --style=google --recursive src/*.cpp src/*.h
+	astyle -n --style=google --recursive src/*.cpp src/*.h src/*.hpp
 
 clean:
 ifneq ("$(wildcard $(BUILD_OBJECT))","")
@@ -52,7 +52,7 @@ run:
 	./$(BUILD_OBJECT) -l debug -local-assets true
 
 run-2d-test:
-	./$(BUILD_OBJECT) -l debug -local-assets true -d assets/game_projects/2d_test/
+	./$(BUILD_OBJECT) -l debug -local-assets false -d assets/game_projects/2d_test/
 
 run-3d-test:
 	./$(BUILD_OBJECT) -l debug -local-assets true -d assets/game_projects/3d_test/

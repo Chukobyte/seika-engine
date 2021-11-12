@@ -14,7 +14,6 @@ class ArchiveLoader {
   private:
     static ArchiveLoader *instance;
     struct zip_t *packageArchive = nullptr;
-    std::string packageArchiveName;
 
     ArchiveLoader() = default;
   public:

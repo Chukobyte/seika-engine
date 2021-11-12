@@ -18,15 +18,13 @@ void ArchiveLoader::ReadArchive(const std::string &filePath) {
     assert(FileHelper::DoesFileExist(filePath) && "Archive file doesn't exist!");
     ClearArchive();
     packageArchive = zip_open(filePath.c_str(), 0, 'r');
-    packageArchiveName = FileHelper::GetFileNameFromPathWithoutExtension(filePath);
 }
 
 Archive ArchiveLoader::Load(const std::string &filePath) {
     assert(packageArchive != nullptr && "Cannot load archive, null in memory!");
-    const std::string &fullArchivePath = packageArchiveName + "/" + filePath;
     void *fileBuffer = nullptr;
     size_t fileBufferSize;
-    zip_entry_open(packageArchive, fullArchivePath.c_str());
+    zip_entry_open(packageArchive, filePath.c_str());
     {
         zip_entry_read(packageArchive, &fileBuffer, &fileBufferSize);
     }
@@ -43,7 +41,6 @@ bool ArchiveLoader::HasArchiveInMemory() const {
 void ArchiveLoader::ClearArchive() {
     if (packageArchive) {
         delete packageArchive;
-        packageArchiveName.clear();
     }
 }
 

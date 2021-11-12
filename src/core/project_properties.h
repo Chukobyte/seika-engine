@@ -122,6 +122,7 @@ class ProjectProperties {
     bool areColliderVisible = false;
     std::string initialScenePath;
     bool isAssetsInMemory = true;
+    std::string assetArchivePath = "seika_asset_test.zip";
 
     static ProjectProperties* GetInstance();
 
