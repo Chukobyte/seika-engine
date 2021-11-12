@@ -125,7 +125,7 @@ class ProjectProperties {
 
     static ProjectProperties* GetInstance();
 
-    unsigned int GetTargetFPS() {
+    unsigned int GetTargetFPS() const {
         return targetFPS;
     }
 
@@ -133,15 +133,15 @@ class ProjectProperties {
         targetFPS = fps;
     }
 
-    double GetMillisecondsPerTick() {
+    double GetMillisecondsPerTick() const {
         return millisecondsPerTick;
     }
 
-    double GetMaxDeltaTime() {
+    double GetMaxDeltaTime() const {
         return maxDeltaTime;
     }
 
-    double GetFixedPhysicsDeltaTime() {
+    double GetFixedPhysicsDeltaTime() const {
         return fixedPhysicsDeltaTime;
     }
 
@@ -164,9 +164,9 @@ class ProjectProperties {
         windowHeight = baseResolutionJson["height"].get<int>();
         areColliderVisible = projectConfigurationsJson["colliders_visible"].get<bool>();
         targetFPS = projectConfigurationsJson["target_fps"].get<unsigned int>();
-        float backgroundRed = projectConfigurationsJson["background_color"]["red"].get<float>();
-        float backgroundGreen = projectConfigurationsJson["background_color"]["green"].get<float>();
-        float backgroundBlue = projectConfigurationsJson["background_color"]["blue"].get<float>();
+        const float backgroundRed = projectConfigurationsJson["background_color"]["red"].get<float>();
+        const float backgroundGreen = projectConfigurationsJson["background_color"]["green"].get<float>();
+        const float backgroundBlue = projectConfigurationsJson["background_color"]["blue"].get<float>();
         backgroundDrawColor = Color(backgroundRed, backgroundGreen, backgroundBlue);
 
         nlohmann::json assetsJsonArray = projectConfigurationsJson["assets"].get<nlohmann::json>();
