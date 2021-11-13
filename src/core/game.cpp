@@ -48,11 +48,22 @@ void Game::Initialize(int argv, char** args) {
     InitializeSDL();
     InitializeRendering();
     AssetManager *assetManager = GD::GetContainer()->assetManager;
-    assetManager->LoadEngineAssets();
-    inputManager->LoadProjectInputActions();
-    if (!commandLineFlagResult.workingDirectoryOverride.empty()) {
-        FileHelper::ChangeDirectory(commandLineFlagResult.workingDirectoryOverride);
-        logger->Debug("Set project root override to " + commandLineFlagResult.workingDirectoryOverride);
+    // TODO: Clean up nasty conditionals
+    if (projectProperties->isAssetsInMemory) {
+        if (!commandLineFlagResult.workingDirectoryOverride.empty()) {
+            FileHelper::ChangeDirectory(commandLineFlagResult.workingDirectoryOverride);
+            logger->Debug("Set project root override to " + commandLineFlagResult.workingDirectoryOverride);
+        }
+        ArchiveLoader::GetInstance()->ReadArchive(projectProperties->assetArchivePath);
+        inputManager->LoadProjectInputActions();
+        assetManager->LoadEngineAssets();
+    } else {
+        assetManager->LoadEngineAssets();
+        inputManager->LoadProjectInputActions();
+        if (!commandLineFlagResult.workingDirectoryOverride.empty()) {
+            FileHelper::ChangeDirectory(commandLineFlagResult.workingDirectoryOverride);
+            logger->Debug("Set project root override to " + commandLineFlagResult.workingDirectoryOverride);
+        }
     }
     assetManager->LoadProjectAssets();
     InitializeECS();

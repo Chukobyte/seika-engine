@@ -6,25 +6,48 @@
 #include "global_dependencies.h"
 
 AssetManager::AssetManager() {
+    projectProperties = ProjectProperties::GetInstance();
+    archiveLoader = ArchiveLoader::GetInstance();
     logger = Logger::GetInstance();
 }
 
 // TEXTURE
-void AssetManager::LoadTexture(const TextureConfiguration &textureConfiguration) {
-    logger->Debug("Load texture file path = " + textureConfiguration.filePath);
+Texture *AssetManager::LoadTextureFromFile(const TextureConfiguration &textureConfiguration) {
     Texture *texture = new Texture(textureConfiguration.filePath.c_str(),
                                    textureConfiguration.wrapS,
                                    textureConfiguration.wrapT,
                                    textureConfiguration.filterMin,
                                    textureConfiguration.filterMax);
     assert(texture->IsValid());
+    return texture;
+}
+
+Texture *AssetManager::LoadTextureFromMemory(const TextureConfiguration &textureConfiguration) {
+    Archive archive = archiveLoader->Load(textureConfiguration.filePath);
+    Texture *texture = new Texture(archive.fileBuffer,
+                                   archive.fileBufferSize,
+                                   textureConfiguration.wrapS,
+                                   textureConfiguration.wrapT,
+                                   textureConfiguration.filterMin,
+                                   textureConfiguration.filterMax);
+    assert(texture->IsValid());
+    return texture;
+}
+
+void AssetManager::LoadTexture(const TextureConfiguration &textureConfiguration) {
+    logger->Debug("Load texture file path = " + textureConfiguration.filePath);
+    Texture *texture = nullptr;
+    if (projectProperties->isAssetsInMemory) {
+        texture = LoadTextureFromMemory(textureConfiguration);
+    } else {
+        texture = LoadTextureFromFile(textureConfiguration);
+    }
     textures.emplace(textureConfiguration.filePath, texture);
 }
 
+// TODO: figure out if texture id is needed
 void AssetManager::LoadTexture(const std::string &textureId, const std::string &filePath) {
-    Texture *texture = new Texture(filePath.c_str());
-    assert(texture->IsValid());
-    textures.emplace(textureId, texture);
+    LoadTexture(TextureConfiguration{.filePath = filePath});
 }
 
 Texture* AssetManager::GetTexture(const std::string &textureId) {
@@ -92,7 +115,6 @@ void AssetManager::LoadEngineAssets() {
 }
 
 void AssetManager::LoadProjectAssets() {
-    ProjectProperties *projectProperties = ProjectProperties::GetInstance();
     AssetConfigurations assetConfigurations = projectProperties->GetAssetConfigurations();
 
     for (TextureConfiguration textureConfiguration : assetConfigurations.textureConfigurations) {

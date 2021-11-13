@@ -11,10 +11,10 @@
 
 struct TextureConfiguration {
     std::string filePath;
-    std::string wrapS;
-    std::string wrapT;
-    std::string filterMin;
-    std::string filterMax;
+    std::string wrapS = "clamp_to_border";
+    std::string wrapT = "clamp_to_border";
+    std::string filterMin = "nearest";
+    std::string filterMax = "nearest";
 };
 
 struct FontConfiguration {
