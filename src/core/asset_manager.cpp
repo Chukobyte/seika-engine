@@ -83,7 +83,14 @@ bool AssetManager::HasFont(const std::string &fontId) const {
 
 // MUSIC
 void AssetManager::LoadMusic(const std::string &musicId, const std::string &musicPath) {
-    Mix_Music *newMusic = Mix_LoadMUS(musicPath.c_str());
+    Mix_Music *newMusic = nullptr;
+    if (projectProperties->IsAssetsInMemory()) {
+        Archive soundArchive = archiveLoader->Load(musicPath);
+        SDL_RWops* rw = SDL_RWFromMem(soundArchive.fileBuffer, soundArchive.fileBufferSize);
+        newMusic =  Mix_LoadMUS_RW(rw,1);
+    } else {
+        newMusic = Mix_LoadMUS(musicPath.c_str());
+    }
     if (!newMusic) {
         logger->Error("Error loading music at '" + musicPath + "'\n" + Mix_GetError());
     } else {
@@ -98,7 +105,14 @@ Mix_Music* AssetManager::GetMusic(const std::string &musicId) {
 
 // SOUND
 void AssetManager::LoadSound(const std::string &soundId, const std::string &soundPath) {
-    Mix_Chunk *newSound = Mix_LoadWAV(soundPath.c_str());
+    Mix_Chunk *newSound = nullptr;
+    if (projectProperties->IsAssetsInMemory()) {
+        Archive soundArchive = archiveLoader->Load(soundPath);
+        SDL_RWops* rw = SDL_RWFromMem(soundArchive.fileBuffer, soundArchive.fileBufferSize);
+        newSound = Mix_LoadWAV_RW(rw, 1);
+    } else {
+        newSound = Mix_LoadWAV(soundPath.c_str());
+    }
     if (!newSound) {
         logger->Error("Error loading sound at '" + soundPath + "'\n" + Mix_GetError());
     } else {
