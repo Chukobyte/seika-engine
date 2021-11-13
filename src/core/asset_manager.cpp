@@ -62,7 +62,13 @@ bool AssetManager::HasTexture(const std::string &textureId) const {
 // FONT
 void AssetManager::LoadFont(const std::string &fontId, const std::string &fontPath, int size) {
     static RenderContext *renderContext = GD::GetContainer()->renderContext;
-    Font *font = new Font(fontId, renderContext->freeTypeLibrary, fontPath.c_str(), size);
+    Font *font = nullptr;
+    if (projectProperties->IsAssetsInMemory()) {
+        Archive fontArchive = archiveLoader->Load(fontPath);
+        font = new Font(fontId, renderContext->freeTypeLibrary, fontPath.c_str(), size, fontArchive.fileBuffer, fontArchive.fileBufferSize);
+    } else {
+        font = new Font(fontId, renderContext->freeTypeLibrary, fontPath.c_str(), size);
+    }
     fonts.emplace(fontId, font);
 }
 
