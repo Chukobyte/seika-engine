@@ -261,7 +261,7 @@ void Game::Update() {
         Camera2D currentCamera = cameraManager->GetCurrentCamera2D();
         currentCamera.viewport = Vector2(0.0f, 0.0f);
         cameraManager->UpdateCurrentCamera2D(currentCamera);
-        entityComponentOrchestrator->ChangeSceneTo();
+        entityComponentOrchestrator->ChangeSceneTo(projectProperties->IsAssetsInMemory());
     }
 
     lastFrameTime = SDL_GetTicks();

@@ -34,7 +34,7 @@ Archive ArchiveLoader::Load(const std::string &filePath) {
     };
 }
 
-std::string ArchiveLoader::LoadString(const std::string &filePath) {
+std::string ArchiveLoader::LoadAsString(const std::string &filePath) {
     Archive archive = Load(filePath);
     char *bufferOutput = (char*) archive.fileBuffer;
     const std::string &bufferText = std::string(bufferOutput, archive.fileBufferSize);

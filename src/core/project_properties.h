@@ -193,7 +193,7 @@ class ProjectProperties {
     void LoadProjectConfigurationsFromMemory(const std::string projectFilePath) {
         Logger::GetInstance()->Debug("Loading project config from memory path " + projectFilePath);
         assetsInMemory = true;
-        const std::string &projectFileJsonString = archiveLoader->LoadString(projectFilePath);
+        const std::string &projectFileJsonString = archiveLoader->LoadAsString(projectFilePath);
         nlohmann::json projectConfigurationsJson = JsonFileHelper::ConvertStringToJson(projectFileJsonString);
         ConfigureConfigurationJson(projectConfigurationsJson);
     }
