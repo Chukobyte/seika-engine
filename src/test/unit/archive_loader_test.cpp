@@ -9,10 +9,15 @@ TEST_CASE("Archive Loader Tests", "[archive_loader]") {
         REQUIRE(archiveLoader->HasArchiveInMemory());
     }
 
-    SECTION("Load Archive File") {
+    SECTION("Load archive file") {
         Archive archive = archiveLoader->Load("test.txt");
         REQUIRE(archive.fileBuffer != nullptr);
         REQUIRE(archive.fileBufferSize > 0);
+    }
+
+    SECTION("Load archive file as a string") {
+        const std::string &archiveString = archiveLoader->LoadAsString("test.txt");
+        REQUIRE(archiveString == "Hello World!\r\n");
     }
 
     archiveLoader->ClearArchive();
