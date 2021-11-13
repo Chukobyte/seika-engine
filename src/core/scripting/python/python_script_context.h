@@ -22,7 +22,7 @@ class PythonScriptContext : public ScriptContext {
     void Initialize() override {
         pyInstance = new CPyInstance();
         ProjectProperties *projectProperties = ProjectProperties::GetInstance();
-        if (projectProperties->isAssetsInMemory) {
+        if (projectProperties->IsAssetsInMemory()) {
             PyRun_SimpleString(std::string("sys.path.insert(0, '" + projectProperties->assetArchivePath + "')").c_str());
         }
 

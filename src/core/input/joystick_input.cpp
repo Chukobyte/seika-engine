@@ -221,7 +221,7 @@ void JoystickInput::ProcessAxisMotion() {
 void JoystickInput::LoadJoysticks() {
     int result;
     ProjectProperties *projectProperties = ProjectProperties::GetInstance();
-    if (projectProperties->isAssetsInMemory) {
+    if (projectProperties->IsAssetsInMemory()) {
         ArchiveLoader *archiveLoader = ArchiveLoader::GetInstance();
         Archive gameControllerDBArchive = archiveLoader->Load("assets/resources/game_controller_db.txt");
         result = SDL_GameControllerAddMappingsFromRW(

@@ -43,27 +43,25 @@ void Game::Initialize(int argv, char** args) {
     logger->SetLogLevel(LogLevel_ERROR);
     logger->Info("Seika Engine v" + engineContext->GetEngineVersion() + " started!");
     CommandLineFlagResult commandLineFlagResult = commandLineFlagHelper.ProcessCommandLineArgs(argv, args);
-    projectProperties->LoadProjectConfigurations(commandLineFlagResult.workingDirectoryOverride + commandLineFlagResult.projectFilePath);
-    projectProperties->isAssetsInMemory = !commandLineFlagResult.localAssets;
     InitializeSDL();
-    InitializeRendering();
     AssetManager *assetManager = GD::GetContainer()->assetManager;
-    // TODO: Clean up nasty conditionals
-    if (projectProperties->isAssetsInMemory) {
-        if (!commandLineFlagResult.workingDirectoryOverride.empty()) {
-            FileHelper::ChangeDirectory(commandLineFlagResult.workingDirectoryOverride);
-            logger->Debug("Set project root override to " + commandLineFlagResult.workingDirectoryOverride);
-        }
+    if (commandLineFlagResult.localAssets) {
+        projectProperties->LoadProjectConfigurationsFromFile(commandLineFlagResult.workingDirectoryOverride + commandLineFlagResult.projectFilePath);
+        InitializeRendering();
+        assetManager->LoadEngineAssets();
+        inputManager->LoadProjectInputActions();
+    }
+    if (!commandLineFlagResult.workingDirectoryOverride.empty()) {
+        FileHelper::ChangeDirectory(commandLineFlagResult.workingDirectoryOverride);
+        logger->Debug("Set project root override to " + commandLineFlagResult.workingDirectoryOverride);
+    }
+    if (!commandLineFlagResult.localAssets) {
         ArchiveLoader::GetInstance()->ReadArchive(projectProperties->assetArchivePath);
+        ArchiveLoader::GetInstance()->PrintArchiveContents();
+        projectProperties->LoadProjectConfigurationsFromMemory(commandLineFlagResult.projectFilePath);
+        InitializeRendering();
         inputManager->LoadProjectInputActions();
         assetManager->LoadEngineAssets();
-    } else {
-        assetManager->LoadEngineAssets();
-        inputManager->LoadProjectInputActions();
-        if (!commandLineFlagResult.workingDirectoryOverride.empty()) {
-            FileHelper::ChangeDirectory(commandLineFlagResult.workingDirectoryOverride);
-            logger->Debug("Set project root override to " + commandLineFlagResult.workingDirectoryOverride);
-        }
     }
     assetManager->LoadProjectAssets();
     InitializeECS();

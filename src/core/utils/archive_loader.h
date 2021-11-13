@@ -23,6 +23,8 @@ class ArchiveLoader {
 
     Archive Load(const std::string &filePath);
 
+    std::string LoadString(const std::string &filePath);
+
     bool HasArchiveInMemory() const;
 
     void PrintArchiveContents();

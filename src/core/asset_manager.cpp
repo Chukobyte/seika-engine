@@ -37,7 +37,7 @@ Texture *AssetManager::LoadTextureFromMemory(const TextureConfiguration &texture
 void AssetManager::LoadTexture(const TextureConfiguration &textureConfiguration) {
     logger->Debug("Load texture file path = " + textureConfiguration.filePath);
     Texture *texture = nullptr;
-    if (projectProperties->isAssetsInMemory) {
+    if (projectProperties->IsAssetsInMemory()) {
         texture = LoadTextureFromMemory(textureConfiguration);
     } else {
         texture = LoadTextureFromFile(textureConfiguration);
@@ -110,7 +110,7 @@ std::map<std::string, Mix_Chunk*> AssetManager::GetAllSounds() {
 }
 
 void AssetManager::LoadEngineAssets() {
-    LoadTexture(DEFAULT_COLLIDER_ASSET_ID, DEFAULT_COLLIDER_ASSET_ID);
+    LoadTexture(TextureConfiguration{.filePath = DEFAULT_COLLIDER_ASSET_ID});
     LoadFont(DEFAULT_FONT_ASSET_ID, DEFAULT_FONT_ASSET_PATH, DEFAULT_FONT_SIZE);
 }
 
