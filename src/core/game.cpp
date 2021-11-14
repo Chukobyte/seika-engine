@@ -41,7 +41,6 @@ Game::~Game() {
 
 void Game::Initialize(int argv, char** args) {
     logger->SetLogLevel(LogLevel_ERROR);
-    logger->Info("Seika Engine v" + engineContext->GetEngineVersion() + " started!");
     CommandLineFlagResult commandLineFlagResult = commandLineFlagHelper.ProcessCommandLineArgs(argv, args);
     projectProperties->assetArchivePath = commandLineFlagResult.gameArchiveFileName;
     InitializeSDL();
@@ -65,6 +64,7 @@ void Game::Initialize(int argv, char** args) {
     }
     assetManager->LoadProjectAssets();
     InitializeECS();
+    logger->Info("Seika Engine v" + engineContext->GetEngineVersion(projectProperties->IsAssetsInMemory()) + " started!");
     engineContext->SetRunning(true);
     engineContext->StartFPSCounter();
 }
