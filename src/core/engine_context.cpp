@@ -11,7 +11,7 @@ bool EngineContext::IsRunning() const {
 
 std::string EngineContext::GetEngineVersion() {
     if (engineVersion.empty()) {
-        const std::string &versionFilePath = "version.json";
+        const std::string &versionFilePath = "_version.json";
         Logger::GetInstance()->Debug("version file path = " + versionFilePath);
         nlohmann::json versionJson = JsonFileHelper::LoadJsonFile(versionFilePath);
         engineVersion = versionJson["version"].get<std::string>();
