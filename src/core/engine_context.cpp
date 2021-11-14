@@ -2,6 +2,7 @@
 #include "utils/json_file_helper.h"
 #include "utils/logger.h"
 #include "utils/archive_loader.h"
+#include "utils/file_helper.h"
 
 void EngineContext::SetRunning(bool value) {
     running = value;
@@ -19,6 +20,7 @@ std::string EngineContext::GetEngineVersion(const bool loadFromMemory) {
             const std::string &versionJsonString = ArchiveLoader::GetInstance()->LoadAsString(versionFilePath);
             versionJson = JsonFileHelper::ConvertStringToJson(versionJsonString);
         } else {
+            assert(FileHelper::DoesFileExist(versionFilePath) && "_version.json file doesn't exist!");
             versionJson = JsonFileHelper::LoadJsonFile(versionFilePath);
         }
         engineVersion = versionJson["version"].get<std::string>();

@@ -50,6 +50,7 @@ void Game::Initialize(int argv, char** args) {
         InitializeRendering();
         assetManager->LoadEngineAssets();
         inputManager->LoadProjectInputActions();
+        engineContext->GetEngineVersion(projectProperties->IsAssetsInMemory()); // Set engine version before directory change
     }
     if (!commandLineFlagResult.workingDirectoryOverride.empty()) {
         FileHelper::ChangeDirectory(commandLineFlagResult.workingDirectoryOverride);
