@@ -4,6 +4,7 @@
 #include <cassert>
 
 #include "file_helper.h"
+#include "logger.h"
 
 ArchiveLoader *ArchiveLoader::instance = nullptr;
 
@@ -53,6 +54,7 @@ void ArchiveLoader::ClearArchive() {
 
 void ArchiveLoader::PrintArchiveContents() {
     assert(packageArchive != nullptr && "Cannot print archive contents, null in memory!");
+    Logger::GetInstance()->Debug("Printing archive contents...");
     const int archiveEntries = zip_total_entries(packageArchive);
     for(int i = 0; i < archiveEntries; i++) {
         zip_entry_openbyindex(packageArchive, i);

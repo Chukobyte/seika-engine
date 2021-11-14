@@ -57,6 +57,8 @@ void Game::Initialize(int argv, char** args) {
     }
     if (!commandLineFlagResult.localAssets) {
         ArchiveLoader::GetInstance()->ReadArchive(projectProperties->assetArchivePath);
+        logger->Debug("Reading asset pack '" + projectProperties->assetArchivePath + "' into memory.");
+        ArchiveLoader::GetInstance()->PrintArchiveContents();
         projectProperties->LoadProjectConfigurationsFromMemory(commandLineFlagResult.projectFilePath);
         InitializeRendering();
         inputManager->LoadProjectInputActions();
