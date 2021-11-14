@@ -7,6 +7,8 @@ struct CommandLineFlagResult {
     std::string projectFilePath = "project.scfg";
     std::string workingDirectoryOverride;
     bool localAssets = false;
+    std::string gameFileName;
+    std::string gameArchiveFileName;
 };
 
 class CommandLineFlagHelper {
@@ -57,12 +59,19 @@ class CommandLineFlagHelper {
             }
         }
     }
+
+    std::string GetGameArchiveFileName(const std::string &gameFileName) {
+        return FileHelper::GetFileNameFromPathWithoutExtension(gameFileName) + ".pck";
+    }
   public:
     CommandLineFlagHelper() : logger(Logger::GetInstance()) {}
 
     CommandLineFlagResult ProcessCommandLineArgs(int argv, char** args) {
         this->argv = argv;
         this->args = args;
+
+        commandLineFlagResult.gameFileName = std::string(this->args[0]);
+        commandLineFlagResult.gameArchiveFileName = GetGameArchiveFileName(commandLineFlagResult.gameFileName);
 
         if (this->argv > 1) {
             for (int argumentIndex = 0; argumentIndex < this->argv; argumentIndex++) {

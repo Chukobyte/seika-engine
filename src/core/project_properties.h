@@ -147,7 +147,7 @@ class ProjectProperties {
     Color backgroundDrawColor = Color(20.f / 255.0f, 20.f / 255.0f, 20.f / 255.0f);
     bool areColliderVisible = false;
     std::string initialScenePath;
-    std::string assetArchivePath = "seika_asset_test.zip";
+    std::string assetArchivePath;
 
     static ProjectProperties* GetInstance();
 
