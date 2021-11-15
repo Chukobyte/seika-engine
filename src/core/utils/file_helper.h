@@ -101,6 +101,10 @@ class FileHelper {
         fileName = GetFilePathWithoutExtension(fileName);
         return fileName;
     }
+
+    static std::string GetCurentDirectory() {
+        return std::experimental::filesystem::current_path().string();
+    }
 };
 
 #endif //FILE_HELPER_H

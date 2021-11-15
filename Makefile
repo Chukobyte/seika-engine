@@ -1,7 +1,7 @@
 CC := gcc # C Compiler
 CXX := g++ # C++ compiler
 I_FLAGS := -I"./include" -I"${SDL2_HOME}/include" -I"${PYTHON_HOME}/include"
-L_FLAGS := -lmingw32 -lSDL2main -lSDL2_mixer -lSDL2 -lpython37 -lfreetype -lwsock32 -lws2_32 -static-libgcc -static-libstdc++
+L_FLAGS := -lmingw32 -lSDL2main -lSDL2_mixer -lSDL2 -lpython37 -lfreetype -lwsock32 -lws2_32 -static-libgcc -static-libstdc++ -lstdc++fs
 C_FLAGS := -w -std=c++14 -Wfatal-errors -Wall -Wextra -pedantic
 LIBRARIES := -L"${SDL2_HOME}/lib" -L"${PYTHON_HOME}/libs" -L"${FREETYPE_HOME}/lib"
 RELEASE_FLAGS = -DHAVE_SNPRINTF=1
