@@ -61,7 +61,9 @@ class CommandLineFlagHelper {
     }
 
     std::string GetGameArchiveFileName(const std::string &gameFileName) {
-        return FileHelper::GetFileNameFromPathWithoutExtension(gameFileName) + ".pck";
+        std::string filePath = FileHelper::GetFilePathWithoutExtension(gameFileName);
+        filePath = FileHelper::ConvertSymbolInString(filePath, '\\', '/');
+        return filePath + ".pck";
     }
   public:
     CommandLineFlagHelper() : logger(Logger::GetInstance()) {}
