@@ -57,6 +57,10 @@ void Game::Initialize(int argv, char** args) {
         logger->Debug("Set project root override to " + commandLineFlagResult.workingDirectoryOverride);
     }
     if (!commandLineFlagResult.localAssets) {
+        if (!FileHelper::DoesFileExist(projectProperties->assetArchivePath)) {
+            logger->Error("Asset archive .pck not found!  Aborting...");
+            return;
+        }
         ArchiveLoader::GetInstance()->ReadArchive(projectProperties->assetArchivePath);
         logger->Debug("Reading asset pack '" + projectProperties->assetArchivePath + "' into memory.");
         ArchiveLoader::GetInstance()->PrintArchiveContents();
