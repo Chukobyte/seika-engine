@@ -64,7 +64,6 @@ void ArchiveLoader::PrintArchiveContents() {
             int isDir = zip_entry_isdir(packageArchive);
             unsigned long long size = zip_entry_size(packageArchive);
             unsigned int crc32 = zip_entry_crc32(packageArchive);
-            std::cerr << "name: " << name << std::endl;
             logger->Debug("name: " + std::string(name));
         }
         zip_entry_close(packageArchive);
