@@ -252,14 +252,9 @@ class EntityComponentOrchestrator {
         return removeCurrentSceneAtEndOfUpdate;
     }
 
-    void ChangeSceneTo(const bool loadFromMemory) {
+    void ChangeSceneTo() {
         Logger::GetInstance()->Debug("Changing scene to path '" + scenePathToSwitchTo + "'!");
-        Scene scene;
-        if (loadFromMemory) {
-            scene = sceneManager->LoadSceneFromMemory(scenePathToSwitchTo);
-        } else {
-            scene = sceneManager->LoadSceneFromFile(scenePathToSwitchTo);
-        }
+        Scene scene = sceneManager->LoadSceneFromFile(scenePathToSwitchTo);
         scenePathToSwitchTo.clear();
         RegisterSceneNodeInstances(scene.rootNode);
         CallStartOnScriptInstances(scene.rootNode);

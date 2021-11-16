@@ -430,13 +430,11 @@ class SceneManager {
     ComponentManager *componentManager = nullptr;
     AssetManager *assetManager = nullptr;
     TimerManager *timerManager = nullptr;
-    ArchiveLoader *archiveLoader = nullptr;
 
   public:
     SceneManager(SceneContext *vSceneContext, EntityManager *vEntityManager, ComponentManager *vComponentManager, AssetManager *vAssetManager) :
         sceneContext(vSceneContext), entityManager(vEntityManager), componentManager(vComponentManager), assetManager(vAssetManager) {
         timerManager = TimerManager::GetInstance();
-        archiveLoader = ArchiveLoader::GetInstance();
         sceneNodeJsonParser = SceneNodeJsonParser(entityManager, componentManager, assetManager, timerManager);
     }
 
@@ -529,15 +527,6 @@ class SceneManager {
 
     Scene LoadSceneFromFile(const std::string &filePath) {
         nlohmann::json sceneJson = JsonFileHelper::LoadJsonFile(filePath);
-        SceneNode rootNode = sceneNodeJsonParser.ParseSceneJson(sceneJson, true);
-        Scene loadedScene = Scene{.rootNode = rootNode};
-        ChangeToScene(loadedScene);
-        return loadedScene;
-    }
-
-    Scene LoadSceneFromMemory(const std::string &filePath) {
-        const std::string &sceneArchiveJsonString = archiveLoader->LoadAsString(filePath);
-        nlohmann::json sceneJson = JsonFileHelper::ConvertStringToJson(sceneArchiveJsonString);
         SceneNode rootNode = sceneNodeJsonParser.ParseSceneJson(sceneJson, true);
         Scene loadedScene = Scene{.rootNode = rootNode};
         ChangeToScene(loadedScene);

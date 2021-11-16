@@ -1,6 +1,4 @@
 #include "joystick_input.h"
-#include "../project_properties.h"
-#include "../utils/archive_loader.h"
 
 JoystickInput *JoystickInput::instance = nullptr;
 
@@ -219,19 +217,8 @@ void JoystickInput::ProcessAxisMotion() {
 }
 
 void JoystickInput::LoadJoysticks() {
-    int result;
-    ProjectProperties *projectProperties = ProjectProperties::GetInstance();
-    if (projectProperties->IsAssetsInMemory()) {
-        ArchiveLoader *archiveLoader = ArchiveLoader::GetInstance();
-        Archive gameControllerDBArchive = archiveLoader->Load("assets/resources/game_controller_db.txt");
-        result = SDL_GameControllerAddMappingsFromRW(
-                     SDL_RWFromMem(gameControllerDBArchive.fileBuffer, gameControllerDBArchive.fileBufferSize),
-                     1
-                 );
-    } else {
-        result = SDL_GameControllerAddMappingsFromFile("assets/resources/game_controller_db.txt");
-    }
-    assert(result != -1 && "Cannot find game controller db text file!");
+    int result = SDL_GameControllerAddMappingsFromFile("assets/resources/game_controller_db.txt");
+    assert(result != -1);
     // TODO: Handle more than one controller
     if (SDL_NumJoysticks() > 0) {
         joystickController = SDL_JoystickOpen(0);

@@ -43,7 +43,7 @@ class EngineContext {
 
     bool IsRunning() const;
 
-    std::string GetEngineVersion(const bool loadFromMemory);
+    std::string GetEngineVersion();
 
     void StartFPSCounter();
 

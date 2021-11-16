@@ -1,8 +1,8 @@
 CC := gcc # C Compiler
 CXX := g++ # C++ compiler
 I_FLAGS := -I"./include" -I"${SDL2_HOME}/include" -I"${PYTHON_HOME}/include"
-L_FLAGS := -lmingw32 -lSDL2main -lSDL2_mixer -lSDL2 -lpython37 -lfreetype -lwsock32 -lws2_32 -static-libgcc -static-libstdc++ -lstdc++fs
-C_FLAGS := -w -std=c++14 -Wfatal-errors -Wall -Wextra -pedantic
+L_FLAGS := -lmingw32 -lSDL2main -lSDL2_mixer -lSDL2 -lpython37 -lfreetype -lwsock32 -lws2_32 -static-libgcc -static-libstdc++
+C_FLAGS := -w -std=c++14 -Wfatal-errors
 LIBRARIES := -L"${SDL2_HOME}/lib" -L"${PYTHON_HOME}/libs" -L"${FREETYPE_HOME}/lib"
 RELEASE_FLAGS = -DHAVE_SNPRINTF=1
 
@@ -11,7 +11,7 @@ BUILD_OBJECT := $(PROJECT_NAME).exe
 TEST_BUILD_OBJECT := test_$(PROJECT_NAME).exe
 
 SRC = $(wildcard src/main.cpp src/core/*.cpp src/core/math/*.cpp src/core/utils/*.cpp src/core/rendering/*.cpp src/core/rendering/shader/*.cpp src/core/input/*.cpp src/core/timer/*.cpp src/core/scripting/python/*.cpp src/core/ecs/*.cpp src/core/networking/*.cpp include/stb_image/*.cpp)
-SRC_C = $(wildcard lib/glad.c include/kuba_zip/zip.c)
+SRC_C = $(wildcard lib/glad.c)
 
 OBJ = $(SRC:.cpp=.o)
 OBJ_C = $(SRC_C:.c=.o)
@@ -40,7 +40,7 @@ build: $(OBJ) $(OBJ_C)
 	@$(CXX) -o $(BUILD_OBJECT) $^ $(I_FLAGS) $(L_FLAGS) $(LIBRARIES)
 
 format:
-	astyle -n --style=google --recursive src/*.cpp src/*.h src/*.hpp
+	astyle -n --style=google --recursive src/*.cpp src/*.h
 
 clean:
 ifneq ("$(wildcard $(BUILD_OBJECT))","")
@@ -49,13 +49,13 @@ endif
 	$(foreach object, $(OBJ) $(OBJ_C), @del $(subst /,\, $(object));)
 
 run:
-	./$(BUILD_OBJECT) -l debug -local-assets true
+	./$(BUILD_OBJECT)
 
 run-2d-test:
-	./$(BUILD_OBJECT) -l debug -local-assets false -d assets/game_projects/2d_test/
+	./$(BUILD_OBJECT) -d assets/game_projects/2d_test/ -l debug
 
 run-3d-test:
-	./$(BUILD_OBJECT) -l debug -local-assets true -d assets/game_projects/3d_test/
+	./$(BUILD_OBJECT) -d assets/game_projects/3d_test/ -l debug
 
 full-build: clean format build
 

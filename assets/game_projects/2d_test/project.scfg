@@ -22,18 +22,10 @@
       "filter_max": "nearest"
     },
     {
-      "type": "font",
-      "uid": "verdana-32",
-      "file_path": "assets/fonts/verdana.ttf",
-      "size": 32
-    },
-    {
-      "type": "music",
-      "file_path": "assets/audio/music/test_music.wav"
-    },
-    {
-      "type": "sound",
-      "file_path": "assets/audio/sound/test_sound_effect.wav"
+          "type": "font",
+          "uid": "verdana-32",
+          "file_path": "assets/fonts/verdana.ttf",
+          "size": 32
     }
   ],
   "input_actions": [

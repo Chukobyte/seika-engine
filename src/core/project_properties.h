@@ -6,16 +6,15 @@
 
 #include "utils/json_file_helper.h"
 #include "utils/logger.h"
-#include "utils/archive_loader.h"
 
 #include "color.h"
 
 struct TextureConfiguration {
     std::string filePath;
-    std::string wrapS = "clamp_to_border";
-    std::string wrapT = "clamp_to_border";
-    std::string filterMin = "nearest";
-    std::string filterMax = "nearest";
+    std::string wrapS;
+    std::string wrapT;
+    std::string filterMin;
+    std::string filterMax;
 };
 
 struct FontConfiguration {
@@ -55,35 +54,10 @@ class ProjectProperties {
     double millisecondsPerTick = 1000.0f;
     double maxDeltaTime = 0.5f;
     double fixedPhysicsDeltaTime = 0.01f;
-    bool assetsInMemory = true;
     AssetConfigurations assetConfigurations;
     InputActionsConfigurations inputActionsConfigurations;
 
-    ArchiveLoader *archiveLoader = nullptr;
-
-    ProjectProperties() {
-        archiveLoader = ArchiveLoader::GetInstance();
-    };
-
-    void ConfigureConfigurationJson(const nlohmann::json &projectConfigurationsJson) {
-        gameTitle = projectConfigurationsJson["game_title"].get<std::string>();
-        initialScenePath = projectConfigurationsJson["initial_scene"].get<std::string>();
-        nlohmann::json baseResolutionJson = projectConfigurationsJson["base_resolution"].get<nlohmann::json>();
-        windowWidth = baseResolutionJson["width"].get<int>();
-        windowHeight = baseResolutionJson["height"].get<int>();
-        areColliderVisible = projectConfigurationsJson["colliders_visible"].get<bool>();
-        targetFPS = projectConfigurationsJson["target_fps"].get<unsigned int>();
-        const float backgroundRed = projectConfigurationsJson["background_color"]["red"].get<float>();
-        const float backgroundGreen = projectConfigurationsJson["background_color"]["green"].get<float>();
-        const float backgroundBlue = projectConfigurationsJson["background_color"]["blue"].get<float>();
-        backgroundDrawColor = Color(backgroundRed, backgroundGreen, backgroundBlue);
-
-        nlohmann::json assetsJsonArray = projectConfigurationsJson["assets"].get<nlohmann::json>();
-        LoadProjectAssets(assetsJsonArray);
-
-        nlohmann::json inputActionsJsonArray = projectConfigurationsJson["input_actions"].get<nlohmann::json>();
-        LoadProjectInputActions(inputActionsJsonArray);
-    }
+    ProjectProperties() = default;
 
     void LoadProjectAssets(nlohmann::json assetsJsonArray) {
         AssetConfigurations loadedAssetConfigurations;
@@ -147,11 +121,10 @@ class ProjectProperties {
     Color backgroundDrawColor = Color(20.f / 255.0f, 20.f / 255.0f, 20.f / 255.0f);
     bool areColliderVisible = false;
     std::string initialScenePath;
-    std::string assetArchivePath;
 
     static ProjectProperties* GetInstance();
 
-    unsigned int GetTargetFPS() const {
+    unsigned int GetTargetFPS() {
         return targetFPS;
     }
 
@@ -159,20 +132,16 @@ class ProjectProperties {
         targetFPS = fps;
     }
 
-    double GetMillisecondsPerTick() const {
+    double GetMillisecondsPerTick() {
         return millisecondsPerTick;
     }
 
-    double GetMaxDeltaTime() const {
+    double GetMaxDeltaTime() {
         return maxDeltaTime;
     }
 
-    double GetFixedPhysicsDeltaTime() const {
+    double GetFixedPhysicsDeltaTime() {
         return fixedPhysicsDeltaTime;
-    }
-
-    bool IsAssetsInMemory() const {
-        return assetsInMemory;
     }
 
     AssetConfigurations GetAssetConfigurations() {
@@ -183,19 +152,27 @@ class ProjectProperties {
         return inputActionsConfigurations;
     }
 
-    void LoadProjectConfigurationsFromFile(const std::string projectFilePath) {
-        Logger::GetInstance()->Debug("Loading project config from file path " + projectFilePath);
-        assetsInMemory = false;
+    void LoadProjectConfigurations(const std::string projectFilePath) {
+        Logger::GetInstance()->Debug("Loading project config from path " + projectFilePath);
         nlohmann::json projectConfigurationsJson = JsonFileHelper::LoadJsonFile(projectFilePath);
-        ConfigureConfigurationJson(projectConfigurationsJson);
-    }
 
-    void LoadProjectConfigurationsFromMemory(const std::string projectFilePath) {
-        Logger::GetInstance()->Debug("Loading project config from memory path " + projectFilePath);
-        assetsInMemory = true;
-        const std::string &projectFileJsonString = archiveLoader->LoadAsString(projectFilePath);
-        nlohmann::json projectConfigurationsJson = JsonFileHelper::ConvertStringToJson(projectFileJsonString);
-        ConfigureConfigurationJson(projectConfigurationsJson);
+        gameTitle = projectConfigurationsJson["game_title"].get<std::string>();
+        initialScenePath = projectConfigurationsJson["initial_scene"].get<std::string>();
+        nlohmann::json baseResolutionJson = projectConfigurationsJson["base_resolution"].get<nlohmann::json>();
+        windowWidth = baseResolutionJson["width"].get<int>();
+        windowHeight = baseResolutionJson["height"].get<int>();
+        areColliderVisible = projectConfigurationsJson["colliders_visible"].get<bool>();
+        targetFPS = projectConfigurationsJson["target_fps"].get<unsigned int>();
+        float backgroundRed = projectConfigurationsJson["background_color"]["red"].get<float>();
+        float backgroundGreen = projectConfigurationsJson["background_color"]["green"].get<float>();
+        float backgroundBlue = projectConfigurationsJson["background_color"]["blue"].get<float>();
+        backgroundDrawColor = Color(backgroundRed, backgroundGreen, backgroundBlue);
+
+        nlohmann::json assetsJsonArray = projectConfigurationsJson["assets"].get<nlohmann::json>();
+        LoadProjectAssets(assetsJsonArray);
+
+        nlohmann::json inputActionsJsonArray = projectConfigurationsJson["input_actions"].get<nlohmann::json>();
+        LoadProjectInputActions(inputActionsJsonArray);
     }
 };
 

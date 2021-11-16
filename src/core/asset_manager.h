@@ -9,7 +9,6 @@
 #include "rendering/texture.h"
 #include "rendering/font.h"
 #include "project_properties.h"
-#include "utils/archive_loader.h"
 
 static const std::string &DEFAULT_COLLIDER_ASSET_ID = "assets/images/collider_base.png";
 static const std::string &DEFAULT_FONT_ASSET_ID = "seika_default";
@@ -22,14 +21,7 @@ class AssetManager {
     std::map<std::string, Font*> fonts;
     std::map<std::string, Mix_Music*> music;
     std::map<std::string, Mix_Chunk*> sounds;
-
-    ProjectProperties *projectProperties = nullptr;
-    ArchiveLoader *archiveLoader = nullptr;
     Logger *logger = nullptr;
-
-    Texture *LoadTextureFromFile(const TextureConfiguration &textureConfiguration);
-
-    Texture *LoadTextureFromMemory(const TextureConfiguration &textureConfiguration);
 
     void LoadTexture(const TextureConfiguration &textureConfiguration);
 
@@ -37,7 +29,6 @@ class AssetManager {
     AssetManager();
 
     // TEXTURE
-
     void LoadTexture(const std::string &textureId, const std::string &filePath);
 
     Texture* GetTexture(const std::string &textureId);
