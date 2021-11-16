@@ -64,6 +64,47 @@ class FileHelper {
         }
         return false;
     }
+
+    static std::string GetFileNameFromPath(const std::string &filePath) {
+        // Remove left slash
+        const size_t &leftSlashPosition = filePath.find_last_of("/");
+        if (leftSlashPosition != std::string::npos) {
+            return filePath.substr(leftSlashPosition + 1);
+        }
+        // Remove right slash
+        const size_t &rightSlashPosition = filePath.find_last_of("\\");
+        if (rightSlashPosition != std::string::npos) {
+            return filePath.substr(rightSlashPosition + 1);
+        }
+        return filePath;
+    }
+
+    static std::string ConvertSymbolInString(const std::string &filePath, const char oldValue, const char newValue) {
+        std::string updatedFilePath = filePath;
+        std::replace(updatedFilePath.begin(), updatedFilePath.end(), oldValue, newValue);
+        return updatedFilePath;
+    }
+
+    static std::string GetFilePathWithoutExtension(const std::string &filePath) {
+        std::string filePathWithoutExtension = filePath;
+        const size_t &fileNamePosition = filePathWithoutExtension.find_last_of(".");
+        if (fileNamePosition != std::string::npos) {
+            const std::string fileExtension = filePathWithoutExtension.substr(fileNamePosition + 1);
+            filePathWithoutExtension.resize(filePathWithoutExtension.size() - (fileExtension.size() + 1));
+            return filePathWithoutExtension;
+        }
+        return filePathWithoutExtension;
+    }
+
+    static std::string GetFileNameFromPathWithoutExtension(const std::string &filePath) {
+        std::string fileName = GetFileNameFromPath(filePath);
+        fileName = GetFilePathWithoutExtension(fileName);
+        return fileName;
+    }
+
+    static std::string GetCurentDirectory() {
+        return std::experimental::filesystem::current_path().string();
+    }
 };
 
 #endif //FILE_HELPER_H

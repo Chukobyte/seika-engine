@@ -60,6 +60,10 @@ class Texture {
 
     Texture(void *buffer, size_t bufferSize);
 
+    Texture(void *buffer, size_t bufferSize, unsigned int wrapS, unsigned int wrapT, unsigned int filterMin, unsigned int filterMax);
+
+    Texture(void *buffer, size_t bufferSize, const std::string &wrapS, const std::string &wrapT, const std::string &filterMin, const std::string &filterMax);
+
     ~Texture();
 
     void Bind() const;

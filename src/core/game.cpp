@@ -41,20 +41,38 @@ Game::~Game() {
 
 void Game::Initialize(int argv, char** args) {
     logger->SetLogLevel(LogLevel_ERROR);
-    logger->Info("Seika Engine v" + engineContext->GetEngineVersion() + " started!");
     CommandLineFlagResult commandLineFlagResult = commandLineFlagHelper.ProcessCommandLineArgs(argv, args);
-    projectProperties->LoadProjectConfigurations(commandLineFlagResult.workingDirectoryOverride + commandLineFlagResult.projectFilePath);
+    projectProperties->assetArchivePath = commandLineFlagResult.gameArchiveFileName;
     InitializeSDL();
-    InitializeRendering();
     AssetManager *assetManager = GD::GetContainer()->assetManager;
-    assetManager->LoadEngineAssets();
-    inputManager->LoadProjectInputActions();
+    if (commandLineFlagResult.localAssets) {
+        projectProperties->LoadProjectConfigurationsFromFile(commandLineFlagResult.workingDirectoryOverride + commandLineFlagResult.projectFilePath);
+        InitializeRendering();
+        assetManager->LoadEngineAssets();
+        inputManager->LoadProjectInputActions();
+        engineContext->GetEngineVersion(projectProperties->IsAssetsInMemory()); // Set engine version before directory change
+    }
     if (!commandLineFlagResult.workingDirectoryOverride.empty()) {
         FileHelper::ChangeDirectory(commandLineFlagResult.workingDirectoryOverride);
         logger->Debug("Set project root override to " + commandLineFlagResult.workingDirectoryOverride);
     }
+    if (!commandLineFlagResult.localAssets) {
+        if (!FileHelper::DoesFileExist(projectProperties->assetArchivePath)) {
+            logger->Error("Asset archive .pck not found!  Aborting...");
+            return;
+        }
+        ArchiveLoader::GetInstance()->ReadArchive(projectProperties->assetArchivePath);
+        logger->Debug("Reading asset pack '" + projectProperties->assetArchivePath + "' into memory.");
+        ArchiveLoader::GetInstance()->PrintArchiveContents();
+        projectProperties->LoadProjectConfigurationsFromMemory(commandLineFlagResult.projectFilePath);
+        InitializeRendering();
+        inputManager->LoadProjectInputActions();
+        assetManager->LoadEngineAssets();
+    }
     assetManager->LoadProjectAssets();
     InitializeECS();
+    logger->Info("Seika Engine v" + engineContext->GetEngineVersion(projectProperties->IsAssetsInMemory()) + " started!");
+    logger->Debug("Current Working Directory: " + FileHelper::GetCurentDirectory());
     engineContext->SetRunning(true);
     engineContext->StartFPSCounter();
 }
@@ -252,7 +270,7 @@ void Game::Update() {
         Camera2D currentCamera = cameraManager->GetCurrentCamera2D();
         currentCamera.viewport = Vector2(0.0f, 0.0f);
         cameraManager->UpdateCurrentCamera2D(currentCamera);
-        entityComponentOrchestrator->ChangeSceneTo();
+        entityComponentOrchestrator->ChangeSceneTo(projectProperties->IsAssetsInMemory());
     }
 
     lastFrameTime = SDL_GetTicks();

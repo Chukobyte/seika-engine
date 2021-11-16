@@ -40,3 +40,13 @@ Overrides the default directory of the engine on startup.  Mostly to be used by 
 ```
 
 Overrides the default working path of the game.  Directory must contain a `project.scfg` file.
+
+## Local Assets
+
+`-la` `-local-assets`
+
+```
+[SEIKA_ENGINE] [PROJECT_FILE_FLAG] [FLAG]
+```
+
+Determines whether game assets are loaded from flat files or archive.  Defaults to `false`.

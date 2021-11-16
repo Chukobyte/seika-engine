@@ -9,7 +9,7 @@
 #include "python_modules.h"
 
 class CPyInstance {
-public:
+  public:
     CPyInstance() {
         Py_SetProgramName(L"seika_engine_scripting");
         PyImport_AppendInittab("seika_engine_api", &PyInit_seikaEngineAPI); // Load engine modules
@@ -27,20 +27,20 @@ public:
 
     static void ImportModuleFromString(const std::string &modulePath, const std::string &moduleSource) {
         std::string source =
-                "SourceImporter(modules={\n"
-                "\"" + modulePath + "\": \"\"\"\n"
-                + moduleSource +
-                "\"\"\"\n"
-                "})\n";
+            "SourceImporter(modules={\n"
+            "\"" + modulePath + "\": \"\"\"\n"
+            + moduleSource +
+            "\"\"\"\n"
+            "})\n";
         PyRun_SimpleString(source.c_str());
     }
 };
 
 class CPyObject {
-private:
+  private:
     PyObject* pyObj;
-public:
-    CPyObject(): pyObj(NULL) {}
+  public:
+    CPyObject(): pyObj(nullptr) {}
 
     CPyObject(PyObject* p) : pyObj(p) {}
 
@@ -67,7 +67,7 @@ public:
         if(pyObj) {
             Py_DECREF(pyObj);
         }
-        pyObj = NULL;
+        pyObj = nullptr;
     }
 
     PyObject* operator ->() {
@@ -75,7 +75,7 @@ public:
     }
 
     bool Is() const {
-        return pyObj ? true : false;
+        return pyObj != nullptr;
     }
 
     operator PyObject*() {
