@@ -68,6 +68,7 @@ void Game::Initialize(int argv, char** args) {
     assetManager->LoadProjectAssets();
     InitializeECS();
     logger->Info("Seika Engine v" + engineContext->GetEngineVersion(projectProperties->IsAssetsInMemory()) + " started!");
+    logger->Debug("Current Working Directory: " + FileHelper::GetCurentDirectory());
     engineContext->SetRunning(true);
     engineContext->StartFPSCounter();
 }

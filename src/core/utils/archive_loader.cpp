@@ -54,7 +54,8 @@ void ArchiveLoader::ClearArchive() {
 
 void ArchiveLoader::PrintArchiveContents() {
     assert(packageArchive != nullptr && "Cannot print archive contents, null in memory!");
-    Logger::GetInstance()->Debug("Printing archive contents...");
+    Logger *logger = Logger::GetInstance();
+    logger->Debug("Printing archive contents...");
     const int archiveEntries = zip_total_entries(packageArchive);
     for(int i = 0; i < archiveEntries; i++) {
         zip_entry_openbyindex(packageArchive, i);
@@ -64,6 +65,7 @@ void ArchiveLoader::PrintArchiveContents() {
             unsigned long long size = zip_entry_size(packageArchive);
             unsigned int crc32 = zip_entry_crc32(packageArchive);
             std::cerr << "name: " << name << std::endl;
+            logger->Debug("name: " + std::string(name));
         }
         zip_entry_close(packageArchive);
     }
