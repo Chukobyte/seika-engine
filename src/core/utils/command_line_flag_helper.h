@@ -6,6 +6,9 @@
 struct CommandLineFlagResult {
     std::string projectFilePath = "project.scfg";
     std::string workingDirectoryOverride;
+    bool localAssets = false;
+    std::string gameFileName;
+    std::string gameArchiveFileName;
 };
 
 class CommandLineFlagHelper {
@@ -23,6 +26,8 @@ class CommandLineFlagHelper {
     const std::string FLAG_SET_PROJECT_STARTING_DIRECTORY1 = "-starting-directory";
     const std::string FLAG_SET_PROJECT_WORKING_DIRECTORY0 = "-d";
     const std::string FLAG_SET_PROJECT_WORKING_DIRECTORY1 = "-working-directory";
+    const std::string FLAG_SET_LOCAL_ASSETS0 = "-la";
+    const std::string FLAG_SET_LOCAL_ASSETS1 = "-local-assets";
 
     CommandLineFlagResult ProcessArgument(int argumentIndex) {
         const std::string &argString = std::string(this->args[argumentIndex]);
@@ -42,7 +47,23 @@ class CommandLineFlagHelper {
         } else if(argString == FLAG_SET_PROJECT_WORKING_DIRECTORY0 || argString == FLAG_SET_PROJECT_WORKING_DIRECTORY1) {
             commandLineFlagResult.workingDirectoryOverride = this->args[argumentIndex + 1];
             logger->Debug("Working directory overridden to '" + commandLineFlagResult.workingDirectoryOverride + "'");
+        } else if(argString == FLAG_SET_LOCAL_ASSETS0 || argString == FLAG_SET_LOCAL_ASSETS1) {
+            std::string localAssetsFlag = std::string(this->args[argumentIndex + 1]);
+            transform(localAssetsFlag.begin(), localAssetsFlag.end(), localAssetsFlag.begin(), ::tolower);
+            if (localAssetsFlag != "false" && localAssetsFlag != "0") {
+                commandLineFlagResult.localAssets = true;
+                logger->Debug("Setting local assets flag to 'true'.");
+            } else {
+                commandLineFlagResult.localAssets = false;
+                logger->Debug("Setting local assets flag to 'false'.");
+            }
         }
+    }
+
+    std::string GetGameArchiveFileName(const std::string &gameFileName) {
+        std::string filePath = FileHelper::GetFilePathWithoutExtension(gameFileName);
+        filePath = FileHelper::ConvertSymbolInString(filePath, '\\', '/');
+        return filePath + ".pck";
     }
   public:
     CommandLineFlagHelper() : logger(Logger::GetInstance()) {}
@@ -50,6 +71,9 @@ class CommandLineFlagHelper {
     CommandLineFlagResult ProcessCommandLineArgs(int argv, char** args) {
         this->argv = argv;
         this->args = args;
+
+        commandLineFlagResult.gameFileName = std::string(this->args[0]);
+        commandLineFlagResult.gameArchiveFileName = GetGameArchiveFileName(commandLineFlagResult.gameFileName);
 
         if (this->argv > 1) {
             for (int argumentIndex = 0; argumentIndex < this->argv; argumentIndex++) {

@@ -21,6 +21,13 @@ class PythonScriptContext : public ScriptContext {
 
     void Initialize() override {
         pyInstance = new CPyInstance();
+        ProjectProperties *projectProperties = ProjectProperties::GetInstance();
+        if (projectProperties->IsAssetsInMemory()) {
+            const std::string &archivePathInsertCommand = "sys.path.insert(0, '" + projectProperties->assetArchivePath + "')";
+            Logger::GetInstance()->Debug("Adding archive to path with command:\n" + archivePathInsertCommand);
+            PyRun_SimpleString(archivePathInsertCommand.c_str());
+        }
+
         pythonCache = PythonCache::GetInstance();
         startFunctionName = PyUnicode_FromString("_start");
         physicsProcessFunctionName = PyUnicode_FromString("_physics_process");

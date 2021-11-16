@@ -22,6 +22,16 @@ Texture::Texture(void *buffer, size_t bufferSize) {
     Initialize(buffer, bufferSize);
 }
 
+Texture::Texture(void *buffer, size_t bufferSize, unsigned int wrapS, unsigned int wrapT, unsigned int filterMin, unsigned int filterMax) :
+    wrapS(wrapS), wrapT(wrapT), filterMin(filterMin), filterMax(filterMax) {
+    Initialize(buffer, bufferSize);
+}
+
+Texture::Texture(void *buffer, size_t bufferSize, const std::string &wrapS, const std::string &wrapT, const std::string &filterMin, const std::string &filterMax) :
+    wrapS(GetWrapFromString(wrapS)), wrapT(GetWrapFromString(wrapT)), filterMin(GetFilterFromString(filterMin)), filterMax(GetFilterFromString(filterMax)) {
+    Initialize(buffer, bufferSize);
+}
+
 Texture::~Texture() {
     stbi_image_free(this->data);
     this->data = nullptr;
