@@ -70,6 +70,7 @@ endif
 	copy *.json $(EXPORT_PACKAGE_DIR)
 	copy *.scfg $(EXPORT_PACKAGE_DIR)
 	Xcopy /E /I assets $(EXPORT_PACKAGE_DIR)\assets
+	rd /S /Q $(EXPORT_PACKAGE_DIR)\assets\game_projects
 	cd $(EXPORT_PACKAGE_DIR) && echo %cd% && 7z a $(PROJECT_NAME).zip *
 
 #package: RELEASE_FLAGS +=  -O2
