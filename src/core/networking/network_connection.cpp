@@ -7,7 +7,7 @@ void TCPConnection::StartReadingNetworkMessages() {
         if (!errorCode) {
             std::string message;
             int startBracketCounter = 0;
-            for (int i = 0; i < bytes; i++) {
+            for (unsigned int i = 0; i < bytes; i++) {
                 message += networkBuffer[i];
                 if (message.back() == '{') {
                     startBracketCounter++;

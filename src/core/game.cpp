@@ -312,7 +312,7 @@ void Game::FixedTimeStep() {
         inputManager->ClearInputFlags();
     }
 
-    const double alpha = accumulator / PHYSICS_DELTA_TIME;
+//    const double alpha = accumulator / PHYSICS_DELTA_TIME;
 }
 
 void Game::VariableTimeStep(Uint32 lastFrameTime) {

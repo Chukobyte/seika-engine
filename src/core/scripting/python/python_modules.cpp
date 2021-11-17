@@ -594,7 +594,6 @@ PyObject* PythonModules::node_get_children(PyObject *self, PyObject *args, PyObj
 
 // TIMER
 PyObject* PythonModules::timer_start(PyObject *self, PyObject *args, PyObject *kwargs) {
-    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     static TimerManager *timerManager = TimerManager::GetInstance();
     Entity entity;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
@@ -605,7 +604,6 @@ PyObject* PythonModules::timer_start(PyObject *self, PyObject *args, PyObject *k
 }
 
 PyObject* PythonModules::timer_stop(PyObject *self, PyObject *args, PyObject *kwargs) {
-    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     static TimerManager *timerManager = TimerManager::GetInstance();
     Entity entity;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
@@ -616,7 +614,6 @@ PyObject* PythonModules::timer_stop(PyObject *self, PyObject *args, PyObject *kw
 }
 
 PyObject* PythonModules::timer_pause(PyObject *self, PyObject *args, PyObject *kwargs) {
-    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     static TimerManager *timerManager = TimerManager::GetInstance();
     Entity entity;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
@@ -638,7 +635,6 @@ PyObject* PythonModules::timer_resume(PyObject *self, PyObject *args, PyObject *
 }
 
 PyObject* PythonModules::timer_get_wait_time(PyObject *self, PyObject *args, PyObject *kwargs) {
-    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     static TimerManager *timerManager = TimerManager::GetInstance();
     Entity entity;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
@@ -648,7 +644,6 @@ PyObject* PythonModules::timer_get_wait_time(PyObject *self, PyObject *args, PyO
 }
 
 PyObject* PythonModules::timer_set_wait_time(PyObject *self, PyObject *args, PyObject *kwargs) {
-    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     static TimerManager *timerManager = TimerManager::GetInstance();
     Entity entity;
     float waitTime;
@@ -660,7 +655,6 @@ PyObject* PythonModules::timer_set_wait_time(PyObject *self, PyObject *args, PyO
 }
 
 PyObject* PythonModules::timer_get_time_left(PyObject *self, PyObject *args, PyObject *kwargs) {
-    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     static TimerManager *timerManager = TimerManager::GetInstance();
     Entity entity;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
@@ -670,7 +664,6 @@ PyObject* PythonModules::timer_get_time_left(PyObject *self, PyObject *args, PyO
 }
 
 PyObject* PythonModules::timer_is_stopped(PyObject *self, PyObject *args, PyObject *kwargs) {
-    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     static TimerManager *timerManager = TimerManager::GetInstance();
     Entity entity;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
@@ -683,7 +676,6 @@ PyObject* PythonModules::timer_is_stopped(PyObject *self, PyObject *args, PyObje
 }
 
 PyObject* PythonModules::timer_is_paused(PyObject *self, PyObject *args, PyObject *kwargs) {
-    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     static TimerManager *timerManager = TimerManager::GetInstance();
     Entity entity;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
@@ -696,7 +688,6 @@ PyObject* PythonModules::timer_is_paused(PyObject *self, PyObject *args, PyObjec
 }
 
 PyObject* PythonModules::timer_set_loops(PyObject *self, PyObject *args, PyObject *kwargs) {
-    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     static TimerManager *timerManager = TimerManager::GetInstance();
     Entity entity;
     bool loops;
@@ -708,7 +699,6 @@ PyObject* PythonModules::timer_set_loops(PyObject *self, PyObject *args, PyObjec
 }
 
 PyObject* PythonModules::timer_get_loops(PyObject *self, PyObject *args, PyObject *kwargs) {
-    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     static TimerManager *timerManager = TimerManager::GetInstance();
     Entity entity;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
@@ -912,7 +902,6 @@ PyObject* PythonModules::sprite_get_draw_source(PyObject *self, PyObject *args, 
 
 PyObject* PythonModules::sprite_set_draw_source(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
-    static AssetManager *assetManager = GD::GetContainer()->assetManager;
     Entity entity;
     float x;
     float y;
@@ -1325,7 +1314,6 @@ PyObject* PythonModules::collision_get_nodes_under_mouse(PyObject *self, PyObjec
     static PythonCache *pythonCache = PythonCache::GetInstance();
     static ComponentManager *componentManager = GD::GetContainer()->componentManager;
     static MouseInput *mouseInput = MouseInput::GetInstance();
-    Entity entity;
     CPyObject pCollidedNodesList = PyList_New(0);
     pCollidedNodesList.AddRef();
     assert(pCollidedNodesList != nullptr && "node list empty!");

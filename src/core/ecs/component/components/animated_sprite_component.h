@@ -10,7 +10,7 @@
 struct AnimatedSpriteComponent {
     std::map<std::string, Animation> animations;
     Animation currentAnimation; // Preselects first added animation
-    int currentFrameIndex;
+    unsigned int currentFrameIndex;
     bool isPlaying;
     bool flipX = false;
     bool flipY = false;

@@ -58,6 +58,7 @@ class CommandLineFlagHelper {
                 logger->Debug("Setting local assets flag to 'false'.");
             }
         }
+        return commandLineFlagResult;
     }
 
     std::string GetGameArchiveFileName(const std::string &gameFileName) {

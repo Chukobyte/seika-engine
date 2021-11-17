@@ -17,7 +17,7 @@ class EncryptionUtil {
     static int getCypherKeyValue(const std::string& key, const int& pos) {
         return key[pos % key.length()];
     }
-    static void cypherFile (std::fstream& file, const double& size, const std::string& key, EncryptionCoding coding) {
+    static void cypherFile (std::fstream& file, const std::string& key, EncryptionCoding coding) {
         char c;
         for (int i=0; file.get(c); i++) {
             c += coding * getCypherKeyValue(key, i);
@@ -43,13 +43,13 @@ class EncryptionUtil {
     static void EncryptFile(const std::string &filePath, const std::string &key) {
         assert(DoesFileExist(filePath) && "File doesn't exist!");
         std::fstream fileStream(filePath);
-        cypherFile(fileStream, GetFileSize(filePath), key, EncryptionCoding_ENCRYPT);
+        cypherFile(fileStream, key, EncryptionCoding_ENCRYPT);
     }
 
     static void DecryptFile(const std::string &filePath, const std::string &key) {
         assert(DoesFileExist(filePath) && "File doesn't exist!");
         std::fstream fileStream(filePath, std::ios::in | std::ios::out);
-        cypherFile(fileStream, GetFileSize(filePath), key, EncryptionCoding_DECRYPT);
+        cypherFile(fileStream, key, EncryptionCoding_DECRYPT);
     }
 };
 

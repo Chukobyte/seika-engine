@@ -20,7 +20,7 @@ Uint32 Timer::GetTimeLeft() const {
         return 0;
     }
     Uint32 timeLeft = waitTime - (SDL_GetTicks() - startTicks);
-    return timeLeft >= 0 && timeLeft < waitTime ? timeLeft : 0;
+    return timeLeft > 0 && timeLeft < waitTime ? timeLeft : 0;
 }
 
 void Timer::SetWaitTime(Uint32 waitTimeInMilliseconds) {

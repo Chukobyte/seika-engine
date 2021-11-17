@@ -63,7 +63,6 @@ void InputManager::ProcessInputs(SDL_Event &event) {
     mouseInput->ProcessSDLEvent(inputEvent);
     joystickInput->ProcessSDLEvent(inputEvent);
     for (auto const &pair : inputActions) {
-        const std::string &actionName = pair.first;
         InputAction *inputAction = pair.second;
         inputAction->ProcessInputs(keyboardState);
     }
@@ -73,7 +72,6 @@ void InputManager::ClearInputFlags() {
     mouseInput->ClearInputFlags();
     joystickInput->ClearInputFlags();
     for (auto const &pair : inputActions) {
-        const std::string &actionName = pair.first;
         InputAction *inputAction = pair.second;
         inputAction->ClearInputFlags();
     }

@@ -26,6 +26,12 @@ class NetworkConnection {
         : socket(context), networkQueue(networkQueue), hostType(networkConnectionHostType), id(connectionId), logger(Logger::GetInstance()) {
     }
 
+    virtual ~NetworkConnection() {
+        if (IsConnected()) {
+            Disconnect();
+        }
+    }
+
     bool IsConnected() const {
         return socket.is_open();
     }

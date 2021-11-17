@@ -2,7 +2,8 @@ CC := gcc # C Compiler
 CXX := g++ # C++ compiler
 I_FLAGS := -I"./include" -I"${SDL2_HOME}/include" -I"${PYTHON_HOME}/include"
 L_FLAGS := -lmingw32 -lSDL2main -lSDL2_mixer -lSDL2 -lpython37 -lfreetype -lwsock32 -lws2_32 -static-libgcc -static-libstdc++ -lstdc++fs
-C_FLAGS := -w -std=c++14 -Wfatal-errors -Wall -Wextra -pedantic
+C_FLAGS := -Wfatal-errors -Wall -Wextra -Wno-write-strings -Wno-deprecated-declarations -Wno-unused-variable -Wno-cast-function-type -Wno-unused-parameter -Wno-missing-field-initializers
+CPP_FLAGS := -std=c++14 $(C_FLAGS) -Wno-reorder
 LIBRARIES := -L"${SDL2_HOME}/lib" -L"${PYTHON_HOME}/libs" -L"${FREETYPE_HOME}/lib"
 RELEASE_FLAGS = -DHAVE_SNPRINTF=1
 
@@ -29,7 +30,7 @@ all: clean format build
 
 %.o: %.cpp
 	@echo "Compiling " $< " into " $@
-	@$(CXX) -c $(C_FLAGS) $< -o $@ $(I_FLAGS) $(RELEASE_FLAGS)
+	@$(CXX) -c $(CPP_FLAGS) $< -o $@ $(I_FLAGS) $(RELEASE_FLAGS)
 
 %.o: %.c
 	@echo "Compiling " $< " into " $@

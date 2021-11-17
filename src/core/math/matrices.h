@@ -94,7 +94,7 @@ class Matrix4 {
     }
 
     void SetAll(float n) {
-        for (int i = 0; i < sizeof(members); i++) {
+        for (unsigned int i = 0; i < sizeof(members); i++) {
             members[i] = n;
         }
     }
@@ -106,7 +106,7 @@ class Matrix4 {
     }
 
     void Set(const Matrix4 &mat4) {
-        for (int i = 0; i < sizeof(mat4.members); i++) {
+        for (unsigned int i = 0; i < sizeof(mat4.members); i++) {
             this->members[i] = mat4.members[i];
         }
     }

@@ -32,7 +32,6 @@ void Renderer2D::Initialize() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    ProjectProperties *projectProperties = ProjectProperties::GetInstance();
     spriteRenderer = new SpriteRenderer(renderContext);
     fontRenderer = new FontRenderer(renderContext);
 }

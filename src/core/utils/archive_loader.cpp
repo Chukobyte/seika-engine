@@ -48,7 +48,7 @@ bool ArchiveLoader::HasArchiveInMemory() const {
 
 void ArchiveLoader::ClearArchive() {
     if (packageArchive) {
-        delete packageArchive;
+        free(packageArchive);
     }
 }
 
@@ -61,9 +61,9 @@ void ArchiveLoader::PrintArchiveContents() {
         zip_entry_openbyindex(packageArchive, i);
         {
             const char *name = zip_entry_name(packageArchive);
-            int isDir = zip_entry_isdir(packageArchive);
-            unsigned long long size = zip_entry_size(packageArchive);
-            unsigned int crc32 = zip_entry_crc32(packageArchive);
+//            int isDir = zip_entry_isdir(packageArchive);
+//            unsigned long long size = zip_entry_size(packageArchive);
+//            unsigned int crc32 = zip_entry_crc32(packageArchive);
             logger->Debug("name: " + std::string(name));
         }
         zip_entry_close(packageArchive);
