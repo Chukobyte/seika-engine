@@ -2,7 +2,7 @@
 
 ## Node
 
-Nodes are the basic building block of a game in Seika Engine.  There are many different node types that inherit from the base `Node` class and more information about their API usage can be found [here](../python_api/node.md).  Python scripts can be attached to Nodes to add to their functionality.
+Nodes are the basic building block of a game in Seika Engine.  There are many node types that inherit from the base `Node` class and more information about their API usage can be found [here](../python_api/node.md).  Python scripts can be attached to Nodes to add to their functionality.
 
 ## Scene
 
@@ -14,34 +14,13 @@ A scene is a collection of nodes.  Must contain a root node and there can only b
     "type": "Node",
     "tags": [],
     "external_scene_source": "",
-    "components": [
-    	{
-            "transform2D": {
-                "position": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "scale": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "rotation": 0,
-                "z_index": 0,
-                "z_index_relative_to_parent": false,
-                "ignore_camera": false
-            }
-        },
-        {
-            "scriptable_class": {
-                "class_path": "assets.game_projects.fighter.src.init",
-                "class_name": "Init"
-            }
-        }
-    ],
+    "components": [],
     "children": []
 }
 
 ```
+
+More examples of how nodes are serialized can be found [here](scene_file_reference.md).
 
 ## Scene Tree
 

@@ -22,10 +22,15 @@ Project properties define how the game will be configured before running.  An ex
   "assets": [
     {
       "type": "texture",
-      "file_path": "assets/game_projects/fighter/assets/fighters/puncher/puncher_basic_sheet.png"
+      "file_path": "assets/fighters/puncher/puncher_basic_sheet.png",
+      "wrap_s": "clamp_to_border",
+      "wrap_t": "clamp_to_border",
+      "filter_min": "nearest",
+      "filter_max": "nearest"
     },
     {
       "type": "font",
+      "uid": "bruh",
       "file_path": "assets/fonts/bruh.ttf",
       "size": 60
     },

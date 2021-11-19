@@ -11,6 +11,7 @@ nav:
     - Core Concepts: general/core_concepts.md
     - Project Properties: general/project_properties.md
     - Command Line Flags: general/command_line_flags.md
+    - Scene File Reference: general/scene_file_reference.md
   - Python API:
       - Index: python_api/index.md
       - Node: python_api/node.md
