@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="Chukobyte" name="author"/>
+<link href="../../img/favicon.ico" rel="shortcut icon"/>
+<title>Scene File Reference - Seika Engine</title>
+<link href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" rel="stylesheet">
+<link href="../../css/theme.css" rel="stylesheet"/>
+<link href="../../css/theme_extra.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet"/>
+<script>
+    // Current page data
+    var mkdocs_page_name = "Scene File Reference";
+    var mkdocs_page_input_path = "general\\scene_file_reference.md";
+    var mkdocs_page_url = null;
+  </script>
+<script defer="" src="../../js/jquery-2.1.1.min.js"></script>
+<script defer="" src="../../js/modernizr-2.8.3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</link></head>
+<body class="wy-body-for-nav" role="document">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side stickynav" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../.."> Seika Engine</a>
+<div role="search">
+<form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input name="q" placeholder="Search docs" title="Type search term here" type="text"/>
+</form>
+</div>
+</div>
+<div aria-label="main navigation" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption"><span class="caption-text">General</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../core_concepts/">Core Concepts</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../project_properties/">Project Properties</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../command_line_flags/">Command Line Flags</a>
+</li>
+<li class="toctree-l1 current"><a class="reference internal current" href="./">Scene File Reference</a>
+<ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="#about">About</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#node-types">Node Types</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#node">Node</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#timer">Timer</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#node2d">Node2D</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#sprite">Sprite</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#animatedsprite">AnimatedSprite</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#textlabel">TextLabel</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#collisionshape2d">CollisionShape2D</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#spatial">Spatial</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#texturecube">TextureCube</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#directionallight">DirectionalLight</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pointlight">PointLight</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#spotlight">SpotLight</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#misc">Misc</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#scriptable">Scriptable</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#children">Children</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Python API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../python_api/">Index</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_api/node/">Node</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_api/camera/">Camera</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_api/audio/">Audio</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_api/input/">Input</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_api/engine/">Engine</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_api/scene/">Scene</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_api/network/">Network</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_api/physics/">Physics</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_api/math/">Math</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_api/color/">Color</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_api/renderer/">Renderer</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_api/assets/">Assets</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_api/data/">Data</a>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Showcase</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../showcase/projects_made_with_seika/">Projects Made With Seika</a>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+<nav aria-label="top navigation" class="wy-nav-top" role="navigation">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../..">Seika Engine</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="breadcrumbs navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a href="../..">Docs</a> »</li>
+<li>General »</li>
+<li>Scene File Reference</li>
+<li class="wy-breadcrumbs-aside">
+</li>
+</ul>
+<hr/>
+</div>
+<div role="main">
+<div class="section">
+<h1 id="scene-file-reference">Scene File Reference</h1>
+<h2 id="about">About</h2>
+<p>A reference to how scene nodes are serialized in json.  The editor configures these files for the engine to read.</p>
+<h2 id="node-types">Node Types</h2>
+<h3 id="node">Node</h3>
+<pre><code class="language-json">{
+    "name": "Node Example",
+    "type": "Node",
+    "tags": [],
+    "external_scene_source": "",
+    "components": [],
+    "children": []
+}
+</code></pre>
+<hr/>
+<h3 id="timer">Timer</h3>
+<pre><code class="language-json">{
+    "name": "Timer Example",
+    "type": "Timer",
+    "tags": [],
+    "external_scene_source": "",
+    "components": [
+      {
+        "timer": {
+          "wait_time": 1.0,
+          "loops": true
+        }
+      }
+    ],
+    "children": []
+}
+</code></pre>
+<hr/>
+<h3 id="node2d">Node2D</h3>
+<pre><code class="language-json">{
+    "name": "Node2D Example",
+    "type": "Node2D",
+    "tags": [],
+    "external_scene_source": "",
+    "components": [
+      {
+        "transform2D": {
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "rotation": 0.0,
+          "z_index": 0,
+          "z_index_relative_to_parent": true,
+          "ignore_camera": false
+        }
+      }
+    ],
+    "children": []
+}
+</code></pre>
+<hr/>
+<h3 id="sprite">Sprite</h3>
+<pre><code class="language-json">{
+    "name": "Sprite Example",
+    "type": "Sprite",
+    "tags": [],
+    "external_scene_source": "",
+    "components": [
+      {
+        "transform2D": {
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "rotation": 0.0,
+          "z_index": 0,
+          "z_index_relative_to_parent": true,
+          "ignore_camera": false
+        }
+      },
+      {
+        "sprite": {
+          "texture_path": "assets/images/seika_idle.png",
+          "draw_source": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 48.0,
+            "height": 48.0
+          },
+          "flip_x": false,
+          "flip_y": false,
+          "modulate": {
+            "red": 1.0,
+            "blue": 1.0,
+            "green": 1.0,
+            "alpha": 1.0
+          }
+        }
+      }
+    ],
+    "children": []
+}
+</code></pre>
+<hr/>
+<h3 id="animatedsprite">AnimatedSprite</h3>
+<pre><code class="language-json">{
+    "name": "AnimatedSprite Example",
+    "type": "AnimatedSprite",
+    "tags": [],
+    "external_scene_source": "",
+    "components": [
+      {
+        "transform2D": {
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "rotation": 0.0,
+          "z_index": 0,
+          "z_index_relative_to_parent": true,
+          "ignore_camera": false
+        }
+      },
+      {
+        "animated_sprite": {
+          "current_animation": "idle",
+          "is_playing": false,
+          "flip_x": false,
+          "flip_y": false,
+          "modulate": {
+            "red": 1.0,
+            "green": 1.0,
+            "blue": 1.0,
+            "alpha": 1.0
+          },
+          "animations": [
+            {
+              "name": "idle",
+              "speed": 100,
+              "frames": [
+                {
+                  "frame": 0,
+                  "texture_path": "assets/fighters/puncher/puncher_basic_sheet.png",
+                  "draw_source": {
+                    "x": 0,
+                    "y": 35,
+                    "width": 30,
+                    "height": 35
+                  }
+                },
+                {
+                  "frame": 1,
+                  "texture_path": "assets/fighters/puncher/puncher_basic_sheet.png",
+                  "draw_source": {
+                    "x": 30,
+                    "y": 35,
+                    "width": 30,
+                    "height": 35
+                  }
+                },
+                {
+                  "frame": 2,
+                  "texture_path": "assets/fighters/puncher/puncher_basic_sheet.png",
+                  "draw_source": {
+                    "x": 60,
+                    "y": 35,
+                    "width": 30,
+                    "height": 35
+                  }
+                },
+                {
+                  "frame": 3,
+                  "texture_path": "assets/fighters/puncher/puncher_basic_sheet.png",
+                  "draw_source": {
+                    "x": 90,
+                    "y": 35,
+                    "width": 30,
+                    "height": 35
+                  }
+                },
+                {
+                  "frame": 4,
+                  "texture_path": "assets/fighters/puncher/puncher_basic_sheet.png",
+                  "draw_source": {
+                    "x": 120,
+                    "y": 35,
+                    "width": 30,
+                    "height": 35
+                  }
+                }
+              ]
+            },
+            {
+              "name": "walk",
+              "speed": 100,
+              "frames": [
+                {
+                  "frame": 0,
+                  "texture_path": "assets/fighters/puncher/puncher_basic_sheet.png",
+                  "draw_source": {
+                    "x": 0,
+                    "y": 0,
+                    "width": 30,
+                    "height": 35
+                  }
+                },
+                {
+                  "frame": 1,
+                  "texture_path": "assets/fighters/puncher/puncher_basic_sheet.png",
+                  "draw_source": {
+                    "x": 30,
+                    "y": 0,
+                    "width": 30,
+                    "height": 35
+                  }
+                },
+                {
+                  "frame": 2,
+                  "texture_path": "assets/fighters/puncher/puncher_basic_sheet.png",
+                  "draw_source": {
+                    "x": 60,
+                    "y": 0,
+                    "width": 30,
+                    "height": 35
+                  }
+                },
+                {
+                  "frame": 3,
+                  "texture_path": "assets/fighters/puncher/puncher_basic_sheet.png",
+                  "draw_source": {
+                    "x": 90,
+                    "y": 0,
+                    "width": 30,
+                    "height": 35
+                  }
+                },
+                {
+                  "frame": 4,
+                  "texture_path": "assets/fighters/puncher/puncher_basic_sheet.png",
+                  "draw_source": {
+                    "x": 120,
+                    "y": 0,
+                    "width": 30,
+                    "height": 35
+                  }
+                },
+                {
+                  "frame": 5,
+                  "texture_path": "assets/fighters/puncher/puncher_basic_sheet.png",
+                  "draw_source": {
+                    "x": 150,
+                    "y": 0,
+                    "width": 30,
+                    "height": 35
+                  }
+                },
+                {
+                  "frame": 6,
+                  "texture_path": "assets/fighters/puncher/puncher_basic_sheet.png",
+                  "draw_source": {
+                    "x": 180,
+                    "y": 0,
+                    "width": 30,
+                    "height": 35
+                  }
+                },
+                {
+                  "frame": 7,
+                  "texture_path": "assets/fighters/puncher/puncher_basic_sheet.png",
+                  "draw_source": {
+                    "x": 210,
+                    "y": 0,
+                    "width": 30,
+                    "height": 35
+                  }
+                },
+                {
+                  "frame": 8,
+                  "texture_path": "assets/fighters/puncher/puncher_basic_sheet.png",
+                  "draw_source": {
+                    "x": 240,
+                    "y": 0,
+                    "width": 30,
+                    "height": 35
+                  }
+                },
+                {
+                  "frame": 9,
+                  "texture_path": "assets/fighters/puncher/puncher_basic_sheet.png",
+                  "draw_source": {
+                    "x": 270,
+                    "y": 0,
+                    "width": 30,
+                    "height": 35
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "children": []
+}
+</code></pre>
+<hr/>
+<h3 id="textlabel">TextLabel</h3>
+<pre><code class="language-json">{
+    "name": "TextLabel Example",
+    "type": "TextLabel",
+    "tags": [],
+    "external_scene_source": "",
+    "components": [
+      {
+        "transform2D": {
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "rotation": 0.0,
+          "z_index": 0,
+          "z_index_relative_to_parent": true,
+          "ignore_camera": false
+        }
+      },
+      {
+        "text_label": {
+          "text": "Test text...",
+          "font_uid": "verdana",
+          "color": {
+            "red": 0.0,
+            "green": 1.0,
+            "blue": 1.0,
+            "alpha": 1.0
+          }
+        }
+      }
+    ],
+    "children": []
+}
+</code></pre>
+<hr/>
+<h3 id="collisionshape2d">CollisionShape2D</h3>
+<pre><code class="language-json">{
+    "name": "CollisionShape2D Example",
+    "type": "CollisionShape2D",
+    "tags": [],
+    "external_scene_source": "",
+    "components": [
+      {
+        "transform2D": {
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "rotation": 0.0,
+          "z_index": 0,
+          "z_index_relative_to_parent": true,
+          "ignore_camera": false
+        }
+      },
+      {
+        "collider": {
+          "rectangle": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 16.0,
+            "height": 16.0
+          },
+          "color": {
+            "red": 0.37,
+            "green": 0.80,
+            "blue": 0.89,
+            "alpha": 0.75
+          }
+        }
+      }
+    ],
+    "children": []
+}
+</code></pre>
+<hr/>
+<h3 id="spatial">Spatial</h3>
+<pre><code class="language-json">{
+    "name": "Spatial Example",
+    "type": "Spatial",
+    "tags": [],
+    "external_scene_source": "",
+    "components": [
+      {
+        "transform3D": {
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "scale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "rotation": 0.0,
+          "rotation_axis": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          }
+        }
+      }
+    ],
+    "children": []
+}
+</code></pre>
+<hr/>
+<h3 id="texturecube">TextureCube</h3>
+<pre><code class="language-json">{
+    "name": "TextureCube Example",
+    "type": "TextureCube",
+    "tags": [],
+    "external_scene_source": "",
+    "components": [
+      {
+        "transform3D": {
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "scale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "rotation": 0.0,
+          "rotation_axis": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          }
+        }
+      },
+      {
+        "texture_cube": {}
+      },
+      {
+        "material": {
+          "ambient": {
+            "x": 1.0,
+            "y": 0.5,
+            "z": 0.31
+          },
+          "diffuse": {
+            "x": 1.0,
+            "y": 0.5,
+            "z": 0.31
+          },
+          "specular": {
+            "x": 0.5,
+            "y": 0.5,
+            "z": 0.5
+          },
+          "shininess": 32.0,
+          "diffuse_map_texture_path": "assets/container.png",
+          "specular_map_texture_path": "assets/container_specular.png"
+        }
+      }
+    ],
+    "children": []
+}
+</code></pre>
+<hr/>
+<h3 id="directionallight">DirectionalLight</h3>
+<pre><code class="language-json">{
+    "name": "DirectionalLight Example",
+    "type": "DirectionalLight",
+    "tags": [],
+    "external_scene_source": "",
+    "components": [
+      {
+        "transform3D": {
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "scale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "rotation": 0.0,
+          "rotation_axis": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          }
+        }
+      },
+      {
+        "directional_light": {
+          "direction": {
+            "x": -0.2,
+            "y": -1.0,
+            "z": -0.3
+          }
+        }
+      },
+      {
+        "material": {
+          "ambient": {
+            "x": 0.05,
+            "y": 0.05,
+            "z": 0.05
+          },
+          "diffuse": {
+            "x": 0.4,
+            "y": 0.4,
+            "z": 0.4
+          },
+          "specular": {
+            "x": 0.5,
+            "y": 0.5,
+            "z": 0.5
+          },
+          "shininess": 0.0,
+          "diffuse_map_texture_path": "",
+          "specular_map_texture_path": ""
+        }
+      }
+    ],
+    "children": []
+}
+</code></pre>
+<hr/>
+<h3 id="pointlight">PointLight</h3>
+<pre><code class="language-json">{
+    "name": "PointLight Example",
+    "type": "PointLight",
+    "tags": [],
+    "external_scene_source": "",
+    "components": [
+      {
+        "transform3D": {
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "scale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "rotation": 0.0,
+          "rotation_axis": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          }
+        }
+      },
+      {
+        "point_light": {
+          "linear": 0.09,
+          "quadratic": 0.032,
+          "constant": 1.0
+        }
+      },
+      {
+        "material": {
+          "ambient": {
+            "x": 0.05,
+            "y": 0.05,
+            "z": 0.05
+          },
+          "diffuse": {
+            "x": 0.8,
+            "y": 0.8,
+            "z": 0.8
+          },
+          "specular": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "shininess": 0.0,
+          "diffuse_map_texture_path": "",
+          "specular_map_texture_path": ""
+        }
+      }
+    ],
+    "children": []
+}
+</code></pre>
+<hr/>
+<h3 id="spotlight">SpotLight</h3>
+<pre><code class="language-json">{
+    "name": "SpotLight Example",
+    "type": "SpotLight",
+    "tags": [],
+    "external_scene_source": "",
+    "components": [
+      {
+        "transform3D": {
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "scale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "rotation": 0.0,
+          "rotation_axis": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          }
+        }
+      },
+      {
+        "spot_light": {
+          "direction": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "is_attached_to_camera": true,
+          "linear": 0.09,
+          "quadratic": 0.032,
+          "constant": 1.0,
+          "cutoff": 12.5,
+          "outer_cutoff": 15.0
+        }
+      },
+      {
+        "material": {
+          "ambient": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "diffuse": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "specular": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "shininess": 0.0,
+          "diffuse_map_texture_path": "",
+          "specular_map_texture_path": ""
+        }
+      }
+    ],
+    "children": []
+}
+</code></pre>
+<hr/>
+<h2 id="misc">Misc</h2>
+<h3 id="scriptable">Scriptable</h3>
+<p>A scriptable component can be attached to any NodeType.</p>
+<pre><code class="language-json">{
+    "name": "Scriptable Example",
+    "type": "Node",
+    "tags": [],
+    "external_scene_source": "",
+    "components": [
+      {
+        "scriptable_class": {
+          "class_path": "src.main",
+          "class_name": "Main"
+        }
+      }
+    ],
+    "children": []
+}
+</code></pre>
+<hr/>
+<h3 id="children">Children</h3>
+<p>All nodes can have nested children.</p>
+<pre><code class="language-json">{
+    "name": "Parent Example",
+    "type": "Node",
+    "tags": [],
+    "external_scene_source": "",
+    "components": [],
+    "children": [
+      {
+        "name": "Child Example",
+        "type": "Node",
+        "tags": [],
+        "external_scene_source": "",
+        "components": [],
+        "children": []
+      }
+    ]
+}
+</code></pre>
+<hr/>
+</div>
+</div>
+<footer>
+<div aria-label="footer navigation" class="rst-footer-buttons" role="navigation">
+<a class="btn btn-neutral float-right" href="../../python_api/" title="Index">Next <span class="icon icon-circle-arrow-right"></span></a>
+<a class="btn btn-neutral" href="../command_line_flags/" title="Command Line Flags"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+</div>
+<hr/>
+<div role="contentinfo">
+<!-- Copyright etc -->
+<p>Copyright © 2021 Chukobyte</p>
+</div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="versions" class="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<a class="fa fa-github" href="https://github.com/Chukobyte/seika-engine" style="float: left; color: #fcfcfc"> GitHub</a>
+<span><a href="../command_line_flags/" style="color: #fcfcfc;">« Previous</a></span>
+<span style="margin-left: 15px"><a href="../../python_api/" style="color: #fcfcfc">Next »</a></span>
+</span>
+</div>
+<script>var base_url = '../..';</script>
+<script defer="" src="../../js/theme.js"></script>
+<script defer="" src="../../search/main.js"></script>
+<script defer="">
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+</body>
+</html>

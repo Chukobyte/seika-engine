@@ -57,6 +57,8 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../command_line_flags/">Command Line Flags</a>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../scene_file_reference/">Scene File Reference</a>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">Python API</span></p>
 <ul>
@@ -118,7 +120,7 @@
 <div class="section">
 <h1 id="core-concepts">Core Concepts</h1>
 <h2 id="node">Node</h2>
-<p>Nodes are the basic building block of a game in Seika Engine.  There are many different node types that inherit from the base <code>Node</code> class and more information about their API usage can be found <a href="../../python_api/node/">here</a>.  Python scripts can be attached to Nodes to add to their functionality.</p>
+<p>Nodes are the basic building block of a game in Seika Engine.  There are many node types that inherit from the base <code>Node</code> class and more information about their API usage can be found <a href="../../python_api/node/">here</a>.  Python scripts can be attached to Nodes to add to their functionality.</p>
 <h2 id="scene">Scene</h2>
 <p>A scene is a collection of nodes.  Must contain a root node and there can only be one root node per scene.  Scenes can be instanced.  When a scene is destroyed the root node as well as all it's children will also be removed.  In Seika Engine all scenes are stored as json files.  Here is an example of how a scene with just a root node is serialized to json.</p>
 <pre><code class="language-json">{
@@ -126,34 +128,12 @@
     "type": "Node",
     "tags": [],
     "external_scene_source": "",
-    "components": [
-        {
-            "transform2D": {
-                "position": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "scale": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "rotation": 0,
-                "z_index": 0,
-                "z_index_relative_to_parent": false,
-                "ignore_camera": false
-            }
-        },
-        {
-            "scriptable_class": {
-                "class_path": "assets.game_projects.fighter.src.init",
-                "class_name": "Init"
-            }
-        }
-    ],
+    "components": [],
     "children": []
 }
 
 </code></pre>
+<p>More examples of how nodes are serialized can be found <a href="../scene_file_reference/">here</a>.</p>
 <h2 id="scene-tree">Scene Tree</h2>
 <p>The scene tree contains active scenes nodes.  There are two types of active scenes.</p>
 <p><strong>Main Scene</strong> </p>
