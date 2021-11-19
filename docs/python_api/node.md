@@ -20,6 +20,12 @@ entity_id : int
 
 Unique id of entity.
 
+```python
+tags : List[str]
+```
+
+List of tags that has been assigned to an entity.
+
 ```pythons
 visibility : bool
 ```
@@ -120,6 +126,78 @@ _end() -> None:
 ```
 
 Called before entity exits scene tree.
+
+---
+
+## Timer
+
+**Inherits**: [Node](#node)
+
+Class used as an interface for Timer functionality.  Must be added to scene tree in order to be used.
+
+### Properties
+
+```python
+wait_time: float
+```
+
+A timer's run time.  For example, a `wait_time` of 3.5 is equivalent three and a half seconds.
+
+```python
+time_left: float
+```
+
+How much time a timer has left to run.  When `time_left` is zero, the timer is stopped.
+
+```python
+loops: bool
+```
+
+If set to `True` the timer will start again after stopping.
+
+```python
+is_stopped: bool
+```
+
+If `True` the timer is stopped.
+
+---
+
+### Signals
+
+```python
+timeout
+```
+
+Emitted when a timer's `time_left` reached zero.
+
+---
+
+### Methods
+
+```python
+start(wait_time: Optional[float] = None) -> None:
+```
+
+Will start a timer.  Will update the `wait_time` property of a timer if the `wait_time` parameter is not `None`.
+
+```python
+stop() -> None:
+```
+
+Will stop a timer.  `timeout` signal will not be triggered.
+
+```python
+pause() -> None:
+```
+
+Pauses a timer.  Doesn't have an effect if paused already.
+
+```python
+resume() -> None:
+```
+
+Resumes a paused timer.
 
 ---
 
