@@ -64,7 +64,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#node2d">Node2D</a>
+<li class="toctree-l2"><a class="reference internal" href="#timer">Timer</a>
 <ul>
 <li class="toctree-l3"><a class="reference internal" href="#properties_1">Properties</a>
 </li>
@@ -74,7 +74,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#sprite">Sprite</a>
+<li class="toctree-l2"><a class="reference internal" href="#node2d">Node2D</a>
 <ul>
 <li class="toctree-l3"><a class="reference internal" href="#properties_2">Properties</a>
 </li>
@@ -84,7 +84,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#animatedsprite">AnimatedSprite</a>
+<li class="toctree-l2"><a class="reference internal" href="#sprite">Sprite</a>
 <ul>
 <li class="toctree-l3"><a class="reference internal" href="#properties_3">Properties</a>
 </li>
@@ -94,7 +94,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#textlabel">TextLabel</a>
+<li class="toctree-l2"><a class="reference internal" href="#animatedsprite">AnimatedSprite</a>
 <ul>
 <li class="toctree-l3"><a class="reference internal" href="#properties_4">Properties</a>
 </li>
@@ -104,7 +104,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#collisionshape2d">CollisionShape2D</a>
+<li class="toctree-l2"><a class="reference internal" href="#textlabel">TextLabel</a>
 <ul>
 <li class="toctree-l3"><a class="reference internal" href="#properties_5">Properties</a>
 </li>
@@ -114,7 +114,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#spatial">Spatial</a>
+<li class="toctree-l2"><a class="reference internal" href="#collisionshape2d">CollisionShape2D</a>
 <ul>
 <li class="toctree-l3"><a class="reference internal" href="#properties_6">Properties</a>
 </li>
@@ -124,7 +124,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#texturecube">TextureCube</a>
+<li class="toctree-l2"><a class="reference internal" href="#spatial">Spatial</a>
 <ul>
 <li class="toctree-l3"><a class="reference internal" href="#properties_7">Properties</a>
 </li>
@@ -134,7 +134,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#directionallight">DirectionalLight</a>
+<li class="toctree-l2"><a class="reference internal" href="#texturecube">TextureCube</a>
 <ul>
 <li class="toctree-l3"><a class="reference internal" href="#properties_8">Properties</a>
 </li>
@@ -144,7 +144,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#pointlight">PointLight</a>
+<li class="toctree-l2"><a class="reference internal" href="#directionallight">DirectionalLight</a>
 <ul>
 <li class="toctree-l3"><a class="reference internal" href="#properties_9">Properties</a>
 </li>
@@ -154,13 +154,23 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#spotlight">SpotLight</a>
+<li class="toctree-l2"><a class="reference internal" href="#pointlight">PointLight</a>
 <ul>
 <li class="toctree-l3"><a class="reference internal" href="#properties_10">Properties</a>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#signals_10">Signals</a>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#methods_10">Methods</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#spotlight">SpotLight</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#properties_11">Properties</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#signals_11">Signals</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#methods_11">Methods</a>
 </li>
 </ul>
 </li>
@@ -229,6 +239,9 @@
 <pre><code class="language-python">entity_id : int
 </code></pre>
 <p>Unique id of entity.</p>
+<pre><code class="language-python">tags : List[str]
+</code></pre>
+<p>List of tags that has been assigned to an entity.</p>
 <pre><code class="language-pythons">visibility : bool
 </code></pre>
 <p>Visibility of a node.  Also affects a node's children visibility.</p>
@@ -281,10 +294,46 @@ new() -&gt; seika.node.Node:
 </code></pre>
 <p>Called before entity exits scene tree.</p>
 <hr/>
+<h2 id="timer">Timer</h2>
+<p><strong>Inherits</strong>: <a href="#node">Node</a></p>
+<p>Class used as an interface for Timer functionality.  Must be added to scene tree in order to be used.</p>
+<h3 id="properties_1">Properties</h3>
+<pre><code class="language-python">wait_time: float
+</code></pre>
+<p>A timer's run time.  For example, a <code>wait_time</code> of 3.5 is equivalent three and a half seconds.</p>
+<pre><code class="language-python">time_left: float
+</code></pre>
+<p>How much time a timer has left to run.  When <code>time_left</code> is zero, the timer is stopped.</p>
+<pre><code class="language-python">loops: bool
+</code></pre>
+<p>If set to <code>True</code> the timer will start again after stopping.</p>
+<pre><code class="language-python">is_stopped: bool
+</code></pre>
+<p>If <code>True</code> the timer is stopped.</p>
+<hr/>
+<h3 id="signals_1">Signals</h3>
+<pre><code class="language-python">timeout
+</code></pre>
+<p>Emitted when a timer's <code>time_left</code> reached zero.</p>
+<hr/>
+<h3 id="methods_1">Methods</h3>
+<pre><code class="language-python">start(wait_time: Optional[float] = None) -&gt; None:
+</code></pre>
+<p>Will start a timer.  Will update the <code>wait_time</code> property of a timer if the <code>wait_time</code> parameter is not <code>None</code>.</p>
+<pre><code class="language-python">stop() -&gt; None:
+</code></pre>
+<p>Will stop a timer.  <code>timeout</code> signal will not be triggered.</p>
+<pre><code class="language-python">pause() -&gt; None:
+</code></pre>
+<p>Pauses a timer.  Doesn't have an effect if paused already.</p>
+<pre><code class="language-python">resume() -&gt; None:
+</code></pre>
+<p>Resumes a paused timer.</p>
+<hr/>
 <h2 id="node2d">Node2D</h2>
 <p><strong>Inherits</strong>: <a href="#node">Node</a></p>
 <p>Class used as an interface for scene 2D functionality.  Base class for all 2D scene node types.</p>
-<h3 id="properties_1">Properties</h3>
+<h3 id="properties_2">Properties</h3>
 <pre><code class="language-python">position: seika.math.Vector2
 </code></pre>
 <p>Current position of entity.</p>
@@ -292,10 +341,10 @@ new() -&gt; seika.node.Node:
 </code></pre>
 <p>Current rotation in degrees of entity.</p>
 <hr/>
-<h3 id="signals_1">Signals</h3>
+<h3 id="signals_2">Signals</h3>
 <p>None.</p>
 <hr/>
-<h3 id="methods_1">Methods</h3>
+<h3 id="methods_2">Methods</h3>
 <pre><code class="language-python">get_position() -&gt; seika.math.Vector2:
 </code></pre>
 <p>Get node's current position.</p>
@@ -309,7 +358,7 @@ new() -&gt; seika.node.Node:
 <h2 id="sprite">Sprite</h2>
 <p><strong>Inherits</strong>: <a href="#node2d">Node2D</a> -&gt; <a href="#node">Node</a></p>
 <p>Class used to render a sprite entity.</p>
-<h3 id="properties_2">Properties</h3>
+<h3 id="properties_3">Properties</h3>
 <pre><code class="language-python">flip_h: bool
 </code></pre>
 <p>Determines whether the x axis is flipped.</p>
@@ -326,16 +375,16 @@ new() -&gt; seika.node.Node:
 </code></pre>
 <p>Node's draw source represented as a <a href="../math/#rect2">Rect2</a>.  Will draw the loaded texture that's within the bounds of the <a href="../math/#rect2">Rect2</a>.</p>
 <hr/>
-<h3 id="signals_2">Signals</h3>
+<h3 id="signals_3">Signals</h3>
 <p>None.</p>
 <hr/>
-<h3 id="methods_2">Methods</h3>
+<h3 id="methods_3">Methods</h3>
 <p>None.</p>
 <hr/>
 <h2 id="animatedsprite">AnimatedSprite</h2>
 <p><strong>Inherits</strong>: <a href="#node2d">Node2D</a> -&gt; <a href="#node">Node</a></p>
 <p>Class used to render an animated sprite entity.</p>
-<h3 id="properties_3">Properties</h3>
+<h3 id="properties_4">Properties</h3>
 <pre><code class="language-python">is_playing: bool
 </code></pre>
 <p>Returns <code>True</code> if an animation is currently playing.</p>
@@ -358,7 +407,7 @@ new() -&gt; seika.node.Node:
 </code></pre>
 <p>Detemines whether the y axis is flipped.</p>
 <hr/>
-<h3 id="signals_3">Signals</h3>
+<h3 id="signals_4">Signals</h3>
 <pre><code class="language-python">animation_finished
 </code></pre>
 <p>Emitted when an animations is finished.</p>
@@ -366,7 +415,7 @@ new() -&gt; seika.node.Node:
 </code></pre>
 <p>Emitted when an animation frame changes.</p>
 <hr/>
-<h3 id="methods_3">Methods</h3>
+<h3 id="methods_4">Methods</h3>
 <pre><code class="language-python">play(animation_name: str, start_frame = 0) -&gt; None:
 </code></pre>
 <p>Plays animation based on the name passed in.</p>
@@ -380,7 +429,7 @@ new() -&gt; seika.node.Node:
 <h2 id="textlabel">TextLabel</h2>
 <p><strong>Inherits</strong>: <a href="#node2d">Node2D</a> -&gt; <a href="#node">Node</a></p>
 <p>Class used to render font.</p>
-<h3 id="properties_4">Properties</h3>
+<h3 id="properties_5">Properties</h3>
 <pre><code class="language-python">text: str
 </code></pre>
 <p>Text Label's text.</p>
@@ -391,10 +440,10 @@ new() -&gt; seika.node.Node:
 </code></pre>
 <p>The <a href="../assets/#font">font</a> of the text.</p>
 <hr/>
-<h3 id="signals_4">Signals</h3>
+<h3 id="signals_5">Signals</h3>
 <p>None.</p>
 <hr/>
-<h3 id="methods_4">Methods</h3>
+<h3 id="methods_5">Methods</h3>
 <pre><code class="language-python">get_text() -&gt; str:
 </code></pre>
 <p>Get node's label text.</p>
@@ -405,7 +454,7 @@ new() -&gt; seika.node.Node:
 <h2 id="collisionshape2d">CollisionShape2D</h2>
 <p><strong>Inherits</strong>: <a href="#node2d">Node2D</a> -&gt; <a href="#node">Node</a></p>
 <p>Class used to define collision shapes defined as rectangles.  May add other collision shapes in the future.</p>
-<h3 id="properties_5">Properties</h3>
+<h3 id="properties_6">Properties</h3>
 <pre><code class="language-python">collider_rect: seika.math.Rect2
 </code></pre>
 <p>Collision shape's colliding rectangle.</p>
@@ -416,10 +465,10 @@ new() -&gt; seika.node.Node:
 </code></pre>
 <p>Returns <code>True</code> if mouse cursor is on top of <code>collider_rect</code>.</p>
 <hr/>
-<h3 id="signals_5">Signals</h3>
+<h3 id="signals_6">Signals</h3>
 <p>None.</p>
 <hr/>
-<h3 id="methods_5">Methods</h3>
+<h3 id="methods_6">Methods</h3>
 <pre><code class="language-python">add_collision_exception(node: seika.node.Node) -&gt; None:
 </code></pre>
 <p>Adds a node to an exception list to ignore collisions.</p>
@@ -430,15 +479,15 @@ new() -&gt; seika.node.Node:
 <h2 id="spatial">Spatial</h2>
 <p><strong>Inherits</strong>: <a href="#node">Node</a></p>
 <p>Base class for 3D entities.</p>
-<h3 id="properties_6">Properties</h3>
+<h3 id="properties_7">Properties</h3>
 <pre><code class="language-python">position: seika.math.Vector3
 </code></pre>
 <p>Spatial's position represented as a <code>Vector3</code>.</p>
 <hr/>
-<h3 id="signals_6">Signals</h3>
+<h3 id="signals_7">Signals</h3>
 <p>None.</p>
 <hr/>
-<h3 id="methods_6">Methods</h3>
+<h3 id="methods_7">Methods</h3>
 <pre><code class="language-python">add_to_position(value: seika.math.Vector3) -&gt; None:
 </code></pre>
 <p>Adds passed in value to the Spatial's position.</p>
@@ -446,22 +495,8 @@ new() -&gt; seika.node.Node:
 <h2 id="texturecube">TextureCube</h2>
 <p><strong>Inherits</strong>: <a href="#spatial">Spatial</a> -&gt; <a href="#node">Node</a></p>
 <p>Class that represents 3D cubes with textures.</p>
-<h3 id="properties_7">Properties</h3>
-<p>None.</p>
-<hr/>
-<h3 id="signals_7">Signals</h3>
-<p>None.</p>
-<hr/>
-<h3 id="methods_7">Methods</h3>
-<p>None.</p>
-<hr/>
-<h2 id="directionallight">DirectionalLight</h2>
-<p><strong>Inherits</strong>: <a href="#spatial">Spatial</a> -&gt; <a href="#node">Node</a></p>
-<p>Class representing a directional light.</p>
 <h3 id="properties_8">Properties</h3>
-<pre><code class="language-python">direction: seika.math.Vector3
-</code></pre>
-<p>The direction that the light is pointing.</p>
+<p>None.</p>
 <hr/>
 <h3 id="signals_8">Signals</h3>
 <p>None.</p>
@@ -469,16 +504,13 @@ new() -&gt; seika.node.Node:
 <h3 id="methods_8">Methods</h3>
 <p>None.</p>
 <hr/>
-<h2 id="pointlight">PointLight</h2>
+<h2 id="directionallight">DirectionalLight</h2>
 <p><strong>Inherits</strong>: <a href="#spatial">Spatial</a> -&gt; <a href="#node">Node</a></p>
 <p>Class representing a directional light.</p>
 <h3 id="properties_9">Properties</h3>
-<pre><code class="language-python">cutoff: float
+<pre><code class="language-python">direction: seika.math.Vector3
 </code></pre>
-<p>The cutoff for the light's inner cone.</p>
-<pre><code class="language-python">outer_cutoff: float
-</code></pre>
-<p>The cutoff for the light's outer cone.</p>
+<p>The direction that the light is pointing.</p>
 <hr/>
 <h3 id="signals_9">Signals</h3>
 <p>None.</p>
@@ -486,18 +518,35 @@ new() -&gt; seika.node.Node:
 <h3 id="methods_9">Methods</h3>
 <p>None.</p>
 <hr/>
-<h2 id="spotlight">SpotLight</h2>
+<h2 id="pointlight">PointLight</h2>
 <p><strong>Inherits</strong>: <a href="#spatial">Spatial</a> -&gt; <a href="#node">Node</a></p>
-<p>Class representing a spotlight.</p>
+<p>Class representing a directional light.</p>
 <h3 id="properties_10">Properties</h3>
-<pre><code class="language-python">direction: seika.math.Vector3
+<pre><code class="language-python">cutoff: float
 </code></pre>
-<p>The direction that the light is pointing.</p>
+<p>The cutoff for the light's inner cone.</p>
+<pre><code class="language-python">outer_cutoff: float
+</code></pre>
+<p>The cutoff for the light's outer cone.</p>
 <hr/>
 <h3 id="signals_10">Signals</h3>
 <p>None.</p>
 <hr/>
 <h3 id="methods_10">Methods</h3>
+<p>None.</p>
+<hr/>
+<h2 id="spotlight">SpotLight</h2>
+<p><strong>Inherits</strong>: <a href="#spatial">Spatial</a> -&gt; <a href="#node">Node</a></p>
+<p>Class representing a spotlight.</p>
+<h3 id="properties_11">Properties</h3>
+<pre><code class="language-python">direction: seika.math.Vector3
+</code></pre>
+<p>The direction that the light is pointing.</p>
+<hr/>
+<h3 id="signals_11">Signals</h3>
+<p>None.</p>
+<hr/>
+<h3 id="methods_11">Methods</h3>
 <p>None.</p>
 <hr/>
 </div>
