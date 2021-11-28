@@ -6,6 +6,7 @@
 
 #include "scene.h"
 
+#include "../utils/json_helper.h"
 #include "../utils/json_file_helper.h"
 
 #include "../ecs/entity/entity_manager.h"
@@ -70,14 +71,18 @@ class SceneNodeJsonParser {
     }
 
     void ParseTransform2DComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson) {
-        nlohmann::json nodeTransform2DPosition = nodeComponentObjectJson["position"].get<nlohmann::json>();
-        nlohmann::json nodeTransform2DScale = nodeComponentObjectJson["scale"].get<nlohmann::json>();
-        const Vector2 nodePosition = Vector2(nodeTransform2DPosition["x"].get<float>(),nodeTransform2DPosition["y"].get<float>());
-        const Vector2 nodeScale = Vector2(nodeTransform2DScale["x"].get<float>(), nodeTransform2DScale["y"].get<float>());
-        const float nodeRotation = nodeComponentObjectJson["rotation"];
-        const int nodeZIndex = nodeComponentObjectJson["z_index"].get<int>();
-        const bool nodeZIndexIsRelativeToParent = nodeComponentObjectJson["z_index_relative_to_parent"].get<bool>();
-        const bool nodeIgnoreCamera = nodeComponentObjectJson["ignore_camera"].get<bool>();
+        nlohmann::json nodeTransform2DPosition = JsonHelper::Get<nlohmann::json>(nodeComponentObjectJson, "position");
+        nlohmann::json nodeTransform2DScale = JsonHelper::Get<nlohmann::json>(nodeComponentObjectJson, "scale");
+        const Vector2 nodePosition = Vector2(
+                                         JsonHelper::Get<float>(nodeTransform2DPosition, "x"),
+                                         JsonHelper::Get<float>(nodeTransform2DPosition, "y"));
+        const Vector2 nodeScale = Vector2(
+                                      JsonHelper::Get<float>(nodeTransform2DScale, "x"),
+                                      JsonHelper::Get<float>(nodeTransform2DScale, "y"));
+        const float nodeRotation = JsonHelper::Get<float>(nodeComponentObjectJson, "rotation");
+        const int nodeZIndex = JsonHelper::Get<int>(nodeComponentObjectJson, "z_index");
+        const bool nodeZIndexIsRelativeToParent = JsonHelper::Get<bool>(nodeComponentObjectJson, "z_index_relative_to_parent");
+        const bool nodeIgnoreCamera = JsonHelper::Get<bool>(nodeComponentObjectJson, "ignore_camera");
 
         componentManager->AddComponent(sceneNode.entity, Transform2DComponent{
             .position = nodePosition,
@@ -93,8 +98,8 @@ class SceneNodeJsonParser {
     }
 
     void ParseTimerComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson) {
-        const Uint32 nodeWaitTimeInMilliseconds = (Uint32) nodeComponentObjectJson["wait_time"].get<float>() * 1000;
-        const bool nodeLoops = nodeComponentObjectJson["loops"].get<bool>();
+        const Uint32 nodeWaitTimeInMilliseconds = (Uint32) JsonHelper::Get<float>(nodeComponentObjectJson, "wait_time") * 1000;
+        const bool nodeLoops = JsonHelper::Get<bool>(nodeComponentObjectJson, "loops");
         componentManager->AddComponent(sceneNode.entity, TimerComponent{
             .timer = timerManager->GenerateTimer(sceneNode.entity, nodeWaitTimeInMilliseconds, nodeLoops)
         });
@@ -104,19 +109,20 @@ class SceneNodeJsonParser {
     }
 
     void ParseSpriteComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson) {
-        const std::string &nodeTexturePath = nodeComponentObjectJson["texture_path"].get<std::string>();
-        nlohmann::json nodeDrawSourceJson = nodeComponentObjectJson["draw_source"].get<nlohmann::json>();
-        const float nodeDrawSourceX = nodeDrawSourceJson["x"].get<float>();
-        const float nodeDrawSourceY = nodeDrawSourceJson["y"].get<float>();
-        const float nodeDrawSourceWidth = nodeDrawSourceJson["width"].get<float>();
-        const float nodeDrawSourceHeight = nodeDrawSourceJson["height"].get<float>();
-        const bool nodeFlipX = nodeComponentObjectJson["flip_x"].get<bool>();
-        const bool nodeFlipY = nodeComponentObjectJson["flip_y"].get<bool>();
+        const std::string &nodeTexturePath = JsonHelper::Get<std::string>(nodeComponentObjectJson, "texture_path");
+        nlohmann::json nodeDrawSourceJson = JsonHelper::Get<nlohmann::json>(nodeComponentObjectJson, "draw_source");
+        const float nodeDrawSourceX = JsonHelper::Get<float>(nodeDrawSourceJson, "x");
+        const float nodeDrawSourceY = JsonHelper::Get<float>(nodeDrawSourceJson, "y");
+        const float nodeDrawSourceWidth = JsonHelper::Get<float>(nodeDrawSourceJson, "width");
+        const float nodeDrawSourceHeight = JsonHelper::Get<float>(nodeDrawSourceJson, "height");
+        const bool nodeFlipX = JsonHelper::Get<bool>(nodeComponentObjectJson, "flip_x");
+        const bool nodeFlipY = JsonHelper::Get<bool>(nodeComponentObjectJson, "flip_x");
+        nlohmann::json nodeModulateJson = JsonHelper::Get<nlohmann::json>(nodeComponentObjectJson, "modulate");
         const Color nodeModulate = Color(
-                                       nodeComponentObjectJson["modulate"]["red"].get<float>(),
-                                       nodeComponentObjectJson["modulate"]["green"].get<float>(),
-                                       nodeComponentObjectJson["modulate"]["blue"].get<float>(),
-                                       nodeComponentObjectJson["modulate"]["alpha"].get<float>()
+                                       JsonHelper::Get<float>(nodeModulateJson, "red"),
+                                       JsonHelper::Get<float>(nodeModulateJson, "green"),
+                                       JsonHelper::Get<float>(nodeModulateJson, "blue"),
+                                       JsonHelper::Get<float>(nodeModulateJson, "alpha")
                                    );
 
         componentManager->AddComponent(sceneNode.entity, SpriteComponent{
@@ -133,32 +139,33 @@ class SceneNodeJsonParser {
     }
 
     void ParseAnimatedSpriteComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson) {
-        const std::string &nodeCurrentAnimationName = nodeComponentObjectJson["current_animation"].get<std::string>();
-        const bool nodeIsPlaying = nodeComponentObjectJson["is_playing"].get<bool>();
-        const bool nodeFlipX = nodeComponentObjectJson["flip_x"].get<bool>();
-        const bool nodeFlipY = nodeComponentObjectJson["flip_y"].get<bool>();
+        const std::string &nodeCurrentAnimationName = JsonHelper::Get<std::string>(nodeComponentObjectJson, "current_animation");
+        const bool nodeIsPlaying = JsonHelper::Get<bool>(nodeComponentObjectJson, "is_playing");
+        const bool nodeFlipX = JsonHelper::Get<bool>(nodeComponentObjectJson, "flip_x");
+        const bool nodeFlipY = JsonHelper::Get<bool>(nodeComponentObjectJson, "flip_y");
+        nlohmann::json nodeModulateJson = JsonHelper::Get<nlohmann::json>(nodeComponentObjectJson, "modulate");
         const Color nodeModulate = Color(
-                                       nodeComponentObjectJson["modulate"]["red"].get<float>(),
-                                       nodeComponentObjectJson["modulate"]["green"].get<float>(),
-                                       nodeComponentObjectJson["modulate"]["blue"].get<float>(),
-                                       nodeComponentObjectJson["modulate"]["alpha"].get<float>()
+                                       JsonHelper::Get<float>(nodeModulateJson, "red"),
+                                       JsonHelper::Get<float>(nodeModulateJson, "green"),
+                                       JsonHelper::Get<float>(nodeModulateJson, "blue"),
+                                       JsonHelper::Get<float>(nodeModulateJson, "alpha")
                                    );
-        nlohmann::json nodeAnimationsJsonArray = nodeComponentObjectJson["animations"].get<nlohmann::json>();
+        nlohmann::json nodeAnimationsJsonArray = JsonHelper::Get<nlohmann::json>(nodeComponentObjectJson, "animations");
         std::map<std::string, Animation> nodeAnimations;
 
         for (nlohmann::json nodeAnimationJson : nodeAnimationsJsonArray) {
-            const std::string &nodeAnimationName = nodeAnimationJson["name"].get<std::string>();
-            const int nodeAnimationSpeed = nodeAnimationJson["speed"].get<int>();
-            nlohmann::json nodeAnimationFramesJsonArray = nodeAnimationJson["frames"].get<nlohmann::json>();
+            const std::string &nodeAnimationName = JsonHelper::Get<std::string>(nodeAnimationJson, "name");
+            const int nodeAnimationSpeed = JsonHelper::Get<int>(nodeAnimationJson, "speed");
+            nlohmann::json nodeAnimationFramesJsonArray = JsonHelper::Get<nlohmann::json>(nodeAnimationJson, "frames");
             std::map<unsigned int, AnimationFrame> animationFrames;
             for (nlohmann::json nodeAnimationFrameJson : nodeAnimationFramesJsonArray) {
-                const int nodeAnimationFrameNumber = nodeAnimationFrameJson["frame"].get<int>();
-                const std::string &nodeAnimationTexturePath = nodeAnimationFrameJson["texture_path"].get<std::string>();
-                nlohmann::json nodeAnimationFrameDrawSourceJson = nodeAnimationFrameJson["draw_source"].get<nlohmann::json>();
-                const float nodeAnimationFrameDrawSourceX = nodeAnimationFrameDrawSourceJson["x"].get<float>();
-                const float nodeAnimationFrameDrawSourceY = nodeAnimationFrameDrawSourceJson["y"].get<float>();
-                const float nodeAnimationFrameDrawSourceWidth = nodeAnimationFrameDrawSourceJson["width"].get<float>();
-                const float nodeAnimationFrameDrawSourceHeight = nodeAnimationFrameDrawSourceJson["height"].get<float>();
+                const int nodeAnimationFrameNumber = JsonHelper::Get<int>(nodeAnimationFrameJson, "frame");
+                const std::string &nodeAnimationTexturePath = JsonHelper::Get<std::string>(nodeAnimationFrameJson, "texture_path");
+                nlohmann::json nodeAnimationFrameDrawSourceJson = JsonHelper::Get<nlohmann::json>(nodeAnimationFrameJson, "draw_source");
+                const float nodeAnimationFrameDrawSourceX = JsonHelper::Get<float>(nodeAnimationFrameDrawSourceJson, "x");
+                const float nodeAnimationFrameDrawSourceY = JsonHelper::Get<float>(nodeAnimationFrameDrawSourceJson, "y");
+                const float nodeAnimationFrameDrawSourceWidth = JsonHelper::Get<float>(nodeAnimationFrameDrawSourceJson, "width");
+                const float nodeAnimationFrameDrawSourceHeight = JsonHelper::Get<float>(nodeAnimationFrameDrawSourceJson, "height");
                 AnimationFrame nodeAnimationFrame = {
                     .texture = assetManager->GetTexture(nodeAnimationTexturePath),
                     .drawSource = Rect2(nodeAnimationFrameDrawSourceX, nodeAnimationFrameDrawSourceY, nodeAnimationFrameDrawSourceWidth, nodeAnimationFrameDrawSourceHeight),
@@ -193,14 +200,14 @@ class SceneNodeJsonParser {
     }
 
     void ParseTextLabelComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson) {
-        const std::string &nodeText = nodeComponentObjectJson["text"].get<std::string>();
-        const std::string &nodeFontUID = nodeComponentObjectJson["font_uid"].get<std::string>();
-        nlohmann::json nodeColorJson = nodeComponentObjectJson["color"].get<nlohmann::json>();
+        const std::string &nodeText = JsonHelper::Get<std::string>(nodeComponentObjectJson, "text");
+        const std::string &nodeFontUID = JsonHelper::Get<std::string>(nodeComponentObjectJson, "font_uid");
+        nlohmann::json nodeColorJson = JsonHelper::Get<nlohmann::json>(nodeComponentObjectJson, "color");
         const Color nodeColor = Color(
-                                    nodeColorJson["red"].get<float>(),
-                                    nodeColorJson["green"].get<float>(),
-                                    nodeColorJson["blue"].get<float>(),
-                                    nodeColorJson["alpha"].get<float>()
+                                    JsonHelper::Get<float>(nodeColorJson, "red"),
+                                    JsonHelper::Get<float>(nodeColorJson, "green"),
+                                    JsonHelper::Get<float>(nodeColorJson, "blue"),
+                                    JsonHelper::Get<float>(nodeColorJson, "alpha")
                                 );
 
         componentManager->AddComponent(sceneNode.entity, TextLabelComponent{
@@ -215,23 +222,30 @@ class SceneNodeJsonParser {
     }
 
     void ParseColliderComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson) {
-        nlohmann::json nodeRectangleJson = nodeComponentObjectJson["rectangle"].get<nlohmann::json>();
-        const float nodeX = nodeRectangleJson["x"].get<float>();
-        const float nodeY = nodeRectangleJson["y"].get<float>();
-        const float nodeWidth = nodeRectangleJson["width"].get<float>();
-        const float nodeHeight = nodeRectangleJson["height"].get<float>();
+        nlohmann::json nodeRectangleJson = JsonHelper::Get<nlohmann::json>(nodeComponentObjectJson, "rectangle");
+        const float nodeX = JsonHelper::Get<float>(nodeRectangleJson, "x");
+        const float nodeY = JsonHelper::Get<float>(nodeRectangleJson, "y");
+        const float nodeWidth = JsonHelper::Get<float>(nodeRectangleJson, "width");
+        const float nodeHeight = JsonHelper::Get<float>(nodeRectangleJson, "height");
+        // Setting default collider color
+        nlohmann::json defaultColor;
+        defaultColor["red"] = DEFAULT_COLLIDER_COMPONENT_COLOR.r;
+        defaultColor["green"] = DEFAULT_COLLIDER_COMPONENT_COLOR.g;
+        defaultColor["blue"] = DEFAULT_COLLIDER_COMPONENT_COLOR.b;
+        defaultColor["alpha"] = DEFAULT_COLLIDER_COMPONENT_COLOR.a;
+        nlohmann::json nodeColor = JsonHelper::GetDefault<nlohmann::json>(nodeRectangleJson, "color", defaultColor);
+        Color colliderColor = Color(
+                                  JsonHelper::Get<float>(nodeColor, "red"),
+                                  JsonHelper::Get<float>(nodeColor, "green"),
+                                  JsonHelper::Get<float>(nodeColor, "blue"),
+                                  JsonHelper::Get<float>(nodeColor, "alpha")
+                              );
 
-        ColliderComponent colliderComponent = ColliderComponent{
-            .collider = Rect2(nodeX, nodeY, nodeWidth, nodeHeight),
-            .collisionExceptions = { sceneNode.entity }
+        ColliderComponent colliderComponent = {
+            Rect2(nodeX, nodeY, nodeWidth, nodeHeight),
+            { sceneNode.entity },
+            colliderColor
         };
-        if (nodeComponentObjectJson.contains("color")) {
-            const float nodeColorRed = nodeComponentObjectJson["color"]["red"].get<float>();
-            const float nodeColorGreen = nodeComponentObjectJson["color"]["green"].get<float>();
-            const float nodeColorBlue = nodeComponentObjectJson["color"]["blue"].get<float>();
-            const float nodeColorAlpha = nodeComponentObjectJson["color"]["alpha"].get<float>();
-            colliderComponent.color = Color(nodeColorRed, nodeColorGreen, nodeColorBlue, nodeColorAlpha);
-        }
         componentManager->AddComponent(sceneNode.entity, colliderComponent);
         auto signature = entityManager->GetSignature(sceneNode.entity);
         signature.set(componentManager->GetComponentType<ColliderComponent>(), true);
@@ -239,21 +253,24 @@ class SceneNodeJsonParser {
     }
 
     void ParseTransform3DComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson) {
+        nlohmann::json positionJson = JsonHelper::Get<nlohmann::json>(nodeComponentObjectJson, "position");
         Vector3 nodePosition = Vector3(
-                                   nodeComponentObjectJson["position"]["x"].get<float>(),
-                                   nodeComponentObjectJson["position"]["y"].get<float>(),
-                                   nodeComponentObjectJson["position"]["z"].get<float>()
+                                   JsonHelper::Get<float>(positionJson, "x"),
+                                   JsonHelper::Get<float>(positionJson, "y"),
+                                   JsonHelper::Get<float>(positionJson, "z")
                                );
+        nlohmann::json scaleJson = JsonHelper::Get<nlohmann::json>(nodeComponentObjectJson, "scale");
         Vector3 nodeScale = Vector3(
-                                nodeComponentObjectJson["scale"]["x"].get<float>(),
-                                nodeComponentObjectJson["scale"]["y"].get<float>(),
-                                nodeComponentObjectJson["scale"]["z"].get<float>()
+                                JsonHelper::Get<float>(scaleJson, "x"),
+                                JsonHelper::Get<float>(scaleJson, "y"),
+                                JsonHelper::Get<float>(scaleJson, "z")
                             );
-        const float nodeRotation = nodeComponentObjectJson["rotation"].get<float>();
+        const float nodeRotation = JsonHelper::Get<float>(nodeComponentObjectJson, "rotation");
+        nlohmann::json rotationAxisJson = JsonHelper::Get<nlohmann::json>(nodeComponentObjectJson, "rotation_axis");
         Vector3 nodeRotationAxis = Vector3(
-                                       nodeComponentObjectJson["scale"]["x"].get<float>(),
-                                       nodeComponentObjectJson["scale"]["y"].get<float>(),
-                                       nodeComponentObjectJson["scale"]["z"].get<float>()
+                                       JsonHelper::Get<float>(rotationAxisJson, "x"),
+                                       JsonHelper::Get<float>(rotationAxisJson, "y"),
+                                       JsonHelper::Get<float>(rotationAxisJson, "z")
                                    );
         componentManager->AddComponent(sceneNode.entity, Transform3DComponent{
             .position = nodePosition,
@@ -267,24 +284,28 @@ class SceneNodeJsonParser {
     }
 
     void ParseMaterialComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson) {
+        nlohmann::json ambientJson = JsonHelper::Get<nlohmann::json>(nodeComponentObjectJson, "ambient");
         Vector3 nodeAmbient = Vector3(
-                                  nodeComponentObjectJson["ambient"]["x"].get<float>(),
-                                  nodeComponentObjectJson["ambient"]["y"].get<float>(),
-                                  nodeComponentObjectJson["ambient"]["z"].get<float>()
+                                  JsonHelper::Get<float>(ambientJson, "x"),
+                                  JsonHelper::Get<float>(ambientJson, "y"),
+                                  JsonHelper::Get<float>(ambientJson, "z")
                               );
+        nlohmann::json diffuseJson = JsonHelper::Get<nlohmann::json>(nodeComponentObjectJson, "diffuse");
         Vector3 nodeDiffuse = Vector3(
-                                  nodeComponentObjectJson["diffuse"]["x"].get<float>(),
-                                  nodeComponentObjectJson["diffuse"]["y"].get<float>(),
-                                  nodeComponentObjectJson["diffuse"]["z"].get<float>()
+                                  JsonHelper::Get<float>(diffuseJson, "x"),
+                                  JsonHelper::Get<float>(diffuseJson, "y"),
+                                  JsonHelper::Get<float>(diffuseJson, "z")
                               );
+        nlohmann::json specularJson = JsonHelper::Get<nlohmann::json>(nodeComponentObjectJson, "specular");
         Vector3 nodeSpecular = Vector3(
-                                   nodeComponentObjectJson["specular"]["x"].get<float>(),
-                                   nodeComponentObjectJson["specular"]["y"].get<float>(),
-                                   nodeComponentObjectJson["specular"]["z"].get<float>()
+                                   JsonHelper::Get<float>(specularJson, "x"),
+                                   JsonHelper::Get<float>(specularJson, "y"),
+                                   JsonHelper::Get<float>(specularJson, "z")
                                );
-        float nodeShininess = nodeComponentObjectJson["shininess"].get<float>();
-        const std::string &nodeDiffuseMapTexturePath = nodeComponentObjectJson["diffuse_map_texture_path"].get<std::string>();
-        const std::string &nodeSpecularMapTexturePath = nodeComponentObjectJson["specular_map_texture_path"].get<std::string>();
+        const float nodeShininess = JsonHelper::Get<float>(nodeComponentObjectJson, "shininess");
+        const std::string &nodeDiffuseMapTexturePath = JsonHelper::Get<std::string>(nodeComponentObjectJson, "diffuse_map_texture_path");
+        const std::string &nodeSpecularMapTexturePath = JsonHelper::Get<std::string>(nodeComponentObjectJson, "specular_map_texture_path");
+
         componentManager->AddComponent(sceneNode.entity, MaterialComponent{
             .ambient = nodeAmbient,
             .diffuse = nodeDiffuse,
@@ -306,10 +327,11 @@ class SceneNodeJsonParser {
     }
 
     void ParseDirectionalLightComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson) {
+        nlohmann::json directionJson = JsonHelper::Get<nlohmann::json>(nodeComponentObjectJson, "direction");
         Vector3 nodeDirection = Vector3(
-                                    nodeComponentObjectJson["direction"]["x"].get<float>(),
-                                    nodeComponentObjectJson["direction"]["y"].get<float>(),
-                                    nodeComponentObjectJson["direction"]["z"].get<float>()
+                                    JsonHelper::Get<float>(directionJson, "x"),
+                                    JsonHelper::Get<float>(directionJson, "y"),
+                                    JsonHelper::Get<float>(directionJson, "z")
                                 );
 
         componentManager->AddComponent(sceneNode.entity, DirectionalLightComponent{.direction = nodeDirection});
@@ -319,9 +341,9 @@ class SceneNodeJsonParser {
     }
 
     void ParsePointLightComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson) {
-        const float nodeLinear = nodeComponentObjectJson["linear"].get<float>();
-        const float nodeQuadratic = nodeComponentObjectJson["quadratic"].get<float>();
-        const float nodeConstant = nodeComponentObjectJson["constant"].get<float>();
+        const float nodeLinear = JsonHelper::Get<float>(nodeComponentObjectJson, "linear");
+        const float nodeQuadratic = JsonHelper::Get<float>(nodeComponentObjectJson, "quadratic");
+        const float nodeConstant = JsonHelper::Get<float>(nodeComponentObjectJson, "constant");
 
         componentManager->AddComponent(sceneNode.entity, PointLightComponent{
             .linear = nodeLinear,
@@ -334,17 +356,18 @@ class SceneNodeJsonParser {
     }
 
     void ParseSpotLightComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson) {
+        nlohmann::json directionJson = JsonHelper::Get<nlohmann::json>(nodeComponentObjectJson, "direction");
         Vector3 nodeDirection = Vector3(
-                                    nodeComponentObjectJson["direction"]["x"].get<float>(),
-                                    nodeComponentObjectJson["direction"]["y"].get<float>(),
-                                    nodeComponentObjectJson["direction"]["z"].get<float>()
+                                    JsonHelper::Get<float>(directionJson, "x"),
+                                    JsonHelper::Get<float>(directionJson, "y"),
+                                    JsonHelper::Get<float>(directionJson, "z")
                                 );
-        const bool nodeIsAttachedToCamera = nodeComponentObjectJson["is_attached_to_camera"].get<bool>();
-        const float nodeLinear = nodeComponentObjectJson["linear"].get<float>();
-        const float nodeQuadratic = nodeComponentObjectJson["quadratic"].get<float>();
-        const float nodeConstant = nodeComponentObjectJson["constant"].get<float>();
-        const float nodeCutoff = nodeComponentObjectJson["cutoff"].get<float>();
-        const float nodeOuterCutoff = nodeComponentObjectJson["outer_cutoff"].get<float>();
+        const bool nodeIsAttachedToCamera = JsonHelper::Get<bool>(nodeComponentObjectJson, "is_attached_to_camera");
+        const float nodeLinear = JsonHelper::Get<float>(nodeComponentObjectJson, "linear");
+        const float nodeQuadratic = JsonHelper::Get<float>(nodeComponentObjectJson, "quadratic");
+        const float nodeConstant = JsonHelper::Get<float>(nodeComponentObjectJson, "constant");
+        const float nodeCutoff = JsonHelper::Get<float>(nodeComponentObjectJson, "cutoff");
+        const float nodeOuterCutoff = JsonHelper::Get<float>(nodeComponentObjectJson, "outer_cutoff");
 
         componentManager->AddComponent(sceneNode.entity, SpotLightComponent{
             .direction = nodeDirection,
@@ -361,8 +384,9 @@ class SceneNodeJsonParser {
     }
 
     void ParseScriptableClassComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson) {
-        const std::string &nodeClassPath = nodeComponentObjectJson["class_path"].get<std::string>();
-        const std::string &nodeClassName = nodeComponentObjectJson["class_name"].get<std::string>();
+        const std::string &nodeClassPath = JsonHelper::Get<std::string>(nodeComponentObjectJson, "class_path");
+        const std::string &nodeClassName = JsonHelper::Get<std::string>(nodeComponentObjectJson, "class_name");
+
 
         componentManager->AddComponent(sceneNode.entity, ScriptableClassComponent{
             .classPath = nodeClassPath,
@@ -381,17 +405,17 @@ class SceneNodeJsonParser {
     SceneNode ParseSceneJson(nlohmann::json nodeJson, bool isRoot) {
         SceneNode sceneNode;
         if (isRoot) {
-            sceneNode = SceneNode{.entity = entityManager->CreateEntity()};
+            sceneNode = {entityManager->CreateEntity()};
         } else {
-            sceneNode = SceneNode{.entity = entityManager->CreateEntity(), .parent = nodeJson["parent_entity_id"].get<unsigned int>()};
+            sceneNode = {entityManager->CreateEntity(), JsonHelper::Get<unsigned int>(nodeJson, "parent_entity_id")};
         }
 
-        const std::string &nodeName = nodeJson["name"].get<std::string>();
-        const std::string &nodeType = nodeJson["type"].get<std::string>();
-        nlohmann::json nodeTagsJsonArray = nodeJson["tags"].get<nlohmann::json>();
-        const std::string &nodeExternalSceneSource = nodeJson["external_scene_source"].get<std::string>();
-        nlohmann::json nodeComponentJsonArray = nodeJson["components"].get<nlohmann::json>();
-        nlohmann::json nodeChildrenJsonArray = nodeJson["children"].get<nlohmann::json>();
+        const std::string &nodeName = JsonHelper::Get<std::string>(nodeJson, "name");
+        const std::string &nodeType = JsonHelper::Get<std::string>(nodeJson, "type");
+        nlohmann::json nodeTagsJsonArray = JsonHelper::Get<nlohmann::json>(nodeJson, "tags");
+        const std::string &nodeExternalSceneSource = JsonHelper::Get<std::string>(nodeJson, "external_scene_source");
+        nlohmann::json nodeComponentJsonArray = JsonHelper::Get<nlohmann::json>(nodeJson, "components");
+        nlohmann::json nodeChildrenJsonArray = JsonHelper::Get<nlohmann::json>(nodeJson, "children");
 
         // Configure node type component
         std::vector<std::string> nodeTags;
