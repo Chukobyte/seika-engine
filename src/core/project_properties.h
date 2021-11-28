@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include "utils/json_helper.h"
 #include "utils/json_file_helper.h"
 #include "utils/logger.h"
 #include "utils/archive_loader.h"
@@ -66,35 +67,36 @@ class ProjectProperties {
     };
 
     void ConfigureConfigurationJson(const nlohmann::json &projectConfigurationsJson) {
-        gameTitle = projectConfigurationsJson["game_title"].get<std::string>();
-        initialScenePath = projectConfigurationsJson["initial_scene"].get<std::string>();
-        nlohmann::json baseResolutionJson = projectConfigurationsJson["base_resolution"].get<nlohmann::json>();
-        windowWidth = baseResolutionJson["width"].get<int>();
-        windowHeight = baseResolutionJson["height"].get<int>();
-        areColliderVisible = projectConfigurationsJson["colliders_visible"].get<bool>();
-        targetFPS = projectConfigurationsJson["target_fps"].get<unsigned int>();
-        const float backgroundRed = projectConfigurationsJson["background_color"]["red"].get<float>();
-        const float backgroundGreen = projectConfigurationsJson["background_color"]["green"].get<float>();
-        const float backgroundBlue = projectConfigurationsJson["background_color"]["blue"].get<float>();
+        gameTitle = JsonHelper::Get<std::string>(projectConfigurationsJson, "game_title");
+        initialScenePath = JsonHelper::Get<std::string>(projectConfigurationsJson, "initial_scene");
+        nlohmann::json baseResolutionJson = JsonHelper::Get<nlohmann::json>(projectConfigurationsJson, "base_resolution");
+        windowWidth = JsonHelper::Get<int>(baseResolutionJson, "width");
+        windowHeight = JsonHelper::Get<int>(baseResolutionJson, "height");
+        areColliderVisible = JsonHelper::Get<bool>(projectConfigurationsJson, "colliders_visible");
+        targetFPS = JsonHelper::Get<unsigned int>(projectConfigurationsJson, "target_fps");
+        nlohmann::json backgroundColorJson = JsonHelper::Get<nlohmann::json>(projectConfigurationsJson, "background_color");
+        const float backgroundRed = JsonHelper::Get<float>(backgroundColorJson, "red");
+        const float backgroundGreen = JsonHelper::Get<float>(backgroundColorJson, "green");
+        const float backgroundBlue = JsonHelper::Get<float>(backgroundColorJson, "blue");
         backgroundDrawColor = Color(backgroundRed, backgroundGreen, backgroundBlue);
 
-        nlohmann::json assetsJsonArray = projectConfigurationsJson["assets"].get<nlohmann::json>();
+        nlohmann::json assetsJsonArray = JsonHelper::Get<nlohmann::json>(projectConfigurationsJson, "assets");
         LoadProjectAssets(assetsJsonArray);
 
-        nlohmann::json inputActionsJsonArray = projectConfigurationsJson["input_actions"].get<nlohmann::json>();
+        nlohmann::json inputActionsJsonArray = JsonHelper::Get<nlohmann::json>(projectConfigurationsJson, "input_actions");
         LoadProjectInputActions(inputActionsJsonArray);
     }
 
     void LoadProjectAssets(nlohmann::json assetsJsonArray) {
         AssetConfigurations loadedAssetConfigurations;
         for (nlohmann::json assetJson : assetsJsonArray) {
-            const std::string &assetType = assetJson["type"].get<std::string>();
-            const std::string &assetsFilePath = assetJson["file_path"].get<std::string>();
+            const std::string &assetType = JsonHelper::Get<std::string>(assetJson, "type");
+            const std::string &assetsFilePath = JsonHelper::Get<std::string>(assetJson, "file_path");
             if (assetType == "texture") {
-                const std::string &assetWrapS = assetJson["wrap_s"].get<std::string>();
-                const std::string &assetWrapT = assetJson["wrap_s"].get<std::string>();
-                const std::string &assetFilterMin = assetJson["filter_min"].get<std::string>();
-                const std::string &assetFilterMax = assetJson["filter_max"].get<std::string>();
+                const std::string &assetWrapS = JsonHelper::Get<std::string>(assetJson, "wrap_s");
+                const std::string &assetWrapT = JsonHelper::Get<std::string>(assetJson, "wrap_t");
+                const std::string &assetFilterMin = JsonHelper::Get<std::string>(assetJson, "filter_min");
+                const std::string &assetFilterMax = JsonHelper::Get<std::string>(assetJson, "filter_max");
                 loadedAssetConfigurations.textureConfigurations.emplace_back(TextureConfiguration{
                     .filePath = assetsFilePath,
                     .wrapS = assetWrapS,
@@ -103,8 +105,8 @@ class ProjectProperties {
                     .filterMax = assetFilterMax
                 });
             } else if (assetType == "font") {
-                const std::string &fontId = assetJson["uid"].get<std::string>();
-                int fontSize = assetJson["size"].get<int>();
+                const std::string &fontId = JsonHelper::Get<std::string>(assetJson, "uid");
+                int fontSize = JsonHelper::Get<int>(assetJson, "size");
                 loadedAssetConfigurations.fontConfigurations.emplace_back(FontConfiguration{
                     .filePath = assetsFilePath,
                     .uid = fontId,
@@ -126,9 +128,9 @@ class ProjectProperties {
     void LoadProjectInputActions(nlohmann::json inputActionsJsonArray) {
         InputActionsConfigurations loadInputActionsConfigurations;
         for (nlohmann::json inputActionJson : inputActionsJsonArray) {
-            const std::string &actionName = inputActionJson["name"].get<std::string>();
+            const std::string &actionName = JsonHelper::Get<std::string>(inputActionJson, "name");
             std::vector<std::string> inputActionValues;
-            nlohmann::json actionValuesArray = inputActionJson["values"].get<nlohmann::json>();
+            nlohmann::json actionValuesArray = JsonHelper::Get<nlohmann::json>(inputActionJson, "values");
             for (const auto &value : actionValuesArray) {
                 inputActionValues.emplace_back(value);
             }
