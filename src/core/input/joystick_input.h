@@ -11,20 +11,18 @@
 
 #include "input_event_state.h"
 
-using JoystickButtonType = int;
-
-enum _JoystickButtonType {
-    JoystickButtonType_INVALID = -1,
-    JoystickButtonType_BUTTON_A = 0,
-    JoystickButtonType_BUTTON_B = 1,
-    JoystickButtonType_BUTTON_X = 2,
-    JoystickButtonType_BUTTON_Y = 3,
-    JoystickButtonType_BUTTON_BACK = 6,
-    JoystickButtonType_BUTTON_START = 7,
-    JoystickButtonType_BUTTON_LEFT_SHOULDER = 4,
-    JoystickButtonType_BUTTON_RIGHT_SHOULDER = 5,
-    JoystickButtonType_BUTTON_LEFT_AXIS = 8,
-    JoystickButtonType_BUTTON_RIGHT_AXIS = 9,
+enum JoystickButtonType : int {
+    INVALID = -1,
+    BUTTON_A = 0,
+    BUTTON_B = 1,
+    BUTTON_X = 2,
+    BUTTON_Y = 3,
+    BUTTON_BACK = 6,
+    BUTTON_START = 7,
+    BUTTON_LEFT_SHOULDER = 4,
+    BUTTON_RIGHT_SHOULDER = 5,
+    BUTTON_LEFT_AXIS = 8,
+    BUTTON_RIGHT_AXIS = 9,
 };
 
 const std::string JOYSTICK_BUTTON_A{"joystick_button_a"};
@@ -53,29 +51,29 @@ const std::string JOYSTICK_RIGHT_ANALOG_RIGHT{"joystick_right_analog_right"};
 const std::string JOYSTICK_RIGHT_ANALOG_LEFT{"joystick_right_analog_left"};
 
 static std::map<std::string, JoystickButtonType> JOYSTICK_NAME_TO_BUTTON_TYPE_MAP = {
-    {JOYSTICK_BUTTON_A, JoystickButtonType_BUTTON_A},
-    {JOYSTICK_BUTTON_B, JoystickButtonType_BUTTON_B},
-    {JOYSTICK_BUTTON_X, JoystickButtonType_BUTTON_X},
-    {JOYSTICK_BUTTON_Y, JoystickButtonType_BUTTON_Y},
-    {JOYSTICK_START, JoystickButtonType_BUTTON_START},
-    {JOYSTICK_BACK, JoystickButtonType_BUTTON_BACK},
-    {JOYSTICK_LEFT_SHOULDER, JoystickButtonType_BUTTON_LEFT_SHOULDER},
-    {JOYSTICK_RIGHT_SHOULDER, JoystickButtonType_BUTTON_RIGHT_SHOULDER},
-    {JOYSTICK_LEFT_ANALOG, JoystickButtonType_BUTTON_LEFT_AXIS},
-    {JOYSTICK_RIGHT_ANALOG, JoystickButtonType_BUTTON_RIGHT_AXIS},
+    {JOYSTICK_BUTTON_A, JoystickButtonType::BUTTON_A},
+    {JOYSTICK_BUTTON_B, JoystickButtonType::BUTTON_B},
+    {JOYSTICK_BUTTON_X, JoystickButtonType::BUTTON_X},
+    {JOYSTICK_BUTTON_Y, JoystickButtonType::BUTTON_Y},
+    {JOYSTICK_START, JoystickButtonType::BUTTON_START},
+    {JOYSTICK_BACK, JoystickButtonType::BUTTON_BACK},
+    {JOYSTICK_LEFT_SHOULDER, JoystickButtonType::BUTTON_LEFT_SHOULDER},
+    {JOYSTICK_RIGHT_SHOULDER, JoystickButtonType::BUTTON_RIGHT_SHOULDER},
+    {JOYSTICK_LEFT_ANALOG, JoystickButtonType::BUTTON_LEFT_AXIS},
+    {JOYSTICK_RIGHT_ANALOG, JoystickButtonType::BUTTON_RIGHT_AXIS},
 };
 
 static std::map<JoystickButtonType, std::string> JOYSTICK_BUTTON_TYPE_TO_NAME_MAP = {
-    {JoystickButtonType_BUTTON_A, JOYSTICK_BUTTON_A},
-    {JoystickButtonType_BUTTON_B, JOYSTICK_BUTTON_B},
-    {JoystickButtonType_BUTTON_X, JOYSTICK_BUTTON_X},
-    {JoystickButtonType_BUTTON_Y, JOYSTICK_BUTTON_Y},
-    {JoystickButtonType_BUTTON_START, JOYSTICK_START},
-    {JoystickButtonType_BUTTON_BACK, JOYSTICK_BACK},
-    {JoystickButtonType_BUTTON_LEFT_SHOULDER, JOYSTICK_LEFT_SHOULDER},
-    {JoystickButtonType_BUTTON_RIGHT_SHOULDER, JOYSTICK_RIGHT_SHOULDER},
-    {JoystickButtonType_BUTTON_LEFT_AXIS, JOYSTICK_LEFT_ANALOG},
-    {JoystickButtonType_BUTTON_RIGHT_AXIS, JOYSTICK_RIGHT_ANALOG},
+    {JoystickButtonType::BUTTON_A, JOYSTICK_BUTTON_A},
+    {JoystickButtonType::BUTTON_B, JOYSTICK_BUTTON_B},
+    {JoystickButtonType::BUTTON_X, JOYSTICK_BUTTON_X},
+    {JoystickButtonType::BUTTON_Y, JOYSTICK_BUTTON_Y},
+    {JoystickButtonType::BUTTON_START, JOYSTICK_START},
+    {JoystickButtonType::BUTTON_BACK, JOYSTICK_BACK},
+    {JoystickButtonType::BUTTON_LEFT_SHOULDER, JOYSTICK_LEFT_SHOULDER},
+    {JoystickButtonType::BUTTON_RIGHT_SHOULDER, JOYSTICK_RIGHT_SHOULDER},
+    {JoystickButtonType::BUTTON_LEFT_AXIS, JOYSTICK_LEFT_ANALOG},
+    {JoystickButtonType::BUTTON_RIGHT_AXIS, JOYSTICK_RIGHT_ANALOG},
 };
 
 static std::map<std::string, SDL_GameControllerButton> ACTION_BUTTON_MAPPINGS = {

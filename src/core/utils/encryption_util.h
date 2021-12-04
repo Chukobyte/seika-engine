@@ -5,11 +5,9 @@
 #include <sys/stat.h>
 #include "cassert"
 
-using EncryptionCoding = const int&;
-
-enum _EncryptionCoding {
-    EncryptionCoding_ENCRYPT = 1,
-    EncryptionCoding_DECRYPT = -1,
+enum class EncryptionCoding : int {
+    ENCRYPT = 1,
+    DECRYPT = -1,
 };
 
 class EncryptionUtil {
@@ -20,7 +18,7 @@ class EncryptionUtil {
     static void cypherFile (std::fstream& file, const std::string& key, EncryptionCoding coding) {
         char c;
         for (int i=0; file.get(c); i++) {
-            c += coding * getCypherKeyValue(key, i);
+            c += (int) coding * getCypherKeyValue(key, i);
             file.seekg(i, file.beg);
             file.put(c);
         }
@@ -43,13 +41,13 @@ class EncryptionUtil {
     static void EncryptFile(const std::string &filePath, const std::string &key) {
         assert(DoesFileExist(filePath) && "File doesn't exist!");
         std::fstream fileStream(filePath);
-        cypherFile(fileStream, key, EncryptionCoding_ENCRYPT);
+        cypherFile(fileStream, key, EncryptionCoding::ENCRYPT);
     }
 
     static void DecryptFile(const std::string &filePath, const std::string &key) {
         assert(DoesFileExist(filePath) && "File doesn't exist!");
         std::fstream fileStream(filePath, std::ios::in | std::ios::out);
-        cypherFile(fileStream, key, EncryptionCoding_DECRYPT);
+        cypherFile(fileStream, key, EncryptionCoding::DECRYPT);
     }
 };
 

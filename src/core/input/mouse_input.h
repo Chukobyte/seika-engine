@@ -15,17 +15,6 @@ const std::string MOUSE_BUTTON_LEFT{"mb_left"};
 const std::string MOUSE_BUTTON_RIGHT{"mb_right"};
 const std::string MOUSE_BUTTON_MIDDLE{"mb_middle"};
 
-using MouseEventType = unsigned int;
-
-enum _MouseEventType {
-    MouseEventType_MOUSE_BUTTON_LEFT_PRESSED = 0,
-    MouseEventType_MOUSE_BUTTON_LEFT_JUST_PRESSED = 1,
-    MouseEventType_MOUSE_BUTTON_LEFT_JUST_RELEASED = 2,
-    MouseEventType_MOUSE_BUTTON_RIGHT_PRESSED = 3,
-    MouseEventType_MOUSE_BUTTON_RIGHT_JUST_PRESSED = 4,
-    MouseEventType_MOUSE_BUTTON_RIGHT_JUST_RELEASED = 5,
-};
-
 class MouseInput {
   private:
     static MouseInput *instance;

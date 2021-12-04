@@ -15,7 +15,7 @@ void NetworkTCPClient::Connect() {
     if (!connection) {
         asio::error_code errorCode;
         asio::ip::tcp::endpoint endpoint(asio::ip::make_address(ipAddress.c_str(), errorCode), port);
-        connection = networkConnectionContext->NewTCPConnection(context, networkQueue, NetworkConnectionHostType_CLIENT);
+        connection = networkConnectionContext->NewTCPConnection(context, networkQueue, NetworkConnectionHostType::CLIENT);
         connection->GetSocket().connect(endpoint, errorCode);
 
         if (!errorCode) {

@@ -12,14 +12,6 @@
 
 #include "../utils/logger.h"
 
-using InputTypeFlag = unsigned int;
-
-enum _InputTypeFlag {
-    InputTypeFlag_MOUSE = 2,
-    InputTypeFlag_KEYBOARD = 4,
-    InputTypeFlag_JOYSTICK = 8,
-};
-
 class InputAction {
   private:
     MouseAction mouseAction;
@@ -27,7 +19,6 @@ class InputAction {
     JoystickAction joystickAction;
     Logger *logger = nullptr;
   public:
-    InputTypeFlag inputTypeFlag;
     bool isActionPressed = false;
     bool isActionJustPressed = false;
     bool isActionJustReleased = false;

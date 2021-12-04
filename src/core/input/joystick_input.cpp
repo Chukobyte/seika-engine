@@ -28,21 +28,20 @@ void JoystickInput::ProcessSDLEvent(InputEvent &inputEvent) {
 }
 
 void JoystickInput::ProcessButtonPress(InputEvent &inputEvent) {
-    const std::string &buttonValue = JOYSTICK_BUTTON_TYPE_TO_NAME_MAP[inputEvent.buttonValue];
+    const std::string &buttonValue = JOYSTICK_BUTTON_TYPE_TO_NAME_MAP[(JoystickButtonType) inputEvent.buttonValue];
 //    std::cout << "Pressing controller button " << buttonValue << std::endl;
     buttonInputFlags[buttonValue].isPressed = true;
     buttonInputFlags[buttonValue].isJustPressed = true;
 }
 
 void JoystickInput::ProcessButtonRelease(InputEvent &inputEvent) {
-    const std::string &buttonValue = JOYSTICK_BUTTON_TYPE_TO_NAME_MAP[inputEvent.buttonValue];
+    const std::string &buttonValue = JOYSTICK_BUTTON_TYPE_TO_NAME_MAP[(JoystickButtonType) inputEvent.buttonValue];
 //    std::cout << "Releasing controller button " << buttonValue << std::endl;
     buttonInputFlags[buttonValue].isPressed = false;
     buttonInputFlags[buttonValue].isJustReleased = true;
 }
 
 void JoystickInput::ProcessJoyhatMotion(InputEvent &inputEvent) {
-//    std::cout << "Hat: " << std::to_string(inputEvent.hat) << ", Value: " << std::to_string(inputEvent.hatValue) << std::endl;
     if (inputEvent.hatValue & SDL_HAT_LEFT) {
         if (!buttonInputFlags[JOYSTICK_KEYPAD_LEFT].isPressed) {
             buttonInputFlags[JOYSTICK_KEYPAD_LEFT].isPressed = true;

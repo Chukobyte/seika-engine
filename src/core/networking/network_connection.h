@@ -6,12 +6,9 @@
 
 using NetworkConnectionId = int;
 
-// TODO: check if I need this
-using NetworkConnectionHostType = unsigned int;
-
-enum _NetworkConnectionHostType {
-    NetworkConnectionHostType_SERVER = 0,
-    NetworkConnectionHostType_CLIENT = 1,
+enum class NetworkConnectionHostType : int {
+    SERVER,
+    CLIENT,
 };
 
 class NetworkConnection {

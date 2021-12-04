@@ -5,12 +5,10 @@
 
 #include "../math/vector2.h"
 
-using InputEventType = std::uint32_t;
-
-enum _InputEventType {
-    InputEventType_MOUSE = 2,
-    InputEventType_KEYBOARD = 4,
-    InputEventType_JOYSTICK = 8,
+enum class InputEventType : std::uint32_t {
+    MOUSE = 2,
+    KEYBOARD = 4,
+    JOYSTICK = 8,
 };
 
 struct InputEvent {
@@ -39,32 +37,32 @@ class InputEventState {
         switch(event.type) {
         // Mouse
         case SDL_MOUSEMOTION:
-            inputEvent.type = InputEventType_MOUSE;
+            inputEvent.type = InputEventType::MOUSE;
             inputEvent.mouseMotion = Vector2(event.motion.x, event.motion.y);
             break;
         case SDL_MOUSEWHEEL:
-            inputEvent.type = InputEventType_MOUSE;
+            inputEvent.type = InputEventType::MOUSE;
             break;
         case SDL_MOUSEBUTTONDOWN:
-            inputEvent.type = InputEventType_MOUSE;
+            inputEvent.type = InputEventType::MOUSE;
             inputEvent.mousePressed = true;
             inputEvent.mouseButton = event.button.button;
             break;
         case SDL_MOUSEBUTTONUP:
-            inputEvent.type = InputEventType_MOUSE;
+            inputEvent.type = InputEventType::MOUSE;
             inputEvent.mousePressed = false;
             inputEvent.mouseButton = event.button.button;
             break;
         // Joystick
         case SDL_JOYBUTTONDOWN:
         case SDL_JOYBUTTONUP:
-            inputEvent.type = InputEventType_JOYSTICK;
+            inputEvent.type = InputEventType::JOYSTICK;
             inputEvent.controllerId = event.jbutton.which;
             inputEvent.buttonValue = event.jbutton.button;
             inputEvent.buttonPressed = event.jbutton.state == SDL_PRESSED;
             break;
         case SDL_JOYHATMOTION:
-            inputEvent.type = InputEventType_JOYSTICK;
+            inputEvent.type = InputEventType::JOYSTICK;
             inputEvent.controllerId = event.jhat.which;
             inputEvent.hat = event.jhat.hat;
             inputEvent.hatValue = event.jhat.value;
@@ -73,7 +71,7 @@ class InputEventState {
         case SDL_KEYDOWN:
         case SDL_KEYUP:
             if (!event.key.repeat) {
-                inputEvent.type = InputEventType_KEYBOARD;
+                inputEvent.type = InputEventType::KEYBOARD;
                 inputEvent.keyPressed = event.key.state == SDL_PRESSED;
                 inputEvent.keyScancode = event.key.keysym.scancode;
             }
