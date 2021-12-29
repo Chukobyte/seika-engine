@@ -40,6 +40,10 @@ build: $(OBJ) $(OBJ_C)
 	@echo "Linking " $@
 	@$(CXX) -o $(BUILD_OBJECT) $^ $(I_FLAGS) $(L_FLAGS) $(LIBRARIES)
 
+# Adds debug symbols for debugger
+debug-build: C_FLAGS +=  -g
+debug-build: build
+
 format:
 	astyle -n --style=google --recursive src/*.cpp src/*.h src/*.hpp
 
