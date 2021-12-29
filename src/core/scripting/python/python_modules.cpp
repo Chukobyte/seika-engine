@@ -866,7 +866,7 @@ PyObject* PythonModules::sprite_get_texture(PyObject *self, PyObject *args, PyOb
                              texture->GetWrapSString().c_str(),
                              texture->GetWrapTString().c_str(),
                              texture->GetFilterMinString().c_str(),
-                             texture->GetFilterMaxString().c_str());
+                             texture->GetFilterMagString().c_str());
     }
     return nullptr;
 }
@@ -1546,7 +1546,7 @@ PyObject* PythonModules::texture_get(PyObject *self, PyObject *args, PyObject *k
                                  texture->GetWrapSString().c_str(),
                                  texture->GetWrapTString().c_str(),
                                  texture->GetFilterMinString().c_str(),
-                                 texture->GetFilterMaxString().c_str(),
+                                 texture->GetFilterMagString().c_str(),
                                  texture->GetWidth(),
                                  texture->GetHeight());
         }

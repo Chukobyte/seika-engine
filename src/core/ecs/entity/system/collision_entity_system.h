@@ -15,7 +15,7 @@ class CollisionEntitySystem : public EntitySystem {
     Renderer2D *renderer = nullptr;
     RenderContext *renderContext = nullptr;
     Texture *colliderTexture = nullptr;
-    Rect2 colliderDrawSource = Rect2(0.0f, 0.0f, 4.0f, 4.0f);
+    Rect2 colliderDrawSource = Rect2(0.0f, 0.0f, 1.0f, 1.0f);
 
     Rect2 GetCollisionRectangle(Entity entity) {
         Transform2DComponent transform2DComponent = componentManager->GetComponent<Transform2DComponent>(entity);
@@ -73,7 +73,7 @@ class CollisionEntitySystem : public EntitySystem {
     }
 
     void Initialize() override {
-        colliderTexture = GD::GetContainer()->assetManager->GetTexture(DEFAULT_COLLIDER_ASSET_ID);
+        colliderTexture = GD::GetContainer()->assetManager->GetTexture(BLANK_WHITE_TEXTURE_ASSET_ID);
     }
 
     void Enable() override {}

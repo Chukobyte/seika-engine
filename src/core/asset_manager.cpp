@@ -130,7 +130,7 @@ std::map<std::string, Mix_Chunk*> AssetManager::GetAllSounds() {
 }
 
 void AssetManager::LoadEngineAssets() {
-    LoadTexture(TextureConfiguration{.filePath = DEFAULT_COLLIDER_ASSET_ID});
+    textures.emplace(BLANK_WHITE_TEXTURE_ASSET_ID, new Texture(1, 1)); // Creates 1x1 white texture TODO: Create load function for this
     LoadFont(DEFAULT_FONT_ASSET_ID, DEFAULT_FONT_ASSET_PATH, DEFAULT_FONT_SIZE);
 }
 

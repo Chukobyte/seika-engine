@@ -11,7 +11,7 @@
 #include "project_properties.h"
 #include "utils/archive_loader.h"
 
-static const std::string &DEFAULT_COLLIDER_ASSET_ID = "assets/images/collider_base.png";
+static const std::string &BLANK_WHITE_TEXTURE_ASSET_ID = "bt";
 static const std::string &DEFAULT_FONT_ASSET_ID = "seika_default";
 static const std::string &DEFAULT_FONT_ASSET_PATH = "assets/fonts/pine_type.ttf";
 static const int DEFAULT_FONT_SIZE = 20;
