@@ -29,7 +29,6 @@ class Font {
     std::string uid;
     std::string filePath;
     int size;
-    long height;
 
     void ConfigureVertex() {
         // configure VAO & VBO texture quads
@@ -75,9 +74,6 @@ class Font {
         } else {
             // set size to load glyphs. width set to 0 to dynamically adjust
             FT_Set_Pixel_Sizes(face, 0, size);
-
-            height = face->size->metrics.height / face->size->metrics.y_ppem;
-//            height = face->size->metrics.height;
 
             // disable byte-alignment restriction
             glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -132,8 +128,6 @@ class Font {
         } else {
             // set size to load glyphs. width set to 0 to dynamically adjust
             FT_Set_Pixel_Sizes(face, 0, size);
-
-            height = face->size->metrics.height / face->size->metrics.y_ppem;
 
             // disable byte-alignment restriction
             glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -194,10 +188,6 @@ class Font {
 
     int GetSize() const {
         return size;
-    }
-
-    long GetHeight() const {
-        return height;
     }
 };
 

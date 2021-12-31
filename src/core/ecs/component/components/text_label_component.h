@@ -9,10 +9,10 @@ struct TextLabelComponent {
     std::string text;
     Font *font = nullptr;
     Color color;
-//    bool wordWrap = false;
-    bool wordWrap = true;
-//    unsigned int maxCharacterOnLine = 999999999;
-    unsigned int maxCharacterOnLine = 2;
+//    bool wordWrap = true;
+//    unsigned int maxCharacterOnLine = 2;
+    bool wordWrap = false;
+    unsigned int maxCharacterOnLine = 999999999;
     int newLinePadding = 2;
 };
 

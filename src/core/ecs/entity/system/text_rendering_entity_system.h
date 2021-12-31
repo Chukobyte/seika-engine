@@ -19,7 +19,6 @@ class TextRenderingEntitySystem : public EntitySystem {
 
     TextLines ConvertNewText(const TextLabelComponent& textLabelComponent) {
         Logger *logger = Logger::GetInstance();
-        logger->Debug(std::string("Font height = " + std::to_string(textLabelComponent.font->GetHeight())));
         std::vector<std::string> lines = {};
         if (textLabelComponent.wordWrap && textLabelComponent.text.length() > textLabelComponent.maxCharacterOnLine) {
             unsigned int lineCount = textLabelComponent.text.length() / textLabelComponent.maxCharacterOnLine;
