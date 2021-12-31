@@ -24,7 +24,7 @@ class TimerEntitySystem : public EntitySystem {
 
     void Disable() override {}
 
-    void UnregisterEntity(Entity entity) override {
+    void OnEntityDestroyed(Entity entity) override {
         timerManager->RemoveTimer(entity);
     }
 

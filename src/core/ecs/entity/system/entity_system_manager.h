@@ -99,7 +99,7 @@ class EntitySystemManager {
     void EntityDestroyed(Entity entity) {
         for (auto const& pair : systems) {
             auto const& system = pair.second;
-            system->UnregisterEntity(entity);
+            system->OnEntityDestroyed(entity);
             system->entities.erase(entity);
         }
     }
@@ -113,11 +113,11 @@ class EntitySystemManager {
 
             // Entity signature matches system signature - insert into set
             if ((entitySignature & systemSignature) == systemSignature) {
-                system->entities.insert(entity);
+                system->OnRegisterEntity(entity);
             }
             // Entity signature does not match system signature - erase from set
             else {
-                system->entities.erase(entity);
+                system->OnUnRegisterEntity(entity);
             }
         }
     }

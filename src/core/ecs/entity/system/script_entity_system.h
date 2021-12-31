@@ -27,7 +27,7 @@ class ScriptEntitySystem : public EntitySystem {
 
     void Disable() override {}
 
-    void UnregisterEntity(const Entity entity) override {
+    void OnEntityDestroyed(Entity entity) override {
         assert(activeScriptContext != nullptr && "No active script context!");
         activeScriptContext->DeleteEntityInstance(entity);
     }

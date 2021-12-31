@@ -80,7 +80,7 @@ class CollisionEntitySystem : public EntitySystem {
 
     void Disable() override {}
 
-    void UnregisterEntity(Entity entity) override {}
+    void OnEntityDestroyed(Entity entity) override {}
 
 //    void ProcessCollisions() {
 //        collisionContext->ClearCollisionData();

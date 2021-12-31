@@ -12,6 +12,7 @@
 #include "../../ecs/component/components/texture_cube_component.h"
 #include "../../ecs/component/components/light3D_component.h"
 #include "../../ecs/entity/system/timer_entity_system.h"
+#include "../../ecs/entity/system/text_rendering_entity_system.h"
 
 // ENGINE
 PyObject* PythonModules::engine_exit(PyObject *self, PyObject *args, PyObject *kwargs) {
@@ -1111,12 +1112,14 @@ PyObject* PythonModules::text_label_get_text(PyObject *self, PyObject *args, PyO
 
 PyObject* PythonModules::text_label_set_text(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    static TextRenderingEntitySystem* textRenderingEntitySystem = entityComponentOrchestrator->GetSystem<TextRenderingEntitySystem>();
     Entity entity;
     char *text;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "is", textLabelSetTextKWList, &entity, &text)) {
         TextLabelComponent textLabelComponent = entityComponentOrchestrator->GetComponent<TextLabelComponent>(entity);
         textLabelComponent.text = std::string(text);
         entityComponentOrchestrator->UpdateComponent<TextLabelComponent>(entity, textLabelComponent);
+        textRenderingEntitySystem->UpdateEntityText(entity, textLabelComponent);
         Py_RETURN_NONE;
     }
     return nullptr;

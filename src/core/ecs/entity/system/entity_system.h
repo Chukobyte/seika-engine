@@ -28,7 +28,14 @@ class EntitySystem {
         enabled = false;
     }
 
-    virtual void UnregisterEntity(Entity entity) = 0;
+    virtual void OnRegisterEntity(Entity entity) {
+        entities.insert(entity);
+    }
+    virtual void OnUnRegisterEntity(Entity entity) {
+        entities.erase(entity);
+    }
+
+    virtual void OnEntityDestroyed(Entity entity) {}
 };
 
 #endif //ENTITY_SYSTEM_H

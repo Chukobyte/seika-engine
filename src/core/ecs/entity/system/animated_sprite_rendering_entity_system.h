@@ -26,7 +26,7 @@ class AnimatedSpriteRenderingEntitySystem : public EntitySystem {
     void Enable() override {}
     void Disable() override {}
 
-    void UnregisterEntity(Entity entity) override {}
+    void OnEntityDestroyed(Entity entity) override {}
 
     void Render() {
         if (IsEnabled()) {
