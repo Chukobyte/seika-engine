@@ -209,11 +209,17 @@ class SceneNodeJsonParser {
                                     JsonHelper::Get<float>(nodeColorJson, "blue"),
                                     JsonHelper::Get<float>(nodeColorJson, "alpha")
                                 );
+        const bool nodeWordWrapped = JsonHelper::GetDefault<bool>(nodeComponentObjectJson, "word_wrapped", false);
+        const unsigned int nodeMaxCharactersPerLine = JsonHelper::GetDefault<unsigned int>(nodeComponentObjectJson, "max_characters_per_line", 999999999);
+        const int nodeNewLinePadding = JsonHelper::GetDefault<int>(nodeComponentObjectJson, "new_line_padding", 2);
 
         componentManager->AddComponent(sceneNode.entity, TextLabelComponent{
-            .text = nodeText,
-            .font = nodeFontUID.empty() ? nullptr : assetManager->GetFont(nodeFontUID),
-            .color = nodeColor
+            nodeText,
+            nodeFontUID.empty() ? nullptr : assetManager->GetFont(nodeFontUID),
+            nodeColor,
+            nodeWordWrapped,
+            nodeMaxCharactersPerLine,
+            nodeNewLinePadding
         });
         auto signature = entityManager->GetSignature(sceneNode.entity);
         const bool isTextLabelEnabled = !nodeFontUID.empty();
