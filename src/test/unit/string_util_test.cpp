@@ -15,7 +15,9 @@ TEST_CASE("String Util Tests", "[string_util]") {
             true,
             5
         };
-        TextLines textLines = StringUtil::ConvertNewText(textLabelComponent.text, textLabelComponent.wordWrap, textLabelComponent.maxCharactersPerLine);
+        TextLines textLines = StringUtil::ConvertIntoWordWrappedLines(textLabelComponent.text,
+                              textLabelComponent.wordWrap,
+                              textLabelComponent.maxCharactersPerLine);
         std::cerr << "text size = " << textLabelComponent.text.size() << std::endl;
         for (const std::string& text : textLines.lines) {
             std::cerr << text << std::endl;

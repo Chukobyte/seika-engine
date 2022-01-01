@@ -42,7 +42,9 @@ class TextRenderingEntitySystem : public EntitySystem {
 
     void UpdateEntityText(Entity entity, const TextLabelComponent& textLabelComponent) {
         textLines.erase(entity);
-        TextLines entityTextLines = StringUtil::ConvertNewText(textLabelComponent.text, textLabelComponent.wordWrap, textLabelComponent.maxCharactersPerLine);
+        TextLines entityTextLines = StringUtil::ConvertIntoWordWrappedLines(textLabelComponent.text,
+                                    textLabelComponent.wordWrap,
+                                    textLabelComponent.maxCharactersPerLine);
         textLines.emplace(entity, entityTextLines);
     }
 

@@ -1,22 +1,18 @@
 #include "string_util.h"
 #include "logger.h"
 
-#include <iostream>
-
-namespace {
-    std::vector<std::string> Split(const std::string &text, char sep = ' ') {
-        std::vector<std::string> tokens;
-        std::size_t start = 0, end = 0;
-        while ((end = text.find(sep, start)) != std::string::npos) {
-            tokens.push_back(text.substr(start, end - start));
-            start = end + 1;
-        }
-        tokens.push_back(text.substr(start));
-        return tokens;
+std::vector<std::string> StringUtil::Split(const std::string &text, char sep) {
+    std::vector<std::string> tokens;
+    std::size_t start = 0, end = 0;
+    while ((end = text.find(sep, start)) != std::string::npos) {
+        tokens.push_back(text.substr(start, end - start));
+        start = end + 1;
     }
+    tokens.push_back(text.substr(start));
+    return tokens;
 }
 
-TextLines StringUtil::ConvertNewText(const std::string& text, bool wordWrap, unsigned int maxCharactersPerLine) {
+TextLines StringUtil::ConvertIntoWordWrappedLines(const std::string& text, bool wordWrap, unsigned int maxCharactersPerLine) {
     static Logger *logger = Logger::GetInstance();
     std::vector<std::string> lines = {};
     if (wordWrap && text.length() > maxCharactersPerLine) {

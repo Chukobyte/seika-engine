@@ -10,7 +10,8 @@ struct TextLines {
 
 class StringUtil {
   public:
-    static TextLines ConvertNewText(const std::string& text, bool wordWrap, unsigned int maxCharactersPerLine);
+    static std::vector<std::string> Split(const std::string &text, char sep = ' ');
+    static TextLines ConvertIntoWordWrappedLines(const std::string& text, bool wordWrap, unsigned int maxCharactersPerLine);
 };
 
 
