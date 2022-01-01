@@ -209,7 +209,7 @@ class SceneNodeJsonParser {
                                     JsonHelper::Get<float>(nodeColorJson, "blue"),
                                     JsonHelper::Get<float>(nodeColorJson, "alpha")
                                 );
-        const bool nodeWordWrapped = JsonHelper::GetDefault<bool>(nodeComponentObjectJson, "word_wrapped", false);
+        const bool nodeWordWrapped = JsonHelper::GetDefault<bool>(nodeComponentObjectJson, "word_wrap", false);
         const unsigned int nodeMaxCharactersPerLine = JsonHelper::GetDefault<unsigned int>(nodeComponentObjectJson, "max_characters_per_line", 999999999);
         const int nodeNewLinePadding = JsonHelper::GetDefault<int>(nodeComponentObjectJson, "new_line_padding", 2);
 

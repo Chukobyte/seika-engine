@@ -1179,6 +1179,78 @@ PyObject* PythonModules::text_label_set_font(PyObject *self, PyObject *args, PyO
     return nullptr;
 }
 
+PyObject* PythonModules::text_label_get_word_wrap(PyObject* self, PyObject* args, PyObject* kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        TextLabelComponent textLabelComponent = entityComponentOrchestrator->GetComponent<TextLabelComponent>(entity);
+        if (textLabelComponent.wordWrap) {
+            Py_RETURN_TRUE;
+        }
+        Py_RETURN_FALSE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::text_label_set_word_wrap(PyObject* self, PyObject* args, PyObject* kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    bool wordWrap;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ib", textLabelSetWordWrapKWList, &entity, &wordWrap)) {
+        TextLabelComponent textLabelComponent = entityComponentOrchestrator->GetComponent<TextLabelComponent>(entity);
+        textLabelComponent.wordWrap = wordWrap;
+        entityComponentOrchestrator->UpdateComponent<TextLabelComponent>(entity, textLabelComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::text_label_get_max_characters_per_line(PyObject* self, PyObject* args, PyObject* kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        TextLabelComponent textLabelComponent = entityComponentOrchestrator->GetComponent<TextLabelComponent>(entity);
+        return PyLong_FromUnsignedLong(textLabelComponent.maxCharactersPerLine);
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::text_label_set_max_characters_per_line(PyObject* self, PyObject* args, PyObject* kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    unsigned int maxCharacterPerLine;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ii", textLabelSetMaxCharactersPerLineKWList, &entity, &maxCharacterPerLine)) {
+        TextLabelComponent textLabelComponent = entityComponentOrchestrator->GetComponent<TextLabelComponent>(entity);
+        textLabelComponent.maxCharactersPerLine = maxCharacterPerLine;
+        entityComponentOrchestrator->UpdateComponent<TextLabelComponent>(entity, textLabelComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::text_label_get_new_line_padding(PyObject* self, PyObject* args, PyObject* kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        TextLabelComponent textLabelComponent = entityComponentOrchestrator->GetComponent<TextLabelComponent>(entity);
+        return PyLong_FromLong(textLabelComponent.newLinePadding);
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::text_label_set_new_line_padding(PyObject* self, PyObject* args, PyObject* kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    unsigned int newLinePadding;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ii", textLabelSetNewLinePaddingKWList, &entity, &newLinePadding)) {
+        TextLabelComponent textLabelComponent = entityComponentOrchestrator->GetComponent<TextLabelComponent>(entity);
+        textLabelComponent.newLinePadding = newLinePadding;
+        entityComponentOrchestrator->UpdateComponent<TextLabelComponent>(entity, textLabelComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
 // COLLISION_SHAPE2D
 PyObject* PythonModules::collision_shape2d_get_collider_rect(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
