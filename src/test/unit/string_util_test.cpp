@@ -9,7 +9,7 @@ TEST_CASE("String Util Tests", "[string_util]") {
 
     SECTION("Convert New Text") {
         TextLabelComponent textLabelComponent = TextLabelComponent{
-            "Test text to see how it works!",
+            "Testy texty to see how it works!",
             nullptr,
             Color(1.0f, 1.0f, 1.0f),
             true,
@@ -20,6 +20,6 @@ TEST_CASE("String Util Tests", "[string_util]") {
         for (const std::string& text : textLines.lines) {
             std::cerr << text << std::endl;
         }
-        REQUIRE(textLines.lines.size() == 6);
+        REQUIRE(textLines.lines.size() == 7);
     }
 }
