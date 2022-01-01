@@ -420,6 +420,24 @@ font: seika.assets.Font
 
 The [font](assets.md#font) of the text.
 
+```python
+word_wrap: bool
+```
+
+Determines if the textlabel has word wrapping enabled.
+
+```python
+max_characters_per_line: int
+```
+
+How many characters per line a text label can display.  Must have `word_wrap` set to `True` to take effect.
+
+```python
+new_line_padding: int
+```
+
+Vertical padding for new lines.  Must have `word_wrap` set to `True` to take effect.
+
 ---
 
 ### Signals
