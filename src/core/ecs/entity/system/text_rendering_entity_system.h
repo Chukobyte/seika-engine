@@ -25,13 +25,13 @@ class TextRenderingEntitySystem : public EntitySystem {
         if (textLabelComponent.wordWrap && textLabelComponent.text.length() > textLabelComponent.maxCharactersPerLine) {
             unsigned int lineCount = textLabelComponent.text.length() / textLabelComponent.maxCharactersPerLine;
             lineCount += textLabelComponent.text.length() % textLabelComponent.maxCharactersPerLine > 0 ? 1 : 0;
-            logger->Debug(std::string("line count = " + std::to_string(lineCount)));
+//            logger->Debug(std::string("line count = " + std::to_string(lineCount)));
             int endPos = 0;
             for (unsigned int i = 0; i < lineCount; i++) {
-                endPos = i < lineCount - 1 ? endPos + textLabelComponent.maxCharactersPerLine : textLabelComponent.text.length();
-                logger->Debug(std::string("end pos = " + std::to_string(endPos)));
+                endPos = i < lineCount - 1 ? textLabelComponent.maxCharactersPerLine : textLabelComponent.text.length() - (i * textLabelComponent.maxCharactersPerLine);
+//                logger->Debug(std::string("end pos = " + std::to_string(endPos)));
                 std::string lineText = textLabelComponent.text.substr(i * textLabelComponent.maxCharactersPerLine, endPos);
-                logger->Debug("line text = " + lineText);
+//                logger->Debug("line text = " + lineText);
                 lines.emplace_back(lineText);
             }
         } else {
