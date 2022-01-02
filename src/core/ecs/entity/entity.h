@@ -9,6 +9,6 @@ using ComponentSignature = std::bitset<MAX_COMPONENT_TYPES>;
 
 const Entity MAX_ENTITIES = 20000;
 
-const Entity NO_ENTITY = 0;
+const Entity NULL_ENTITY = 0;
 
 #endif //ENTITY_H

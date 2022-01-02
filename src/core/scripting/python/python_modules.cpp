@@ -375,7 +375,7 @@ PyObject* PythonModules::node_get_node(PyObject *self, PyObject *args, PyObject 
     char *pyNodeName;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "s", nodeGetNodeKWList, &pyNodeName)) {
         Entity entity = entityComponentOrchestrator->GetEntityFromNodeName(std::string(pyNodeName));
-        if (entity != NO_ENTITY) {
+        if (entity != NULL_ENTITY) {
             if (pythonCache->HasActiveInstance(entity)) {
                 CPyObject &pClassInstance = pythonCache->GetClassInstance(entity);
                 pClassInstance.AddRef();
@@ -552,7 +552,7 @@ PyObject* PythonModules::node_get_parent(PyObject *self, PyObject *args, PyObjec
     Entity entity;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
         Entity parentEntity = entityComponentOrchestrator->GetEntityParent(entity);
-        if (parentEntity != NO_ENTITY) {
+        if (parentEntity != NULL_ENTITY) {
             NodeComponent nodeComponent = entityComponentOrchestrator->GetComponent<NodeComponent>(parentEntity);
             const std::string &nodeTypeString = NodeTypeHelper::GetNodeTypeString(nodeComponent.type);
             return Py_BuildValue("(si)", nodeTypeString.c_str(), parentEntity);

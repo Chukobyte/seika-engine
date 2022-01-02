@@ -77,15 +77,17 @@ class EntityComponentOrchestrator {
 
     template<typename T>
     void EnableComponent(Entity entity) {
-        auto signature = entityManager->GetSignature(entity);
+        auto signature = entityManager->GetEnabledSignature(entity);
         signature.set(componentManager->GetComponentType<T>(), true);
+        entityManager->SetEnabledSignature(entity, signature);
         entitySystemManager->EntitySignatureChanged(entity, signature);
     }
 
     template<typename T>
     void DisableComponent(Entity entity) {
-        auto signature = entityManager->GetSignature(entity);
+        auto signature = entityManager->GetEnabledSignature(entity);
         signature.set(componentManager->GetComponentType<T>(), false);
+        entityManager->SetEnabledSignature(entity, signature);
         entitySystemManager->EntitySignatureChanged(entity, signature);
     }
 

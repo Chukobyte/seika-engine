@@ -66,7 +66,7 @@ Entity EntityComponentOrchestrator::GetEntityFromNodeName(const std::string &nod
     if (DoesNodeNameExist(nodeName)) {
         return nodeNameToEntityMap[nodeName];
     }
-    return NO_ENTITY;
+    return NULL_ENTITY;
 }
 
 ComponentSignature EntityComponentOrchestrator::GetEntitySignature(Entity entity) {
@@ -150,7 +150,7 @@ void EntityComponentOrchestrator::ChangeSceneTo(const bool loadFromMemory) {
 
 void EntityComponentOrchestrator::DestroyCurrentScene() {
     Scene currentScene = sceneManager->GetCurrentScene();
-    if (currentScene.rootNode.entity != NO_ENTITY) {
+    if (currentScene.rootNode.entity != NULL_ENTITY) {
         DestroyEntity(currentScene.rootNode);
     }
     removeCurrentSceneAtEndOfUpdate = false;

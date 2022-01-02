@@ -493,12 +493,12 @@ class SceneManager {
         currentScene = scene;
         sceneContext->currentSceneEntity = currentScene.rootNode.entity;
         entityToMainScenesMap.emplace(currentScene.rootNode.entity, currentScene);
-        AddChild(NO_ENTITY, currentScene.rootNode.entity);
+        AddChild(NULL_ENTITY, currentScene.rootNode.entity);
     }
 
     void AddChild(Entity parent, Entity child) {
         SceneNode childNode = SceneNode{.entity = child, .parent = parent};
-        if (parent != NO_ENTITY) {
+        if (parent != NULL_ENTITY) {
             assert((entityToSceneNodeMap.count(parent) > 0) && "Parent scene node doesn't exist!");
             SceneNode parentNode = entityToSceneNodeMap[parent];
             parentNode.children.emplace_back(childNode);
@@ -527,7 +527,7 @@ class SceneManager {
             SceneNode sceneNode = entityToSceneNodeMap[entity];
             return sceneNode.parent;
         }
-        return NO_ENTITY;
+        return NULL_ENTITY;
     }
 
     void RemoveNode(SceneNode sceneNode) {
@@ -581,7 +581,7 @@ class SceneNodeHelper {
         SceneNode sceneNode = sceneManager->GetEntitySceneNode(entity);
         Transform2DComponent combinedTransform = Transform2DComponent{};
         Entity currentParent = sceneNode.parent;
-        while (currentParent != NO_ENTITY) {
+        while (currentParent != NULL_ENTITY) {
             SceneNode nodeParent = sceneManager->GetEntitySceneNode(currentParent);
             if (componentManager->HasComponent<Transform2DComponent>(nodeParent.entity)) {
                 Transform2DComponent parentTransform = componentManager->GetComponent<Transform2DComponent>(nodeParent.entity);

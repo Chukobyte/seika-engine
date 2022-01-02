@@ -4,8 +4,8 @@
 #include <vector>
 
 struct SceneNode {
-    Entity entity = NO_ENTITY;
-    Entity parent = NO_ENTITY;
+    Entity entity = NULL_ENTITY;
+    Entity parent = NULL_ENTITY;
     std::vector<SceneNode> children;
 };
 

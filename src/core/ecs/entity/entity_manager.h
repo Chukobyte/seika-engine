@@ -10,11 +10,12 @@
 
 class EntityManager {
   private:
-    unsigned int entityIdCounter = 1;  // Starts at 1 as 0 is invalid
+    const unsigned int INITIAL_ENTITY_IDS = 1001;
+    unsigned int entityIdCounter = INITIAL_ENTITY_IDS + 1;  // Starts at 1 as 0 is invalid
     unsigned int livingEntityCounter = 0;
-    std::queue<Entity> availableEntityIds;
+    std::queue<Entity> availableEntityIds = {};
     std::array<ComponentSignature, MAX_ENTITIES> signatures;
-    std::vector<Entity> entitiesToDelete;
+    std::array<ComponentSignature, MAX_ENTITIES> enabledSignatures;
 
     Entity GetUniqueEntityId() {
         if (availableEntityIds.size() <= 0) {
@@ -26,47 +27,47 @@ class EntityManager {
         return newEntityId;
     }
   public:
+    EntityManager() {
+        for (Entity id = 1; id <= INITIAL_ENTITY_IDS; id++) {
+            availableEntityIds.push(id);
+        }
+    }
 
     Entity CreateEntity() {
-//        assert(livingEntityCounter < MAX_ENTITIES && "Too many entities to create!");
-
         livingEntityCounter++;
-
         return GetUniqueEntityId();
     }
 
     void DestroyEntity(Entity entity) {
-        assert(entity < MAX_ENTITIES && "Entity out of range!");
-
         signatures[entity].reset();
+        enabledSignatures[entity].reset();
 
         // TODO: need to fix active id repopulation
-//        availableEntityIds.push(entity);
-        entitiesToDelete.insert(entitiesToDelete.end(), 1, entity);
+        availableEntityIds.push(entity);
         livingEntityCounter--;
-    }
-
-    void DeleteEntitiesQueuedForDeletion() {
-        for (Entity entity : entitiesToDelete) {
-            availableEntityIds.push(entity);
-        }
-        entitiesToDelete.clear();
     }
 
     unsigned int GetAliveEntities() {
         return livingEntityCounter;
     }
 
-    void SetSignature(Entity entity, ComponentSignature signature) {
-        assert(entity < MAX_ENTITIES && "Entity out of range!");
-
+    void SetSignature(Entity entity, ComponentSignature signature, bool setEnabledSignature = true) {
         signatures[entity] = signature;
+        if (setEnabledSignature) {
+            enabledSignatures[entity] = signature;
+        }
     }
 
-    ComponentSignature GetSignature(Entity entity) {
-        assert(entity < MAX_ENTITIES && "Entity out of range!");
-
+    ComponentSignature GetSignature(Entity entity) const {
         return signatures[entity];
+    }
+
+    void SetEnabledSignature(Entity entity, ComponentSignature signature) {
+        enabledSignatures[entity] = signature;
+    }
+
+    ComponentSignature GetEnabledSignature(Entity entity) const {
+        return enabledSignatures[entity];
     }
 };
 

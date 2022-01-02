@@ -20,10 +20,10 @@ void NetworkTCPClient::Connect() {
 
         if (!errorCode) {
 //            logger->Debug("Connected to server successfully!");
-            SignalManager::GetInstance()->EmitSignal(NO_ENTITY, "connected_to_server");
+            SignalManager::GetInstance()->EmitSignal(NULL_ENTITY, "connected_to_server");
             connection->StartReadingNetworkMessages();
         } else {
-            SignalManager::GetInstance()->EmitSignal(NO_ENTITY, "connection_to_server_failed");
+            SignalManager::GetInstance()->EmitSignal(NULL_ENTITY, "connection_to_server_failed");
 //            logger->Error("Client failed to connect!\n" + errorCode.message());
         }
 
@@ -43,7 +43,7 @@ void NetworkTCPClient::ProcessMessageQueue() {
     while (!networkQueue.IsEmpty()) {
         NetworkMessage networkMessage = networkQueue.PopFront();
         if (!networkMessage.message.empty() && networkMessage.message != "\n" && networkMessage.message != "\r\n" && networkMessage.message != " ") {
-            SignalManager::GetInstance()->EmitSignal(NO_ENTITY, "message_received", PythonSignalArguments::GetStringSignalArgument(networkMessage.message));
+            SignalManager::GetInstance()->EmitSignal(NULL_ENTITY, "message_received", PythonSignalArguments::GetStringSignalArgument(networkMessage.message));
         }
     }
 }
