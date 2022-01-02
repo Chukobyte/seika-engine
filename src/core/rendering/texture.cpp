@@ -9,12 +9,12 @@ Texture::Texture(const char* fileName) {
 }
 
 Texture::Texture(const char* fileName, unsigned int wrapS, unsigned int wrapT, unsigned int filterMin, unsigned int filterMag) :
-        wrapS(wrapS), wrapT(wrapT), filterMin(filterMin), filterMag(filterMag) {
+    wrapS(wrapS), wrapT(wrapT), filterMin(filterMin), filterMag(filterMag) {
     Initialize(fileName);
 }
 
 Texture::Texture(const char* fileName, const std::string &wrapS, const std::string &wrapT, const std::string &filterMin, const std::string &filterMag) :
-        wrapS(GetWrapFromString(wrapS)), wrapT(GetWrapFromString(wrapT)), filterMin(GetFilterFromString(filterMin)), filterMag(GetFilterFromString(filterMag)) {
+    wrapS(GetWrapFromString(wrapS)), wrapT(GetWrapFromString(wrapT)), filterMin(GetFilterFromString(filterMin)), filterMag(GetFilterFromString(filterMag)) {
     Initialize(fileName);
 }
 
@@ -23,12 +23,12 @@ Texture::Texture(void *buffer, size_t bufferSize) {
 }
 
 Texture::Texture(void *buffer, size_t bufferSize, unsigned int wrapS, unsigned int wrapT, unsigned int filterMin, unsigned int filterMag) :
-        wrapS(wrapS), wrapT(wrapT), filterMin(filterMin), filterMag(filterMag) {
+    wrapS(wrapS), wrapT(wrapT), filterMin(filterMin), filterMag(filterMag) {
     Initialize(buffer, bufferSize);
 }
 
 Texture::Texture(void *buffer, size_t bufferSize, const std::string &wrapS, const std::string &wrapT, const std::string &filterMin, const std::string &filterMag) :
-        wrapS(GetWrapFromString(wrapS)), wrapT(GetWrapFromString(wrapT)), filterMin(GetFilterFromString(filterMin)), filterMag(GetFilterFromString(filterMag)) {
+    wrapS(GetWrapFromString(wrapS)), wrapT(GetWrapFromString(wrapT)), filterMin(GetFilterFromString(filterMin)), filterMag(GetFilterFromString(filterMag)) {
     Initialize(buffer, bufferSize);
 }
 

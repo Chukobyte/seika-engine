@@ -7,15 +7,17 @@
 #include "rendering/renderer3d.h"
 #include "asset_manager.h"
 #include "ecs/entity/entity_manager.h"
-#include "ecs/entity/system/entity_system_manager.h"
 #include "ecs/component/component_manager.h"
 #include "ecs/entity_component_orchestrator.h"
 #include "physics/collision/collision_context.h"
 #include "scene/scene.h"
+#include "scene/scene_manager.h"
 #include "scene/scene_context.h"
 #include "camera/camera_manager.h"
 #include "networking/network_connection_context.h"
 #include "networking/network_context.h"
+
+class EntityComponentOrchestrator;
 
 class GD {
     /* A singleton that holds global pointers...*/
@@ -31,7 +33,6 @@ class GD {
     Renderer3D *renderer3D = nullptr;
     AssetManager *assetManager = nullptr;
     EntityManager *entityManager = nullptr;
-    EntitySystemManager *entitySystemManager = nullptr;
     ComponentManager *componentManager = nullptr;
     SceneManager *sceneManager = nullptr;
     SceneContext *sceneContext = nullptr;

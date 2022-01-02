@@ -98,6 +98,12 @@ class PythonModules {
     static PyObject* text_label_set_color(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* text_label_get_font(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* text_label_set_font(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* text_label_get_word_wrap(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* text_label_set_word_wrap(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* text_label_get_max_characters_per_line(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* text_label_set_max_characters_per_line(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* text_label_get_new_line_padding(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* text_label_set_new_line_padding(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* collision_shape2d_get_collider_rect(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* collision_shape2d_set_collider_rect(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -479,6 +485,30 @@ static struct PyMethodDef rollApiMethods[] = {
         "text_label_set_font", (PyCFunction) PythonModules::text_label_set_font,
         METH_VARARGS | METH_KEYWORDS, "Sets a text label's font."
     },
+    {
+        "text_label_get_word_wrap", (PyCFunction) PythonModules::text_label_get_word_wrap,
+        METH_VARARGS | METH_KEYWORDS, "Gets whether a text label has word wrapping enabled."
+    },
+    {
+        "text_label_set_word_wrap", (PyCFunction) PythonModules::text_label_set_word_wrap,
+        METH_VARARGS | METH_KEYWORDS, "Sets whether a text label has word wrapping enabled."
+    },
+    {
+        "text_label_get_max_characters_per_line", (PyCFunction) PythonModules::text_label_get_max_characters_per_line,
+        METH_VARARGS | METH_KEYWORDS, "Gets max characters allowed for a line."
+    },
+    {
+        "text_label_set_max_characters_per_line", (PyCFunction) PythonModules::text_label_set_max_characters_per_line,
+        METH_VARARGS | METH_KEYWORDS, "Sets max characters allowed for a line."
+    },
+    {
+        "text_label_get_new_line_padding", (PyCFunction) PythonModules::text_label_get_new_line_padding,
+        METH_VARARGS | METH_KEYWORDS, "Gets new line padding for text label."
+    },
+    {
+        "text_label_set_new_line_padding", (PyCFunction) PythonModules::text_label_set_new_line_padding,
+        METH_VARARGS | METH_KEYWORDS, "Sets new line padding for text label."
+    },
     // COLLISION SHAPE2D
     {
         "collision_shape2d_get_collider_rect", (PyCFunction) PythonModules::collision_shape2d_get_collider_rect,
@@ -658,6 +688,9 @@ static char *animatedSpriteSetFrameKWList[] = {"entity_id", "frame", nullptr};
 
 static char *textLabelSetTextKWList[] = {"entity_id", "text", nullptr};
 static char *textLabelSetFontKWList[] = {"entity_id", "uid", nullptr};
+static char *textLabelSetWordWrapKWList[] = {"entity_id", "word_wrap", nullptr};
+static char *textLabelSetMaxCharactersPerLineKWList[] = {"entity_id", "max_characters", nullptr};
+static char *textLabelSetNewLinePaddingKWList[] = {"entity_id", "new_line_padding", nullptr};
 
 static char *collisionShape2DSetColliderRectKWList[] = {"entity_id", "x", "y", "w", "h", nullptr};
 static char *collisionModifyCollisionExceptionKWList[] = {"entity_id", "exception_entity_id", nullptr};

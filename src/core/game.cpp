@@ -5,23 +5,18 @@
 
 #include "global_dependencies.h"
 
-#include "ecs/entity/system/sprite_rendering_entity_system.h"
-#include "ecs/entity/system/animated_sprite_rendering_entity_system.h"
-#include "ecs/entity/system/text_rendering_entity_system.h"
-#include "ecs/entity/system/script_entity_system.h"
-#include "ecs/entity/system/collision_entity_system.h"
-#include "ecs/entity/system/texture_cube_rendering_entity_system.h"
-
-#include "ecs/component/components/animated_sprite_component.h"
-#include "ecs/component/components/text_label_component.h"
-#include "ecs/component/components/scriptable_class_component.h"
+#include "ecs/system/systems/sprite_rendering_entity_system.h"
+#include "ecs/system/systems/animated_sprite_rendering_entity_system.h"
+#include "ecs/system/systems/text_rendering_entity_system.h"
+#include "ecs/system/systems/collision_entity_system.h"
+#include "ecs/system/systems/texture_cube_rendering_entity_system.h"
 
 #include "scripting/python/python_script_context.h"
-#include "ecs/entity/system/timer_entity_system.h"
+#include "ecs/system/systems/timer_entity_system.h"
 #include "rendering/renderer3d.h"
-#include "ecs/entity/system/directional_light_rendering_entity_system.h"
-#include "ecs/entity/system/point_light_rendering_entity_system.h"
-#include "ecs/entity/system/spot_light_rendering_entity_system.h"
+#include "ecs/system/systems/directional_light_rendering_entity_system.h"
+#include "ecs/system/systems/point_light_rendering_entity_system.h"
+#include "ecs/system/systems/spot_light_rendering_entity_system.h"
 
 Game::Game(int argv, char** args) {
     logger = Logger::GetInstance();
@@ -115,62 +110,63 @@ void Game::InitializeECS() {
     entityComponentOrchestrator->RegisterComponent<SpotLightComponent>();
 
     // Systems
-    entityComponentOrchestrator->RegisterSystem<TimerEntitySystem>();
+    entityComponentOrchestrator->RegisterSystem<TimerEntitySystem>(EntitySystemHook::PHYSICS_PROCESS);
     ComponentSignature timerSystemSignature;
     timerSystemSignature.set(entityComponentOrchestrator->GetComponentType<TimerComponent>(), true);
     entityComponentOrchestrator->SetSystemSignature<TimerEntitySystem>(timerSystemSignature);
 
-    entityComponentOrchestrator->RegisterSystem<SpriteRenderingEntitySystem>();
+    entityComponentOrchestrator->RegisterSystem<SpriteRenderingEntitySystem>(EntitySystemHook::RENDER);
     ComponentSignature spriteRenderingSystemSignature;
     spriteRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<Transform2DComponent>(), true);
     spriteRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<SpriteComponent>(), true);
     entityComponentOrchestrator->SetSystemSignature<SpriteRenderingEntitySystem>(spriteRenderingSystemSignature);
 
-    entityComponentOrchestrator->RegisterSystem<AnimatedSpriteRenderingEntitySystem>();
+    entityComponentOrchestrator->RegisterSystem<AnimatedSpriteRenderingEntitySystem>(EntitySystemHook::RENDER);
     ComponentSignature animatedSpriteRenderingSystemSignature;
     animatedSpriteRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<Transform2DComponent>(), true);
     animatedSpriteRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<AnimatedSpriteComponent>(), true);
     entityComponentOrchestrator->SetSystemSignature<AnimatedSpriteRenderingEntitySystem>(animatedSpriteRenderingSystemSignature);
 
-    entityComponentOrchestrator->RegisterSystem<TextRenderingEntitySystem>();
+    entityComponentOrchestrator->RegisterSystem<TextRenderingEntitySystem>(EntitySystemHook::RENDER);
     ComponentSignature textRenderingSystemSignature;
     textRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<Transform2DComponent>(), true);
     textRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<TextLabelComponent>(), true);
     entityComponentOrchestrator->SetSystemSignature<TextRenderingEntitySystem>(textRenderingSystemSignature);
 
-    ScriptEntitySystem *scriptEntitySystem = entityComponentOrchestrator->RegisterSystem<ScriptEntitySystem>();
+    ScriptEntitySystem *scriptEntitySystem = entityComponentOrchestrator->RegisterSystem<ScriptEntitySystem>(EntitySystemHook::PHYSICS_PROCESS);
     scriptEntitySystem->InstallScriptContext<PythonScriptContext>();
     ComponentSignature scriptSystemSignature;
     scriptSystemSignature.set(entityComponentOrchestrator->GetComponentType<ScriptableClassComponent>(), true);
     entityComponentOrchestrator->SetSystemSignature<ScriptEntitySystem>(scriptSystemSignature);
 
-    entityComponentOrchestrator->RegisterSystem<CollisionEntitySystem>();
+    EntitySystemHook collisionSystemHooks = projectProperties->areColliderVisible ? EntitySystemHook::RENDER : EntitySystemHook::NONE;
+    entityComponentOrchestrator->RegisterSystem<CollisionEntitySystem>(collisionSystemHooks);
     ComponentSignature collisionSystemSignature;
     collisionSystemSignature.set(entityComponentOrchestrator->GetComponentType<ColliderComponent>(), true);
     entityComponentOrchestrator->SetSystemSignature<CollisionEntitySystem>(collisionSystemSignature);
 
-    entityComponentOrchestrator->RegisterSystem<TextureCubeRenderingEntitySystem>();
+    entityComponentOrchestrator->RegisterSystem<TextureCubeRenderingEntitySystem>(EntitySystemHook::RENDER);
     ComponentSignature textureCubeRenderingSystemSignature;
     textureCubeRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<Transform3DComponent>(), true);
     textureCubeRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<MaterialComponent>(), true);
     textureCubeRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<TextureCubeComponent>(), true);
     entityComponentOrchestrator->SetSystemSignature<TextureCubeRenderingEntitySystem>(textureCubeRenderingSystemSignature);
 
-    entityComponentOrchestrator->RegisterSystem<DirectionalLightRenderingEntitySystem>();
+    entityComponentOrchestrator->RegisterSystem<DirectionalLightRenderingEntitySystem>(EntitySystemHook::RENDER);
     ComponentSignature directionalLightRenderingSystemSignature;
     directionalLightRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<Transform3DComponent>(), true);
     directionalLightRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<MaterialComponent>(), true);
     directionalLightRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<DirectionalLightComponent>(), true);
     entityComponentOrchestrator->SetSystemSignature<DirectionalLightRenderingEntitySystem>(directionalLightRenderingSystemSignature);
 
-    entityComponentOrchestrator->RegisterSystem<PointLightRenderingEntitySystem>();
+    entityComponentOrchestrator->RegisterSystem<PointLightRenderingEntitySystem>(EntitySystemHook::RENDER);
     ComponentSignature pointLightRenderingSystemSignature;
     pointLightRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<Transform3DComponent>(), true);
     pointLightRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<MaterialComponent>(), true);
     pointLightRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<PointLightComponent>(), true);
     entityComponentOrchestrator->SetSystemSignature<PointLightRenderingEntitySystem>(pointLightRenderingSystemSignature);
 
-    entityComponentOrchestrator->RegisterSystem<SpotLightRenderingEntitySystem>();
+    entityComponentOrchestrator->RegisterSystem<SpotLightRenderingEntitySystem>(EntitySystemHook::RENDER);
     ComponentSignature spotLightRenderingSystemSignature;
     spotLightRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<Transform3DComponent>(), true);
     spotLightRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<MaterialComponent>(), true);
@@ -253,9 +249,11 @@ void Game::Update() {
 
     networkContext->Poll();
 
-    FixedTimeStep();
+    const float variableDeltaTime = (SDL_GetTicks() - lastFrameTime) / projectProperties->GetMillisecondsPerTick();
+    static EntitySystemManager* entitySystemManager = EntitySystemManager::GetInstance();
+    entitySystemManager->ProcessSystemsHook(variableDeltaTime);
 
-    VariableTimeStep(lastFrameTime);
+    PhysicsUpdate();
 
     // Remove Entities
     if (entityComponentOrchestrator->ShouldRemoveCurrentSceneAtEndOfUpdate()) {
@@ -276,8 +274,7 @@ void Game::Update() {
     lastFrameTime = SDL_GetTicks();
 }
 
-void Game::FixedTimeStep() {
-    // Fixed time step
+void Game::PhysicsUpdate() {
     static double time = 0.0f;
     const double PHYSICS_DELTA_TIME = projectProperties->GetFixedPhysicsDeltaTime();
     static Uint32 currentTime = SDL_GetTicks();
@@ -293,32 +290,16 @@ void Game::FixedTimeStep() {
 
     accumulator += frameTime / projectProperties->GetMillisecondsPerTick();
 
-    static ScriptEntitySystem *scriptEntitySystem = (ScriptEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<ScriptEntitySystem>();
+    static EntitySystemManager* entitySystemManager = EntitySystemManager::GetInstance();
 
     while (accumulator >= PHYSICS_DELTA_TIME) {
         time += PHYSICS_DELTA_TIME;
         accumulator -= PHYSICS_DELTA_TIME;
 
-        // Check Collisions
-        // TODO: Refactor collision system
-//        static CollisionEntitySystem *collisionEntitySystem = (CollisionEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<CollisionEntitySystem>();
-//        collisionEntitySystem->ProcessCollisions();
-
-        scriptEntitySystem->PhysicsProcess(PHYSICS_DELTA_TIME);
-
-        static TimerEntitySystem *timerEntitySystem = (TimerEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<TimerEntitySystem>();
-        timerEntitySystem->Tick();
+        entitySystemManager->PhysicsProcessSystemsHook(PHYSICS_DELTA_TIME);
 
         inputManager->ClearInputFlags();
     }
-
-//    const double alpha = accumulator / PHYSICS_DELTA_TIME;
-}
-
-void Game::VariableTimeStep(Uint32 lastFrameTime) {
-    // Variable time step
-    float variableDeltaTime = (SDL_GetTicks() - lastFrameTime) / projectProperties->GetMillisecondsPerTick();
-    variableDeltaTime = (variableDeltaTime > projectProperties->GetMaxDeltaTime()) ? projectProperties->GetMaxDeltaTime() : variableDeltaTime;
 }
 
 void Game::Render() {
@@ -328,32 +309,10 @@ void Game::Render() {
                  projectProperties->backgroundDrawColor.a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-    // 2D Rendering
-    static SpriteRenderingEntitySystem *spriteRenderingEntitySystem = (SpriteRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<SpriteRenderingEntitySystem>();
-    spriteRenderingEntitySystem->Render();
-
-    static AnimatedSpriteRenderingEntitySystem *animatedSpriteRenderingEntitySystem = (AnimatedSpriteRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<AnimatedSpriteRenderingEntitySystem>();
-    animatedSpriteRenderingEntitySystem->Render();
-
-    static TextRenderingEntitySystem *textRenderingEntitySystem = (TextRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<TextRenderingEntitySystem>();
-    textRenderingEntitySystem->Render();
-
-    if (projectProperties->areColliderVisible) {
-        static CollisionEntitySystem *collisionEntitySystem = (CollisionEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<CollisionEntitySystem>();
-        collisionEntitySystem->Render();
-    }
+    static EntitySystemManager* entitySystemManager = EntitySystemManager::GetInstance();
+    entitySystemManager->RenderSystemsHook();
 
     renderer2D->FlushBatches();
-
-    // 3D Rendering
-    static TextureCubeRenderingEntitySystem *textureCubeRenderingEntitySystem = (TextureCubeRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<TextureCubeRenderingEntitySystem>();
-    textureCubeRenderingEntitySystem->Render();
-    static DirectionalLightRenderingEntitySystem *directionalLightRenderingEntitySystem = (DirectionalLightRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<DirectionalLightRenderingEntitySystem>();
-    directionalLightRenderingEntitySystem->Render();
-    static PointLightRenderingEntitySystem *pointLightRenderingEntitySystem = (PointLightRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<PointLightRenderingEntitySystem>();
-    pointLightRenderingEntitySystem->Render();
-    static SpotLightRenderingEntitySystem *spotLightRenderingEntitySystem = (SpotLightRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<SpotLightRenderingEntitySystem>();
-    spotLightRenderingEntitySystem->Render();
 
     renderer3D->Render(GD::GetContainer()->cameraManager);
 

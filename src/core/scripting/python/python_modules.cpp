@@ -7,11 +7,12 @@
 #include "../../audio/audio_helper.h"
 #include "../../utils/helper.h"
 #include "../../signal_manager.h"
-#include "../../ecs/entity/system/collision_entity_system.h"
+#include "../../ecs/system/systems/collision_entity_system.h"
 #include "../../ecs/component/components/transform3D_component.h"
 #include "../../ecs/component/components/texture_cube_component.h"
 #include "../../ecs/component/components/light3D_component.h"
-#include "../../ecs/entity/system/timer_entity_system.h"
+#include "../../ecs/system/systems/timer_entity_system.h"
+#include "../../ecs/system/systems/text_rendering_entity_system.h"
 
 // ENGINE
 PyObject* PythonModules::engine_exit(PyObject *self, PyObject *args, PyObject *kwargs) {
@@ -1111,12 +1112,14 @@ PyObject* PythonModules::text_label_get_text(PyObject *self, PyObject *args, PyO
 
 PyObject* PythonModules::text_label_set_text(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    static TextRenderingEntitySystem* textRenderingEntitySystem = entityComponentOrchestrator->GetSystem<TextRenderingEntitySystem>();
     Entity entity;
     char *text;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "is", textLabelSetTextKWList, &entity, &text)) {
         TextLabelComponent textLabelComponent = entityComponentOrchestrator->GetComponent<TextLabelComponent>(entity);
         textLabelComponent.text = std::string(text);
         entityComponentOrchestrator->UpdateComponent<TextLabelComponent>(entity, textLabelComponent);
+        textRenderingEntitySystem->UpdateEntityText(entity, textLabelComponent);
         Py_RETURN_NONE;
     }
     return nullptr;
@@ -1170,6 +1173,78 @@ PyObject* PythonModules::text_label_set_font(PyObject *self, PyObject *args, PyO
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "is", textLabelSetFontKWList, &entity, &pyUID)) {
         TextLabelComponent textLabelComponent = entityComponentOrchestrator->GetComponent<TextLabelComponent>(entity);
         textLabelComponent.font = assetManager->GetFont(std::string(pyUID));
+        entityComponentOrchestrator->UpdateComponent<TextLabelComponent>(entity, textLabelComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::text_label_get_word_wrap(PyObject* self, PyObject* args, PyObject* kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        TextLabelComponent textLabelComponent = entityComponentOrchestrator->GetComponent<TextLabelComponent>(entity);
+        if (textLabelComponent.wordWrap) {
+            Py_RETURN_TRUE;
+        }
+        Py_RETURN_FALSE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::text_label_set_word_wrap(PyObject* self, PyObject* args, PyObject* kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    bool wordWrap;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ib", textLabelSetWordWrapKWList, &entity, &wordWrap)) {
+        TextLabelComponent textLabelComponent = entityComponentOrchestrator->GetComponent<TextLabelComponent>(entity);
+        textLabelComponent.wordWrap = wordWrap;
+        entityComponentOrchestrator->UpdateComponent<TextLabelComponent>(entity, textLabelComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::text_label_get_max_characters_per_line(PyObject* self, PyObject* args, PyObject* kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        TextLabelComponent textLabelComponent = entityComponentOrchestrator->GetComponent<TextLabelComponent>(entity);
+        return PyLong_FromUnsignedLong(textLabelComponent.maxCharactersPerLine);
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::text_label_set_max_characters_per_line(PyObject* self, PyObject* args, PyObject* kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    unsigned int maxCharacterPerLine;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ii", textLabelSetMaxCharactersPerLineKWList, &entity, &maxCharacterPerLine)) {
+        TextLabelComponent textLabelComponent = entityComponentOrchestrator->GetComponent<TextLabelComponent>(entity);
+        textLabelComponent.maxCharactersPerLine = maxCharacterPerLine;
+        entityComponentOrchestrator->UpdateComponent<TextLabelComponent>(entity, textLabelComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::text_label_get_new_line_padding(PyObject* self, PyObject* args, PyObject* kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        TextLabelComponent textLabelComponent = entityComponentOrchestrator->GetComponent<TextLabelComponent>(entity);
+        return PyLong_FromLong(textLabelComponent.newLinePadding);
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::text_label_set_new_line_padding(PyObject* self, PyObject* args, PyObject* kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    unsigned int newLinePadding;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ii", textLabelSetNewLinePaddingKWList, &entity, &newLinePadding)) {
+        TextLabelComponent textLabelComponent = entityComponentOrchestrator->GetComponent<TextLabelComponent>(entity);
+        textLabelComponent.newLinePadding = newLinePadding;
         entityComponentOrchestrator->UpdateComponent<TextLabelComponent>(entity, textLabelComponent);
         Py_RETURN_NONE;
     }

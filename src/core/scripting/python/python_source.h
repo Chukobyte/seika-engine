@@ -1,7 +1,7 @@
 #ifndef PYTHON_SOURCE_H
 #define PYTHON_SOURCE_H
 
-// Seika Engine API v0.8.2
+// Seika Engine API v0.9.0
 
 using PythonSource = const std::string&;
 
@@ -1045,6 +1045,40 @@ static PythonSource PYTHON_SOURCE_NODE_MODULE =
     "   @font.setter\n"
     "   def font(self, value: Font) -> None:\n"
     "       seika_engine_api.text_label_set_font(entity_id=self.entity_id, uid=value.uid)\n"
+    "\n"
+    "   @property\n"
+    "   def word_wrap(self) -> bool:\n"
+    "       return seika_engine_api.text_label_get_word_wrap(entity_id=self.entity_id)\n"
+    "\n"
+    "   @word_wrap.setter\n"
+    "   def word_wrap(self, value: bool) -> None:\n"
+    "       seika_engine_api.text_label_set_word_wrap(\n"
+    "           entity_id=self.entity_id, word_wrap=value\n"
+    "       )\n"
+    "\n"
+    "   @property\n"
+    "   def max_characters_per_line(self) -> int:\n"
+    "       return seika_engine_api.text_label_get_max_characters_per_line(\n"
+    "           entity_id=self.entity_id\n"
+    "       )\n"
+    "\n"
+    "   @max_characters_per_line.setter\n"
+    "   def max_characters_per_line(self, value: int) -> None:\n"
+    "       seika_engine_api.text_label_set_max_characters_per_line(\n"
+    "           entity_id=self.entity_id, max_characters=value\n"
+    "       )\n"
+    "\n"
+    "   @property\n"
+    "   def new_line_padding(self) -> int:\n"
+    "       return seika_engine_api.text_label_get_new_line_padding(\n"
+    "           entity_id=self.entity_id\n"
+    "       )\n"
+    "\n"
+    "   @new_line_padding.setter\n"
+    "   def new_line_padding(self, value: int) -> None:\n"
+    "       seika_engine_api.text_label_set_new_line_padding(\n"
+    "           entity_id=self.entity_id, new_line_padding=value\n"
+    "       )\n"
     "\n"
     "\n"
     "class CollisionShape2D(Node2D):\n"

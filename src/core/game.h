@@ -24,29 +24,17 @@ class Game {
     CommandLineFlagHelper commandLineFlagHelper;
 
     void Initialize(int argv, char** args);
-
     void Destroy();
-
     void InitializeSDL();
-
     void InitializeRendering();
-
     void InitializeECS();
-
-    void FixedTimeStep();
-
-    void VariableTimeStep(Uint32 lastFrameTime);
+    void PhysicsUpdate(); // Fixed time step
   public:
     Game(int argv, char** args);
-
     ~Game();
-
     void ProcessInput();
-
     void Update();
-
     void Render();
-
     bool IsRunning();
 };
 
