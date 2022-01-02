@@ -110,7 +110,6 @@ void Game::InitializeECS() {
     entityComponentOrchestrator->RegisterComponent<SpotLightComponent>();
 
     // Systems
-    // TODO: Will register systems with hooks to not have to refer to them directly during engine phases such as Update.
     entityComponentOrchestrator->RegisterSystem<TimerEntitySystem>(EntitySystemHook::PHYSICS_PROCESS);
     ComponentSignature timerSystemSignature;
     timerSystemSignature.set(entityComponentOrchestrator->GetComponentType<TimerComponent>(), true);

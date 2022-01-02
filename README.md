@@ -19,10 +19,16 @@ An open source 2D/3D game engine.  Windows only for now, but may support other p
 
 2. Dependent DLLs must be available before running the game.  Download [here](https://www.dropbox.com/s/0439l1btc76wbef/rbe_windows_dependencies.zip?dl=1) and extract in the project's root directory.
 
-3. Set environment variables.
-   * `SDL2_HOME`: Path for SDL2 development files.  Should also container files for SDL2 mixer.
-   * `FREETYPE_HOME`: Path for freetype development files.
-   * `PYTHON_HOME`: Path for python 3.7 development files.
+3. Set environment variables:
+
+   | Name             | Description                                |
+   |:----------------:|:------------------------------------------:|
+   | PYTHON_INCLUDE   | Include folder of the python installation. |
+   | PYTHON_LIBS      | Python lib folder containing .a files.     |
+   | SDL2_INCLUDE     | Include folder for SDL2.                   |
+   | SDL2_LIBS        | SDL2 lib folder containing .a files.       |
+   | FREETYPE_INCLUDE | Freetype include folder.                   |
+   | FREETYPE_LIBS    | Freetype lib folder containing .a files.   |
 
 ##### Build and Compile Game
 

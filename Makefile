@@ -1,10 +1,10 @@
 CC := gcc # C Compiler
 CXX := g++ # C++ compiler
-I_FLAGS := -I"./include" -I"${SDL2_HOME}/include" -I"${PYTHON_HOME}/include"
+I_FLAGS := -I"./include" -I"${SDL2_INCLUDE}" -I"${PYTHON_INCLUDE}" -I"${FREETYPE_INCLUDE}"
 L_FLAGS := -lmingw32 -lSDL2main -lSDL2_mixer -lSDL2 -lpython37 -lfreetype -lwsock32 -lws2_32 -static-libgcc -static-libstdc++ -lstdc++fs
 C_FLAGS := -Wfatal-errors -Wall -Wextra -Wno-write-strings -Wno-deprecated-declarations -Wno-unused-variable -Wno-cast-function-type -Wno-unused-parameter -Wno-missing-field-initializers
 CPP_FLAGS := -std=c++14 $(C_FLAGS) -Wno-reorder
-LIBRARIES := -L"${SDL2_HOME}/lib" -L"${PYTHON_HOME}/libs" -L"${FREETYPE_HOME}/lib"
+LIBRARIES := -L"${SDL2_LIBS}" -L"${PYTHON_LIBS}" -L"${FREETYPE_LIBS}"
 RELEASE_FLAGS = -DHAVE_SNPRINTF=1
 
 PROJECT_NAME := seika_engine
