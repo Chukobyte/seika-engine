@@ -441,6 +441,15 @@ new() -&gt; seika.node.Node:
 <pre><code class="language-python">font: seika.assets.Font
 </code></pre>
 <p>The <a href="../assets/#font">font</a> of the text.</p>
+<pre><code class="language-python">word_wrap: bool
+</code></pre>
+<p>Determines if the textlabel has word wrapping enabled.</p>
+<pre><code class="language-python">max_characters_per_line: int
+</code></pre>
+<p>How many characters per line a text label can display.  Must have <code>word_wrap</code> set to <code>True</code> to take effect.</p>
+<pre><code class="language-python">new_line_padding: int
+</code></pre>
+<p>Vertical padding for new lines.  Must have <code>word_wrap</code> set to <code>True</code> to take effect.</p>
 <hr/>
 <h3 id="signals_5">Signals</h3>
 <p>None.</p>
