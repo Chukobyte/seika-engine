@@ -93,7 +93,7 @@ class EntityComponentOrchestrator {
 
     template<typename T>
     bool IsComponentEnabled(Entity entity) {
-        auto signature = entityManager->GetSignature(entity);
+        auto signature = entityManager->GetEnabledSignature(entity);
         return (GetComponentType<T>() & signature) == signature;
     }
 

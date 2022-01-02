@@ -92,7 +92,7 @@ void EntityComponentOrchestrator::InitializeAllSystems() {
 
 // SCENE
 void EntityComponentOrchestrator::AddChildToEntityScene(Entity parentEntity, Entity childEntity) {
-    ComponentSignature signature = entityManager->GetSignature(childEntity);
+    ComponentSignature signature = entityManager->GetEnabledSignature(childEntity);
     entitySystemManager->EntitySignatureChanged(childEntity, signature);
     sceneManager->AddChild(parentEntity, childEntity);
 }

@@ -34,43 +34,43 @@ class SceneNodeJsonParser {
     AssetManager *assetManager = nullptr;
     TimerManager *timerManager = nullptr;
 
-    void ParseComponents(SceneNode &sceneNode, const nlohmann::json &nodeComponentJsonArray) {
+    void ParseComponents(SceneNode &sceneNode, const nlohmann::json &nodeComponentJsonArray, bool enabled) {
         for (nlohmann::json nodeComponentJson : nodeComponentJsonArray) {
             nlohmann::json::iterator it = nodeComponentJson.begin();
             const std::string &nodeComponentType = it.key();
             nlohmann::json nodeComponentObjectJson = it.value();
             // TODO: Map to functions with keys
             if (nodeComponentType == "transform2D") {
-                ParseTransform2DComponent(sceneNode, nodeComponentObjectJson);
+                ParseTransform2DComponent(sceneNode, nodeComponentObjectJson, enabled);
             } else if (nodeComponentType == "timer") {
-                ParseTimerComponent(sceneNode, nodeComponentObjectJson);
+                ParseTimerComponent(sceneNode, nodeComponentObjectJson, enabled);
             } else if (nodeComponentType == "sprite") {
-                ParseSpriteComponent(sceneNode, nodeComponentObjectJson);
+                ParseSpriteComponent(sceneNode, nodeComponentObjectJson, enabled);
             } else if (nodeComponentType == "animated_sprite") {
-                ParseAnimatedSpriteComponent(sceneNode, nodeComponentObjectJson);
+                ParseAnimatedSpriteComponent(sceneNode, nodeComponentObjectJson, enabled);
             } else if (nodeComponentType == "text_label") {
-                ParseTextLabelComponent(sceneNode, nodeComponentObjectJson);
+                ParseTextLabelComponent(sceneNode, nodeComponentObjectJson, enabled);
             } else if (nodeComponentType == "collider") {
-                ParseColliderComponent(sceneNode, nodeComponentObjectJson);
+                ParseColliderComponent(sceneNode, nodeComponentObjectJson, enabled);
             } else if (nodeComponentType == "transform3D") {
-                ParseTransform3DComponent(sceneNode, nodeComponentObjectJson);
+                ParseTransform3DComponent(sceneNode, nodeComponentObjectJson, enabled);
             } else if (nodeComponentType == "material") {
-                ParseMaterialComponent(sceneNode, nodeComponentObjectJson);
+                ParseMaterialComponent(sceneNode, nodeComponentObjectJson, enabled);
             } else if (nodeComponentType == "texture_cube") {
-                ParseTextureCubeComponent(sceneNode, nodeComponentObjectJson);
+                ParseTextureCubeComponent(sceneNode, nodeComponentObjectJson, enabled);
             } else if (nodeComponentType == "directional_light") {
-                ParseDirectionalLightComponent(sceneNode, nodeComponentObjectJson);
+                ParseDirectionalLightComponent(sceneNode, nodeComponentObjectJson, enabled);
             } else if (nodeComponentType == "point_light") {
-                ParsePointLightComponent(sceneNode, nodeComponentObjectJson);
+                ParsePointLightComponent(sceneNode, nodeComponentObjectJson, enabled);
             } else if (nodeComponentType == "spot_light") {
-                ParseSpotLightComponent(sceneNode, nodeComponentObjectJson);
+                ParseSpotLightComponent(sceneNode, nodeComponentObjectJson, enabled);
             } else if (nodeComponentType == "scriptable_class") {
-                ParseScriptableClassComponent(sceneNode, nodeComponentObjectJson);
+                ParseScriptableClassComponent(sceneNode, nodeComponentObjectJson, enabled);
             }
         }
     }
 
-    void ParseTransform2DComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson) {
+    void ParseTransform2DComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson, bool enabled) {
         nlohmann::json nodeTransform2DPosition = JsonHelper::Get<nlohmann::json>(nodeComponentObjectJson, "position");
         nlohmann::json nodeTransform2DScale = JsonHelper::Get<nlohmann::json>(nodeComponentObjectJson, "scale");
         const Vector2 nodePosition = Vector2(
@@ -93,22 +93,22 @@ class SceneNodeJsonParser {
             .ignoreCamera = nodeIgnoreCamera
         });
         auto signature = entityManager->GetSignature(sceneNode.entity);
-        signature.set(componentManager->GetComponentType<Transform2DComponent>(), true);
+        signature.set(componentManager->GetComponentType<Transform2DComponent>(), enabled);
         entityManager->SetSignature(sceneNode.entity, signature);
     }
 
-    void ParseTimerComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson) {
+    void ParseTimerComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson, bool enabled) {
         const Uint32 nodeWaitTimeInMilliseconds = (Uint32) JsonHelper::Get<float>(nodeComponentObjectJson, "wait_time") * 1000;
         const bool nodeLoops = JsonHelper::Get<bool>(nodeComponentObjectJson, "loops");
         componentManager->AddComponent(sceneNode.entity, TimerComponent{
             .timer = timerManager->GenerateTimer(sceneNode.entity, nodeWaitTimeInMilliseconds, nodeLoops)
         });
         auto signature = entityManager->GetSignature(sceneNode.entity);
-        signature.set(componentManager->GetComponentType<TimerComponent>(), true);
+        signature.set(componentManager->GetComponentType<TimerComponent>(), enabled);
         entityManager->SetSignature(sceneNode.entity, signature);
     }
 
-    void ParseSpriteComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson) {
+    void ParseSpriteComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson, bool enabled) {
         const std::string &nodeTexturePath = JsonHelper::Get<std::string>(nodeComponentObjectJson, "texture_path");
         nlohmann::json nodeDrawSourceJson = JsonHelper::Get<nlohmann::json>(nodeComponentObjectJson, "draw_source");
         const float nodeDrawSourceX = JsonHelper::Get<float>(nodeDrawSourceJson, "x");
@@ -133,12 +133,12 @@ class SceneNodeJsonParser {
             .modulate = nodeModulate
         });
         auto signature = entityManager->GetSignature(sceneNode.entity);
-        const bool isSpriteEnabled = !nodeTexturePath.empty();
+        const bool isSpriteEnabled = !nodeTexturePath.empty() && enabled;
         signature.set(componentManager->GetComponentType<SpriteComponent>(), isSpriteEnabled);
         entityManager->SetSignature(sceneNode.entity, signature);
     }
 
-    void ParseAnimatedSpriteComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson) {
+    void ParseAnimatedSpriteComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson, bool enabled) {
         const std::string &nodeCurrentAnimationName = JsonHelper::Get<std::string>(nodeComponentObjectJson, "current_animation");
         const bool nodeIsPlaying = JsonHelper::Get<bool>(nodeComponentObjectJson, "is_playing");
         const bool nodeFlipX = JsonHelper::Get<bool>(nodeComponentObjectJson, "flip_x");
@@ -194,12 +194,12 @@ class SceneNodeJsonParser {
         });
         auto signature = entityManager->GetSignature(sceneNode.entity);
         // Editor won't allow animations with empty textures
-        const bool isAnimatedSpriteEnabled = !nodeAnimations.empty();
+        const bool isAnimatedSpriteEnabled = !nodeAnimations.empty() && enabled;
         signature.set(componentManager->GetComponentType<AnimatedSpriteComponent>(), isAnimatedSpriteEnabled);
         entityManager->SetSignature(sceneNode.entity, signature);
     }
 
-    void ParseTextLabelComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson) {
+    void ParseTextLabelComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson, bool enabled) {
         const std::string &nodeText = JsonHelper::Get<std::string>(nodeComponentObjectJson, "text");
         const std::string &nodeFontUID = JsonHelper::Get<std::string>(nodeComponentObjectJson, "font_uid");
         nlohmann::json nodeColorJson = JsonHelper::Get<nlohmann::json>(nodeComponentObjectJson, "color");
@@ -222,12 +222,12 @@ class SceneNodeJsonParser {
             nodeNewLinePadding
         });
         auto signature = entityManager->GetSignature(sceneNode.entity);
-        const bool isTextLabelEnabled = !nodeFontUID.empty();
+        const bool isTextLabelEnabled = !nodeFontUID.empty() && enabled;
         signature.set(componentManager->GetComponentType<TextLabelComponent>(), isTextLabelEnabled);
         entityManager->SetSignature(sceneNode.entity, signature);
     }
 
-    void ParseColliderComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson) {
+    void ParseColliderComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson, bool enabled) {
         nlohmann::json nodeRectangleJson = JsonHelper::Get<nlohmann::json>(nodeComponentObjectJson, "rectangle");
         const float nodeX = JsonHelper::Get<float>(nodeRectangleJson, "x");
         const float nodeY = JsonHelper::Get<float>(nodeRectangleJson, "y");
@@ -254,11 +254,11 @@ class SceneNodeJsonParser {
         };
         componentManager->AddComponent(sceneNode.entity, colliderComponent);
         auto signature = entityManager->GetSignature(sceneNode.entity);
-        signature.set(componentManager->GetComponentType<ColliderComponent>(), true);
+        signature.set(componentManager->GetComponentType<ColliderComponent>(), enabled);
         entityManager->SetSignature(sceneNode.entity, signature);
     }
 
-    void ParseTransform3DComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson) {
+    void ParseTransform3DComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson, bool enabled) {
         nlohmann::json positionJson = JsonHelper::Get<nlohmann::json>(nodeComponentObjectJson, "position");
         Vector3 nodePosition = Vector3(
                                    JsonHelper::Get<float>(positionJson, "x"),
@@ -285,11 +285,11 @@ class SceneNodeJsonParser {
             .rotationAxisInDegrees = nodeRotationAxis
         });
         auto signature = entityManager->GetSignature(sceneNode.entity);
-        signature.set(componentManager->GetComponentType<Transform3DComponent>(), true);
+        signature.set(componentManager->GetComponentType<Transform3DComponent>(), enabled);
         entityManager->SetSignature(sceneNode.entity, signature);
     }
 
-    void ParseMaterialComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson) {
+    void ParseMaterialComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson, bool enabled) {
         nlohmann::json ambientJson = JsonHelper::Get<nlohmann::json>(nodeComponentObjectJson, "ambient");
         Vector3 nodeAmbient = Vector3(
                                   JsonHelper::Get<float>(ambientJson, "x"),
@@ -321,18 +321,18 @@ class SceneNodeJsonParser {
             .specularMap = nodeSpecularMapTexturePath.empty() ? nullptr : assetManager->GetTexture(nodeSpecularMapTexturePath)
         });
         auto signature = entityManager->GetSignature(sceneNode.entity);
-        signature.set(componentManager->GetComponentType<MaterialComponent>(), true);
+        signature.set(componentManager->GetComponentType<MaterialComponent>(), enabled);
         entityManager->SetSignature(sceneNode.entity, signature);
     }
 
-    void ParseTextureCubeComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson) {
+    void ParseTextureCubeComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson, bool enabled) {
         componentManager->AddComponent(sceneNode.entity, TextureCubeComponent{});
         auto signature = entityManager->GetSignature(sceneNode.entity);
-        signature.set(componentManager->GetComponentType<TextureCubeComponent>(), true);
+        signature.set(componentManager->GetComponentType<TextureCubeComponent>(), enabled);
         entityManager->SetSignature(sceneNode.entity, signature);
     }
 
-    void ParseDirectionalLightComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson) {
+    void ParseDirectionalLightComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson, bool enabled) {
         nlohmann::json directionJson = JsonHelper::Get<nlohmann::json>(nodeComponentObjectJson, "direction");
         Vector3 nodeDirection = Vector3(
                                     JsonHelper::Get<float>(directionJson, "x"),
@@ -342,11 +342,11 @@ class SceneNodeJsonParser {
 
         componentManager->AddComponent(sceneNode.entity, DirectionalLightComponent{.direction = nodeDirection});
         auto signature = entityManager->GetSignature(sceneNode.entity);
-        signature.set(componentManager->GetComponentType<DirectionalLightComponent>(), true);
+        signature.set(componentManager->GetComponentType<DirectionalLightComponent>(), enabled);
         entityManager->SetSignature(sceneNode.entity, signature);
     }
 
-    void ParsePointLightComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson) {
+    void ParsePointLightComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson, bool enabled) {
         const float nodeLinear = JsonHelper::Get<float>(nodeComponentObjectJson, "linear");
         const float nodeQuadratic = JsonHelper::Get<float>(nodeComponentObjectJson, "quadratic");
         const float nodeConstant = JsonHelper::Get<float>(nodeComponentObjectJson, "constant");
@@ -357,11 +357,11 @@ class SceneNodeJsonParser {
             .constant = nodeConstant
         });
         auto signature = entityManager->GetSignature(sceneNode.entity);
-        signature.set(componentManager->GetComponentType<PointLightComponent>(), true);
+        signature.set(componentManager->GetComponentType<PointLightComponent>(), enabled);
         entityManager->SetSignature(sceneNode.entity, signature);
     }
 
-    void ParseSpotLightComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson) {
+    void ParseSpotLightComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson, bool enabled) {
         nlohmann::json directionJson = JsonHelper::Get<nlohmann::json>(nodeComponentObjectJson, "direction");
         Vector3 nodeDirection = Vector3(
                                     JsonHelper::Get<float>(directionJson, "x"),
@@ -385,11 +385,11 @@ class SceneNodeJsonParser {
             .constant = nodeConstant
         });
         auto signature = entityManager->GetSignature(sceneNode.entity);
-        signature.set(componentManager->GetComponentType<SpotLightComponent>(), true);
+        signature.set(componentManager->GetComponentType<SpotLightComponent>(), enabled);
         entityManager->SetSignature(sceneNode.entity, signature);
     }
 
-    void ParseScriptableClassComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson) {
+    void ParseScriptableClassComponent(SceneNode &sceneNode, const nlohmann::json &nodeComponentObjectJson, bool enabled) {
         const std::string &nodeClassPath = JsonHelper::Get<std::string>(nodeComponentObjectJson, "class_path");
         const std::string &nodeClassName = JsonHelper::Get<std::string>(nodeComponentObjectJson, "class_name");
 
@@ -400,7 +400,7 @@ class SceneNodeJsonParser {
         });
         auto signature = entityManager->GetSignature(sceneNode.entity);
         // Editor will validate the scriptable component is valid
-        signature.set(componentManager->GetComponentType<ScriptableClassComponent>(), true);
+        signature.set(componentManager->GetComponentType<ScriptableClassComponent>(), enabled);
         entityManager->SetSignature(sceneNode.entity, signature);
     }
   public:
@@ -420,6 +420,7 @@ class SceneNodeJsonParser {
         const std::string &nodeType = JsonHelper::Get<std::string>(nodeJson, "type");
         nlohmann::json nodeTagsJsonArray = JsonHelper::Get<nlohmann::json>(nodeJson, "tags");
         const std::string &nodeExternalSceneSource = JsonHelper::Get<std::string>(nodeJson, "external_scene_source");
+        bool nodeComponentsEnabled = JsonHelper::GetDefault<bool>(nodeJson, "components_enabled", true);
         nlohmann::json nodeComponentJsonArray = JsonHelper::Get<nlohmann::json>(nodeJson, "components");
         nlohmann::json nodeChildrenJsonArray = JsonHelper::Get<nlohmann::json>(nodeJson, "children");
 
@@ -435,7 +436,7 @@ class SceneNodeJsonParser {
         });
 
         // Rest of components
-        ParseComponents(sceneNode, nodeComponentJsonArray);
+        ParseComponents(sceneNode, nodeComponentJsonArray, nodeComponentsEnabled);
 
         for (nlohmann::json nodeChildJson : nodeChildrenJsonArray) {
             nodeChildJson["parent_entity_id"] = sceneNode.entity;
