@@ -7,7 +7,6 @@
 #include "rendering/renderer3d.h"
 #include "asset_manager.h"
 #include "ecs/entity/entity_manager.h"
-//#include "ecs/entity/system/entity_system_manager.h"
 #include "ecs/component/component_manager.h"
 #include "ecs/entity_component_orchestrator.h"
 #include "physics/collision/collision_context.h"
@@ -34,7 +33,6 @@ class GD {
     Renderer3D *renderer3D = nullptr;
     AssetManager *assetManager = nullptr;
     EntityManager *entityManager = nullptr;
-//    EntitySystemManager *entitySystemManager = nullptr;
     ComponentManager *componentManager = nullptr;
     SceneManager *sceneManager = nullptr;
     SceneContext *sceneContext = nullptr;

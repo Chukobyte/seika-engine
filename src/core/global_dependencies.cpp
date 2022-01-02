@@ -1,5 +1,5 @@
 #include "global_dependencies.h"
-#include "ecs/entity/system/entity_system_manager.h"
+#include "ecs/system/entity_system_manager.h"
 
 GD* GD::instance = 0;
 
@@ -22,7 +22,6 @@ void GD::ResetDependencies() {
     delete renderer3D;
     delete assetManager;
     delete entityManager;
-//    delete entitySystemManager;
     delete componentManager;
     delete sceneContext;
     delete sceneManager;
@@ -37,7 +36,6 @@ void GD::ResetDependencies() {
     renderer3D = new Renderer3D();
     assetManager = new AssetManager();
     entityManager = new EntityManager();
-//    entitySystemManager = new EntitySystemManager();
     componentManager = new ComponentManager();
     sceneContext = new SceneContext();
     sceneManager = new SceneManager(sceneContext, entityManager, componentManager, assetManager);

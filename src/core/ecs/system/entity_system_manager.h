@@ -1,13 +1,13 @@
 #pragma once
 
-#include "../../../utils/singleton.h"
+#include "../../utils/singleton.h"
 
 #include <cassert>
 #include <unordered_map>
 
-#include "../entity.h"
+#include "../entity/entity.h"
 #include "entity_system.h"
-#include "../../../utils/logger.h"
+#include "../../utils/logger.h"
 
 class EntitySystemManager : public Singleton<EntitySystemManager> {
   private:

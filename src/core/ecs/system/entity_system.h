@@ -3,8 +3,8 @@
 
 #include <set>
 
-#include "../entity.h"
-#include "../../../global_dependencies.h"
+#include "../entity/entity.h"
+#include "../../global_dependencies.h"
 
 const unsigned int MAX_SYSTEMS = 32;
 

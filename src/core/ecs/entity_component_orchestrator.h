@@ -2,10 +2,10 @@
 #define ENTITY_COMPONENT_ORCHESTRATOR_H
 
 #include "entity/entity_manager.h"
-#include "entity/system/entity_system_manager.h"
+#include "system/entity_system_manager.h"
 #include "component/component_manager.h"
 #include "../scene/scene.h"
-#include "entity/system/script_entity_system.h"
+#include "system/script_entity_system.h"
 #include "../signal_manager.h"
 #include "../scene/scene_manager.h"
 
