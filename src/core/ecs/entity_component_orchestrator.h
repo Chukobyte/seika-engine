@@ -116,8 +116,8 @@ class EntityComponentOrchestrator {
 
     // SYSTEM METHODS
     template<typename T>
-    T* RegisterSystem() {
-        return entitySystemManager->RegisterSystem<T>();
+    T* RegisterSystem(EntitySystemHook systemHooks = EntitySystemHook::NONE) {
+        return entitySystemManager->RegisterSystem<T>(systemHooks);
     }
 
     template<typename T>

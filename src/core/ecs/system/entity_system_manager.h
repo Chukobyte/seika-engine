@@ -163,7 +163,7 @@ class EntitySystemManager : public Singleton<EntitySystemManager> {
         }
     }
 
-    void RenderSystemsHook(float deltaTime) {
+    void RenderSystemsHook() {
         for (EntitySystem* system : renderSystems) {
             system->Render();
         }
