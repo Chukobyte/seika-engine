@@ -28,6 +28,7 @@ class EntitySystem {
         enabled = false;
     }
 
+    // Hooks
     virtual void OnRegisterEntity(Entity entity) {
         entities.insert(entity);
     }
@@ -36,6 +37,11 @@ class EntitySystem {
     }
 
     virtual void OnEntityDestroyed(Entity entity) {}
+
+    // Subscribable hooks
+    virtual void Process(float deltaTime) {}
+    virtual void PhysicsProcess(float deltaTime) {}
+    virtual void Render() {}
 };
 
 #endif //ENTITY_SYSTEM_H

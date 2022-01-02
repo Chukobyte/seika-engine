@@ -27,7 +27,7 @@ class SpriteRenderingEntitySystem : public EntitySystem {
     void Disable() override {}
     void OnEntityDestroyed(Entity entity) override {}
 
-    void Render() {
+    void Render() override {
         if (IsEnabled()) {
             for (Entity entity : entities) {
                 Transform2DComponent transform2DComponent = componentManager->GetComponent<Transform2DComponent>(entity);

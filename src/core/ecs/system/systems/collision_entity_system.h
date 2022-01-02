@@ -150,7 +150,7 @@ class CollisionEntitySystem : public EntitySystem {
         return false;
     }
 
-    void Render() {
+    void Render() override {
         for (Entity entity : entities) {
             Transform2DComponent transform2DComponent = componentManager->GetComponent<Transform2DComponent>(entity);
             ColliderComponent colliderComponent = componentManager->GetComponent<ColliderComponent>(entity);

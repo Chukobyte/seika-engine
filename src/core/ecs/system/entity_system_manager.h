@@ -8,12 +8,41 @@
 #include "../entity/entity.h"
 #include "entity_system.h"
 #include "../../utils/logger.h"
+#include "../../utils/helper.h"
+
+enum class EntitySystemHook : int {
+    NONE = 0,
+    PROCESS = 2,
+    PHYSICS_PROCESS = 4,
+    RENDER = 8,
+    ALL = PROCESS | PHYSICS_PROCESS | RENDER,
+};
+GENERATE_ENUM_CLASS_OPERATORS(EntitySystemHook)
 
 class EntitySystemManager : public Singleton<EntitySystemManager> {
   private:
+    Logger *logger = nullptr;
     std::unordered_map<const char*, ComponentSignature> signatures{};
     std::unordered_map<const char*, EntitySystem*> systems{};
-    Logger *logger = nullptr;
+    // Subscribable systems
+    std::vector<EntitySystem*> processSystems = {};
+    std::vector<EntitySystem*> physicsProcessSystems = {};
+    std::vector<EntitySystem*> renderSystems = {};
+
+    void ProcessSystemHooks(EntitySystem* system, EntitySystemHook systemHooks) {
+        if (systemHooks == EntitySystemHook::NONE) {
+            return;
+        }
+        if ((systemHooks & EntitySystemHook::PROCESS) == EntitySystemHook::PROCESS) {
+            processSystems.emplace_back(system);
+        }
+        if ((systemHooks & EntitySystemHook::PHYSICS_PROCESS) == EntitySystemHook::PHYSICS_PROCESS) {
+            physicsProcessSystems.emplace_back(system);
+        }
+        if ((systemHooks & EntitySystemHook::RENDER) == EntitySystemHook::RENDER) {
+            renderSystems.emplace_back(system);
+        }
+    }
 
   public:
     EntitySystemManager(singleton) : logger(Logger::GetInstance()) {}
@@ -26,7 +55,7 @@ class EntitySystemManager : public Singleton<EntitySystemManager> {
     }
 
     template<typename T>
-    T* RegisterSystem() {
+    T* RegisterSystem(EntitySystemHook systemHooks = EntitySystemHook::NONE) {
         const char *typeName = typeid(T).name();
 
         assert(!HasSystem<T>() && "Registering system more than once.");
@@ -34,6 +63,7 @@ class EntitySystemManager : public Singleton<EntitySystemManager> {
         auto *system = new T();
         system->Enable();
         systems.insert({typeName, system});
+        ProcessSystemHooks(system, systemHooks);
         return system;
     }
 
@@ -118,6 +148,24 @@ class EntitySystemManager : public Singleton<EntitySystemManager> {
             else {
                 system->OnUnRegisterEntity(entity);
             }
+        }
+    }
+
+    void ProcessSystemsHook(float deltaTime) {
+        for (EntitySystem* system : processSystems) {
+            system->Process(deltaTime);
+        }
+    }
+
+    void PhysicsProcessSystemsHook(float deltaTime) {
+        for (EntitySystem* system : physicsProcessSystems) {
+            system->PhysicsProcess(deltaTime);
+        }
+    }
+
+    void RenderSystemsHook(float deltaTime) {
+        for (EntitySystem* system : renderSystems) {
+            system->Render();
         }
     }
 };

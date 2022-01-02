@@ -24,7 +24,7 @@ class DirectionalLightRenderingEntitySystem : public EntitySystem {
 
     void OnEntityDestroyed(Entity entity) override {}
 
-    void Render() {
+    void Render() override {
         if (IsEnabled()) {
             for (Entity entity : entities) {
                 DirectionalLightComponent directionalLightComponent = componentManager->GetComponent<DirectionalLightComponent>(entity);
