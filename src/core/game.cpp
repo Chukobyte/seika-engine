@@ -294,7 +294,8 @@ void Game::FixedTimeStep() {
 
     accumulator += frameTime / projectProperties->GetMillisecondsPerTick();
 
-    static ScriptEntitySystem *scriptEntitySystem = (ScriptEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<ScriptEntitySystem>();
+//    static ScriptEntitySystem *scriptEntitySystem = (ScriptEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<ScriptEntitySystem>();
+    static ScriptEntitySystem *scriptEntitySystem = (ScriptEntitySystem*) EntitySystemManager::GetInstance()->GetEntitySystem<ScriptEntitySystem>();
 
     while (accumulator >= PHYSICS_DELTA_TIME) {
         time += PHYSICS_DELTA_TIME;
@@ -307,7 +308,8 @@ void Game::FixedTimeStep() {
 
         scriptEntitySystem->PhysicsProcess(PHYSICS_DELTA_TIME);
 
-        static TimerEntitySystem *timerEntitySystem = (TimerEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<TimerEntitySystem>();
+//        static TimerEntitySystem *timerEntitySystem = (TimerEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<TimerEntitySystem>();
+        static TimerEntitySystem *timerEntitySystem = (TimerEntitySystem*) EntitySystemManager::GetInstance()->GetEntitySystem<TimerEntitySystem>();
         timerEntitySystem->Tick();
 
         inputManager->ClearInputFlags();
@@ -330,30 +332,30 @@ void Game::Render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
     // 2D Rendering
-    static SpriteRenderingEntitySystem *spriteRenderingEntitySystem = (SpriteRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<SpriteRenderingEntitySystem>();
+    static SpriteRenderingEntitySystem *spriteRenderingEntitySystem = (SpriteRenderingEntitySystem*) EntitySystemManager::GetInstance()->GetEntitySystem<SpriteRenderingEntitySystem>();
     spriteRenderingEntitySystem->Render();
 
-    static AnimatedSpriteRenderingEntitySystem *animatedSpriteRenderingEntitySystem = (AnimatedSpriteRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<AnimatedSpriteRenderingEntitySystem>();
+    static AnimatedSpriteRenderingEntitySystem *animatedSpriteRenderingEntitySystem = (AnimatedSpriteRenderingEntitySystem*) EntitySystemManager::GetInstance()->GetEntitySystem<AnimatedSpriteRenderingEntitySystem>();
     animatedSpriteRenderingEntitySystem->Render();
 
-    static TextRenderingEntitySystem *textRenderingEntitySystem = (TextRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<TextRenderingEntitySystem>();
+    static TextRenderingEntitySystem *textRenderingEntitySystem = (TextRenderingEntitySystem*) EntitySystemManager::GetInstance()->GetEntitySystem<TextRenderingEntitySystem>();
     textRenderingEntitySystem->Render();
 
     if (projectProperties->areColliderVisible) {
-        static CollisionEntitySystem *collisionEntitySystem = (CollisionEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<CollisionEntitySystem>();
+        static CollisionEntitySystem *collisionEntitySystem = (CollisionEntitySystem*) EntitySystemManager::GetInstance()->GetEntitySystem<CollisionEntitySystem>();
         collisionEntitySystem->Render();
     }
 
     renderer2D->FlushBatches();
 
     // 3D Rendering
-    static TextureCubeRenderingEntitySystem *textureCubeRenderingEntitySystem = (TextureCubeRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<TextureCubeRenderingEntitySystem>();
+    static TextureCubeRenderingEntitySystem *textureCubeRenderingEntitySystem = (TextureCubeRenderingEntitySystem*) EntitySystemManager::GetInstance()->GetEntitySystem<TextureCubeRenderingEntitySystem>();
     textureCubeRenderingEntitySystem->Render();
-    static DirectionalLightRenderingEntitySystem *directionalLightRenderingEntitySystem = (DirectionalLightRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<DirectionalLightRenderingEntitySystem>();
+    static DirectionalLightRenderingEntitySystem *directionalLightRenderingEntitySystem = (DirectionalLightRenderingEntitySystem*) EntitySystemManager::GetInstance()->GetEntitySystem<DirectionalLightRenderingEntitySystem>();
     directionalLightRenderingEntitySystem->Render();
-    static PointLightRenderingEntitySystem *pointLightRenderingEntitySystem = (PointLightRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<PointLightRenderingEntitySystem>();
+    static PointLightRenderingEntitySystem *pointLightRenderingEntitySystem = (PointLightRenderingEntitySystem*) EntitySystemManager::GetInstance()->GetEntitySystem<PointLightRenderingEntitySystem>();
     pointLightRenderingEntitySystem->Render();
-    static SpotLightRenderingEntitySystem *spotLightRenderingEntitySystem = (SpotLightRenderingEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<SpotLightRenderingEntitySystem>();
+    static SpotLightRenderingEntitySystem *spotLightRenderingEntitySystem = (SpotLightRenderingEntitySystem*) EntitySystemManager::GetInstance()->GetEntitySystem<SpotLightRenderingEntitySystem>();
     spotLightRenderingEntitySystem->Render();
 
     renderer3D->Render(GD::GetContainer()->cameraManager);

@@ -1,5 +1,6 @@
-#ifndef ENTITY_SYSTEM_MANAGER_H
-#define ENTITY_SYSTEM_MANAGER_H
+#pragma once
+
+#include "../../../utils/singleton.h"
 
 #include <cassert>
 #include <unordered_map>
@@ -8,16 +9,14 @@
 #include "entity_system.h"
 #include "../../../utils/logger.h"
 
-class EntitySystemManager {
+class EntitySystemManager : public Singleton<EntitySystemManager> {
   private:
     std::unordered_map<const char*, ComponentSignature> signatures{};
     std::unordered_map<const char*, EntitySystem*> systems{};
     Logger *logger = nullptr;
 
   public:
-    EntitySystemManager() {
-        logger = Logger::GetInstance();
-    }
+    EntitySystemManager(singleton) : logger(Logger::GetInstance()) {}
 
     template<typename T>
     T* GetSystem() {
@@ -122,5 +121,3 @@ class EntitySystemManager {
         }
     }
 };
-
-#endif //ENTITY_SYSTEM_MANAGER_H

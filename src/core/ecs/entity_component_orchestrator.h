@@ -26,121 +26,26 @@ class EntityComponentOrchestrator {
     std::vector<Entity> entitiesQueuedForDeletion;
     std::map<std::string, Entity> nodeNameToEntityMap;
 
-    void AddChildToEntityScene(Entity parentEntity, Entity childEntity) {
-        ComponentSignature signature = entityManager->GetSignature(childEntity);
-        entitySystemManager->EntitySignatureChanged(childEntity, signature);
-        sceneManager->AddChild(parentEntity, childEntity);
-    }
+    void AddChildToEntityScene(Entity parentEntity, Entity childEntity);
+    void RegisterSceneNodeInstances(SceneNode sceneNode);
+    void CallStartOnScriptInstances(SceneNode sceneNode);
 
-    // Will be the function to initialize stuff for a scene
-    void RegisterSceneNodeInstances(SceneNode sceneNode) {
-        AddChildToEntityScene(sceneNode.parent, sceneNode.entity);
-        if (componentManager->HasComponent<ScriptableClassComponent>(sceneNode.entity)) {
-            ScriptEntitySystem *scriptEntitySystem = (ScriptEntitySystem*) entitySystemManager->GetEntitySystem<ScriptEntitySystem>();
-            scriptEntitySystem->CreateEntityInstance(sceneNode.entity);
-        }
-        NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(sceneNode.entity);
-        nodeNameToEntityMap.emplace(nodeComponent.name, sceneNode.entity);
-
-        for (SceneNode childSceneNode : sceneNode.children) {
-            RegisterSceneNodeInstances(childSceneNode);
-        }
-    }
-
-    void CallStartOnScriptInstances(SceneNode sceneNode) {
-        for (SceneNode childSceneNode : sceneNode.children) {
-            CallStartOnScriptInstances(childSceneNode);
-        }
-        if (componentManager->HasComponent<ScriptableClassComponent>(sceneNode.entity)) {
-            ScriptEntitySystem *scriptEntitySystem = (ScriptEntitySystem*) entitySystemManager->GetEntitySystem<ScriptEntitySystem>();
-            scriptEntitySystem->CallStartOnEntityInstance(sceneNode.entity);
-        }
-    }
   public:
-    EntityComponentOrchestrator(EntityManager *entityManagerP, EntitySystemManager *entitySystemManagerP, ComponentManager *componentManagerP, SceneManager *sceneManagerP)
-        : entityManager(entityManagerP), entitySystemManager(entitySystemManagerP), componentManager(componentManagerP), sceneManager(sceneManagerP) {
-        timerManager = TimerManager::GetInstance();
-        signalManager = SignalManager::GetInstance();
-    }
+    EntityComponentOrchestrator(EntityManager *entityManagerP, EntitySystemManager *entitySystemManagerP, ComponentManager *componentManagerP, SceneManager *sceneManagerP);
     // ENTITY METHODS
-    Entity CreateEntity() {
-        return entityManager->CreateEntity();
-    }
-
-    void NewEntity(SceneNode sceneNode) {
-        if (componentManager->HasComponent<ScriptableClassComponent>(sceneNode.entity)) {
-            ScriptEntitySystem *scriptEntitySystem = (ScriptEntitySystem*) entitySystemManager->GetEntitySystem<ScriptEntitySystem>();
-            scriptEntitySystem->CreateEntityInstance(sceneNode.entity);
-        }
-    }
-
-    void NewEntityAddChild(Entity parent, Entity child) {
-        SceneNode childNode = SceneNode{.entity = child, .parent = parent};
-        AddChildToEntityScene(childNode.parent, childNode.entity);
-        NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(childNode.entity);
-        nodeNameToEntityMap.emplace(nodeComponent.name, childNode.entity);
-        CallStartOnScriptInstances(childNode);
-    }
-
-    void QueueEntityForDeletion(Entity entity) {
-        entitiesQueuedForDeletion.emplace_back(entity);
-    }
-
-    bool IsEntityQueuedForDeletion(Entity entity) {
-        return std::find(entitiesQueuedForDeletion.begin(), entitiesQueuedForDeletion.end(), entity) != entitiesQueuedForDeletion.end();
-    }
-
-    void DestroyQueuedEntities() {
-        for (Entity entity : entitiesQueuedForDeletion) {
-            if (sceneManager->HasEntitySceneNode(entity)) {
-                SceneNode sceneNode = sceneManager->GetEntitySceneNode(entity);
-                DestroyEntity(sceneNode);
-            }
-        }
-        entitiesQueuedForDeletion.clear();
-    }
-
-    void DestroyEntity(SceneNode sceneNode) {
-        sceneManager->RemoveNode(sceneNode);
-        std::vector<Entity> entitiesRemovedFromScene = sceneManager->FlushRemovedEntities();
-        for (Entity entityToRemove : entitiesRemovedFromScene) {
-            if (componentManager->HasComponent<NodeComponent>(entityToRemove)) {
-                NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(entityToRemove);
-                nodeNameToEntityMap.erase(nodeComponent.name);
-                entityManager->DestroyEntity(entityToRemove);
-                componentManager->EntityDestroyed(entityToRemove);
-                entitySystemManager->EntityDestroyed(entityToRemove);
-                signalManager->RemoveEntitySignals(entityToRemove);
-            }
-        }
-    }
-
-    bool DoesNodeNameExist(const std::string &nodeName) {
-        return nodeNameToEntityMap.count(nodeName) > 0;
-    }
-
-    Entity GetEntityFromNodeName(const std::string &nodeName) {
-        if (DoesNodeNameExist(nodeName)) {
-            return nodeNameToEntityMap[nodeName];
-        }
-        return NO_ENTITY;
-    }
-
-    ComponentSignature GetEntitySignature(Entity entity) {
-        return entityManager->GetSignature(entity);
-    }
-
-    unsigned int GetAliveEntityCount() {
-        return entityManager->GetAliveEntities();
-    }
-
-    Entity GetEntityParent(Entity entity) {
-        return sceneManager->GetParent(entity);
-    }
-
-    std::vector<Entity> GetEntityChildren(Entity entity) {
-        return sceneManager->GetAllChildEntities(entity);
-    }
+    Entity CreateEntity();
+    void NewEntity(SceneNode sceneNode);
+    void NewEntityAddChild(Entity parent, Entity child);
+    void QueueEntityForDeletion(Entity entity);
+    bool IsEntityQueuedForDeletion(Entity entity);
+    void DestroyQueuedEntities();
+    void DestroyEntity(SceneNode sceneNode);
+    bool DoesNodeNameExist(const std::string &nodeName);
+    Entity GetEntityFromNodeName(const std::string &nodeName);
+    ComponentSignature GetEntitySignature(Entity entity);
+    unsigned int GetAliveEntityCount();
+    Entity GetEntityParent(Entity entity);
+    std::vector<Entity> GetEntityChildren(Entity entity);
 
     // COMPONENT METHODS
     template<typename T>
@@ -235,51 +140,14 @@ class EntityComponentOrchestrator {
         return entitySystemManager->GetSignature<T>();
     }
 
-    void InitializeAllSystems() {
-        entitySystemManager->InitializeAllSystems();
-    }
+    void InitializeAllSystems();
     // SCENE METHODS
-    void PrepareSceneChange(const std::string &filePath) {
-        scenePathToSwitchTo = filePath;
-        removeCurrentSceneAtEndOfUpdate = true;
-    }
-
-    bool HasSceneToSwitchTo() {
-        return !scenePathToSwitchTo.empty();
-    }
-
-    bool ShouldRemoveCurrentSceneAtEndOfUpdate() {
-        return removeCurrentSceneAtEndOfUpdate;
-    }
-
-    void ChangeSceneTo(const bool loadFromMemory) {
-        Logger::GetInstance()->Debug("Changing scene to path '" + scenePathToSwitchTo + "'!");
-        Scene scene;
-        if (loadFromMemory) {
-            scene = sceneManager->LoadSceneFromMemory(scenePathToSwitchTo);
-        } else {
-            scene = sceneManager->LoadSceneFromFile(scenePathToSwitchTo);
-        }
-        scenePathToSwitchTo.clear();
-        RegisterSceneNodeInstances(scene.rootNode);
-        CallStartOnScriptInstances(scene.rootNode);
-    }
-
-    void DestroyCurrentScene() {
-        Scene currentScene = sceneManager->GetCurrentScene();
-        if (currentScene.rootNode.entity != NO_ENTITY) {
-            DestroyEntity(currentScene.rootNode);
-        }
-        removeCurrentSceneAtEndOfUpdate = false;
-    }
-
-//    void PrepareSceneChange(Entity rootNodeEntity) {
-//        sceneManager->ChangeToScene(rootNodeEntity);
-//    }
-
-    bool IsEntityInCurrentScene(Entity entity) {
-        return sceneManager->IsEntityInScene(entity);
-    }
+    void PrepareSceneChange(const std::string &filePath);
+    bool HasSceneToSwitchTo() const;
+    bool ShouldRemoveCurrentSceneAtEndOfUpdate() const;
+    void ChangeSceneTo(const bool loadFromMemory);
+    void DestroyCurrentScene();
+    bool IsEntityInCurrentScene(Entity entity);
 };
 
 #endif //ENTITY_COMPONENT_ORCHESTRATOR_H

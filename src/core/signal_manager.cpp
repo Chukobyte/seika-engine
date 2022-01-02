@@ -35,7 +35,8 @@ void SignalManager::SubscribeToSignal(const Entity sourceEntity, const std::stri
 }
 
 void SignalManager::EmitSignal(const Entity entity, const std::string &signalName, SignalArguments args) {
-    static ScriptEntitySystem *scriptEntitySystem = (ScriptEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<ScriptEntitySystem>();
+//    static ScriptEntitySystem *scriptEntitySystem = (ScriptEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<ScriptEntitySystem>();
+    static ScriptEntitySystem *scriptEntitySystem = (ScriptEntitySystem*) EntitySystemManager::GetInstance()->GetEntitySystem<ScriptEntitySystem>();
     CreateSignal(entity, signalName);
     Signal signalToEmit = entitySignals[entity][signalName];
     for (auto const &pair : signalToEmit.subscribers) {
