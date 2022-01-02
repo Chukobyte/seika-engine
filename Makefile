@@ -1,13 +1,27 @@
+PROJECT_NAME := seika_engine
+
+# OS Specific
+ifeq ($(OS),Windows_NT)
+    OS_TYPE := windows
+    BUILD_OBJECT := $(PROJECT_NAME).exe
+    L_FLAGS := -lmingw32 -lSDL2main -lSDL2_mixer -lSDL2 -lpython37 -lfreetype -lwsock32 -lws2_32 -static-libgcc -static-libstdc++ -lstdc++fs
+    DELETE_CMD := del
+else
+    OS_TYPE := linux
+    BUILD_OBJECT := $(PROJECT_NAME)
+    # TODO: Need to validate linux flags
+    L_FLAGS := -lSDL2 -lSDL2_mixer -lGL -lpython3.7m -lfreetype -lcrypt -lpthread -ldl  -lutil -lm -static-libgcc -static-libstdc++
+    DELETE_CMD := rm
+endif
+
 CC := gcc # C Compiler
 CXX := g++ # C++ compiler
 I_FLAGS := -I"./include" -I"${SDL2_INCLUDE}" -I"${PYTHON_INCLUDE}" -I"${FREETYPE_INCLUDE}"
-L_FLAGS := -lmingw32 -lSDL2main -lSDL2_mixer -lSDL2 -lpython37 -lfreetype -lwsock32 -lws2_32 -static-libgcc -static-libstdc++ -lstdc++fs
 C_FLAGS := -Wfatal-errors -Wall -Wextra -Wno-write-strings -Wno-deprecated-declarations -Wno-unused-variable -Wno-cast-function-type -Wno-unused-parameter -Wno-missing-field-initializers
 CPP_FLAGS := -std=c++14 $(C_FLAGS) -Wno-reorder
 LIBRARIES := -L"${SDL2_LIBS}" -L"${PYTHON_LIBS}" -L"${FREETYPE_LIBS}"
 RELEASE_FLAGS = -DHAVE_SNPRINTF=1
 
-PROJECT_NAME := seika_engine
 BUILD_OBJECT := $(PROJECT_NAME).exe
 TEST_BUILD_OBJECT := test_$(PROJECT_NAME).exe
 
@@ -49,9 +63,13 @@ format:
 
 clean:
 ifneq ("$(wildcard $(BUILD_OBJECT))","")
-	del $(BUILD_OBJECT)
+	@$(DELETE_CMD) $(BUILD_OBJECT)
 endif
-	$(foreach object, $(OBJ) $(OBJ_C), @del $(subst /,\, $(object));)
+ifeq ($(OS_TYPE),windows)
+	@$(foreach object, $(OBJ) $(OBJ_C), $(DELETE_CMD) $(subst /,\,$(object));)
+else
+	@$(foreach object, $(OBJ) $(OBJ_C), $(DELETE_CMD) $(object);)
+endif
 
 run:
 	./$(BUILD_OBJECT) -l debug -local-assets true
