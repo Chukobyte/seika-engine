@@ -107,12 +107,12 @@ class CollisionEntitySystem : public EntitySystem {
 //        }
 //    }
 
-    void ProcessEntityCollisions(Entity sourceEntity) {
+    void ProcessEntityCollisions(Entity sourceEntity, Vector2 offset = Vector2(0.0f, 0.0f)) {
         collisionContext->ClearCollisionData();
         std::vector<Entity> collidedEntities;
         for (Entity targetEntity : entities) {
             if (!IsTargetCollisionEntityInExceptionList(sourceEntity, targetEntity)) {
-                Rect2 sourceCollisionRectangle = GetCollisionRectangle(sourceEntity);
+                Rect2 sourceCollisionRectangle = GetCollisionRectangle(sourceEntity) + offset;
                 Rect2 targetCollisionRectangle = GetCollisionRectangle(targetEntity);
                 if (CollisionResolver::DoesRectanglesCollide(sourceCollisionRectangle, targetCollisionRectangle)) {
                     collidedEntities.emplace_back(targetEntity);

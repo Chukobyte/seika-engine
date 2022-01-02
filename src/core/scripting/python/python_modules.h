@@ -695,6 +695,8 @@ static char *textLabelSetNewLinePaddingKWList[] = {"entity_id", "new_line_paddin
 static char *collisionShape2DSetColliderRectKWList[] = {"entity_id", "x", "y", "w", "h", nullptr};
 static char *collisionModifyCollisionExceptionKWList[] = {"entity_id", "exception_entity_id", nullptr};
 
+static char *collisionUpdateCollisionsKWList[] = {"entity_id", "offset_x", "offset_y", nullptr};
+
 static char *inputAddActionKWList[] = {"action_name", "value", nullptr};
 static char *inputActionCheckKWList[] = {"action_name", nullptr};
 

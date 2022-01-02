@@ -1376,8 +1376,10 @@ PyObject* PythonModules::collision_update_collisions(PyObject *self, PyObject *a
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     static CollisionEntitySystem *collisionEntitySystem = entityComponentOrchestrator->GetSystem<CollisionEntitySystem>();
     Entity entity;
-    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
-        collisionEntitySystem->ProcessEntityCollisions(entity);
+    float offsetX;
+    float offsetY;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "iff", collisionUpdateCollisionsKWList, &entity, &offsetX, &offsetY)) {
+        collisionEntitySystem->ProcessEntityCollisions(entity, Vector2(offsetX, offsetY));
     }
 
     Py_RETURN_NONE;

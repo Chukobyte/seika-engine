@@ -30,6 +30,26 @@ class Rect2 {
         return !(*this == otherRect2);
     }
 
+    Rect2 operator+(const Vector2 &vector) {
+        return Rect2(x + vector.x, y + vector.y, w, h);
+    }
+
+    Rect2 operator+=(const Vector2 &vector) {
+        x += vector.x;
+        y += vector.y;
+        return *this;
+    }
+
+    Rect2 operator-(const Vector2 &vector) {
+        return Rect2(x - vector.x, y - vector.y, w, h);
+    }
+
+    Rect2 operator-=(const Vector2 &vector) {
+        x -= vector.x;
+        y -= vector.y;
+        return *this;
+    }
+
     friend std::ostream& operator<<(std::ostream& os, const Rect2 &r);
 };
 
