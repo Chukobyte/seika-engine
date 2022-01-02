@@ -8,13 +8,8 @@
 #include "ecs/system/systems/sprite_rendering_entity_system.h"
 #include "ecs/system/systems/animated_sprite_rendering_entity_system.h"
 #include "ecs/system/systems/text_rendering_entity_system.h"
-#include "ecs/system/systems/script_entity_system.h"
 #include "ecs/system/systems/collision_entity_system.h"
 #include "ecs/system/systems/texture_cube_rendering_entity_system.h"
-
-#include "ecs/component/components/animated_sprite_component.h"
-#include "ecs/component/components/text_label_component.h"
-#include "ecs/component/components/scriptable_class_component.h"
 
 #include "scripting/python/python_script_context.h"
 #include "ecs/system/systems/timer_entity_system.h"
@@ -116,7 +111,7 @@ void Game::InitializeECS() {
 
     // Systems
     // TODO: Will register systems with hooks to not have to refer to them directly during engine phases such as Update.
-    entityComponentOrchestrator->RegisterSystem<TimerEntitySystem>();
+    entityComponentOrchestrator->RegisterSystem<TimerEntitySystem>(EntitySystemHook::PHYSICS_PROCESS);
     ComponentSignature timerSystemSignature;
     timerSystemSignature.set(entityComponentOrchestrator->GetComponentType<TimerComponent>(), true);
     entityComponentOrchestrator->SetSystemSignature<TimerEntitySystem>(timerSystemSignature);
@@ -139,7 +134,7 @@ void Game::InitializeECS() {
     textRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<TextLabelComponent>(), true);
     entityComponentOrchestrator->SetSystemSignature<TextRenderingEntitySystem>(textRenderingSystemSignature);
 
-    ScriptEntitySystem *scriptEntitySystem = entityComponentOrchestrator->RegisterSystem<ScriptEntitySystem>();
+    ScriptEntitySystem *scriptEntitySystem = entityComponentOrchestrator->RegisterSystem<ScriptEntitySystem>(EntitySystemHook::PHYSICS_PROCESS);
     scriptEntitySystem->InstallScriptContext<PythonScriptContext>();
     ComponentSignature scriptSystemSignature;
     scriptSystemSignature.set(entityComponentOrchestrator->GetComponentType<ScriptableClassComponent>(), true);
@@ -255,9 +250,11 @@ void Game::Update() {
 
     networkContext->Poll();
 
-    FixedTimeStep();
+    const float variableDeltaTime = (SDL_GetTicks() - lastFrameTime) / projectProperties->GetMillisecondsPerTick();
+    static EntitySystemManager* entitySystemManager = EntitySystemManager::GetInstance();
+    entitySystemManager->ProcessSystemsHook(variableDeltaTime);
 
-    VariableTimeStep(lastFrameTime);
+    PhysicsUpdate();
 
     // Remove Entities
     if (entityComponentOrchestrator->ShouldRemoveCurrentSceneAtEndOfUpdate()) {
@@ -278,8 +275,7 @@ void Game::Update() {
     lastFrameTime = SDL_GetTicks();
 }
 
-void Game::FixedTimeStep() {
-    // Fixed time step
+void Game::PhysicsUpdate() {
     static double time = 0.0f;
     const double PHYSICS_DELTA_TIME = projectProperties->GetFixedPhysicsDeltaTime();
     static Uint32 currentTime = SDL_GetTicks();
@@ -295,34 +291,16 @@ void Game::FixedTimeStep() {
 
     accumulator += frameTime / projectProperties->GetMillisecondsPerTick();
 
-    static ScriptEntitySystem *scriptEntitySystem = (ScriptEntitySystem*) EntitySystemManager::GetInstance()->GetEntitySystem<ScriptEntitySystem>();
+    static EntitySystemManager* entitySystemManager = EntitySystemManager::GetInstance();
 
     while (accumulator >= PHYSICS_DELTA_TIME) {
         time += PHYSICS_DELTA_TIME;
         accumulator -= PHYSICS_DELTA_TIME;
 
-        // Check Collisions
-        // TODO: Refactor collision system
-//        static CollisionEntitySystem *collisionEntitySystem = (CollisionEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<CollisionEntitySystem>();
-//        collisionEntitySystem->ProcessCollisions();
-
-        scriptEntitySystem->PhysicsProcess(PHYSICS_DELTA_TIME);
-
-//        static TimerEntitySystem *timerEntitySystem = (TimerEntitySystem*) GD::GetContainer()->entitySystemManager->GetEntitySystem<TimerEntitySystem>();
+        entitySystemManager->PhysicsProcessSystemsHook(PHYSICS_DELTA_TIME);
 
         inputManager->ClearInputFlags();
     }
-
-    static TimerEntitySystem *timerEntitySystem = (TimerEntitySystem*) EntitySystemManager::GetInstance()->GetEntitySystem<TimerEntitySystem>();
-    timerEntitySystem->Tick();
-
-//    const double alpha = accumulator / PHYSICS_DELTA_TIME;
-}
-
-void Game::VariableTimeStep(Uint32 lastFrameTime) {
-    // Variable time step
-    float variableDeltaTime = (SDL_GetTicks() - lastFrameTime) / projectProperties->GetMillisecondsPerTick();
-    variableDeltaTime = (variableDeltaTime > projectProperties->GetMaxDeltaTime()) ? projectProperties->GetMaxDeltaTime() : variableDeltaTime;
 }
 
 void Game::Render() {

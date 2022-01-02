@@ -67,7 +67,7 @@ class ScriptEntitySystem : public EntitySystem {
         activeScriptContext->CallStartOnEntityInstance(entity);
     }
 
-    void PhysicsProcess(const double deltaTime) {
+    void PhysicsProcess(float deltaTime) override {
         assert(activeScriptContext != nullptr && "No active script context!");
         for (Entity entity : entities) {
             activeScriptContext->PhysicsProcess(entity, deltaTime);

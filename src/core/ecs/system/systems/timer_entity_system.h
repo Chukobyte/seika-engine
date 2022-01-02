@@ -28,7 +28,8 @@ class TimerEntitySystem : public EntitySystem {
         timerManager->RemoveTimer(entity);
     }
 
-    void Tick() {
+    // Tick
+    void PhysicsProcess(float deltaTime) override {
         for (auto const &pair : timerManager->activeTimers) {
             Entity entity = pair.first;
             Timer *timer = pair.second;
