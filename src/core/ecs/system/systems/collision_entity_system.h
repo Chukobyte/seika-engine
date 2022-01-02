@@ -1,10 +1,10 @@
 #ifndef COLLISION_ENTITY_SYSTEM_H
 #define COLLISION_ENTITY_SYSTEM_H
 
-#include "entity_system.h"
-#include "../../physics/collision/collision_context.h"
-#include "../component/components/collider_component.h"
-#include "../../math/space_handler.h"
+#include "../entity_system.h"
+#include "../../../physics/collision/collision_context.h"
+#include "../../component/components/collider_component.h"
+#include "../../../math/space_handler.h"
 
 class CollisionEntitySystem : public EntitySystem {
   private:

@@ -1,10 +1,10 @@
 #ifndef SCRIPT_ENTITY_SYSTEM_H
 #define SCRIPT_ENTITY_SYSTEM_H
 
-#include "entity_system.h"
-#include "../../scripting/script_context.h"
-#include "../component/components/transform2D_component.h"
-#include "../component/components/text_label_component.h"
+#include "../entity_system.h"
+#include "../../../scripting/script_context.h"
+#include "../../component/components/transform2D_component.h"
+#include "../../component/components/text_label_component.h"
 
 class ScriptEntitySystem : public EntitySystem {
   private:

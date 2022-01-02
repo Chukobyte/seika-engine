@@ -1,10 +1,10 @@
 #ifndef SPRITE_RENDERING_ENTITY_SYSTEM_H
 #define SPRITE_RENDERING_ENTITY_SYSTEM_H
 
-#include "entity_system.h"
-#include "../component/components/transform2D_component.h"
-#include "../component/components/sprite_component.h"
-#include "../../math/space_handler.h"
+#include "../entity_system.h"
+#include "../../component/components/transform2D_component.h"
+#include "../../component/components/sprite_component.h"
+#include "../../../math/space_handler.h"
 
 class SpriteRenderingEntitySystem : public EntitySystem {
   private:

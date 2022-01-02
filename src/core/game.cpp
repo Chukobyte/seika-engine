@@ -5,23 +5,23 @@
 
 #include "global_dependencies.h"
 
-#include "ecs/system/sprite_rendering_entity_system.h"
-#include "ecs/system/animated_sprite_rendering_entity_system.h"
-#include "ecs/system/text_rendering_entity_system.h"
-#include "ecs/system/script_entity_system.h"
-#include "ecs/system/collision_entity_system.h"
-#include "ecs/system/texture_cube_rendering_entity_system.h"
+#include "ecs/system/systems/sprite_rendering_entity_system.h"
+#include "ecs/system/systems/animated_sprite_rendering_entity_system.h"
+#include "ecs/system/systems/text_rendering_entity_system.h"
+#include "ecs/system/systems/script_entity_system.h"
+#include "ecs/system/systems/collision_entity_system.h"
+#include "ecs/system/systems/texture_cube_rendering_entity_system.h"
 
 #include "ecs/component/components/animated_sprite_component.h"
 #include "ecs/component/components/text_label_component.h"
 #include "ecs/component/components/scriptable_class_component.h"
 
 #include "scripting/python/python_script_context.h"
-#include "ecs/system/timer_entity_system.h"
+#include "ecs/system/systems/timer_entity_system.h"
 #include "rendering/renderer3d.h"
-#include "ecs/system/directional_light_rendering_entity_system.h"
-#include "ecs/system/point_light_rendering_entity_system.h"
-#include "ecs/system/spot_light_rendering_entity_system.h"
+#include "ecs/system/systems/directional_light_rendering_entity_system.h"
+#include "ecs/system/systems/point_light_rendering_entity_system.h"
+#include "ecs/system/systems/spot_light_rendering_entity_system.h"
 
 Game::Game(int argv, char** args) {
     logger = Logger::GetInstance();

@@ -1,9 +1,9 @@
 #ifndef TIMER_ENTITY_SYSTEM_H
 #define TIMER_ENTITY_SYSTEM_H
 
-#include "entity_system.h"
-#include "../../timer/timer_manager.h"
-#include "../../signal_manager.h"
+#include "../entity_system.h"
+#include "../../../timer/timer_manager.h"
+#include "../../../signal_manager.h"
 
 class TimerEntitySystem : public EntitySystem {
   private:

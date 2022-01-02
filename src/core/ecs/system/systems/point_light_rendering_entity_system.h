@@ -1,11 +1,11 @@
 #ifndef POINT_LIGHT_RENDERING_ENTITY_SYSTEM_H
 #define POINT_LIGHT_RENDERING_ENTITY_SYSTEM_H
 
-#include "entity_system.h"
-#include "../component/components/transform3D_component.h"
-#include "../component/components/light3D_component.h"
-#include "../component/components/material_component.h"
-#include "../../math/space_handler.h"
+#include "../entity_system.h"
+#include "../../component/components/transform3D_component.h"
+#include "../../component/components/light3D_component.h"
+#include "../../component/components/material_component.h"
+#include "../../../math/space_handler.h"
 
 class PointLightRenderingEntitySystem : public EntitySystem {
   private:

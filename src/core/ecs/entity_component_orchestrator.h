@@ -5,7 +5,7 @@
 #include "system/entity_system_manager.h"
 #include "component/component_manager.h"
 #include "../scene/scene.h"
-#include "system/script_entity_system.h"
+#include "system/systems/script_entity_system.h"
 #include "../signal_manager.h"
 #include "../scene/scene_manager.h"
 
