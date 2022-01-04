@@ -34,6 +34,11 @@ SpriteRenderer::SpriteRenderer(RenderContext *renderContext) : renderContext(ren
 void SpriteRenderer::Draw(Texture *texture2D, Rect2 sourceRectangle, Rect2 destinationRectangle, float rotation, Color color, bool flipX, bool flipY) {
     glDepthMask(false);
 
+    if (projectProperties->IsPixelSnapEnabled()) {
+        destinationRectangle.x = std::round(destinationRectangle.x);
+        destinationRectangle.y = std::round(destinationRectangle.y);
+    }
+
     // 1. Translation
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(destinationRectangle.x, destinationRectangle.y, 0.0f));  // first translate (transformations are: scale happens first, then rotation, and then final translation happens; reversed order)

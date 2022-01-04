@@ -6,6 +6,7 @@
     "height": 600
   },
   "colliders_visible": true,
+  "pixel_snap": true,
   "target_fps": 66,
   "background_color": {
     "red": 0.1,

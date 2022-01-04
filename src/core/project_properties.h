@@ -57,6 +57,7 @@ class ProjectProperties {
     double maxDeltaTime = 0.5f;
     double fixedPhysicsDeltaTime = 0.01f;
     bool assetsInMemory = true;
+    bool pixelSnap = false;
     AssetConfigurations assetConfigurations;
     InputActionsConfigurations inputActionsConfigurations;
 
@@ -73,6 +74,7 @@ class ProjectProperties {
         windowWidth = JsonHelper::Get<int>(baseResolutionJson, "width");
         windowHeight = JsonHelper::Get<int>(baseResolutionJson, "height");
         areColliderVisible = JsonHelper::Get<bool>(projectConfigurationsJson, "colliders_visible");
+        pixelSnap = JsonHelper::GetDefault<bool>(projectConfigurationsJson, "pixel_snap", false);
         targetFPS = JsonHelper::Get<unsigned int>(projectConfigurationsJson, "target_fps");
         nlohmann::json backgroundColorJson = JsonHelper::Get<nlohmann::json>(projectConfigurationsJson, "background_color");
         const float backgroundRed = JsonHelper::Get<float>(backgroundColorJson, "red");
@@ -175,6 +177,10 @@ class ProjectProperties {
 
     bool IsAssetsInMemory() const {
         return assetsInMemory;
+    }
+
+    bool IsPixelSnapEnabled() const {
+        return pixelSnap;
     }
 
     AssetConfigurations GetAssetConfigurations() {
