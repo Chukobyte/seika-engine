@@ -262,6 +262,9 @@ static PythonSource PYTHON_SOURCE_COLOR_MODULE =
     "   def __repr__(self):\n"
     "       return f\"({self.r}, {self.g}, {self.b}, {self.a})\"\n"
     "\n"
+    "   def get_full_color(self):\n"
+    "       return Color(int(self.r * 255), int(self.g * 255), int(self.b * 255), int(self.a * 255))\n"
+    "\n"
     "";
 
 static PythonSource PYTHON_SOURCE_DATA_MODULE =
