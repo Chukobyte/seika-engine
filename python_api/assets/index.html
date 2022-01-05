@@ -16,7 +16,7 @@
 <script>
     // Current page data
     var mkdocs_page_name = "Assets";
-    var mkdocs_page_input_path = "python_api\\assets.md";
+    var mkdocs_page_input_path = "python_api/assets.md";
     var mkdocs_page_url = null;
   </script>
 <script defer="" src="../../js/jquery-2.1.1.min.js"></script>
@@ -164,6 +164,9 @@
 get(file_path: str) -&gt; seika.assets.Texture:
 </code></pre>
 <p>Get texture from relative file path.</p>
+<pre><code class="language-python">get_pixel_color(position: seika.math.Vector2) -&gt; seika.color.Color:
+</code></pre>
+<p>Get pixel color from a texture at the location of the passed in <code>position</code>.</p>
 <hr/>
 <h2 id="font">Font</h2>
 <p>Engine representation of a font.  All properties are read only.</p>
