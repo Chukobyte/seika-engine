@@ -22,6 +22,12 @@ class Main(Node2D):
 
         self.seika_collision_shape = self.get_node(name="CollisionShape2D")
 
+        # TODO: texture test
+        idle_texture = Texture.get(file_path="assets/images/seika_idle.png")
+        print(f"idle_texture = {idle_texture}")
+        pixel_color = idle_texture.get_pixel_color(position=Vector2(24, 24))
+        print(f"pixel_color = {pixel_color.get_full_color()}")
+
         # font = Font.create(uid="verdana-32", file_path="assets/fonts/verdana.ttf", size=32)
         # bruh_font = Font.get(uid="seika_default")
         # print(f"bruh font = {bruh_font}")
