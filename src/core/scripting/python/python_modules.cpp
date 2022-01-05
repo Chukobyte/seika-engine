@@ -1627,6 +1627,29 @@ PyObject* PythonModules::texture_get(PyObject *self, PyObject *args, PyObject *k
                                  texture->GetWidth(),
                                  texture->GetHeight());
         }
+        Logger::GetInstance()->Error("Invalid attempt at getting texture at path: " + textureFilePath);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::texture_get_pixel_color(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static AssetManager *assetManager = GD::GetContainer()->assetManager;
+    char *pyFilePath;
+    int pixelX;
+    int pixelY;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "sii", textureGetPixelColorKWList, &pyFilePath, &pixelX, &pixelY)) {
+        const std::string &textureFilePath = std::string(pyFilePath);
+        if (assetManager->HasTexture(textureFilePath)) {
+            Texture *texture = assetManager->GetTexture(textureFilePath);
+            Color color = texture->GetPixelColor(pixelX, pixelY);
+            return Py_BuildValue("(ffff)",
+                                 color.r,
+                                 color.g,
+                                 color.b,
+                                 color.a);
+        }
+        Logger::GetInstance()->Error("Invalid attempt at getting texture pixel color at path: " + textureFilePath);
         Py_RETURN_NONE;
     }
     return nullptr;

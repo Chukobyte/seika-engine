@@ -140,6 +140,7 @@ class PythonModules {
     static PyObject* renderer_draw_texture(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* texture_get(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* texture_get_pixel_color(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* font_create(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* font_get(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -614,6 +615,10 @@ static struct PyMethodDef rollApiMethods[] = {
         "texture_get", (PyCFunction) PythonModules::texture_get,
         METH_VARARGS | METH_KEYWORDS, "Gets a texture by path."
     },
+    {
+        "texture_get_pixel_color", (PyCFunction) PythonModules::texture_get_pixel_color,
+        METH_VARARGS | METH_KEYWORDS, "Gets a texture's pixel color by coordinates."
+    },
     // FONT
     {
         "font_create", (PyCFunction) PythonModules::font_create,
@@ -718,6 +723,7 @@ static char *rendererDrawTextureKWList[] = {"texture_path",
                                            };
 
 static char *textureGetKWList[] = {"file_path", nullptr};
+static char *textureGetPixelColorKWList[] = {"file_path", "x", "y", nullptr};
 
 static char *fontCreateKWList[] = {"uid", "file_path", "size", nullptr};
 static char *fontGetKWList[] = {"uid", nullptr};

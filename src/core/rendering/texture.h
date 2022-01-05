@@ -4,6 +4,7 @@
 #include <glad/glad.h>
 
 #include "../utils/logger.h"
+#include "../color.h"
 
 class Texture {
   private:
@@ -14,6 +15,7 @@ class Texture {
     int width = 0;
     int height = 0;
     int nrChannels = 0;
+
     // format
     unsigned int internalFormat = GL_RGBA;
     unsigned int imageFormat = GL_RGBA;
@@ -50,6 +52,7 @@ class Texture {
     std::string GetFilterMinString() const;
     std::string GetFilterMagString() const;
     bool IsValid() const;
+    Color GetPixelColor(int x, int y) const;
 };
 
 #endif //TEXTURE_2D_H

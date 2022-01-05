@@ -148,7 +148,7 @@ class ProjectProperties {
     std::string gameTitle = "Seika Engine";
     int windowWidth = 800;
     int windowHeight = 600;
-    Color backgroundDrawColor = Color(20.f / 255.0f, 20.f / 255.0f, 20.f / 255.0f);
+    Color backgroundDrawColor = Color::NormalizedColor(20, 20, 20);
     bool areColliderVisible = false;
     std::string initialScenePath;
     std::string assetArchivePath;

@@ -1,5 +1,7 @@
 #include "texture.h"
 
+#include <iostream>
+
 #include <stb_image/stb_image.h>
 
 Logger *Texture::logger = Logger::GetInstance();
@@ -169,7 +171,7 @@ std::string Texture::GetFilterMinString() const {
     } else if (filterMin == GL_LINEAR) {
         return "linear";
     }
-    logger->Error("Not valid filter min string string!");
+    logger->Error("Not a valid filter min string!");
     return "";
 }
 
@@ -179,7 +181,7 @@ std::string Texture::GetFilterMagString() const {
     } else if (filterMin == GL_LINEAR) {
         return "linear";
     }
-    logger->Error("Not valid filter max string string!");
+    logger->Error("Not a valid filter mag string!");
     return "";
 }
 
@@ -188,4 +190,18 @@ bool Texture::IsValid() const {
         return true;
     }
     return false;
+}
+
+Color Texture::GetPixelColor(int x, int y) const {
+    if (!IsValid() || x < 0 || x > width || y < 0 || y > height) {
+        logger->Warn("Getting non valid pixel color!  Returning black color!");
+        return Color(0.0f, 0.0f, 0.0f, 0.0f);
+    }
+    const size_t RGBA = 4;
+    size_t index = RGBA * (y * width + x);
+    int red = static_cast<int>(data[index + 0]);
+    int green = static_cast<int>(data[index + 1]);
+    int blue = static_cast<int>(data[index + 2]);
+    int alpha = static_cast<int>(data[index + 3]);
+    return Color::NormalizedColor(red, green, blue, alpha);
 }
