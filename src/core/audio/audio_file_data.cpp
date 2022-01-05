@@ -25,7 +25,7 @@ void AudioFileData::Initialize() {
     alSourcef(source, AL_GAIN, 1.0f);
     alSource3f(source, AL_POSITION, 0.0f, 0.0f, 0.0f);
     alSource3f(source, AL_VELOCITY, 0.0f, 0.0f, 0.0f);
-    alSourcei(source, AL_LOOPING, AL_TRUE);
+    alSourcei(source, AL_LOOPING, loops ? AL_TRUE : AL_FALSE);
     alSourcei(source, AL_BUFFER, buffer);
 }
 

@@ -131,7 +131,7 @@ class AudioFileHelper {
         return true;
     }
   public:
-    static AudioFileData* LoadWav(const std::string& filename) {
+    static AudioFileData* LoadWav(const std::string& filename, bool loops) {
         AudioFileData *audioFileData = new AudioFileData();
         std::ifstream fileStream(filename, std::ios::binary);
         if(!fileStream.is_open()) {
@@ -148,6 +148,7 @@ class AudioFileHelper {
         fileStream.seekg(0, std::ios::beg);
         audioFileData->data = {std::istreambuf_iterator<char>(fileStream), std::istreambuf_iterator<char>()};
         audioFileData->data.resize(audioFileData->dataSize);
+        audioFileData->loops = loops;
         audioFileData->Initialize();
 
         return audioFileData;

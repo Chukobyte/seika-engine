@@ -16,6 +16,7 @@ class AudioFileData {
     std::vector<char> data;
     ALint state = AL_NONE;
     ALuint buffer;
+    bool loops = false;
 
     void Initialize();
     void Destroy();

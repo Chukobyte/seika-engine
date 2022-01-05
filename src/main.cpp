@@ -10,7 +10,7 @@ static void OpenALTest() {
         return;
     }
 
-    AudioFileData *audioFileData = AudioFileHelper::LoadWav("assets/audio/music/test_music.wav");
+    AudioFileData *audioFileData = AudioFileHelper::LoadWav("assets/audio/music/test_music.wav", false);
     audioFileData->Play();
 
     while (audioFileData->IsPlaying()) {}
