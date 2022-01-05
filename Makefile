@@ -4,7 +4,7 @@ PROJECT_NAME := seika_engine
 ifeq ($(OS),Windows_NT)
     OS_TYPE := windows
     BUILD_OBJECT := $(PROJECT_NAME).exe
-    L_FLAGS := -lmingw32 -lSDL2main -lSDL2_mixer -lSDL2 -lpython37 -lfreetype -lwsock32 -lws2_32 -static-libgcc -static-libstdc++ -lstdc++fs
+    L_FLAGS := -lmingw32 -lSDL2main -lSDL2_mixer -lSDL2 -lpython37 -lfreetype -lOpenAL32 -lwsock32 -lws2_32 -static-libgcc -static-libstdc++ -lstdc++fs
     DELETE_CMD := del
 else
     OS_TYPE := linux
@@ -16,10 +16,10 @@ endif
 
 CC := gcc # C Compiler
 CXX := g++ # C++ compiler
-I_FLAGS := -I"./include" -I"${SDL2_INCLUDE}" -I"${PYTHON_INCLUDE}" -I"${FREETYPE_INCLUDE}"
+I_FLAGS := -I"./include" -I"${SDL2_INCLUDE}" -I"${PYTHON_INCLUDE}" -I"${FREETYPE_INCLUDE}" -I"${OPENAL_INCLUDE}"
 C_FLAGS := -Wfatal-errors -Wall -Wextra -Wno-write-strings -Wno-deprecated-declarations -Wno-unused-variable -Wno-cast-function-type -Wno-unused-parameter -Wno-missing-field-initializers
 CPP_FLAGS := -std=c++14 $(C_FLAGS) -Wno-reorder
-LIBRARIES := -L"${SDL2_LIBS}" -L"${PYTHON_LIBS}" -L"${FREETYPE_LIBS}"
+LIBRARIES := -L"${SDL2_LIBS}" -L"${PYTHON_LIBS}" -L"${FREETYPE_LIBS}" -L"${OPENAL_LIBS}"
 RELEASE_FLAGS = -DHAVE_SNPRINTF=1
 
 BUILD_OBJECT := $(PROJECT_NAME).exe
