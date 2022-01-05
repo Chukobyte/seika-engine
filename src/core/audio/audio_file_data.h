@@ -1,6 +1,10 @@
 #pragma once
 
-class AudioFile {
+#include <vector>
+
+#include "audio_data.h"
+
+class AudioFileData {
   public:
     ALenum format;
     ALuint source;
@@ -11,10 +15,18 @@ class AudioFile {
     std::uint8_t bitsPerSample;
     std::vector<char> data;
     ALint state = AL_NONE;
+    ALuint buffer;
 
     void Initialize();
     void Destroy();
     void Play();
     bool IsPlaying();
     void UpdateStream();
+
+  private:
+    static const std::size_t NUM_BUFFERS = 4;
+    static const std::size_t BUFFER_SIZE = 65536; // 32kb of data in each buffer
+
+    ALuint buffers[NUM_BUFFERS];
+    std::size_t cursor;
 };

@@ -25,7 +25,7 @@ RELEASE_FLAGS = -DHAVE_SNPRINTF=1
 BUILD_OBJECT := $(PROJECT_NAME).exe
 TEST_BUILD_OBJECT := test_$(PROJECT_NAME).exe
 
-SRC = $(wildcard src/main.cpp src/core/*.cpp src/core/math/*.cpp src/core/utils/*.cpp src/core/rendering/*.cpp src/core/rendering/shader/*.cpp src/core/input/*.cpp src/core/timer/*.cpp src/core/scripting/python/*.cpp src/core/ecs/*.cpp src/core/networking/*.cpp include/stb_image/*.cpp)
+SRC = $(wildcard src/main.cpp src/core/*.cpp src/core/math/*.cpp src/core/utils/*.cpp src/core/rendering/*.cpp src/core/rendering/shader/*.cpp src/core/input/*.cpp src/core/audio/*.cpp src/core/timer/*.cpp src/core/scripting/python/*.cpp src/core/ecs/*.cpp src/core/networking/*.cpp include/stb_image/*.cpp)
 SRC_C = $(wildcard lib/glad.c include/kuba_zip/zip.c)
 
 OBJ = $(SRC:.cpp=.o)
