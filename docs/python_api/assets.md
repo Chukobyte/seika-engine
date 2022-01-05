@@ -65,6 +65,12 @@ get(file_path: str) -> seika.assets.Texture:
 
 Get texture from relative file path.
 
+```python
+get_pixel_color(position: seika.math.Vector2) -> seika.color.Color:
+```
+
+Get pixel color from a texture at the location of the passed in `position`.
+
 ---
 
 ## Font
