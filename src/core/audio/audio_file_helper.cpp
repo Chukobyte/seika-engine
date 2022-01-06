@@ -129,14 +129,14 @@ bool AudioFileHelper::LoadWavFileHeader(std::ifstream& file, AudioFileData* audi
 
     // Test cue and list
     // sub chunk id
-    if(!file.read(buffer, 4)) {
-        std::cerr << "ERROR: could not read cue o rlist chunk header" << std::endl;
-        return false;
-    }
-    // sub chunk size
-    if(std::strncmp(buffer, "data", 4) == 0) {
-        std::cout << "Has cue data" << std::endl;
-    }
+//    if(!file.read(buffer, 4)) {
+//        std::cerr << "ERROR: could not read cue o rlist chunk header" << std::endl;
+//        return false;
+//    }
+//    // sub chunk size
+//    if(std::strncmp(buffer, "data", 4) == 0) {
+//        std::cout << "Has cue data" << std::endl;
+//    }
 
     return true;
 }
@@ -158,9 +158,10 @@ AudioFileData* AudioFileHelper::LoadWav(const std::string& filename, bool loops)
     fileStream.seekg(0, std::ios::beg);
     audioFileData->data = {std::istreambuf_iterator<char>(fileStream), std::istreambuf_iterator<char>()};
     // TODO: Fix/clean up wave file loading
-    while (audioFileData->data.size() > (size_t) audioFileData->dataSize) {
-        audioFileData->data.erase(audioFileData->data.begin());
-    }
+    audioFileData->data.erase(
+        audioFileData->data.begin(),
+        audioFileData->data.begin() + (audioFileData->data.size() - audioFileData->dataSize)
+    );
     audioFileData->data.resize(audioFileData->dataSize);
     audioFileData->loops = loops;
     audioFileData->Initialize();
