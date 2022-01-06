@@ -39,6 +39,10 @@ void AudioFileData::Play() {
     alSourcePlay(source);
 }
 
+void AudioFileData::Stop() {
+    alSourceStop(source);
+}
+
 bool AudioFileData::IsPlaying() {
     alGetSourcei(source, AL_SOURCE_STATE, &state);
     return state == AL_PLAYING;

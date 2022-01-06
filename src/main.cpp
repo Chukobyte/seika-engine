@@ -9,9 +9,9 @@ static void OpenALTest() {
         return;
     }
 
-    AudioFileData *audioFileData = AudioFileHelper::LoadWav("assets/audio/music/test_music.wav", true);
+//    AudioFileData *audioFileData = AudioFileHelper::LoadWav("assets/audio/music/test_music.wav", true);
+    AudioFileData *audioFileData = AudioFileHelper::LoadWav("assets/audio/music/test_song_that_works_when_looping.wav", true);
     audioFileData->Play();
-
     while (audioFileData->IsPlaying()) {}
 
     audioFileData->Destroy();

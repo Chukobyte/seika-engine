@@ -21,6 +21,7 @@ class AudioFileData {
     void Initialize();
     void Destroy();
     void Play();
+    void Stop();
     bool IsPlaying();
     void UpdateStream();
 
