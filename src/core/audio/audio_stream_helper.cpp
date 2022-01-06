@@ -1,9 +1,9 @@
-#include "audio_file_helper.h"
+#include "audio_stream_helper.h"
 
 #include <cstring>
 #include <fstream>
 
-std::int32_t AudioFileHelper::ConvertToInt(char* buffer, std::size_t len) {
+std::int32_t AudioStreamHelper::ConvertToInt(char* buffer, std::size_t len) {
     std::int32_t a = 0;
     if(Endian::native == Endian::little) {
         std::memcpy(&a, buffer, len);
@@ -15,7 +15,7 @@ std::int32_t AudioFileHelper::ConvertToInt(char* buffer, std::size_t len) {
     return a;
 }
 
-bool AudioFileHelper::LoadWavFileHeader(std::ifstream& file, AudioFileData* audioFileData) {
+bool AudioStreamHelper::LoadWavFileHeader(std::ifstream& file, AudioStream* audioFileData) {
     char buffer[4];
     if(!file.is_open()) {
         return false;
@@ -141,8 +141,8 @@ bool AudioFileHelper::LoadWavFileHeader(std::ifstream& file, AudioFileData* audi
     return true;
 }
 
-AudioFileData* AudioFileHelper::LoadWav(const std::string& filename, bool loops) {
-    AudioFileData *audioFileData = new AudioFileData();
+AudioStream* AudioStreamHelper::LoadWav(const std::string& filename, float pitch, float gain, bool loops) {
+    AudioStream *audioFileData = new AudioStream(pitch, gain, loops);
     std::ifstream fileStream(filename, std::ios::binary);
     if(!fileStream.is_open()) {
         std::cerr << "ERROR: Could not open \"" << filename << "\"" << std::endl;
@@ -163,7 +163,6 @@ AudioFileData* AudioFileHelper::LoadWav(const std::string& filename, bool loops)
         audioFileData->data.begin() + (audioFileData->data.size() - audioFileData->dataSize)
     );
     audioFileData->data.resize(audioFileData->dataSize);
-    audioFileData->loops = loops;
     audioFileData->Initialize();
 
     return audioFileData;

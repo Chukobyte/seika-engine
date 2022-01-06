@@ -6,6 +6,7 @@
 #include "rendering/render_context.h"
 #include "rendering/renderer2d.h"
 #include "rendering/renderer3D.h"
+#include "audio/audio_context.h"
 #include "project_properties.h"
 #include "input/input_manager.h"
 #include "networking/network_context.h"
@@ -16,6 +17,7 @@ class Game {
     Logger *logger = nullptr;
     EngineContext *engineContext = nullptr;
     RenderContext *renderContext = nullptr;
+    AudioContext *audioContext = nullptr;
     Renderer2D *renderer2D = nullptr;
     Renderer3D *renderer3D = nullptr;
     ProjectProperties *projectProperties = nullptr;
@@ -26,6 +28,7 @@ class Game {
     void Initialize(int argv, char** args);
     void Destroy();
     void InitializeSDL();
+    void InitializeAudio();
     void InitializeRendering();
     void InitializeECS();
     void PhysicsUpdate(); // Fixed time step

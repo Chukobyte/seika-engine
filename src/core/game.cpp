@@ -13,7 +13,6 @@
 
 #include "scripting/python/python_script_context.h"
 #include "ecs/system/systems/timer_entity_system.h"
-#include "rendering/renderer3d.h"
 #include "ecs/system/systems/directional_light_rendering_entity_system.h"
 #include "ecs/system/systems/point_light_rendering_entity_system.h"
 #include "ecs/system/systems/spot_light_rendering_entity_system.h"
@@ -23,6 +22,7 @@ Game::Game(int argv, char** args) {
     projectProperties = ProjectProperties::GetInstance();
     engineContext = GD::GetContainer()->engineContext;
     renderContext = GD::GetContainer()->renderContext;
+    audioContext = AudioContext::GetInstance();
     renderer2D = GD::GetContainer()->renderer2D;
     renderer3D = GD::GetContainer()->renderer3D;
     inputManager = InputManager::GetInstance();
@@ -39,6 +39,7 @@ void Game::Initialize(int argv, char** args) {
     CommandLineFlagResult commandLineFlagResult = commandLineFlagHelper.ProcessCommandLineArgs(argv, args);
     projectProperties->assetArchivePath = commandLineFlagResult.gameArchiveFileName;
     InitializeSDL();
+    InitializeAudio();
     AssetManager *assetManager = GD::GetContainer()->assetManager;
     if (commandLineFlagResult.localAssets) {
         projectProperties->LoadProjectConfigurationsFromFile(commandLineFlagResult.workingDirectoryOverride + commandLineFlagResult.projectFilePath);
@@ -76,6 +77,7 @@ void Game::Destroy() {
     SDL_GL_DeleteContext(renderContext->gl_context);
     SDL_DestroyWindow(renderContext->window);
     SDL_Quit();
+    audioContext->ShutDown();
     logger->Info("Seika Engine stopped!");
 }
 
@@ -84,9 +86,17 @@ void Game::InitializeSDL() {
         logger->Error("Error on initializing SDL\n" + std::string(SDL_GetError()));
         return;
     }
+}
 
+void Game::InitializeAudio() {
+    // TODO: Will eventually deprecate the SDL_mixer api
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
         logger->Error("SDL_mixer could not initialized!");
+        return;
+    }
+
+    if (!audioContext->Initialize()) {
+        logger->Error("Error initializing audio context!");
         return;
     }
 }
