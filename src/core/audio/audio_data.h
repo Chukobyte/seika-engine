@@ -18,33 +18,32 @@ enum class Endian {
 #endif
 };
 
-static void ALErrorHelper(const std::string& context) {
-    ALCenum error = alGetError();
-    if (error != AL_NO_ERROR) {
-        std::cerr << "[" << context << "] " << "error code: " << error << std::endl;
-        switch (error) {
-        case AL_INVALID_NAME:
-            std::cerr << "AL_INVALID_NAME: a bad name (ID) was passed to an OpenAL function" << std::endl;
-            break;
-        case AL_INVALID_ENUM:
-            std::cerr << "AL_INVALID_ENUM: an invalid enum value was passed to an OpenAL function" << std::endl;
-            break;
-        case AL_INVALID_VALUE:
-            std::cerr << "AL_INVALID_VALUE: an invalid value was passed to an OpenAL function" << std::endl;
-            break;
-        case AL_INVALID_OPERATION:
-            std::cerr << "AL_INVALID_OPERATION: the requested operation is not valid" << std::endl;
-            break;
-        case AL_OUT_OF_MEMORY:
-            std::cerr << "AL_OUT_OF_MEMORY: the requested operation resulted in OpenAL running out of memory"
-                      << std::endl;
-            break;
-        default:
-            std::cerr << "Unknown AL Error!" << std::endl;
-            break;
-        }
-    } else {
-        std::cerr << "No error for '" << context << "'!" << std::endl;
-    }
-}
-
+//static void ALErrorHelper(const std::string& context) {
+//    ALCenum error = alGetError();
+//    if (error != AL_NO_ERROR) {
+//        std::cerr << "[" << context << "] " << "error code: " << error << std::endl;
+//        switch (error) {
+//        case AL_INVALID_NAME:
+//            std::cerr << "AL_INVALID_NAME: a bad name (ID) was passed to an OpenAL function" << std::endl;
+//            break;
+//        case AL_INVALID_ENUM:
+//            std::cerr << "AL_INVALID_ENUM: an invalid enum value was passed to an OpenAL function" << std::endl;
+//            break;
+//        case AL_INVALID_VALUE:
+//            std::cerr << "AL_INVALID_VALUE: an invalid value was passed to an OpenAL function" << std::endl;
+//            break;
+//        case AL_INVALID_OPERATION:
+//            std::cerr << "AL_INVALID_OPERATION: the requested operation is not valid" << std::endl;
+//            break;
+//        case AL_OUT_OF_MEMORY:
+//            std::cerr << "AL_OUT_OF_MEMORY: the requested operation resulted in OpenAL running out of memory"
+//                      << std::endl;
+//            break;
+//        default:
+//            std::cerr << "Unknown AL Error!" << std::endl;
+//            break;
+//        }
+//    } else {
+//        std::cerr << "No error for '" << context << "'!" << std::endl;
+//    }
+//}

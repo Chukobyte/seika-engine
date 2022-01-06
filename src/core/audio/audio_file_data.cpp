@@ -2,6 +2,7 @@
 
 #include <cstring>
 
+
 void AudioFileData::Initialize() {
     if (channels == 1 && bitsPerSample == 8) {
         format = AL_FORMAT_MONO8;
@@ -56,7 +57,7 @@ void AudioFileData::UpdateStream() {
     while (buffersProcessed--) {
         ALuint buff;
         alSourceUnqueueBuffers(source, 1, &buff);
-        ALErrorHelper(std::string("alSourceUnqueueBuffers - buff: " + std::to_string(buff)));
+//        ALErrorHelper(std::string("alSourceUnqueueBuffers - buff: " + std::to_string(buff)));
 
         ALsizei bufferDataSize = BUFFER_SIZE;
 
@@ -79,7 +80,7 @@ void AudioFileData::UpdateStream() {
 
         alBufferData(buff, format, buffData, BUFFER_SIZE, sampleRate);
         alSourceQueueBuffers(source, 1, &buff);
-        ALErrorHelper(std::string("alSourceQueueBuffers - buff: " + std::to_string(buff)));
+//        ALErrorHelper(std::string("alSourceQueueBuffers - buff: " + std::to_string(buff)));
 
         delete buffData;
     }

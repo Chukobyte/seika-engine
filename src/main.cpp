@@ -1,7 +1,6 @@
-#include "core/game.h"
+//#include "core/game.h"
 #include "core/audio/audio_file_helper.h"
 #include "core/audio/audio_context.h"
-
 
 static void OpenALTest() {
     AudioContext *audioContext = AudioContext::GetInstance();
@@ -10,7 +9,7 @@ static void OpenALTest() {
         return;
     }
 
-    AudioFileData *audioFileData = AudioFileHelper::LoadWav("assets/audio/music/test_music.wav", false);
+    AudioFileData *audioFileData = AudioFileHelper::LoadWav("assets/audio/music/test_music.wav", true);
     audioFileData->Play();
 
     while (audioFileData->IsPlaying()) {}
