@@ -18,6 +18,14 @@ class PythonModules {
     static PyObject* audio_set_sound_volume(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* audio_set_all_volume(PyObject* self, PyObject* args, PyObject* kwargs);
 
+    static PyObject* audio_stream_get(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* audio_stream_set_pitch(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* audio_stream_set_gain(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* audio_stream_set_loops(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* audio_stream_play(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* audio_stream_stop(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* audio_stream_is_playing(PyObject* self, PyObject* args, PyObject* kwargs);
+
     static PyObject* camera2d_get_zoom(PyObject* self, PyObject* args);
     static PyObject* camera2d_set_zoom(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* camera2d_get_viewport_position(PyObject* self, PyObject* args);
@@ -185,6 +193,35 @@ static struct PyMethodDef rollApiMethods[] = {
     {
         "audio_set_all_volume", (PyCFunction) PythonModules::audio_set_all_volume,
         METH_VARARGS | METH_KEYWORDS, "Sets all sound volume."
+    },
+    // AUDIO STREAM
+    {
+        "audio_stream_get", (PyCFunction) PythonModules::audio_stream_get,
+        METH_VARARGS | METH_KEYWORDS, "Get data for an audio stream."
+    },
+    {
+        "audio_stream_set_pitch", (PyCFunction) PythonModules::audio_stream_set_pitch,
+        METH_VARARGS | METH_KEYWORDS, "Sets the pitch for an audio stream."
+    },
+    {
+        "audio_stream_set_gain", (PyCFunction) PythonModules::audio_stream_set_gain,
+        METH_VARARGS | METH_KEYWORDS, "Sets the gain for an audio stream."
+    },
+    {
+        "audio_stream_set_loops", (PyCFunction) PythonModules::audio_stream_set_loops,
+        METH_VARARGS | METH_KEYWORDS, "Sets if an audio stream loops when reaching the end."
+    },
+    {
+        "audio_stream_play", (PyCFunction) PythonModules::audio_stream_play,
+        METH_VARARGS | METH_KEYWORDS, "Plays an audio stream."
+    },
+    {
+        "audio_stream_stop", (PyCFunction) PythonModules::audio_stream_stop,
+        METH_VARARGS | METH_KEYWORDS, "Stops an audio stream."
+    },
+    {
+        "audio_stream_is_playing", (PyCFunction) PythonModules::audio_stream_is_playing,
+        METH_VARARGS | METH_KEYWORDS, "Returns if an audio stream is playing."
     },
     // CAMERA 2D
     {
@@ -659,6 +696,11 @@ static char *engineExitKWList[] = {"code", nullptr};
 static char *audioPlayMusicKWList[] = {"music_id", "loops", nullptr};
 static char *audioPlaySoundKWList[] = {"sound_id", nullptr};
 static char *audioSetVolumeKWList[] = {"volume", nullptr};
+
+static char *audioStreamGetKWList[] = {"uid", nullptr};
+static char *audioStreamSetPitchKWList[] = {"uid", "pitch", nullptr};
+static char *audioStreamSetGainKWList[] = {"uid", "gain", nullptr};
+static char *audioStreamSetLoopsKWList[] = {"uid", "loops", nullptr};
 
 static char *camera2dVector2SetKWList[] = {"x", "y", nullptr};
 

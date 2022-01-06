@@ -62,6 +62,7 @@ class AssetManager {
 
     void LoadAudioStream(const std::string& audioStreamId, const std::string& audioStreamPath, float pitch = 1.0f, float gain = 1.0f, bool loops = false);
     AudioStream* GetAudioStream(const std::string& audioStreamId);
+    bool HasAudioStream(const std::string& audioStreamId) const;
 
     // ALL ASSETS
 

@@ -5,6 +5,7 @@
 #include "../../ecs/component/components/transform2D_component.h"
 #include "../../input/input_manager.h"
 #include "../../audio/audio_helper.h"
+#include "../../audio/audio_stream_helper.h"
 #include "../../utils/helper.h"
 #include "../../signal_manager.h"
 #include "../../ecs/system/systems/collision_entity_system.h"
@@ -78,6 +79,113 @@ PyObject* PythonModules::audio_set_all_volume(PyObject *self, PyObject *args, Py
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", audioSetVolumeKWList, &volume)) {
         AudioHelper::SetAllVolume(volume);
         Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+// AUDIO STREAM
+PyObject* PythonModules::audio_stream_get(PyObject* self, PyObject* args, PyObject* kwargs) {
+    static AssetManager *assetManager = GD::GetContainer()->assetManager;
+    char *audioStreamUId;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "s", audioStreamGetKWList, &audioStreamUId)) {
+        const std::string& uid = std::string(audioStreamUId);
+        if (assetManager->HasAudioStream(uid)) {
+            AudioStream* audioStream = assetManager->GetAudioStream(uid);
+            return Py_BuildValue("(ffb)",
+                                 audioStream->GetPitch(),
+                                 audioStream->GetGain(),
+                                 audioStream->DoesLoop());
+        }
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::audio_stream_set_pitch(PyObject* self, PyObject* args, PyObject* kwargs) {
+    static AssetManager *assetManager = GD::GetContainer()->assetManager;
+    char *audioStreamUId;
+    float audioPitch;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "sf", audioStreamSetPitchKWList, &audioStreamUId, &audioPitch)) {
+        const std::string& uid = std::string(audioStreamUId);
+        if (assetManager->HasAudioStream(uid)) {
+            AudioStream* audioStream = assetManager->GetAudioStream(uid);
+            audioStream->SetPitch(audioPitch);
+        }
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::audio_stream_set_gain(PyObject* self, PyObject* args, PyObject* kwargs) {
+    static AssetManager *assetManager = GD::GetContainer()->assetManager;
+    char *audioStreamUId;
+    float audioGain;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "sf", audioStreamSetGainKWList, &audioStreamUId, &audioGain)) {
+        const std::string& uid = std::string(audioStreamUId);
+        if (assetManager->HasAudioStream(uid)) {
+            AudioStream* audioStream = assetManager->GetAudioStream(uid);
+            audioStream->SetGain(audioGain);
+        }
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::audio_stream_set_loops(PyObject* self, PyObject* args, PyObject* kwargs) {
+    static AssetManager *assetManager = GD::GetContainer()->assetManager;
+    char *audioStreamUId;
+    bool audioLoops;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "sb", audioStreamSetLoopsKWList, &audioStreamUId, &audioLoops)) {
+        const std::string& uid = std::string(audioStreamUId);
+        if (assetManager->HasAudioStream(uid)) {
+            AudioStream* audioStream = assetManager->GetAudioStream(uid);
+            audioStream->SetLoops(audioLoops);
+        }
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::audio_stream_play(PyObject* self, PyObject* args, PyObject* kwargs) {
+    static AssetManager *assetManager = GD::GetContainer()->assetManager;
+    char *audioStreamUId;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "s", audioStreamGetKWList, &audioStreamUId)) {
+        const std::string& uid = std::string(audioStreamUId);
+        if (assetManager->HasAudioStream(uid)) {
+            AudioStream* audioStream = assetManager->GetAudioStream(uid);
+            audioStream->Play();
+        }
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::audio_stream_stop(PyObject* self, PyObject* args, PyObject* kwargs) {
+    static AssetManager *assetManager = GD::GetContainer()->assetManager;
+    char *audioStreamUId;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "s", audioStreamGetKWList, &audioStreamUId)) {
+        const std::string& uid = std::string(audioStreamUId);
+        if (assetManager->HasAudioStream(uid)) {
+            AudioStream* audioStream = assetManager->GetAudioStream(uid);
+            audioStream->Stop();
+        }
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::audio_stream_is_playing(PyObject* self, PyObject* args, PyObject* kwargs) {
+    static AssetManager *assetManager = GD::GetContainer()->assetManager;
+    char *audioStreamUId;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "s", audioStreamGetKWList, &audioStreamUId)) {
+        const std::string& uid = std::string(audioStreamUId);
+        if (assetManager->HasAudioStream(uid)) {
+            AudioStream* audioStream = assetManager->GetAudioStream(uid);
+            if (audioStream->IsPlaying()) {
+                Py_RETURN_TRUE;
+            }
+        }
+        Py_RETURN_FALSE;
     }
     return nullptr;
 }

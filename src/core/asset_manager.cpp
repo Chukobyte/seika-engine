@@ -140,6 +140,10 @@ AudioStream* AssetManager::GetAudioStream(const std::string& audioStreamId) {
     return audioStreams[audioStreamId];
 }
 
+bool AssetManager::HasAudioStream(const std::string& audioStreamId) const {
+    return audioStreams.count(audioStreamId) > 0;
+}
+
 void AssetManager::LoadEngineAssets() {
     textures.emplace(BLANK_WHITE_TEXTURE_ASSET_ID, new Texture(1, 1)); // Creates 1x1 white texture TODO: Create load function for this
     LoadFont(DEFAULT_FONT_ASSET_ID, DEFAULT_FONT_ASSET_PATH, DEFAULT_FONT_SIZE);
