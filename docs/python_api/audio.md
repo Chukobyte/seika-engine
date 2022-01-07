@@ -2,7 +2,7 @@
 
 ## Audio
 
-Interface for music and sound effects.  Music will continue to loop until stopped and sound is only played once.  Will be deprecated in place of [AudioStream](#audio-stream)
+Interface for music and sound effects.  Music will continue to loop until stopped and sound is only played once.  Will be deprecated in place of [AudioStream](#audiostream)
 
 ### Properties
 
@@ -63,7 +63,7 @@ Sets volume for all audio.
 
 ---
 
-## Audio Stream
+## AudioStream
 
 Interface for audio.  Should be used instead of [Audio](#audio) but care must be taken to zero out the amplitude at the end of samples especially when looping.
 
