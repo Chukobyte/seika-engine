@@ -1,7 +1,7 @@
 #ifndef PYTHON_SOURCE_H
 #define PYTHON_SOURCE_H
 
-// Seika Engine API v0.9.0
+// Seika Engine API v0.9.1
 
 using PythonSource = const std::string&;
 
@@ -185,6 +185,57 @@ static PythonSource PYTHON_SOURCE_AUDIO_MODULE =
     "   def set_all_volume(volume: int) -> None:\n"
     "       seika_engine_api.audio_set_all_volume(volume=volume)\n"
     "\n"
+    "\n"
+    "class AudioStream:\n"
+    "   @staticmethod\n"
+    "   def get(stream_uid: str):\n"
+    "       pitch, gain, does_loop = seika_engine_api.audio_stream_get(uid=stream_uid)\n"
+    "       return AudioStream(uid=stream_uid, pitch=pitch, gain=gain, loops=does_loop)\n"
+    "\n"
+    "   def __init__(self, uid: str, pitch: float, gain: float, loops: bool):\n"
+    "       self._uid = uid\n"
+    "       self._pitch = pitch\n"
+    "       self._gain = gain\n"
+    "       self._loops = loops\n"
+    "\n"
+    "   @property\n"
+    "   def uid(self) -> str:\n"
+    "       return self._uid\n"
+    "\n"
+    "   @property\n"
+    "   def pitch(self) -> float:\n"
+    "       return self._pitch\n"
+    "\n"
+    "   @pitch.setter\n"
+    "   def pitch(self, value: float) -> None:\n"
+    "       seika_engine_api.audio_stream_set_pitch(uid=self._uid, pitch=value)\n"
+    "\n"
+    "   @property\n"
+    "   def gain(self) -> float:\n"
+    "       return self._gain\n"
+    "\n"
+    "   @gain.setter\n"
+    "   def gain(self, value: float) -> None:\n"
+    "       seika_engine_api.audio_stream_set_gain(uid=self._uid, gain=value)\n"
+    "\n"
+    "   @property\n"
+    "   def loops(self) -> bool:\n"
+    "       return self._loops\n"
+    "\n"
+    "   @loops.setter\n"
+    "   def loops(self, value: bool) -> None:\n"
+    "       seika_engine_api.audio_stream_set_loops(uid=self._uid, loops=value)\n"
+    "\n"
+    "   @property\n"
+    "   def is_playing(self) -> bool:\n"
+    "       return seika_engine_api.audio_stream_is_playing(uid=self._uid)\n"
+    "\n"
+    "   def play(self) -> None:\n"
+    "       seika_engine_api.audio_stream_play(uid=self._uid)\n"
+    "\n"
+    "   def stop(self) -> None:\n"
+    "       seika_engine_api.audio_stream_stop(uid=self._uid)\n"
+    "\n"
     "";
 
 static PythonSource PYTHON_SOURCE_CAMERA_MODULE =
@@ -263,7 +314,9 @@ static PythonSource PYTHON_SOURCE_COLOR_MODULE =
     "       return f\"({self.r}, {self.g}, {self.b}, {self.a})\"\n"
     "\n"
     "   def get_full_color(self):\n"
-    "       return Color(int(self.r * 255), int(self.g * 255), int(self.b * 255), int(self.a * 255))\n"
+    "       return Color(\n"
+    "           int(self.r * 255), int(self.g * 255), int(self.b * 255), int(self.a * 255)\n"
+    "       )\n"
     "\n"
     "";
 
