@@ -173,10 +173,10 @@ set_all_volume(volume: int) -&gt; None:
 <p>Unique identifier for AudioStream.</p>
 <pre><code class="language-python">pitch: float
 </code></pre>
-<p>The pitch for the AudioStream, initializes to 1.0 by default.</p>
+<p>The pitch for the AudioStream, initializes to 1.0 by default.  (Min: 0.0, Max: 1.0)</p>
 <pre><code class="language-python">gain: float
 </code></pre>
-<p>The gain (volume) for the AudioStream, initializes to 1.0 by default.</p>
+<p>The gain (volume) for the AudioStream, initializes to 1.0 by default. (Min: 0.0, Max: 1.0)</p>
 <pre><code class="language-python">loops: bool
 </code></pre>
 <p>Determines if the AudioStream will play the sample from the beginning when reaching the end.  Defaults to <code>False</code>.</p>
