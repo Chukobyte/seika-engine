@@ -4,6 +4,7 @@
 #include <cassert>
 
 #include "global_dependencies.h"
+#include "audio/audio_stream_helper.h"
 
 AssetManager::AssetManager() {
     projectProperties = ProjectProperties::GetInstance();
@@ -129,6 +130,20 @@ std::map<std::string, Mix_Chunk*> AssetManager::GetAllSounds() {
     return sounds;
 }
 
+void AssetManager::LoadAudioStream(const std::string& audioStreamId, const std::string& audioStreamPath, float pitch, float gain, bool loops) {
+    AudioStream* audioStream = AudioStreamHelper::LoadWav(audioStreamPath, pitch, gain, loops);
+    audioStreams.emplace(audioStreamId, audioStream);
+}
+
+AudioStream* AssetManager::GetAudioStream(const std::string& audioStreamId) {
+    assert(audioStreams.count(audioStreamId) > 0 && "Doesn't have audio stream!");
+    return audioStreams[audioStreamId];
+}
+
+bool AssetManager::HasAudioStream(const std::string& audioStreamId) const {
+    return audioStreams.count(audioStreamId) > 0;
+}
+
 void AssetManager::LoadEngineAssets() {
     textures.emplace(BLANK_WHITE_TEXTURE_ASSET_ID, new Texture(1, 1)); // Creates 1x1 white texture TODO: Create load function for this
     LoadFont(DEFAULT_FONT_ASSET_ID, DEFAULT_FONT_ASSET_PATH, DEFAULT_FONT_SIZE);
@@ -151,5 +166,9 @@ void AssetManager::LoadProjectAssets() {
 
     for (SoundConfiguration soundConfiguration : assetConfigurations.soundConfigurations) {
         LoadSound(soundConfiguration.filePath, soundConfiguration.filePath);
+    }
+
+    for (AudioStreamConfiguration asConfig : assetConfigurations.audioStreamConfigurations) {
+        LoadAudioStream(asConfig.uid, asConfig.filePath, asConfig.pitch, asConfig.gain, asConfig.loops);
     }
 }

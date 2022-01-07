@@ -8,7 +8,7 @@ An open source 2D/3D game engine.  Windows only for now, but may support other p
 ### Dependencies & Tools
 
 * [SDL2](https://www.libsdl.org/download-2.0.php)
-* [SDL2 mixer](https://libsdl.org/projects/SDL_mixer/)
+* [OpenAL](https://www.openal.org/)
 * [Freetype Library](https://www.freetype.org/download.html)
 * [GNU Make](http://gnuwin32.sourceforge.net/packages/make.htm)
 * [7Zip](https://www.7-zip.org/download.html)
@@ -29,6 +29,8 @@ An open source 2D/3D game engine.  Windows only for now, but may support other p
    | SDL2_LIBS        | SDL2 lib folder containing .a files.       |
    | FREETYPE_INCLUDE | Freetype include folder.                   |
    | FREETYPE_LIBS    | Freetype lib folder containing .a files.   |
+   | OPENAL_INCLUDE   | OpenAL include folder.                     |
+   | OPENAL_LIBS      | OpenAL lib folder containing .a files.     |
 
 ##### Build and Compile Game
 

@@ -33,11 +33,20 @@ struct SoundConfiguration {
     std::string filePath;
 };
 
+struct AudioStreamConfiguration {
+    std::string filePath;
+    std::string uid;
+    float pitch;
+    float gain;
+    bool loops;
+};
+
 struct AssetConfigurations {
-    std::vector<TextureConfiguration> textureConfigurations;
-    std::vector<FontConfiguration> fontConfigurations;
-    std::vector<MusicConfiguration> musicConfigurations;
-    std::vector<SoundConfiguration> soundConfigurations;
+    std::vector<TextureConfiguration> textureConfigurations = {};
+    std::vector<FontConfiguration> fontConfigurations = {};
+    std::vector<MusicConfiguration> musicConfigurations = {};
+    std::vector<SoundConfiguration> soundConfigurations = {};
+    std::vector<AudioStreamConfiguration> audioStreamConfigurations = {};
 };
 
 struct InputConfiguration {
@@ -100,27 +109,39 @@ class ProjectProperties {
                 const std::string &assetFilterMin = JsonHelper::Get<std::string>(assetJson, "filter_min");
                 const std::string &assetFilterMax = JsonHelper::Get<std::string>(assetJson, "filter_max");
                 loadedAssetConfigurations.textureConfigurations.emplace_back(TextureConfiguration{
-                    .filePath = assetsFilePath,
-                    .wrapS = assetWrapS,
-                    .wrapT = assetWrapT,
-                    .filterMin = assetFilterMin,
-                    .filterMax = assetFilterMax
+                    assetsFilePath,
+                    assetWrapS,
+                    assetWrapT,
+                    assetFilterMin,
+                    assetFilterMax
                 });
             } else if (assetType == "font") {
                 const std::string &fontId = JsonHelper::Get<std::string>(assetJson, "uid");
                 int fontSize = JsonHelper::Get<int>(assetJson, "size");
                 loadedAssetConfigurations.fontConfigurations.emplace_back(FontConfiguration{
-                    .filePath = assetsFilePath,
-                    .uid = fontId,
-                    .size = fontSize
+                    assetsFilePath,
+                    fontId,
+                    fontSize
                 });
             } else if (assetType == "music") {
                 loadedAssetConfigurations.musicConfigurations.emplace_back(MusicConfiguration{
-                    .filePath = assetsFilePath
+                    assetsFilePath
                 });
             } else if (assetType == "sound") {
                 loadedAssetConfigurations.soundConfigurations.emplace_back(SoundConfiguration{
-                    .filePath = assetsFilePath
+                    assetsFilePath
+                });
+            } else if (assetType == "audio_stream") {
+                const std::string &audioStreamId = JsonHelper::Get<std::string>(assetJson, "uid");
+                const float audioStreamPitch = JsonHelper::Get<float>(assetJson, "pitch");
+                const float audioStreamGain = JsonHelper::Get<float>(assetJson, "gain");
+                const bool audioStreamLoops = JsonHelper::Get<bool>(assetJson, "loops");
+                loadedAssetConfigurations.audioStreamConfigurations.emplace_back(AudioStreamConfiguration{
+                    assetsFilePath,
+                    audioStreamId,
+                    audioStreamPitch,
+                    audioStreamGain,
+                    audioStreamLoops
                 });
             }
         }

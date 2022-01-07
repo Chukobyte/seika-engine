@@ -8,6 +8,7 @@
 
 #include "rendering/texture.h"
 #include "rendering/font.h"
+#include "audio/audio_stream.h"
 #include "project_properties.h"
 #include "utils/archive_loader.h"
 
@@ -22,6 +23,7 @@ class AssetManager {
     std::map<std::string, Font*> fonts;
     std::map<std::string, Mix_Music*> music;
     std::map<std::string, Mix_Chunk*> sounds;
+    std::map<std::string, AudioStream*> audioStreams;
 
     ProjectProperties *projectProperties = nullptr;
     ArchiveLoader *archiveLoader = nullptr;
@@ -39,29 +41,30 @@ class AssetManager {
     // TEXTURE
 
     void LoadTexture(const std::string &textureId, const std::string &filePath);
-
     Texture* GetTexture(const std::string &textureId);
-
     bool HasTexture(const std::string &textureId) const;
 
     // FONT
     void LoadFont(const std::string &fontId, const std::string &fontPath, int size);
-
     Font* GetFont(const std::string &fontId);
-
     bool HasFont(const std::string &fontId) const;
-//
+
     // MUSIC
     void LoadMusic(const std::string &musicId, const std::string &musicPath);
-
     Mix_Music* GetMusic(const std::string &musicId);
 
     // SOUND
     void LoadSound(const std::string &soundId, const std::string &soundPath);
-
     Mix_Chunk* GetSound(const std::string &soundId);
-
     std::map<std::string, Mix_Chunk*> GetAllSounds();
+
+    // AUDIO STREAM
+
+    void LoadAudioStream(const std::string& audioStreamId, const std::string& audioStreamPath, float pitch = 1.0f, float gain = 1.0f, bool loops = false);
+    AudioStream* GetAudioStream(const std::string& audioStreamId);
+    bool HasAudioStream(const std::string& audioStreamId) const;
+
+    // ALL ASSETS
 
     void LoadEngineAssets();
 

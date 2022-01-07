@@ -6,7 +6,7 @@ from seika.engine import Engine
 from seika.physics import Collision
 from seika.math import Vector2, Rect2
 from seika.data import ConfigTool
-from seika.audio import Audio
+from seika.audio import Audio, AudioStream
 
 
 class Main(Node2D):
@@ -46,7 +46,12 @@ class Main(Node2D):
         # config_tool.load_file()
         # print(config_tool.data)
 
-        Audio.play_music(music_id="assets/audio/music/test_music.wav")
+        self.music_audio_stream = AudioStream.get(stream_uid="test-music")
+        self.sound_audio_stream = AudioStream.get(stream_uid="test-sound")
+        # self.music_audio_stream.gain = 0.5
+        # self.music_audio_stream.pitch = 1.0
+        self.music_audio_stream.play()
+        # Audio.play_music(music_id="assets/audio/music/test_music.wav")
 
     def _physics_process(self, delta_time: float) -> None:
         if Input.is_action_just_pressed(action_name="quit"):
@@ -56,7 +61,8 @@ class Main(Node2D):
             # seika_node = self.get_node(name="Seika")
             # print(f"seika_node.texture = {seika_node.texture}")
             print(f"collided_node_with_mouse = {self.seika_collision_shape.is_under_mouse}")
-            Audio.play_sound(sound_id="assets/audio/sound/test_sound_effect.wav")
+            self.sound_audio_stream.play()
+            # Audio.play_sound(sound_id="assets/audio/sound/test_sound_effect.wav")
 
     def _on_timer_timeout(self, args: list) -> None:
         self.timeout_count += 1
