@@ -30,7 +30,6 @@ class AudioStream {
     void SetGain(float newGain);
     bool DoesLoop();
     void SetLoops(bool value);
-//    void UpdateStream();
 
   private:
     static const std::size_t NUM_BUFFERS = 4;

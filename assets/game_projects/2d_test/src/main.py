@@ -48,6 +48,8 @@ class Main(Node2D):
 
         self.music_audio_stream = AudioStream.get(stream_uid="test-music")
         self.sound_audio_stream = AudioStream.get(stream_uid="test-sound")
+        # self.music_audio_stream.gain = 0.5
+        # self.music_audio_stream.pitch = 1.0
         self.music_audio_stream.play()
         # Audio.play_music(music_id="assets/audio/music/test_music.wav")
 

@@ -23,8 +23,8 @@ void AudioStream::Initialize() {
 
     // Source
     alGenSources(1, &source);
-    alSourcef(source, AL_PITCH, 1.0f);
-    alSourcef(source, AL_GAIN, 1.0f);
+    SetPitch(pitch);
+    SetGain(gain);
     alSource3f(source, AL_POSITION, 0.0f, 0.0f, 0.0f);
     alSource3f(source, AL_VELOCITY, 0.0f, 0.0f, 0.0f);
     alSourcei(source, AL_LOOPING, loops ? AL_TRUE : AL_FALSE);
@@ -55,6 +55,7 @@ float AudioStream::GetPitch() {
 
 void AudioStream::SetPitch(float newPitch) {
     pitch = newPitch;
+    alSourcef(source, AL_PITCH, pitch);
 }
 
 float AudioStream::GetGain() {
@@ -63,6 +64,7 @@ float AudioStream::GetGain() {
 
 void AudioStream::SetGain(float newGain) {
     gain = newGain;
+    alSourcef(source, AL_GAIN, gain);
 }
 
 bool AudioStream::DoesLoop() {
@@ -72,45 +74,3 @@ bool AudioStream::DoesLoop() {
 void AudioStream::SetLoops(bool value) {
     loops = value;
 }
-
-//void AudioStream::UpdateStream() {
-//    ALint buffersProcessed = 0;
-//    alGetSourcei(source, AL_BUFFERS_PROCESSED, &buffersProcessed);
-//
-//    if (buffersProcessed <= 0) {
-//        std::cout << "No buffers processed..." << std::endl;
-//        return;
-//    }
-//    std::cout << "Buffers processed = " << buffersProcessed << std::endl;
-//
-//    while (buffersProcessed--) {
-//        ALuint buff;
-//        alSourceUnqueueBuffers(source, 1, &buff);
-////        ALErrorHelper(std::string("alSourceUnqueueBuffers - buff: " + std::to_string(buff)));
-//
-//        ALsizei bufferDataSize = BUFFER_SIZE;
-//
-//        char *buffData = new char[bufferDataSize];
-//        std::memset(buffData, 0, bufferDataSize);
-//
-//        std::size_t dataSizeToCopy = BUFFER_SIZE;
-//        if (cursor + BUFFER_SIZE > data.size()) {
-//            dataSizeToCopy = data.size() - cursor;
-//        }
-//
-//        std::memcpy(&data[0], &data[cursor], dataSizeToCopy);
-//        cursor += dataSizeToCopy;
-//
-//        if (dataSizeToCopy < BUFFER_SIZE) {
-//            cursor = 0;
-//            std::memcpy(&data[dataSizeToCopy], &data[cursor], BUFFER_SIZE - dataSizeToCopy);
-//            cursor = BUFFER_SIZE - dataSizeToCopy;
-//        }
-//
-//        alBufferData(buff, format, buffData, BUFFER_SIZE, sampleRate);
-//        alSourceQueueBuffers(source, 1, &buff);
-////        ALErrorHelper(std::string("alSourceQueueBuffers - buff: " + std::to_string(buff)));
-//
-//        delete buffData;
-//    }
-//}
