@@ -70,6 +70,16 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#audio-stream">Audio Stream</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#properties_1">Properties</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#signals_1">Signals</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#methods_1">Methods</a>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../input/">Input</a>
@@ -122,7 +132,7 @@
 <div class="section">
 <h1 id="seikaaudio">seika.audio</h1>
 <h2 id="audio">Audio</h2>
-<p>Interface for music and sound effects.  Music will continue to loop until stopped and sound is only played once.</p>
+<p>Interface for music and sound effects.  Music will continue to loop until stopped and sound is only played once.  Will be deprecated in place of <a href="#audio-stream">AudioStream</a></p>
 <h3 id="properties">Properties</h3>
 <p>None.</p>
 <hr/>
@@ -154,6 +164,36 @@ set_sounds_volume(volume: int) -&gt; None:
 set_all_volume(volume: int) -&gt; None:
 </code></pre>
 <p>Sets volume for all audio.</p>
+<hr/>
+<h2 id="audio-stream">Audio Stream</h2>
+<p>Interface for audio.  Should be used instead of <a href="#audio">Audio</a> but care must be taken to zero out the amplitude at the end of samples especially when looping.</p>
+<h3 id="properties_1">Properties</h3>
+<pre><code class="language-python">uid: str
+</code></pre>
+<p>Unique identifier for AudioStream.</p>
+<pre><code class="language-python">pitch: float
+</code></pre>
+<p>The pitch for the AudioStream, initializes to 1.0 by default.</p>
+<pre><code class="language-python">gain: float
+</code></pre>
+<p>The gain (volume) for the AudioStream, initializes to 1.0 by default.</p>
+<pre><code class="language-python">loops: bool
+</code></pre>
+<p>Determines if the AudioStream will play the sample from the beginning when reaching the end.  Defaults to <code>False</code>.</p>
+<pre><code class="language-python">is_playing: bool
+</code></pre>
+<p>Returns whether the audio stream is playing or not.</p>
+<hr/>
+<h3 id="signals_1">Signals</h3>
+<p>None.</p>
+<hr/>
+<h3 id="methods_1">Methods</h3>
+<pre><code class="language-python">play() -&gt; None:
+</code></pre>
+<p>Plays the audio loaded into <code>AudioStream</code>.</p>
+<pre><code class="language-python">stop() -&gt; None:
+</code></pre>
+<p>Stops the audio loaded into <code>AudioStream</code>.</p>
 <hr/>
 </div>
 </div>
