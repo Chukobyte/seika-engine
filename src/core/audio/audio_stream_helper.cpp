@@ -147,23 +147,16 @@ bool AudioStreamHelper::LoadWavFileHeaderFromMemory(unsigned char* fileBuffer, s
     char buffer[4];
     unsigned int index = 0;
 
-    static Logger* logger = Logger::GetInstance();
-    logger->Debug("LoadWavFileHeaderFromMemory");
     // the RIFF
-    logger->Debug("Loading riff");
     READ_CHAR_ARRAY4(buffer, fileBuffer, index)
     if(std::strncmp(buffer, "RIFF", 4) != 0) {
         std::cerr << "ERROR: file is not a valid WAVE file (header doesn't begin with RIFF)" << std::endl;
         return false;
     }
-    logger->Debug("Done Loading riff");
 
     // the size of the file
-    logger->Debug("Loading file size");
     READ_CHAR_ARRAY4(buffer, fileBuffer, index)
     audioFileData->fileSize = ConvertToInt(buffer, 4);
-    std::cerr << audioFileData->fileSize << std::endl;
-    logger->Debug("Done Loading file size");
 
     // the WAVE
     READ_CHAR_ARRAY4(buffer, fileBuffer, index)
@@ -182,18 +175,12 @@ bool AudioStreamHelper::LoadWavFileHeaderFromMemory(unsigned char* fileBuffer, s
     READ_CHAR_ARRAY2(buffer, fileBuffer, index)
 
     // the number of channels
-    logger->Debug("Loading channels");
     READ_CHAR_ARRAY2(buffer, fileBuffer, index)
     audioFileData->channels = ConvertToInt(buffer, 2);
-    std::cerr << audioFileData->channels << std::endl;
-    logger->Debug("Done loading channels");
 
     // sample rate
-    logger->Debug("Loading sample rate");
     READ_CHAR_ARRAY4(buffer, fileBuffer, index)
     audioFileData->sampleRate = ConvertToInt(buffer, 4);
-    std::cerr << audioFileData->sampleRate << std::endl;
-    logger->Debug("Done loading sample rate");
 
     // byte rate
     READ_CHAR_ARRAY4(buffer, fileBuffer, index)
@@ -202,11 +189,8 @@ bool AudioStreamHelper::LoadWavFileHeaderFromMemory(unsigned char* fileBuffer, s
     READ_CHAR_ARRAY2(buffer, fileBuffer, index)
 
     // bitsPerSample
-    logger->Debug("Loading bits per sample");
     READ_CHAR_ARRAY2(buffer, fileBuffer, index)
     audioFileData->bitsPerSample = ConvertToInt(buffer, 2);
-    std::cerr << audioFileData->bitsPerSample << std::endl;
-    logger->Debug("Done loading bits per sample");
 
     // sub chunk id
     READ_CHAR_ARRAY4(buffer, fileBuffer, index)
@@ -216,13 +200,8 @@ bool AudioStreamHelper::LoadWavFileHeaderFromMemory(unsigned char* fileBuffer, s
     }
 
     // size of data
-    logger->Debug("Loading data size");
     READ_CHAR_ARRAY4(buffer, fileBuffer, index)
     audioFileData->dataSize = ConvertToInt(buffer, 4);
-    std::cerr << audioFileData->dataSize << std::endl;
-    logger->Debug("Done loading data size");
-
-    logger->Debug("Done reading into memory");
 
     return true;
 }
