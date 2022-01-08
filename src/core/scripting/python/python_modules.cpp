@@ -583,6 +583,7 @@ PyObject* PythonModules::node_set_tags(PyObject *self, PyObject *args, PyObject 
         std::vector<std::string> nodeTags = {};
         for (int i = 0; i < PyList_Size(pyObject); i++) {
             CPyObject listItem = PyList_GetItem(pyObject, i);
+            listItem.AddRef();
             const std::string &newTag = std::string(PyUnicode_AsUTF8(listItem));
             nodeTags.emplace_back(newTag);
         }
