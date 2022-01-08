@@ -5,6 +5,10 @@
     "width": 800,
     "height": 600
   },
+  "window_size": {
+    "width": 800,
+    "height": 600
+  },
   "colliders_visible": false,
   "target_fps": 66,
   "background_color": {
