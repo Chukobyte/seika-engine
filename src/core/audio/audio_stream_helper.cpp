@@ -1,4 +1,5 @@
 #include "audio_stream_helper.h"
+#include "../utils/logger.h"
 
 #include <cstring>
 #include <fstream>
@@ -141,29 +142,114 @@ bool AudioStreamHelper::LoadWavFileHeader(std::ifstream& file, AudioStream* audi
     return true;
 }
 
+// TODO: implement...
+bool AudioStreamHelper::LoadWavFileHeaderFromMemory(unsigned char* fileBuffer, size_t fileBufferSize, AudioStream* audioFileData) {
+    char buffer[4];
+    unsigned int index = 0;
+
+    // the RIFF
+    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
+    if(std::strncmp(buffer, "RIFF", 4) != 0) {
+        std::cerr << "ERROR: file is not a valid WAVE file (header doesn't begin with RIFF)" << std::endl;
+        return false;
+    }
+
+    // the size of the file
+    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
+    audioFileData->fileSize = ConvertToInt(buffer, 4);
+
+    // the WAVE
+    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
+    if(std::strncmp(buffer, "WAVE", 4) != 0) {
+        std::cerr << "ERROR: file is not a valid WAVE file (header doesn't contain WAVE)" << std::endl;
+        return false;
+    }
+
+    // "fmt/0"
+    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
+
+    // this is always 16, the size of the fmt data chunk
+    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
+
+    // PCM should be 1?
+    READ_CHAR_ARRAY2(buffer, fileBuffer, index)
+
+    // the number of channels
+    READ_CHAR_ARRAY2(buffer, fileBuffer, index)
+    audioFileData->channels = ConvertToInt(buffer, 2);
+
+    // sample rate
+    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
+    audioFileData->sampleRate = ConvertToInt(buffer, 4);
+
+    // byte rate
+    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
+
+    // block align
+    READ_CHAR_ARRAY2(buffer, fileBuffer, index)
+
+    // bitsPerSample
+    READ_CHAR_ARRAY2(buffer, fileBuffer, index)
+    audioFileData->bitsPerSample = ConvertToInt(buffer, 2);
+
+    // sub chunk id
+    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
+    if(std::strncmp(buffer, "data", 4) != 0) {
+        std::cerr << "ERROR: file is not a valid WAVE file (doesn't have 'data' tag)" << std::endl;
+        return false;
+    }
+
+    // size of data
+    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
+    audioFileData->dataSize = ConvertToInt(buffer, 4);
+
+    return true;
+}
+
 AudioStream* AudioStreamHelper::LoadWav(const std::string& filename, float pitch, float gain, bool loops) {
-    AudioStream *audioFileData = new AudioStream(pitch, gain, loops);
+    AudioStream *audioStream = new AudioStream(pitch, gain, loops);
     std::ifstream fileStream(filename, std::ios::binary);
     if(!fileStream.is_open()) {
         std::cerr << "ERROR: Could not open \"" << filename << "\"" << std::endl;
-        return audioFileData;
+        return audioStream;
     }
 
-    if(!LoadWavFileHeader(fileStream, audioFileData)) {
+    if(!LoadWavFileHeader(fileStream, audioStream)) {
         std::cerr << "ERROR: Could not load wav header of \"" << filename << "\"" << std::endl;
-        return audioFileData;
+        return audioStream;
     }
 
     fileStream.clear();
     fileStream.seekg(0, std::ios::beg);
-    audioFileData->data = {std::istreambuf_iterator<char>(fileStream), std::istreambuf_iterator<char>()};
+    audioStream->data = {std::istreambuf_iterator<char>(fileStream), std::istreambuf_iterator<char>()};
     // TODO: Fix/clean up wave file loading
-    audioFileData->data.erase(
-        audioFileData->data.begin(),
-        audioFileData->data.begin() + (audioFileData->data.size() - audioFileData->dataSize)
+    audioStream->data.erase(
+        audioStream->data.begin(),
+        audioStream->data.begin() + (audioStream->data.size() - audioStream->dataSize)
     );
-    audioFileData->data.resize(audioFileData->dataSize);
-    audioFileData->Initialize();
+    audioStream->data.resize(audioStream->dataSize);
+    audioStream->Initialize();
 
-    return audioFileData;
+    return audioStream;
+}
+
+AudioStream* AudioStreamHelper::LoadWavFromMemory(void* fileBuffer, size_t fileBufferSize, float pitch, float gain, bool loops) {
+    AudioStream *audioStream = new AudioStream(pitch, gain, loops);
+    static Logger *logger = Logger::GetInstance();
+
+    if (!LoadWavFileHeaderFromMemory((unsigned char*) fileBuffer, fileBufferSize, audioStream)) {
+        std::cerr << "Error loading wave from memory!" << std::endl;
+    }
+
+    char* audioStreamData = static_cast<char*>(fileBuffer);
+    audioStream->data = std::vector<char>(audioStreamData, audioStreamData + audioStream->dataSize);
+    logger->Debug("Loaded trimming data...");
+    audioStream->data.erase(
+        audioStream->data.begin(),
+        audioStream->data.begin() + (audioStream->data.size() - audioStream->dataSize)
+    );
+    audioStream->data.resize(audioStream->dataSize);
+    audioStream->Initialize();
+
+    return audioStream;
 }
