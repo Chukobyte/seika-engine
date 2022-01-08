@@ -13,6 +13,7 @@ Project properties define how the game will be configured before running.  An ex
     "height": 600
   },
   "colliders_visible": true,
+  "pixel_snap": true,
   "target_fps": 60,
   "background_color": {
     "red": 0.1,
@@ -41,6 +42,14 @@ Project properties define how the game will be configured before running.  An ex
     {
       "type": "sound",
       "file_path": "assets/audio/sound/test_sound_effect.wav"
+    },
+    {
+      "type": "audio-stream",
+      "file_path": "assets/audio/music/test_music.wav",
+      "uid": "test-song",
+      "pitch": 1.0,
+      "gain": 1.0,
+      "loops": true
     }
   ],
   "input_actions": [
@@ -73,6 +82,10 @@ Base resolution of the game
 `colliders_visible`
 
 If true, will render a visible box for colliders.
+
+`pixel_snap`
+
+If true, will snap all entity render positions to a grid.
 
 `target_fps`
 
