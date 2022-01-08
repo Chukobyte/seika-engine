@@ -122,6 +122,7 @@ class PythonModules {
     static PyObject* collision_shape2d_is_under_mouse(PyObject* self, PyObject* args, PyObject* kwargs);
 
     static PyObject* collision_get_collided_nodes(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* collision_get_collided_nodes_by_tag(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* collision_update_collisions(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* collision_get_nodes_under_mouse(PyObject* self, PyObject* args);
 
@@ -574,6 +575,10 @@ static struct PyMethodDef rollApiMethods[] = {
         METH_VARARGS | METH_KEYWORDS, "Gets nodes entity collided with."
     },
     {
+        "collision_get_collided_nodes_by_tag", (PyCFunction) PythonModules::collision_get_collided_nodes_by_tag,
+        METH_VARARGS | METH_KEYWORDS, "Gets nodes entity collided with by tag."
+    },
+    {
         "collision_update_collisions", (PyCFunction) PythonModules::collision_update_collisions,
         METH_VARARGS | METH_KEYWORDS, "Forces an update of collision data."
     },
@@ -743,6 +748,7 @@ static char *collisionShape2DSetColliderRectKWList[] = {"entity_id", "x", "y", "
 static char *collisionModifyCollisionExceptionKWList[] = {"entity_id", "exception_entity_id", nullptr};
 
 static char *collisionUpdateCollisionsKWList[] = {"entity_id", "offset_x", "offset_y", nullptr};
+static char *collisionGetCollidedNodesByTagKWList[] = {"entity_id", "tag", "offset_x", "offset_y", nullptr};
 
 static char *inputAddActionKWList[] = {"action_name", "value", nullptr};
 static char *inputActionCheckKWList[] = {"action_name", nullptr};

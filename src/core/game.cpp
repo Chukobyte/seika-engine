@@ -149,7 +149,7 @@ void Game::InitializeECS() {
     scriptSystemSignature.set(entityComponentOrchestrator->GetComponentType<ScriptableClassComponent>(), true);
     entityComponentOrchestrator->SetSystemSignature<ScriptEntitySystem>(scriptSystemSignature);
 
-    EntitySystemHook collisionSystemHooks = projectProperties->areColliderVisible ? EntitySystemHook::RENDER : EntitySystemHook::NONE;
+    EntitySystemHook collisionSystemHooks = projectProperties->areColliderVisible ? EntitySystemHook::RENDER | EntitySystemHook::ON_ENTITY_TAGS_UPDATE : EntitySystemHook::ON_ENTITY_TAGS_UPDATE;
     entityComponentOrchestrator->RegisterSystem<CollisionEntitySystem>(collisionSystemHooks);
     ComponentSignature collisionSystemSignature;
     collisionSystemSignature.set(entityComponentOrchestrator->GetComponentType<ColliderComponent>(), true);

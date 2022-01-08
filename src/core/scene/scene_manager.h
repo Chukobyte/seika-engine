@@ -27,6 +27,7 @@
 #include "../ecs/component/components/material_component.h"
 #include "../ecs/component/components/light3D_component.h"
 
+// TODO: Separate SceneNodeJsonParser into its own file...
 class SceneNodeJsonParser {
   private:
     EntityManager *entityManager = nullptr;
