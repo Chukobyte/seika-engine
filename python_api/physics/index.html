@@ -16,7 +16,7 @@
 <script>
     // Current page data
     var mkdocs_page_name = "Physics";
-    var mkdocs_page_input_path = "python_api/physics.md";
+    var mkdocs_page_input_path = "python_api\\physics.md";
     var mkdocs_page_url = null;
   </script>
 <script defer="" src="../../js/jquery-2.1.1.min.js"></script>
@@ -131,9 +131,13 @@
 <hr/>
 <h3 id="methods">Methods</h3>
 <pre><code class="language-python">@staticmethod
-get_collided_nodes(node: seika.node.Node) -&gt; list:
+get_collided_nodes(node: seika.node.Node, offset: seika.math.Vector2) -&gt; list:
 </code></pre>
-<p>Returns a <code>list</code> of nodes that collided with the passed in <code>node</code>.</p>
+<p>Returns a <code>list</code> of nodes that collided with the passed in <code>node</code>.  Can configure the position of the collision by adjusting the <code>offset</code>.</p>
+<pre><code class="language-python">@staticmethod
+get_collided_nodes_by_tag(node: seika.node.Node, tag: str, offset: seika.math.Vector2) -&gt; list:
+</code></pre>
+<p>Same as <code>get_collided_nodes</code> but filters results by tag.</p>
 <pre><code class="language-python">@staticmethod
 get_nodes_under_mouse() -&gt; list:
 </code></pre>

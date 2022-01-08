@@ -16,7 +16,7 @@
 <script>
     // Current page data
     var mkdocs_page_name = "Audio";
-    var mkdocs_page_input_path = "python_api/audio.md";
+    var mkdocs_page_input_path = "python_api\\audio.md";
     var mkdocs_page_url = null;
   </script>
 <script defer="" src="../../js/jquery-2.1.1.min.js"></script>
@@ -70,7 +70,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#audio-stream">Audio Stream</a>
+<li class="toctree-l2"><a class="reference internal" href="#audiostream">AudioStream</a>
 <ul>
 <li class="toctree-l3"><a class="reference internal" href="#properties_1">Properties</a>
 </li>
@@ -132,7 +132,7 @@
 <div class="section">
 <h1 id="seikaaudio">seika.audio</h1>
 <h2 id="audio">Audio</h2>
-<p>Interface for music and sound effects.  Music will continue to loop until stopped and sound is only played once.  Will be deprecated in place of <a href="#audio-stream">AudioStream</a></p>
+<p>Interface for music and sound effects.  Music will continue to loop until stopped and sound is only played once.  Will be deprecated in place of <a href="#audiostream">AudioStream</a></p>
 <h3 id="properties">Properties</h3>
 <p>None.</p>
 <hr/>
@@ -165,7 +165,7 @@ set_all_volume(volume: int) -&gt; None:
 </code></pre>
 <p>Sets volume for all audio.</p>
 <hr/>
-<h2 id="audio-stream">Audio Stream</h2>
+<h2 id="audiostream">AudioStream</h2>
 <p>Interface for audio.  Should be used instead of <a href="#audio">Audio</a> but care must be taken to zero out the amplitude at the end of samples especially when looping.</p>
 <h3 id="properties_1">Properties</h3>
 <pre><code class="language-python">uid: str
