@@ -12,6 +12,10 @@ Project properties define how the game will be configured before running.  An ex
     "width": 800,
     "height": 600
   },
+  "window_size": {
+    "width": 800,
+    "height": 600
+  },
   "colliders_visible": true,
   "pixel_snap": true,
   "target_fps": 60,
@@ -77,7 +81,11 @@ First scene loaded for the game.
 
 `base_resolution`
 
-Base resolution of the game
+Base resolution of the game.
+
+`window_size`
+
+The initial window size when starting the game.
 
 `colliders_visible`
 

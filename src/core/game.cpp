@@ -203,12 +203,12 @@ void Game::InitializeRendering() {
                                 projectProperties->gameTitle.c_str(),
                                 SDL_WINDOWPOS_CENTERED,
                                 SDL_WINDOWPOS_CENTERED,
-                                projectProperties->windowWidth,
-                                projectProperties->windowHeight,
+                                projectProperties->intitialWindowWidth,
+                                projectProperties->intitialWindowHeight,
                                 renderContext->windowFlags);
     renderContext->gl_context = SDL_GL_CreateContext(renderContext->window);
-    renderContext->currentWindowWidth = projectProperties->windowWidth;
-    renderContext->currentWindowHeight = projectProperties->windowHeight;
+    renderContext->currentWindowWidth = projectProperties->intitialWindowWidth;
+    renderContext->currentWindowHeight = projectProperties->intitialWindowHeight;
 
     if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress)) {
         logger->Error("Couldn't initialize glad");

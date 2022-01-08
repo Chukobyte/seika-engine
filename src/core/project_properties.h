@@ -80,8 +80,11 @@ class ProjectProperties {
         gameTitle = JsonHelper::Get<std::string>(projectConfigurationsJson, "game_title");
         initialScenePath = JsonHelper::Get<std::string>(projectConfigurationsJson, "initial_scene");
         nlohmann::json baseResolutionJson = JsonHelper::Get<nlohmann::json>(projectConfigurationsJson, "base_resolution");
-        windowWidth = JsonHelper::Get<int>(baseResolutionJson, "width");
-        windowHeight = JsonHelper::Get<int>(baseResolutionJson, "height");
+        resolutionWidth = JsonHelper::Get<int>(baseResolutionJson, "width");
+        resolutionHeight = JsonHelper::Get<int>(baseResolutionJson, "height");
+        nlohmann::json windowSizeJson = JsonHelper::Get<nlohmann::json>(projectConfigurationsJson, "window_size");
+        intitialWindowWidth = JsonHelper::Get<int>(windowSizeJson, "width");
+        intitialWindowHeight = JsonHelper::Get<int>(windowSizeJson, "height");
         areColliderVisible = JsonHelper::Get<bool>(projectConfigurationsJson, "colliders_visible");
         pixelSnap = JsonHelper::GetDefault<bool>(projectConfigurationsJson, "pixel_snap", false);
         targetFPS = JsonHelper::Get<unsigned int>(projectConfigurationsJson, "target_fps");
@@ -167,8 +170,10 @@ class ProjectProperties {
     }
   public:
     std::string gameTitle = "Seika Engine";
-    int windowWidth = 800;
-    int windowHeight = 600;
+    int resolutionWidth = 800;
+    int resolutionHeight = 600;
+    int intitialWindowWidth = resolutionWidth;
+    int intitialWindowHeight = resolutionHeight;
     Color backgroundDrawColor = Color::NormalizedColor(20, 20, 20);
     bool areColliderVisible = false;
     std::string initialScenePath;

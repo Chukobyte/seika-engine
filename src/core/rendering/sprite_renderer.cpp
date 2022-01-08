@@ -111,7 +111,7 @@ void SpriteRenderer::Draw(Texture *texture2D, Rect2 sourceRectangle, Rect2 desti
 
 void SpriteRenderer::UpdateProjection() {
     shader.Use();
-    projection = glm::ortho(0.0f, static_cast<float>(projectProperties->windowWidth), static_cast<float>(projectProperties->windowHeight), 0.0f, -1.0f, 1.0f);
+    projection = glm::ortho(0.0f, static_cast<float>(projectProperties->resolutionWidth), static_cast<float>(projectProperties->resolutionHeight), 0.0f, -1.0f, 1.0f);
     shader.SetMatrix4Float("projection", projection);
 }
 

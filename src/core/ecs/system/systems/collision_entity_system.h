@@ -52,8 +52,8 @@ class CollisionEntitySystem : public EntitySystem {
         Vector2 collisionScreenScale = Vector2(transform2DComponent.scale.x * parentTransform.scale.x * colliderComponent.collider.w * camera.zoom.x,
                                                transform2DComponent.scale.y * parentTransform.scale.y * colliderComponent.collider.h * camera.zoom.y);
         ProjectProperties *projectProperties = ProjectProperties::GetInstance();
-        collisionScreenScale.x *= windowWidth / static_cast<float>(projectProperties->windowWidth);
-        collisionScreenScale.y *= windowHeight / static_cast<float>(projectProperties->windowHeight);
+        collisionScreenScale.x *= windowWidth / static_cast<float>(projectProperties->resolutionWidth);
+        collisionScreenScale.y *= windowHeight / static_cast<float>(projectProperties->resolutionHeight);
         return Rect2(collisionScreenPosition, collisionScreenScale);
     }
 

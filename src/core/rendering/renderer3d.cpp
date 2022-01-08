@@ -60,7 +60,7 @@ void Renderer3D::Initialize() {
 void Renderer3D::Render(CameraManager *cameraManager) {
     glEnable(GL_DEPTH_TEST);
     static ProjectProperties *projectProperties = ProjectProperties::GetInstance();
-    const float aspectRatio = projectProperties->windowWidth / projectProperties->windowHeight;
+    const float aspectRatio = projectProperties->resolutionWidth / projectProperties->resolutionHeight;
     Camera3D camera = cameraManager->GetCurrentCamera3D();
     glm::mat4 projection = glm::perspective(glm::radians(camera.fieldOfView), aspectRatio, 0.1f, 100.0f);
     glm::mat4 view = CameraHandler::GetCameraViewMatrix(camera);
