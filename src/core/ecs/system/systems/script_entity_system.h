@@ -28,6 +28,7 @@ class ScriptEntitySystem : public EntitySystem {
     void Disable() override {}
 
     void OnEntityDestroyed(Entity entity) override {
+        EntitySystem::OnEntityDestroyed(entity);
         assert(activeScriptContext != nullptr && "No active script context!");
         activeScriptContext->DeleteEntityInstance(entity);
     }

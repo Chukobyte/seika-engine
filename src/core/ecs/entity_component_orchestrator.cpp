@@ -10,6 +10,7 @@ Entity EntityComponentOrchestrator::CreateEntity() {
     return entityManager->CreateEntity();
 }
 
+// TODO: Make into hook
 void EntityComponentOrchestrator::NewEntity(SceneNode sceneNode) {
     if (componentManager->HasComponent<ScriptableClassComponent>(sceneNode.entity)) {
         ScriptEntitySystem *scriptEntitySystem = (ScriptEntitySystem*) entitySystemManager->GetEntitySystem<ScriptEntitySystem>();
@@ -22,6 +23,7 @@ void EntityComponentOrchestrator::NewEntityAddChild(Entity parent, Entity child)
     AddChildToEntityScene(childNode.parent, childNode.entity);
     NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(childNode.entity);
     nodeNameToEntityMap.emplace(nodeComponent.name, childNode.entity);
+    entitySystemManager->OnEntityTagsUpdatedSystemsHook(child, {}, nodeComponent.tags);
     CallStartOnScriptInstances(childNode);
 }
 
@@ -52,7 +54,7 @@ void EntityComponentOrchestrator::DestroyEntity(SceneNode sceneNode) {
             nodeNameToEntityMap.erase(nodeComponent.name);
             entityManager->DestroyEntity(entityToRemove);
             componentManager->EntityDestroyed(entityToRemove);
-            entitySystemManager->EntityDestroyed(entityToRemove);
+            entitySystemManager->EntityDestroyed(entityToRemove, nodeComponent.tags);
             signalManager->RemoveEntitySignals(entityToRemove);
         }
     }
@@ -106,6 +108,7 @@ void EntityComponentOrchestrator::RegisterSceneNodeInstances(SceneNode sceneNode
     }
     NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(sceneNode.entity);
     nodeNameToEntityMap.emplace(nodeComponent.name, sceneNode.entity);
+    entitySystemManager->OnEntityTagsUpdatedSystemsHook(sceneNode.entity, {}, nodeComponent.tags);
 
     for (SceneNode childSceneNode : sceneNode.children) {
         RegisterSceneNodeInstances(childSceneNode);

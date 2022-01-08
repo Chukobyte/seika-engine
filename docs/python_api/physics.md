@@ -20,10 +20,17 @@ None.
 
 ```python
 @staticmethod
-get_collided_nodes(node: seika.node.Node) -> list:
+get_collided_nodes(node: seika.node.Node, offset: seika.math.Vector2) -> list:
 ```
 
-Returns a `list` of nodes that collided with the passed in `node`.
+Returns a `list` of nodes that collided with the passed in `node`.  Can configure the position of the collision by adjusting the `offset`.
+
+```python
+@staticmethod
+get_collided_nodes_by_tag(node: seika.node.Node, tag: str, offset: seika.math.Vector2) -> list:
+```
+
+Same as `get_collided_nodes` but filters results by tag.
 
 ```python
 @staticmethod

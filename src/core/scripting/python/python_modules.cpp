@@ -575,6 +575,7 @@ PyObject* PythonModules::node_get_tags(PyObject *self, PyObject *args, PyObject 
 
 PyObject* PythonModules::node_set_tags(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    static EntitySystemManager* entitySystemManager = EntitySystemManager::GetInstance();
     Entity entity;
     PyObject *pyObject = nullptr;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "iO", nodeSetTagsKWList, &entity, &pyObject)) {
@@ -582,9 +583,11 @@ PyObject* PythonModules::node_set_tags(PyObject *self, PyObject *args, PyObject 
         std::vector<std::string> nodeTags = {};
         for (int i = 0; i < PyList_Size(pyObject); i++) {
             CPyObject listItem = PyList_GetItem(pyObject, i);
+            listItem.AddRef();
             const std::string &newTag = std::string(PyUnicode_AsUTF8(listItem));
             nodeTags.emplace_back(newTag);
         }
+        entitySystemManager->OnEntityTagsUpdatedSystemsHook(entity, nodeComponent.tags, nodeTags);
         nodeComponent.tags = nodeTags;
         entityComponentOrchestrator->UpdateComponent<NodeComponent>(entity, nodeComponent);
         Py_RETURN_NONE;
@@ -1454,6 +1457,44 @@ PyObject* PythonModules::collision_get_collided_nodes(PyObject *self, PyObject *
     static ComponentManager *componentManager = GD::GetContainer()->componentManager;
     Entity entity;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        CPyObject pCollidedNodesList = PyList_New(0);
+        pCollidedNodesList.AddRef();
+        assert(pCollidedNodesList != nullptr && "node list empty!");
+        for (Entity collidedEntity : collisionContext->GetEntitiesCollidedWith(entity)) {
+            if (!entityComponentOrchestrator->IsEntityQueuedForDeletion(collidedEntity)) {
+                if (pythonCache->HasActiveInstance(collidedEntity)) {
+                    CPyObject &pCollidedClassInstance = pythonCache->GetClassInstance(collidedEntity);
+                    pCollidedClassInstance.AddRef();
+                    if (PyList_Append(pCollidedNodesList, pCollidedClassInstance) == -1) {
+                        PyErr_Print();
+                    }
+                } else {
+                    NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(collidedEntity);
+                    const std::string &nodeTypeString = NodeTypeHelper::GetNodeTypeString(nodeComponent.type);
+                    if (PyList_Append(pCollidedNodesList, Py_BuildValue("(si)", nodeTypeString.c_str(), collidedEntity)) == -1) {
+                        Logger::GetInstance()->Error("Error appending list");
+                        PyErr_Print();
+                    }
+                }
+            }
+        }
+        return pCollidedNodesList;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::collision_get_collided_nodes_by_tag(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    static CollisionContext *collisionContext = GD::GetContainer()->collisionContext;
+    static CollisionEntitySystem *collisionEntitySystem = entityComponentOrchestrator->GetSystem<CollisionEntitySystem>();
+    static PythonCache *pythonCache = PythonCache::GetInstance();
+    static ComponentManager *componentManager = GD::GetContainer()->componentManager;
+    Entity entity;
+    char *pyTag;
+    float offsetX;
+    float offsetY;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "isff", collisionGetCollidedNodesByTagKWList, &entity, &pyTag, &offsetX, &offsetY)) {
+        collisionEntitySystem->ProcessEntityCollisionsByTag(entity, std::string(pyTag), Vector2(offsetX, offsetY));
         CPyObject pCollidedNodesList = PyList_New(0);
         pCollidedNodesList.AddRef();
         assert(pCollidedNodesList != nullptr && "node list empty!");

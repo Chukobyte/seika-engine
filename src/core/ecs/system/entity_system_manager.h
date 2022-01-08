@@ -15,7 +15,8 @@ enum class EntitySystemHook : int {
     PROCESS = 2,
     PHYSICS_PROCESS = 4,
     RENDER = 8,
-    ALL = PROCESS | PHYSICS_PROCESS | RENDER,
+    ON_ENTITY_TAGS_UPDATE = 16,
+    ALL = PROCESS | PHYSICS_PROCESS | RENDER | ON_ENTITY_TAGS_UPDATE,
 };
 GENERATE_ENUM_CLASS_OPERATORS(EntitySystemHook)
 
@@ -28,6 +29,7 @@ class EntitySystemManager : public Singleton<EntitySystemManager> {
     std::vector<EntitySystem*> processSystems = {};
     std::vector<EntitySystem*> physicsProcessSystems = {};
     std::vector<EntitySystem*> renderSystems = {};
+    std::vector<EntitySystem*> onEntityTagsUpdatedSystems = {};
 
     void ProcessSystemHooks(EntitySystem* system, EntitySystemHook systemHooks) {
         if (systemHooks == EntitySystemHook::NONE) {
@@ -41,6 +43,9 @@ class EntitySystemManager : public Singleton<EntitySystemManager> {
         }
         if ((systemHooks & EntitySystemHook::RENDER) == EntitySystemHook::RENDER) {
             renderSystems.emplace_back(system);
+        }
+        if ((systemHooks & EntitySystemHook::ON_ENTITY_TAGS_UPDATE) == EntitySystemHook::ON_ENTITY_TAGS_UPDATE) {
+            onEntityTagsUpdatedSystems.emplace_back(system);
         }
     }
 
@@ -125,11 +130,13 @@ class EntitySystemManager : public Singleton<EntitySystemManager> {
         }
     }
 
-    void EntityDestroyed(Entity entity) {
+    void EntityDestroyed(Entity entity, const std::vector<std::string>& tags) {
         for (auto const& pair : systems) {
             auto const& system = pair.second;
             system->OnEntityDestroyed(entity);
-            system->entities.erase(entity);
+        }
+        for (EntitySystem *tagSystem : onEntityTagsUpdatedSystems) {
+            tagSystem->OnEntityTagsRemoved(entity, tags);
         }
     }
 
@@ -166,6 +173,14 @@ class EntitySystemManager : public Singleton<EntitySystemManager> {
     void RenderSystemsHook() {
         for (EntitySystem* system : renderSystems) {
             system->Render();
+        }
+    }
+
+    void OnEntityTagsUpdatedSystemsHook(Entity entity, const std::vector<std::string>& oldTags, const std::vector<std::string>& newTags) {
+        for (EntitySystem *tagSystem : onEntityTagsUpdatedSystems) {
+            if (tagSystem->HasEntity(entity)) {
+                tagSystem->OnEntityTagsUpdated(entity, oldTags, newTags);
+            }
         }
     }
 };
