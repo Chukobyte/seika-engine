@@ -1,7 +1,7 @@
 #ifndef PYTHON_SOURCE_H
 #define PYTHON_SOURCE_H
 
-// Seika Engine API v0.10.0
+// Seika Engine API v0.10.1
 
 using PythonSource = const std::string&;
 
@@ -1479,9 +1479,9 @@ static PythonSource PYTHON_SOURCE_PHYSICS_MODULE =
     "       return collided_nodes\n"
     "\n"
     "   @staticmethod\n"
-    "   def get_collided_nodes_with_tag(node: Node, tag: str, offset=Vector2(0, 0)) -> list:\n"
+    "   def get_collided_nodes_by_tag(node: Node, tag: str, offset=Vector2(0, 0)) -> list:\n"
     "       collided_nodes_from_engine = (\n"
-    "           seika_engine_api.collision_get_collided_nodes_with_tag(\n"
+    "           seika_engine_api.collision_get_collided_nodes_by_tag(\n"
     "               entity_id=node.entity_id, tag=tag, offset_x=offset.x, offset_y=offset.y\n"
     "           )\n"
     "       )\n"
