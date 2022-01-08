@@ -135,8 +135,8 @@ void AssetManager::LoadAudioStream(const std::string& audioStreamId, const std::
     AudioStream* audioStream = nullptr;
     if (projectProperties->IsAssetsInMemory()) {
         logger->Debug("Loading audio stream '" + audioStreamId + "' into memory!");
-//        Archive audioStreamArchive = archiveLoader->Load(audioStreamPath);
-//        audioStream = AudioStreamHelper::LoadWavFromMemory(audioStreamArchive.fileBuffer, audioStreamArchive.fileBufferSize, pitch, gain, loops);
+        Archive audioStreamArchive = archiveLoader->Load(audioStreamPath);
+        audioStream = AudioStreamHelper::LoadWavFromMemory(audioStreamArchive.fileBuffer, audioStreamArchive.fileBufferSize, pitch, gain, loops);
     } else {
         logger->Debug("Loading audio stream '" + audioStreamId + "' from local!");
         audioStream = AudioStreamHelper::LoadWav(audioStreamPath, pitch, gain, loops);

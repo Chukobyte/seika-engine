@@ -1,4 +1,5 @@
 #include "audio_stream_helper.h"
+#include "../utils/logger.h"
 
 #include <cstring>
 #include <fstream>
@@ -143,66 +144,85 @@ bool AudioStreamHelper::LoadWavFileHeader(std::ifstream& file, AudioStream* audi
 
 // TODO: implement...
 bool AudioStreamHelper::LoadWavFileHeaderFromMemory(unsigned char* fileBuffer, size_t fileBufferSize, AudioStream* audioFileData) {
-//    char buffer[4];
-//    unsigned int index = 0;
-//
-//    // TODO: assert file size and abort if not valid
-//
-//    // the RIFF
-//    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
-//    if(std::strncmp(buffer, "RIFF", 4) != 0) {
-//        std::cerr << "ERROR: file is not a valid WAVE file (header doesn't begin with RIFF)" << std::endl;
-//        return false;
-//    }
-//
-//    // the size of the file
-//    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
-//    audioFileData->fileSize = ConvertToInt(buffer, 4);
-//
-//    // the WAVE
-//    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
-//    if(std::strncmp(buffer, "WAVE", 4) != 0) {
-//        std::cerr << "ERROR: file is not a valid WAVE file (header doesn't contain WAVE)" << std::endl;
-//        return false;
-//    }
-//
-//    // "fmt/0"
-//    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
-//
-//    // this is always 16, the size of the fmt data chunk
-//    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
-//
-//    // PCM should be 1?
-//    READ_CHAR_ARRAY2(buffer, fileBuffer, index)
-//
-//    // the number of channels
-//    READ_CHAR_ARRAY2(buffer, fileBuffer, index)
-//    audioFileData->channels = ConvertToInt(buffer, 2);
-//
-//    // sample rate
-//    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
-//    audioFileData->sampleRate = ConvertToInt(buffer, 4);
-//
-//    // byte rate
-//    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
-//
-//    // block align
-//    READ_CHAR_ARRAY2(buffer, fileBuffer, index)
-//
-//    // bitsPerSample
-//    READ_CHAR_ARRAY2(buffer, fileBuffer, index)
-//    audioFileData->bitsPerSample = ConvertToInt(buffer, 2);
-//
-//    // sub chunk id
-//    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
-//    if(std::strncmp(buffer, "data", 4) != 0) {
-//        std::cerr << "ERROR: file is not a valid WAVE file (doesn't have 'data' tag)" << std::endl;
-//        return false;
-//    }
-//
-//    // size of data
-//    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
-//    audioFileData->dataSize = ConvertToInt(buffer, 4);
+    char buffer[4];
+    unsigned int index = 0;
+
+    static Logger* logger = Logger::GetInstance();
+    logger->Debug("LoadWavFileHeaderFromMemory");
+    // the RIFF
+    logger->Debug("Loading riff");
+    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
+    if(std::strncmp(buffer, "RIFF", 4) != 0) {
+        std::cerr << "ERROR: file is not a valid WAVE file (header doesn't begin with RIFF)" << std::endl;
+        return false;
+    }
+    logger->Debug("Done Loading riff");
+
+    // the size of the file
+    logger->Debug("Loading file size");
+    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
+    audioFileData->fileSize = ConvertToInt(buffer, 4);
+    std::cerr << audioFileData->fileSize << std::endl;
+    logger->Debug("Done Loading file size");
+
+    // the WAVE
+    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
+    if(std::strncmp(buffer, "WAVE", 4) != 0) {
+        std::cerr << "ERROR: file is not a valid WAVE file (header doesn't contain WAVE)" << std::endl;
+        return false;
+    }
+
+    // "fmt/0"
+    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
+
+    // this is always 16, the size of the fmt data chunk
+    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
+
+    // PCM should be 1?
+    READ_CHAR_ARRAY2(buffer, fileBuffer, index)
+
+    // the number of channels
+    logger->Debug("Loading channels");
+    READ_CHAR_ARRAY2(buffer, fileBuffer, index)
+    audioFileData->channels = ConvertToInt(buffer, 2);
+    std::cerr << audioFileData->channels << std::endl;
+    logger->Debug("Done loading channels");
+
+    // sample rate
+    logger->Debug("Loading sample rate");
+    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
+    audioFileData->sampleRate = ConvertToInt(buffer, 4);
+    std::cerr << audioFileData->sampleRate << std::endl;
+    logger->Debug("Done loading sample rate");
+
+    // byte rate
+    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
+
+    // block align
+    READ_CHAR_ARRAY2(buffer, fileBuffer, index)
+
+    // bitsPerSample
+    logger->Debug("Loading bits per sample");
+    READ_CHAR_ARRAY2(buffer, fileBuffer, index)
+    audioFileData->bitsPerSample = ConvertToInt(buffer, 2);
+    std::cerr << audioFileData->bitsPerSample << std::endl;
+    logger->Debug("Done loading bits per sample");
+
+    // sub chunk id
+    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
+    if(std::strncmp(buffer, "data", 4) != 0) {
+        std::cerr << "ERROR: file is not a valid WAVE file (doesn't have 'data' tag)" << std::endl;
+        return false;
+    }
+
+    // size of data
+    logger->Debug("Loading data size");
+    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
+    audioFileData->dataSize = ConvertToInt(buffer, 4);
+    std::cerr << audioFileData->dataSize << std::endl;
+    logger->Debug("Done loading data size");
+
+    logger->Debug("Done reading into memory");
 
     return true;
 }
@@ -236,19 +256,24 @@ AudioStream* AudioStreamHelper::LoadWav(const std::string& filename, float pitch
 
 AudioStream* AudioStreamHelper::LoadWavFromMemory(void* fileBuffer, size_t fileBufferSize, float pitch, float gain, bool loops) {
     AudioStream *audioStream = new AudioStream(pitch, gain, loops);
-    unsigned char* data = static_cast<unsigned char*>(fileBuffer);
+    static Logger *logger = Logger::GetInstance();
 
-    if (!LoadWavFileHeaderFromMemory(data, fileBufferSize, audioStream)) {
+    if (!LoadWavFileHeaderFromMemory((unsigned char*) fileBuffer, fileBufferSize, audioStream)) {
         std::cerr << "Error loading wave from memory!" << std::endl;
     }
 
-    audioStream->data = std::vector<char>(data, data + sizeof(data));
-    audioStream->data.erase(
-        audioStream->data.begin(),
-        audioStream->data.begin() + (audioStream->data.size() - audioStream->dataSize)
-    );
+    char* audioStreamData = static_cast<char*>(fileBuffer);
+    audioStream->data = std::vector<char>(audioStreamData, audioStreamData + sizeof(audioStreamData));
+    logger->Debug("Loaded trimming data...");
+//    audioStream->data.erase(
+//        audioStream->data.begin(),
+//        audioStream->data.begin() + (audioStream->data.size() - audioStream->dataSize)
+//    );
+    logger->Debug("Resizing data...");
     audioStream->data.resize(audioStream->dataSize);
+    logger->Debug("Done initializing...");
     audioStream->Initialize();
+    logger->Debug("Finished with stream!");
 
     return audioStream;
 }
