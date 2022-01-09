@@ -3,7 +3,6 @@
 
 #include <cstring>
 #include <fstream>
-#include <cassert>
 
 std::int32_t AudioStreamHelper::ConvertToInt(char* buffer, std::size_t len) {
     std::int32_t a = 0;
