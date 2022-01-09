@@ -1,7 +1,7 @@
 #ifndef PYTHON_SOURCE_H
 #define PYTHON_SOURCE_H
 
-// Seika Engine API v0.11.0
+// Seika Engine API v0.11.1
 
 using PythonSource = const std::string&;
 
@@ -1561,12 +1561,14 @@ static PythonSource PYTHON_SOURCE_SCENE_MODULE =
 
 static PythonSource PYTHON_SOURCE_UTILS_MODULE =
     "class SimpleTimer:\n"
-    "   def __init__(self, wait_time: float, loops=False, timeout_func=None):\n"
+    "   def __init__(self, wait_time: float, loops=False, timeout_func=None, start_on_init=False):\n"
     "       self.wait_time = wait_time\n"
     "       self.loops = loops\n"
     "       self.timeout_func = timeout_func\n"
     "       self.time_left = 0.0\n"
     "       self.running = False\n"
+    "       if start_on_init:\n"
+    "           self.start()\n"
     "\n"
     "   def start(self) -> None:\n"
     "       self.time_left = self.wait_time\n"

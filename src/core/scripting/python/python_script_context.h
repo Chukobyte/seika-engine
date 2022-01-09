@@ -56,6 +56,7 @@ class PythonScriptContext : public ScriptContext {
         }
     }
 
+    // TODO: Place physics_process and process candidates into vector
     void PhysicsProcess(const Entity entity, const double deltaTime) override {
         PyGILState_STATE pyGilStateState = PyGILState_Ensure();
         {
