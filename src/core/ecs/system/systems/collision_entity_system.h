@@ -74,14 +74,9 @@ class CollisionEntitySystem : public EntitySystem {
     }
 
     void Initialize() override {
+        EntitySystem::Initialize();
         colliderTexture = GD::GetContainer()->assetManager->GetTexture(BLANK_WHITE_TEXTURE_ASSET_ID);
     }
-
-    void Enable() override {}
-
-    void Disable() override {}
-
-    void OnEntityDestroyed(Entity entity) override {}
 
     void ProcessEntityCollisions(Entity sourceEntity, Vector2 offset = Vector2(0.0f, 0.0f)) {
         collisionContext->ClearCollisionData();

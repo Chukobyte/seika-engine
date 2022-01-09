@@ -17,14 +17,12 @@ class TimerEntitySystem : public EntitySystem {
     }
 
     void Initialize() override {
+        EntitySystem::Initialize();
         timerManager->Initialize();
     }
 
-    void Enable() override {}
-
-    void Disable() override {}
-
     void OnEntityDestroyed(Entity entity) override {
+        EntitySystem::OnEntityDestroyed(entity);
         timerManager->RemoveTimer(entity);
     }
 

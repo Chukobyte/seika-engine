@@ -24,19 +24,13 @@ class TextRenderingEntitySystem : public EntitySystem {
         enabled = true;
     }
 
-    void Initialize() override {}
-    void Enable() override {}
-    void Disable() override {}
-
     void OnRegisterEntity(Entity entity) override {
         EntitySystem::OnRegisterEntity(entity);
         UpdateEntityText(entity, componentManager->GetComponent<TextLabelComponent>(entity));
     }
-    void OnUnRegisterEntity(Entity entity) override {
-        EntitySystem::OnUnRegisterEntity(entity);
-    }
 
     void OnEntityDestroyed(Entity entity) override {
+        EntitySystem::OnEntityDestroyed(entity);
         textLines.erase(entity);
     }
 

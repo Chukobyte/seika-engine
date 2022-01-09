@@ -18,11 +18,6 @@ class TextureCubeRenderingEntitySystem : public EntitySystem {
         componentManager = GD::GetContainer()->componentManager;
         enabled = true;
     }
-    void Initialize() override {}
-    void Enable() override {}
-    void Disable() override {}
-
-    void OnEntityDestroyed(Entity entity) override {}
 
     void Render() override {
         if (IsEnabled()) {

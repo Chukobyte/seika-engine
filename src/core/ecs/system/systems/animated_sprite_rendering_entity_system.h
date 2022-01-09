@@ -22,11 +22,6 @@ class AnimatedSpriteRenderingEntitySystem : public EntitySystem {
         sceneManager = GD::GetContainer()->sceneManager;
         enabled = true;
     }
-    void Initialize() override {}
-    void Enable() override {}
-    void Disable() override {}
-
-    void OnEntityDestroyed(Entity entity) override {}
 
     void Render() override {
         if (IsEnabled()) {

@@ -17,15 +17,12 @@ class ScriptEntitySystem : public EntitySystem {
     }
 
     void Initialize() override {
+        EntitySystem::Initialize();
         for (auto const &pair : scriptContexts) {
             auto const &scriptContext = pair.second;
             scriptContext->Initialize();
         }
     }
-
-    void Enable() override {}
-
-    void Disable() override {}
 
     void OnEntityDestroyed(Entity entity) override {
         EntitySystem::OnEntityDestroyed(entity);

@@ -1023,7 +1023,6 @@ PyObject* PythonModules::sprite_set_draw_source(PyObject *self, PyObject *args, 
         SpriteComponent spriteComponent = entityComponentOrchestrator->GetComponent<SpriteComponent>(entity);
         spriteComponent.drawSource = Rect2(x, y, w, h);
         entityComponentOrchestrator->UpdateComponent<SpriteComponent>(entity, spriteComponent);
-        Logger::GetInstance()->Debug("sprite draw source");
         Py_RETURN_NONE;
     }
     return nullptr;
