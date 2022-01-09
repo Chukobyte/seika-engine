@@ -46,7 +46,8 @@ class Main(Node2D):
         # config_tool.load_file()
         # print(config_tool.data)
 
-        self.music_audio_stream = AudioStream.get(stream_uid="test-music")
+        # self.music_audio_stream = AudioStream.get(stream_uid="test-music")
+        self.music_audio_stream = AudioStream.get(stream_uid="test-song")
         self.sound_audio_stream = AudioStream.get(stream_uid="test-sound")
         # self.music_audio_stream.gain = 0.5
         # self.music_audio_stream.pitch = 1.0

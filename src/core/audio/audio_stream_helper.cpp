@@ -157,7 +157,6 @@ bool AudioStreamHelper::LoadWavFileHeaderFromMemory(unsigned char* fileBuffer, s
 
     // the RIFF
     ReadBuffer(buffer, fileBuffer, 4, index);
-//    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
     if(std::strncmp(buffer, "RIFF", 4) != 0) {
         std::cerr << "ERROR: file is not a valid WAVE file (header doesn't begin with RIFF)" << std::endl;
         return false;
@@ -165,54 +164,43 @@ bool AudioStreamHelper::LoadWavFileHeaderFromMemory(unsigned char* fileBuffer, s
 
     // the size of the file
     ReadBuffer(buffer, fileBuffer, 4, index);
-//    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
     audioFileData->fileSize = ConvertToInt(buffer, 4);
 
     // the WAVE
     ReadBuffer(buffer, fileBuffer, 4, index);
-//    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
     if(std::strncmp(buffer, "WAVE", 4) != 0) {
         std::cerr << "ERROR: file is not a valid WAVE file (header doesn't contain WAVE)" << std::endl;
         return false;
     }
 
     // "fmt/0"
-//    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
     ReadBuffer(buffer, fileBuffer, 4, index);
 
     // this is always 16, the size of the fmt data chunk
-//    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
     ReadBuffer(buffer, fileBuffer, 4, index);
 
     // PCM should be 1?
-//    READ_CHAR_ARRAY2(buffer, fileBuffer, index)
     ReadBuffer(buffer, fileBuffer, 2, index);
 
     // the number of channels
-//    READ_CHAR_ARRAY2(buffer, fileBuffer, index)
     ReadBuffer(buffer, fileBuffer, 2, index);
     audioFileData->channels = ConvertToInt(buffer, 2);
 
     // sample rate
-//    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
     ReadBuffer(buffer, fileBuffer, 4, index);
     audioFileData->sampleRate = ConvertToInt(buffer, 4);
 
     // byte rate
     ReadBuffer(buffer, fileBuffer, 4, index);
-//    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
 
     // block align
     ReadBuffer(buffer, fileBuffer, 2, index);
-//    READ_CHAR_ARRAY2(buffer, fileBuffer, index)
 
     // bitsPerSample
-//    READ_CHAR_ARRAY2(buffer, fileBuffer, index)
     ReadBuffer(buffer, fileBuffer, 2, index);
     audioFileData->bitsPerSample = ConvertToInt(buffer, 2);
 
     // sub chunk id
-//    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
     ReadBuffer(buffer, fileBuffer, 4, index);
     if(std::strncmp(buffer, "data", 4) != 0) {
         std::cerr << "ERROR: file is not a valid WAVE file (doesn't have 'data' tag)" << std::endl;
@@ -220,7 +208,6 @@ bool AudioStreamHelper::LoadWavFileHeaderFromMemory(unsigned char* fileBuffer, s
     }
 
     // size of data
-//    READ_CHAR_ARRAY4(buffer, fileBuffer, index)
     ReadBuffer(buffer, fileBuffer, 4, index);
     audioFileData->dataSize = ConvertToInt(buffer, 4);
 
