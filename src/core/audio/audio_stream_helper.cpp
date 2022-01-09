@@ -250,11 +250,10 @@ AudioStream* AudioStreamHelper::LoadWavFromMemory(void* fileBuffer, size_t fileB
     }
 
     char* audioStreamData = static_cast<char*>(fileBuffer);
-    audioStream->data = std::vector<char>(audioStreamData, audioStreamData + audioStream->dataSize);
-    logger->Debug("Loaded trimming data...");
+    audioStream->data = std::vector<char>(audioStreamData, audioStreamData + fileBufferSize);
     audioStream->data.erase(
         audioStream->data.begin(),
-        audioStream->data.begin() + (audioStream->data.size() - audioStream->dataSize)
+        audioStream->data.begin() + (fileBufferSize - audioStream->dataSize)
     );
     audioStream->data.resize(audioStream->dataSize);
     audioStream->Initialize();
