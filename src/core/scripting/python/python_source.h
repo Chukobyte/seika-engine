@@ -1,7 +1,7 @@
 #ifndef PYTHON_SOURCE_H
 #define PYTHON_SOURCE_H
 
-// Seika Engine API v0.10.1
+// Seika Engine API v0.11.0
 
 using PythonSource = const std::string&;
 
@@ -1559,6 +1559,38 @@ static PythonSource PYTHON_SOURCE_SCENE_MODULE =
     "\n"
     "";
 
+static PythonSource PYTHON_SOURCE_UTILS_MODULE =
+    "class SimpleTimer:\n"
+    "   def __init__(self, wait_time: float, loops=False, timeout_func=None):\n"
+    "       self.wait_time = wait_time\n"
+    "       self.loops = loops\n"
+    "       self.timeout_func = timeout_func\n"
+    "       self.time_left = 0.0\n"
+    "       self.running = False\n"
+    "\n"
+    "   def start(self) -> None:\n"
+    "       self.time_left = self.wait_time\n"
+    "       self.running = True\n"
+    "\n"
+    "   def stop(self) -> None:\n"
+    "       self.time_left = 0.0\n"
+    "       self.running = False\n"
+    "\n"
+    "   def tick(self, delta: float) -> bool:\n"
+    "       has_timed_out = False\n"
+    "       if self.time_left > 0.0 and self.running:\n"
+    "           self.time_left -= delta\n"
+    "           if self.time_left <= 0.0:\n"
+    "               self.stop()\n"
+    "               if self.timeout_func:\n"
+    "                   self.timeout_func()\n"
+    "               has_timed_out = True\n"
+    "               if self.loops:\n"
+    "                   self.start()\n"
+    "       return has_timed_out\n"
+    "\n"
+    "";
+
 
 
 static PythonSource PYTHON_SOURCE_LOAD_SOURCE_IMPORTER_SNIPPET =
@@ -1664,6 +1696,11 @@ static PythonSource PYTHON_SOURCE_IMPORT_ENGINE_MODULE_SNIPPET =
 
     "\"seika.data\": \"\"\"\n"
     + PYTHON_SOURCE_DATA_MODULE +
+    "\"\"\",\n"
+
+
+    "\"seika.utils\": \"\"\"\n"
+    + PYTHON_SOURCE_UTILS_MODULE +
     "\"\"\",\n"
 
 
