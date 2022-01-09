@@ -50,6 +50,14 @@
     },
     {
       "type": "audio_stream",
+      "uid": "test-song",
+      "file_path": "assets/audio/music/test_song.wav",
+      "pitch": 1.0,
+      "gain": 1.0,
+      "loops": true
+    },
+    {
+      "type": "audio_stream",
       "uid": "test-sound",
       "file_path": "assets/audio/sound/test_sound_effect.wav",
       "pitch": 1.0,
