@@ -884,6 +884,29 @@ PyObject* PythonModules::node2D_set_rotation(PyObject *self, PyObject *args, PyO
     return nullptr;
 }
 
+PyObject* PythonModules::node2D_get_z_index(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        Transform2DComponent transform2DComponent = entityComponentOrchestrator->GetComponent<Transform2DComponent>(entity);
+        return Py_BuildValue("i", transform2DComponent.zIndex);
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::node2D_set_z_index(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    int zIndex;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ii", node2DSetZIndexKWList, &entity, &zIndex)) {
+        Transform2DComponent transform2DComponent = entityComponentOrchestrator->GetComponent<Transform2DComponent>(entity);
+        transform2DComponent.zIndex = zIndex;
+        entityComponentOrchestrator->UpdateComponent<Transform2DComponent>(entity, transform2DComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
 // SPRITE
 PyObject* PythonModules::sprite_get_flip_h(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
