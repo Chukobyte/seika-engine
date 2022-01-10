@@ -23,7 +23,10 @@ class Rect2 {
     Rect2(Vector2 position, float w, float h): x(position.x), y(position.y), w(w), h(h) {}
 
     bool operator==(const Rect2 &otherRect2) const {
-        return this->x == otherRect2.x && this->y == otherRect2.y && this->w == otherRect2.w && this->h == otherRect2.h;
+        return glm::epsilonEqual(this->x, otherRect2.x, 0.001f)
+               && glm::epsilonEqual(this->y, otherRect2.y, 0.001f)
+               && glm::epsilonEqual(this->w, otherRect2.w, 0.001f)
+               && glm::epsilonEqual(this->h, otherRect2.h, 0.001f);
     }
 
     bool operator!=(const Rect2 &otherRect2) const {
