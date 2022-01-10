@@ -88,6 +88,8 @@ class PythonModules {
     static PyObject* animated_sprite_play(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_set_animation(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_stop(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* animated_sprite_get_animations(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* animated_sprite_set_animations(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_is_playing(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_get_modulate(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_set_modulate(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -456,6 +458,14 @@ static struct PyMethodDef rollApiMethods[] = {
         METH_VARARGS | METH_KEYWORDS, "Stops animation."
     },
     {
+        "animated_sprite_get_animations", (PyCFunction) PythonModules::animated_sprite_get_animations,
+        METH_VARARGS | METH_KEYWORDS, "Gets all entity's animations."
+    },
+    {
+        "animated_sprite_set_animations", (PyCFunction) PythonModules::animated_sprite_set_animations,
+        METH_VARARGS | METH_KEYWORDS, "Sets all animations for entity."
+    },
+    {
         "animated_sprite_is_playing", (PyCFunction) PythonModules::animated_sprite_is_playing,
         METH_VARARGS | METH_KEYWORDS, "Returns if an animations is playing."
     },
@@ -736,6 +746,7 @@ static char *spriteSetTextureKWList[] = {"entity_id", "file_path", nullptr};
 static char *spriteSetDrawSourceKWList[] = {"entity_id", "x", "y", "w", "h", nullptr};
 
 static char *animatedSpriteAnimationUpdateKWList[] = {"entity_id", "animation_name", nullptr};
+static char *animatedSpriteSetAnimationsKWList[] = {"entity_id", "animations", nullptr};
 static char *animatedSpriteSetFrameKWList[] = {"entity_id", "frame", nullptr};
 
 static char *textLabelSetTextKWList[] = {"entity_id", "text", nullptr};

@@ -1074,6 +1074,84 @@ PyObject* PythonModules::animated_sprite_stop(PyObject *self, PyObject *args, Py
     return nullptr;
 }
 
+// TODO: Actually implement!
+PyObject* PythonModules::animated_sprite_get_animations(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        AnimatedSpriteComponent animatedSpriteComponent = entityComponentOrchestrator->GetComponent<AnimatedSpriteComponent>(entity);
+        CPyObject pTagList = PyList_New(0);
+        pTagList.AddRef();
+        return pTagList;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::animated_sprite_set_animations(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    static AssetManager *assetManager = GD::GetContainer()->assetManager;
+    Entity entity;
+    PyObject *pyList = nullptr;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "iO", animatedSpriteSetAnimationsKWList, &entity, &pyList)) {
+        AnimatedSpriteComponent animatedSpriteComponent = entityComponentOrchestrator->GetComponent<AnimatedSpriteComponent>(entity);
+        animatedSpriteComponent.animations.clear();
+        std::string firstAnimName;
+        for (int i = 0; i < PyList_Size(pyList); i++) {
+            CPyObject listTupleItem = PyList_GetItem(pyList, i);
+            listTupleItem.AddRef();
+            CPyObject pyAnimName = PyTuple_GetItem(listTupleItem, 0);
+            pyAnimName.AddRef();
+            CPyObject pyAnimSpeed = PyTuple_GetItem(listTupleItem, 1);
+            pyAnimSpeed.AddRef();
+            CPyObject pyAnimFrames = PyTuple_GetItem(listTupleItem, 2);
+            pyAnimFrames.AddRef();
+            const std::string& animName = std::string(PyUnicode_AsUTF8(pyAnimName));
+            const int animSpeed = PyLong_AsLong(pyAnimSpeed);
+            if (i == 0) {
+                firstAnimName = animName;
+            }
+            std::map<unsigned int, AnimationFrame> animationFrames = {};
+            for (int j = 0; j < PyList_Size(pyAnimFrames); j++) {
+                CPyObject frameTupleItem = PyList_GetItem(pyAnimFrames, j);
+                frameTupleItem.AddRef();
+                CPyObject pyTextureFilePath = PyTuple_GetItem(frameTupleItem, 0);
+                pyTextureFilePath.AddRef();
+                CPyObject pyDrawSourceX = PyTuple_GetItem(frameTupleItem, 1);
+                pyDrawSourceX.AddRef();
+                CPyObject pyDrawSourceY = PyTuple_GetItem(frameTupleItem, 2);
+                pyDrawSourceY.AddRef();
+                CPyObject pyDrawSourceW = PyTuple_GetItem(frameTupleItem, 3);
+                pyDrawSourceW.AddRef();
+                CPyObject pyDrawSourceH = PyTuple_GetItem(frameTupleItem, 4);
+                pyDrawSourceH.AddRef();
+                CPyObject pyIndex = PyTuple_GetItem(frameTupleItem, 5);
+                pyIndex.AddRef();
+                const std::string& frameTextureFilePath = std::string(PyUnicode_AsUTF8(pyTextureFilePath));
+                const float frameDrawSourceX = PyLong_AsLong(pyDrawSourceX);
+                const float frameDrawSourceY = PyLong_AsLong(pyDrawSourceY);
+                const float frameDrawSourceW = PyLong_AsLong(pyDrawSourceW);
+                const float frameDrawSourceH = PyLong_AsLong(pyDrawSourceH);
+                const int frameIndex = PyLong_AsLong(pyIndex);
+                animationFrames.emplace(frameIndex, AnimationFrame{
+                    assetManager->GetTexture(frameTextureFilePath),
+                    Rect2(frameDrawSourceX, frameDrawSourceY, frameDrawSourceW, frameDrawSourceH),
+                    frameIndex
+                });
+            }
+            animatedSpriteComponent.animations.emplace(animName, Animation{
+                animName, animSpeed, animationFrames, animationFrames.size()
+            });
+        }
+        animatedSpriteComponent.currentFrameIndex = 0;
+        if (animatedSpriteComponent.animations.size() > 0) {
+            animatedSpriteComponent.currentAnimation = animatedSpriteComponent.animations[firstAnimName];
+        }
+        entityComponentOrchestrator->UpdateComponent<AnimatedSpriteComponent>(entity, animatedSpriteComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
 PyObject* PythonModules::animated_sprite_is_playing(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     Entity entity;
