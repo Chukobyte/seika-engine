@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+#include <glm/gtc/epsilon.hpp>
+
 #include "vector2.h"
 
 class Rect2 {

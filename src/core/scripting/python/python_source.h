@@ -1,7 +1,7 @@
 #ifndef PYTHON_SOURCE_H
 #define PYTHON_SOURCE_H
 
-// Seika Engine API v0.12.0
+// Seika Engine API v0.13.0
 
 using PythonSource = const std::string&;
 
@@ -1198,7 +1198,7 @@ static PythonSource PYTHON_SOURCE_NODE_MODULE =
     "\n"
     "\n"
     "class AnimatedSprite(Node2D):\n"
-    "   def play(self, animation_name: str) -> None:\n"
+    "   def play(self, animation_name=\"\") -> None:\n"
     "       seika_engine_api.animated_sprite_play(\n"
     "           entity_id=self.entity_id, animation_name=animation_name\n"
     "       )\n"
