@@ -660,13 +660,14 @@ PyObject* PythonModules::node_is_visible(PyObject *self, PyObject *args, PyObjec
 
 PyObject* PythonModules::node_get_parent(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    static PythonCache *pythonCache = PythonCache::GetInstance();
     Entity entity;
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
         Entity parentEntity = entityComponentOrchestrator->GetEntityParent(entity);
         if (parentEntity != NULL_ENTITY) {
-            NodeComponent nodeComponent = entityComponentOrchestrator->GetComponent<NodeComponent>(parentEntity);
-            const std::string &nodeTypeString = NodeTypeHelper::GetNodeTypeString(nodeComponent.type);
-            return Py_BuildValue("(si)", nodeTypeString.c_str(), parentEntity);
+            CPyObject& instance = pythonCache->GetClassInstance(parentEntity);
+            instance.AddRef();
+            return Py_BuildValue("O", instance.GetObj());
         }
         Py_RETURN_NONE;
     }
@@ -690,12 +691,7 @@ PyObject* PythonModules::node_get_children(PyObject *self, PyObject *args, PyObj
                         PyErr_Print();
                     }
                 } else {
-                    NodeComponent nodeComponent = entityComponentOrchestrator->GetComponent<NodeComponent>(collidedEntity);
-                    const std::string &nodeTypeString = NodeTypeHelper::GetNodeTypeString(nodeComponent.type);
-                    if (PyList_Append(pCollidedNodesList, Py_BuildValue("(si)", nodeTypeString.c_str(), collidedEntity)) == -1) {
-                        Logger::GetInstance()->Error("Error appending list");
-                        PyErr_Print();
-                    }
+                    Logger::GetInstance()->Error("Trying to get instance that isn't an active python instance as a child node!");
                 }
             }
         }
@@ -1574,12 +1570,7 @@ PyObject* PythonModules::collision_get_collided_nodes(PyObject *self, PyObject *
                         PyErr_Print();
                     }
                 } else {
-                    NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(collidedEntity);
-                    const std::string &nodeTypeString = NodeTypeHelper::GetNodeTypeString(nodeComponent.type);
-                    if (PyList_Append(pCollidedNodesList, Py_BuildValue("(si)", nodeTypeString.c_str(), collidedEntity)) == -1) {
-                        Logger::GetInstance()->Error("Error appending list");
-                        PyErr_Print();
-                    }
+                    Logger::GetInstance()->Error("Error appending collision node to list, entity doesn't exist as a python instance!");
                 }
             }
         }
@@ -1612,12 +1603,7 @@ PyObject* PythonModules::collision_get_collided_nodes_by_tag(PyObject *self, PyO
                         PyErr_Print();
                     }
                 } else {
-                    NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(collidedEntity);
-                    const std::string &nodeTypeString = NodeTypeHelper::GetNodeTypeString(nodeComponent.type);
-                    if (PyList_Append(pCollidedNodesList, Py_BuildValue("(si)", nodeTypeString.c_str(), collidedEntity)) == -1) {
-                        Logger::GetInstance()->Error("Error appending list");
-                        PyErr_Print();
-                    }
+                    Logger::GetInstance()->Error("Error appending collision node (with tag) to list, entity doesn't exist as a python instance!");
                 }
             }
         }
@@ -1658,12 +1644,7 @@ PyObject* PythonModules::collision_get_nodes_under_mouse(PyObject *self, PyObjec
                     PyErr_Print();
                 }
             } else {
-                NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(collidedEntity);
-                const std::string &nodeTypeString = NodeTypeHelper::GetNodeTypeString(nodeComponent.type);
-                if (PyList_Append(pCollidedNodesList, Py_BuildValue("(si)", nodeTypeString.c_str(), collidedEntity)) == -1) {
-                    Logger::GetInstance()->Error("Error appending to list without instance!");
-                    PyErr_Print();
-                }
+                Logger::GetInstance()->Error("Error appending collision node (under mouse) to list, entity doesn't exist as a python instance!");
             }
         }
     }
