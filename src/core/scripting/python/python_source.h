@@ -1,7 +1,7 @@
 #ifndef PYTHON_SOURCE_H
 #define PYTHON_SOURCE_H
 
-// Seika Engine API v0.13.2
+// Seika Engine API v0.14.0
 
 using PythonSource = const std::string&;
 
@@ -538,6 +538,18 @@ static PythonSource PYTHON_SOURCE_MATH_MODULE =
     "\n"
     "   def __repr__(self):\n"
     "       return f\"({self.x}, {self.y})\"\n"
+    "\n"
+    "   def magnitude(self) -> float:\n"
+    "       return math.sqrt(self.x * self.x + self.y * self.y)\n"
+    "\n"
+    "   def normalized(self):\n"
+    "       mag = self.magnitude()\n"
+    "       self.x = self.x / mag\n"
+    "       self.y = self.y / mag\n"
+    "       return self\n"
+    "\n"
+    "   def direction_to(self, target):\n"
+    "       return (target - self).normalized()\n"
     "\n"
     "   @staticmethod\n"
     "   def lerp(source, destination, amount: float) -> float:\n"
