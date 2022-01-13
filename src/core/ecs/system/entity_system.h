@@ -4,7 +4,6 @@
 #include <set>
 
 #include "../entity/entity_tag_cache.h"
-#include "../../global_dependencies.h"
 
 const unsigned int MAX_SYSTEMS = 32;
 

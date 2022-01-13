@@ -1022,9 +1022,7 @@ PyObject* PythonModules::sprite_set_texture(PyObject *self, PyObject *args, PyOb
         SpriteComponent spriteComponent = entityComponentOrchestrator->GetComponent<SpriteComponent>(entity);
         Texture *texture = assetManager->GetTexture(std::string(pyFilePath));
         spriteComponent.texture = texture;
-        if (spriteComponent.drawSource == Rect2(0.0f, 0.0f, 0.0f, 0.0f)) {
-            spriteComponent.drawSource = Rect2(0.0f, 0.0f, texture->GetWidth(), texture->GetHeight());
-        }
+        spriteComponent.drawSource = Rect2(0.0f, 0.0f, texture->GetWidth(), texture->GetHeight());
         entityComponentOrchestrator->UpdateComponent<SpriteComponent>(entity, spriteComponent);
         Py_RETURN_NONE;
     }

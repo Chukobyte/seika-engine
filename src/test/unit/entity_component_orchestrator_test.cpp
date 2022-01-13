@@ -2,7 +2,7 @@
 #include "../../core/global_dependencies.h"
 #include "../../core/ecs/component/components/transform2D_component.h"
 #include "../../core/ecs/component/components/sprite_component.h"
-#include "../../core/ecs/entity/system/sprite_rendering_entity_system.h"
+#include "../../core/ecs/system/systems/sprite_rendering_entity_system.h"
 
 TEST_CASE("Entity Component Orchestrator Tests - Entity", "[entity_component_orchestrator]") {
     GD *globalDependencies = GD::GetContainer();

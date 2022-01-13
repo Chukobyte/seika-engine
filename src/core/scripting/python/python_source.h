@@ -1,7 +1,7 @@
 #ifndef PYTHON_SOURCE_H
 #define PYTHON_SOURCE_H
 
-// Seika Engine API v0.14.0
+// Seika Engine API v0.15.0
 
 using PythonSource = const std::string&;
 
@@ -508,6 +508,10 @@ static PythonSource PYTHON_SOURCE_MATH_MODULE =
     "           return True\n"
     "       else:\n"
     "           return False\n"
+    "\n"
+    "   # TODO: Make a not terrible hash function...\n"
+    "   def __hash__(self):\n"
+    "       return hash(self.x + (self.y * .2))\n"
     "\n"
     "   def __gt__(self, other) -> bool:\n"
     "       if self.x + self.y > other.x + other.y:\n"
