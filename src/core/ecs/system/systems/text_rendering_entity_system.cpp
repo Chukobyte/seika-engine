@@ -21,9 +21,9 @@ void TextRenderingEntitySystem::OnEntityDestroyed(Entity entity) {
 void TextRenderingEntitySystem::UpdateEntityText(Entity entity, const TextLabelComponent& textLabelComponent) {
     textLines.erase(entity);
     TextLines entityTextLines = StringUtil::ConvertIntoWordWrappedLines(
-            textLabelComponent.text,
-            textLabelComponent.wordWrap,
-            textLabelComponent.maxCharactersPerLine);
+                                    textLabelComponent.text,
+                                    textLabelComponent.wordWrap,
+                                    textLabelComponent.maxCharactersPerLine);
     textLines.emplace(entity, entityTextLines);
 }
 
@@ -39,14 +39,14 @@ void TextRenderingEntitySystem::Render() {
             // TODO: Replace with more robust word wrapping
             for (unsigned int i = 0; i < textLines[entity].lines.size(); i++) {
                 renderer->BatchDrawFont(
-                        textLabelComponent.font,
-                        textLines[entity].lines[i],
-                        textLabelPosition.x,
-                        textLabelPosition.y + (i * textLabelComponent.font->GetSize()) + (i * textLabelComponent.newLinePadding),
-                        transform2DComponent.zIndex,
-                        textLabelScale.x,
-                        textLabelComponent.color
-                        );
+                    textLabelComponent.font,
+                    textLines[entity].lines[i],
+                    textLabelPosition.x,
+                    textLabelPosition.y + (i * textLabelComponent.font->GetSize()) + (i * textLabelComponent.newLinePadding),
+                    transform2DComponent.zIndex,
+                    textLabelScale.x,
+                    textLabelComponent.color
+                );
             }
         }
     }
