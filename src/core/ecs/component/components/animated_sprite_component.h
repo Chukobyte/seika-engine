@@ -10,8 +10,9 @@
 struct AnimatedSpriteComponent {
     std::map<std::string, Animation> animations;
     Animation currentAnimation; // Preselects first added animation
-    unsigned int currentFrameIndex;
-    bool isPlaying;
+    unsigned int currentFrameIndex = 0;
+    bool isPlaying = false;
+    bool loops = true;
     bool flipX = false;
     bool flipY = false;
     Color modulate = Color(1.0f, 1.0f, 1.0f, 1.0f);

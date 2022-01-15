@@ -92,6 +92,8 @@ class PythonModules {
     static PyObject* animated_sprite_stop(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_get_animations(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_set_animations(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* animated_sprite_get_loops(PyObject* self, PyObject* args, PyObject* kwargs);
+    static PyObject* animated_sprite_set_loops(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_is_playing(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_get_modulate(PyObject* self, PyObject* args, PyObject* kwargs);
     static PyObject* animated_sprite_set_modulate(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -476,6 +478,14 @@ static struct PyMethodDef rollApiMethods[] = {
         METH_VARARGS | METH_KEYWORDS, "Sets all animations for entity."
     },
     {
+        "animated_sprite_get_loops", (PyCFunction) PythonModules::animated_sprite_get_loops,
+        METH_VARARGS | METH_KEYWORDS, "Returns is an animated sprite loops its animation."
+    },
+    {
+        "animated_sprite_set_loops", (PyCFunction) PythonModules::animated_sprite_set_loops,
+        METH_VARARGS | METH_KEYWORDS, "Sets if an animated sprite loops its animation."
+    },
+    {
         "animated_sprite_is_playing", (PyCFunction) PythonModules::animated_sprite_is_playing,
         METH_VARARGS | METH_KEYWORDS, "Returns if an animations is playing."
     },
@@ -758,6 +768,7 @@ static char *spriteSetDrawSourceKWList[] = {"entity_id", "x", "y", "w", "h", nul
 
 static char *animatedSpriteAnimationUpdateKWList[] = {"entity_id", "animation_name", nullptr};
 static char *animatedSpriteSetAnimationsKWList[] = {"entity_id", "animations", nullptr};
+static char *animatedSpriteSetLoopsKWList[] = {"entity_id", "loops", nullptr};
 static char *animatedSpriteSetFrameKWList[] = {"entity_id", "frame", nullptr};
 
 static char *textLabelSetTextKWList[] = {"entity_id", "text", nullptr};

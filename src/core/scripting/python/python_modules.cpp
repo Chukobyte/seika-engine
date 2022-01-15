@@ -1185,6 +1185,32 @@ PyObject* PythonModules::animated_sprite_set_animations(PyObject *self, PyObject
     return nullptr;
 }
 
+PyObject* PythonModules::animated_sprite_get_loops(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "i", nodeGetEntityKWList, &entity)) {
+        AnimatedSpriteComponent animatedSpriteComponent = entityComponentOrchestrator->GetComponent<AnimatedSpriteComponent>(entity);
+        if (animatedSpriteComponent.loops) {
+            Py_RETURN_TRUE;
+        }
+        Py_RETURN_FALSE;
+    }
+    return nullptr;
+}
+
+PyObject* PythonModules::animated_sprite_set_loops(PyObject *self, PyObject *args, PyObject *kwargs) {
+    static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
+    Entity entity;
+    bool loops;
+    if (PyArg_ParseTupleAndKeywords(args, kwargs, "ib", animatedSpriteSetLoopsKWList, &entity, &loops)) {
+        AnimatedSpriteComponent animatedSpriteComponent = entityComponentOrchestrator->GetComponent<AnimatedSpriteComponent>(entity);
+        animatedSpriteComponent.loops = loops;
+        entityComponentOrchestrator->UpdateComponent(entity, animatedSpriteComponent);
+        Py_RETURN_NONE;
+    }
+    return nullptr;
+}
+
 PyObject* PythonModules::animated_sprite_is_playing(PyObject *self, PyObject *args, PyObject *kwargs) {
     static EntityComponentOrchestrator *entityComponentOrchestrator = GD::GetContainer()->entityComponentOrchestrator;
     Entity entity;
