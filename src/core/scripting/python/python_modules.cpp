@@ -1069,9 +1069,11 @@ PyObject* PythonModules::animated_sprite_play(PyObject *self, PyObject *args, Py
         const std::string &animationName = std::string(pyAnimationName);
         if (animationName.empty()) {
             animatedSpriteComponent.isPlaying = true;
+            animatedSpriteComponent.startAnimationTickTime = SDL_GetTicks();
         } else if (animatedSpriteComponent.animations.count(animationName) > 0) {
             animatedSpriteComponent.isPlaying = true;
             animatedSpriteComponent.currentAnimation = animatedSpriteComponent.animations[animationName];
+            animatedSpriteComponent.startAnimationTickTime = SDL_GetTicks();
         }
         entityComponentOrchestrator->UpdateComponent<AnimatedSpriteComponent>(entity, animatedSpriteComponent);
         Py_RETURN_NONE;

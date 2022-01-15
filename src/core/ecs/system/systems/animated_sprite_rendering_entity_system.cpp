@@ -16,7 +16,7 @@ void AnimatedSpriteRenderingEntitySystem::Render() {
             Animation currentAnimation = animatedSpriteComponent.currentAnimation;
             AnimationFrame currentFrame = currentAnimation.animationFrames[animatedSpriteComponent.currentFrameIndex];
             if (animatedSpriteComponent.isPlaying) {
-                unsigned int newIndex = static_cast<unsigned int>((SDL_GetTicks() / currentAnimation.speed) % currentAnimation.frames);
+                unsigned int newIndex = static_cast<unsigned int>(((SDL_GetTicks() - animatedSpriteComponent.startAnimationTickTime) / currentAnimation.speed) % currentAnimation.frames);
                 if (newIndex != animatedSpriteComponent.currentFrameIndex) {
                     // Index changed
                     currentFrame = currentAnimation.animationFrames[newIndex];

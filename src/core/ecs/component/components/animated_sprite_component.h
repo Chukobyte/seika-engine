@@ -16,6 +16,7 @@ struct AnimatedSpriteComponent {
     bool flipX = false;
     bool flipY = false;
     Color modulate = Color(1.0f, 1.0f, 1.0f, 1.0f);
+    uint32_t startAnimationTickTime; // Used to keep track when the first frame began for synchronization
 };
 
 #endif //ANIMATED_SPRITE_COMPONENT_H
