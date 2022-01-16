@@ -1,7 +1,7 @@
 #ifndef PYTHON_SOURCE_H
 #define PYTHON_SOURCE_H
 
-// Seika Engine API v0.14.0
+// Seika Engine API v0.15.0
 
 using PythonSource = const std::string&;
 
@@ -508,6 +508,10 @@ static PythonSource PYTHON_SOURCE_MATH_MODULE =
     "           return True\n"
     "       else:\n"
     "           return False\n"
+    "\n"
+    "   # TODO: Make a not terrible hash function...\n"
+    "   def __hash__(self):\n"
+    "       return hash(self.x + (self.y * 0.2))\n"
     "\n"
     "   def __gt__(self, other) -> bool:\n"
     "       if self.x + self.y > other.x + other.y:\n"
@@ -1263,6 +1267,7 @@ static PythonSource PYTHON_SOURCE_NODE_MODULE =
     "       #         ]\n"
     "       #     ]\n"
     "       #     return mock_animations\n"
+    "       return []\n"
     "\n"
     "       received_animations = []\n"
     "       for (\n"
@@ -1305,6 +1310,16 @@ static PythonSource PYTHON_SOURCE_NODE_MODULE =
     "           new_anims.append((anim.name, anim.speed, anim_frames))\n"
     "       seika_engine_api.animated_sprite_set_animations(\n"
     "           entity_id=self.entity_id, animations=new_anims\n"
+    "       )\n"
+    "\n"
+    "   @property\n"
+    "   def loops(self) -> bool:\n"
+    "       return seika_engine_api.animated_sprite_get_loops(entity_id=self.entity_id)\n"
+    "\n"
+    "   @loops.setter\n"
+    "   def loops(self, value: bool) -> None:\n"
+    "       seika_engine_api.animated_sprite_set_loops(\n"
+    "           entity_id=self.entity_id, loops=value\n"
     "       )\n"
     "\n"
     "   @property\n"
