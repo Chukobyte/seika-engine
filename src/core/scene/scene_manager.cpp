@@ -41,18 +41,16 @@ void SceneManager::AddChild(Entity parent, Entity child) {
     if (parent != NULL_ENTITY) {
         assert((entityToSceneNodeMap.count(parent) > 0) && "Parent scene node doesn't exist!");
         entityToSceneNodeMap.emplace(childNode.entity, childNode);
-//        entityToSceneNodeMap[parent].children.emplace_back(childNode);
-        // TODO: Bug due to not updating all parents with children, updaet parents instead of just root
         Entity currentParent = parent;
         Entity currentChild = child;
         while (currentParent != NULL_ENTITY) {
             entityToSceneNodeMap[currentParent].children.emplace_back(entityToSceneNodeMap[currentChild]);
+            if (currentParent == currentScene.rootNode.entity) {
+                currentScene.rootNode.children.emplace_back(childNode);
+            }
             currentChild = entityToSceneNodeMap[currentParent].entity;
             currentParent = entityToSceneNodeMap[currentParent].parent;
         }
-//        if (entityToSceneNodeMap[parent].entity == currentScene.rootNode.entity) {
-//            currentScene.rootNode.children.emplace_back(childNode);
-//        }
     } else {
         entityToSceneNodeMap.emplace(childNode.entity, childNode);
     }

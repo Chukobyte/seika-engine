@@ -373,8 +373,6 @@ PyObject* PythonModules::node_new(PyObject *self, PyObject *args, PyObject *kwar
         }
 
         if ((NodeTypeInheritance_SPRITE & nodeTypeInheritance) == NodeTypeInheritance_SPRITE) {
-            Logger::GetInstance()->Debug("New sprite entity = " + std::to_string(sceneNode.entity));
-            Logger::GetInstance()->Debug("Sprite Class name = " + std::string(pyClassName));
             componentManager->AddComponent<SpriteComponent>(sceneNode.entity, SpriteComponent{});
             auto signature = entityManager->GetSignature(sceneNode.entity);
             signature.set(componentManager->GetComponentType<SpriteComponent>(), true);
@@ -401,8 +399,6 @@ PyObject* PythonModules::node_new(PyObject *self, PyObject *args, PyObject *kwar
         }
 
         if ((NodeTypeInheritance_COLLISION_SHAPE2D & nodeTypeInheritance) == NodeTypeInheritance_COLLISION_SHAPE2D) {
-            Logger::GetInstance()->Debug("New collision shape 2D entity = " + std::to_string(sceneNode.entity));
-            Logger::GetInstance()->Debug("Collision Shape Class name = " + std::string(pyClassName));
             componentManager->AddComponent<ColliderComponent>(sceneNode.entity, ColliderComponent{.collider = Rect2(), .collisionExceptions = { sceneNode.entity }});
             auto signature = entityManager->GetSignature(sceneNode.entity);
             signature.set(componentManager->GetComponentType<ColliderComponent>(), true);
