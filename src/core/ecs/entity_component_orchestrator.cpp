@@ -36,7 +36,6 @@ void EntityComponentOrchestrator::DestroyQueuedEntities() {
     entitiesQueuedForDeletion.clear();
 }
 
-// TODO: come backy placeholder, remove before commit
 void EntityComponentOrchestrator::DestroyEntity(SceneNode sceneNode) {
     sceneManager->RemoveNode(sceneNode);
     std::vector<Entity> entitiesRemovedFromScene = sceneManager->FlushRemovedEntities();
