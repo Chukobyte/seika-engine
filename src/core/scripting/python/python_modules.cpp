@@ -1067,15 +1067,17 @@ PyObject* PythonModules::animated_sprite_play(PyObject *self, PyObject *args, Py
     if (PyArg_ParseTupleAndKeywords(args, kwargs, "is", animatedSpriteAnimationUpdateKWList, &entity, &pyAnimationName)) {
         AnimatedSpriteComponent animatedSpriteComponent = entityComponentOrchestrator->GetComponent<AnimatedSpriteComponent>(entity);
         const std::string &animationName = std::string(pyAnimationName);
-        if (animationName.empty()) {
-            animatedSpriteComponent.isPlaying = true;
-            animatedSpriteComponent.startAnimationTickTime = SDL_GetTicks();
-        } else if (animatedSpriteComponent.animations.count(animationName) > 0) {
-            animatedSpriteComponent.isPlaying = true;
-            animatedSpriteComponent.currentAnimation = animatedSpriteComponent.animations[animationName];
-            animatedSpriteComponent.startAnimationTickTime = SDL_GetTicks();
+        if (!animatedSpriteComponent.isPlaying || animatedSpriteComponent.currentAnimation.name != animationName) {
+            if (animationName.empty()) {
+                animatedSpriteComponent.isPlaying = true;
+                animatedSpriteComponent.startAnimationTickTime = SDL_GetTicks();
+            } else if (animatedSpriteComponent.animations.count(animationName) > 0) {
+                animatedSpriteComponent.isPlaying = true;
+                animatedSpriteComponent.currentAnimation = animatedSpriteComponent.animations[animationName];
+                animatedSpriteComponent.startAnimationTickTime = SDL_GetTicks();
+            }
+            entityComponentOrchestrator->UpdateComponent<AnimatedSpriteComponent>(entity, animatedSpriteComponent);
         }
-        entityComponentOrchestrator->UpdateComponent<AnimatedSpriteComponent>(entity, animatedSpriteComponent);
         Py_RETURN_NONE;
     }
     return nullptr;
