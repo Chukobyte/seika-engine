@@ -8,17 +8,6 @@ SpriteRenderingEntitySystem::SpriteRenderingEntitySystem() {
     enabled = true;
 }
 
-void SpriteRenderingEntitySystem::OnRegisterEntity(Entity entity) {
-    EntitySystem::OnRegisterEntity(entity);
-    Logger::GetInstance()->Debug("Registering from sprite rendering system entity " + std::to_string(entity));
-}
-
-void SpriteRenderingEntitySystem::OnEntityDestroyed(Entity entity) {
-    EntitySystem::OnEntityDestroyed(entity);
-    entities.erase(entity);
-    Logger::GetInstance()->Debug("Removed from sprite rendering system entity " + std::to_string(entity) + ", new count = " + std::to_string(entities.count(entity)));
-}
-
 void SpriteRenderingEntitySystem::Render() {
     if (IsEnabled()) {
         for (Entity entity : entities) {

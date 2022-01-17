@@ -15,8 +15,6 @@ class SpriteRenderingEntitySystem : public EntitySystem {
 
   public:
     SpriteRenderingEntitySystem();
-    void OnRegisterEntity(Entity entity) override;
-    void OnEntityDestroyed(Entity entity) override;
     void Render() override;
 };
 
