@@ -2,6 +2,7 @@
 #define SCENE_H
 
 #include <vector>
+#include "../ecs/entity/entity.h"
 
 struct SceneNode {
     Entity entity = NULL_ENTITY;
