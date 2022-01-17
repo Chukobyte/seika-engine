@@ -465,116 +465,21 @@ class SceneManager {
     ArchiveLoader *archiveLoader = nullptr;
 
   public:
-    SceneManager(SceneContext *vSceneContext, EntityManager *vEntityManager, ComponentManager *vComponentManager, AssetManager *vAssetManager) :
-        sceneContext(vSceneContext), entityManager(vEntityManager), componentManager(vComponentManager), assetManager(vAssetManager) {
-        timerManager = TimerManager::GetInstance();
-        archiveLoader = ArchiveLoader::GetInstance();
-        sceneNodeJsonParser = SceneNodeJsonParser(entityManager, componentManager, assetManager, timerManager);
-    }
-
-    Scene GetCurrentScene() {
-        return currentScene;
-    }
-
-    SceneNode GetEntitySceneNode(Entity entity) {
-        assert(HasEntitySceneNode(entity) && "Tried to get scene node that doesn't exist!");
-        return entityToSceneNodeMap[entity];
-    }
-
-    bool HasEntitySceneNode(Entity entity) {
-        return entityToSceneNodeMap.count(entity) > 0;
-    }
-
-    void AddSingletonScene(Entity singletonEntity) {
-        SceneNode sceneNode = SceneNode{.entity = singletonEntity};
-        Scene scene = Scene{.rootNode = sceneNode};
-        entityToMainScenesMap.emplace(singletonEntity, scene);
-    }
-
-    void ChangeToScene(Scene scene) {
-        currentScene = scene;
-        sceneContext->currentSceneEntity = currentScene.rootNode.entity;
-        entityToMainScenesMap.emplace(currentScene.rootNode.entity, currentScene);
-        AddChild(NULL_ENTITY, currentScene.rootNode.entity);
-    }
-
-    void AddChild(Entity parent, Entity child) {
-        SceneNode childNode = SceneNode{.entity = child, .parent = parent};
-        if (parent != NULL_ENTITY) {
-            assert((entityToSceneNodeMap.count(parent) > 0) && "Parent scene node doesn't exist!");
-            SceneNode parentNode = entityToSceneNodeMap[parent];
-            parentNode.children.emplace_back(childNode);
-            entityToSceneNodeMap[parent] = parentNode;
-            if (parentNode.entity == currentScene.rootNode.entity) {
-                currentScene.rootNode.children.emplace_back(childNode);
-            }
-        }
-//        assert((entityToSceneNodeMap.count(child) <= 0) && "Child already exists!");
-        entityToSceneNodeMap.emplace(childNode.entity, childNode);
-    }
-
-    std::vector<Entity> GetAllChildEntities(Entity entity) {
-        std::vector<Entity> childrenEntities;
-        SceneNode parentNode = GetEntitySceneNode(entity);
-        for (SceneNode childNode : parentNode.children) {
-            if (IsEntityInScene(childNode.entity)) {
-                childrenEntities.emplace_back(childNode.entity);
-            }
-        }
-        return childrenEntities;
-    }
-
-    Entity GetParent(Entity entity) {
-        if (IsEntityInScene(entity)) {
-            SceneNode sceneNode = entityToSceneNodeMap[entity];
-            return sceneNode.parent;
-        }
-        return NULL_ENTITY;
-    }
-
-    void RemoveNode(SceneNode sceneNode) {
-        entityToSceneNodeMap.erase(sceneNode.entity);
-        entityToMainScenesMap.erase(sceneNode.entity);
-        entitiesRecentlyRemoved.emplace_back(sceneNode.entity);
-        for (SceneNode childNode : sceneNode.children) {
-            RemoveNode(childNode);
-        }
-    }
-
-    void RemoveNode(Entity entity) {
-        if (entityToSceneNodeMap.count(entity) > 0) {
-            RemoveNode(entityToSceneNodeMap[entity]);
-        } else {
-            Logger::GetInstance()->Warn("Tried to remove non existent entity");
-        }
-    }
-
-    std::vector<Entity> FlushRemovedEntities() {
-        std::vector<Entity> removedEntitiesCopy = entitiesRecentlyRemoved;
-        entitiesRecentlyRemoved.clear();
-        return removedEntitiesCopy;
-    }
-
-    bool IsEntityInScene(Entity entity) {
-        return entityToSceneNodeMap.count(entity) > 0;
-    }
-
-    Scene LoadSceneFromFile(const std::string &filePath) {
-        nlohmann::json sceneJson = JsonFileHelper::LoadJsonFile(filePath);
-        SceneNode rootNode = sceneNodeJsonParser.ParseSceneJson(sceneJson, true);
-        Scene loadedScene = Scene{.rootNode = rootNode};
-        ChangeToScene(loadedScene);
-        return loadedScene;
-    }
-
-    Scene LoadSceneFromMemory(const std::string &filePath) {
-        const std::string &sceneArchiveJsonString = archiveLoader->LoadAsString(filePath);
-        nlohmann::json sceneJson = JsonFileHelper::ConvertStringToJson(sceneArchiveJsonString);
-        SceneNode rootNode = sceneNodeJsonParser.ParseSceneJson(sceneJson, true);
-        Scene loadedScene = Scene{.rootNode = rootNode};
-        ChangeToScene(loadedScene);
-        return loadedScene;
-    }
+    SceneManager(SceneContext *vSceneContext, EntityManager *vEntityManager, ComponentManager *vComponentManager, AssetManager *vAssetManager);
+    Scene GetCurrentScene();
+    SceneNode GetEntitySceneNode(Entity entity);
+    bool HasEntitySceneNode(Entity entity) const;
+//    void AddSingletonScene(Entity singletonEntity);
+    void ChangeToScene(Scene scene);
+    void AddChild(Entity parent, Entity child);
+    std::vector<Entity> GetAllChildEntities(Entity entity);
+    Entity GetParent(Entity entity);
+    void RemoveNode(SceneNode sceneNode);
+//    void RemoveNode(Entity entity);
+    std::vector<Entity> FlushRemovedEntities();
+    bool IsEntityInScene(Entity entity) const;
+    Scene LoadSceneFromFile(const std::string &filePath);
+    Scene LoadSceneFromMemory(const std::string &filePath);
 };
 
 class SceneNodeHelper {

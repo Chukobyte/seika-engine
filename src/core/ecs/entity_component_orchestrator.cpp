@@ -18,15 +18,6 @@ void EntityComponentOrchestrator::NewEntity(SceneNode sceneNode) {
     }
 }
 
-void EntityComponentOrchestrator::NewEntityAddChild(Entity parent, Entity child) {
-    SceneNode childNode = SceneNode{.entity = child, .parent = parent};
-    AddChildToEntityScene(childNode.parent, childNode.entity);
-    NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(childNode.entity);
-    nodeNameToEntityMap.emplace(nodeComponent.name, childNode.entity);
-    entitySystemManager->OnEntityTagsUpdatedSystemsHook(child, {}, nodeComponent.tags);
-    CallStartOnScriptInstances(childNode);
-}
-
 void EntityComponentOrchestrator::QueueEntityForDeletion(Entity entity) {
     entitiesQueuedForDeletion.emplace_back(entity);
 }
@@ -45,6 +36,7 @@ void EntityComponentOrchestrator::DestroyQueuedEntities() {
     entitiesQueuedForDeletion.clear();
 }
 
+// TODO: come backy placeholder, remove before commit
 void EntityComponentOrchestrator::DestroyEntity(SceneNode sceneNode) {
     sceneManager->RemoveNode(sceneNode);
     std::vector<Entity> entitiesRemovedFromScene = sceneManager->FlushRemovedEntities();
@@ -97,6 +89,16 @@ void EntityComponentOrchestrator::AddChildToEntityScene(Entity parentEntity, Ent
     ComponentSignature signature = entityManager->GetEnabledSignature(childEntity);
     entitySystemManager->EntitySignatureChanged(childEntity, signature);
     sceneManager->AddChild(parentEntity, childEntity);
+}
+
+// Used when adding a new entity to a scene from scripting
+void EntityComponentOrchestrator::NewEntityAddChild(Entity parent, Entity child) {
+    SceneNode childNode = SceneNode{.entity = child, .parent = parent};
+    AddChildToEntityScene(childNode.parent, childNode.entity);
+    NodeComponent nodeComponent = componentManager->GetComponent<NodeComponent>(childNode.entity);
+    nodeNameToEntityMap.emplace(nodeComponent.name, childNode.entity);
+    entitySystemManager->OnEntityTagsUpdatedSystemsHook(child, {}, nodeComponent.tags);
+    CallStartOnScriptInstances(childNode);
 }
 
 // Will be the function to initialize stuff for a scene
