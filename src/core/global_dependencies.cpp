@@ -34,7 +34,7 @@ void GD::ResetDependencies() {
     collisionContext = new CollisionContext();
     renderer2D = new Renderer2D(renderContext);
     renderer3D = new Renderer3D();
-    assetManager = new AssetManager();
+    assetManager = AssetManager::GetInstance();
     entityManager = new EntityManager();
     componentManager = new ComponentManager();
     sceneContext = new SceneContext();

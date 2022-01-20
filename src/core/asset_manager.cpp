@@ -6,7 +6,7 @@
 #include "global_dependencies.h"
 #include "audio/audio_stream_helper.h"
 
-AssetManager::AssetManager() {
+AssetManager::AssetManager(singleton) {
     projectProperties = ProjectProperties::GetInstance();
     archiveLoader = ArchiveLoader::GetInstance();
     logger = Logger::GetInstance();

@@ -1,5 +1,6 @@
-#ifndef ASSET_MANAGER_H
-#define ASSET_MANAGER_H
+#pragma once
+
+#include "utils/singleton.h"
 
 #include <map>
 #include <string>
@@ -17,7 +18,7 @@ static const std::string &DEFAULT_FONT_ASSET_ID = "seika_default";
 static const std::string &DEFAULT_FONT_ASSET_PATH = "assets/fonts/pine_type.ttf";
 static const int DEFAULT_FONT_SIZE = 20;
 
-class AssetManager {
+class AssetManager : public Singleton<AssetManager> {
   private:
     std::map<std::string, Texture*> textures;
     std::map<std::string, Font*> fonts;
@@ -36,7 +37,7 @@ class AssetManager {
     void LoadTexture(const TextureConfiguration &textureConfiguration);
 
   public:
-    AssetManager();
+    AssetManager(singleton);
 
     // TEXTURE
 
@@ -70,5 +71,3 @@ class AssetManager {
 
     void LoadProjectAssets();
 };
-
-#endif // ASSET_MANAGER_H
