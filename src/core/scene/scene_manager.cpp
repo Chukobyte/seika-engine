@@ -4,7 +4,7 @@ SceneManager::SceneManager(SceneContext *vSceneContext, EntityManager *vEntityMa
     sceneContext(vSceneContext), entityManager(vEntityManager), componentManager(vComponentManager), assetManager(vAssetManager) {
     timerManager = TimerManager::GetInstance();
     archiveLoader = ArchiveLoader::GetInstance();
-    sceneNodeJsonParser = SceneNodeJsonParser(entityManager, componentManager, assetManager, timerManager);
+    sceneNodeLoader = SceneNodeLoader(entityManager, componentManager, assetManager, timerManager);
 }
 
 Scene SceneManager::GetCurrentScene() {
@@ -22,12 +22,6 @@ SceneNode SceneManager::GetEntitySceneNode(Entity entity) {
 bool SceneManager::HasEntitySceneNode(Entity entity) const {
     return entityToSceneNodeMap.count(entity) > 0;
 }
-
-//void SceneManager::AddSingletonScene(Entity singletonEntity) {
-//    SceneNode sceneNode = SceneNode{.entity = singletonEntity};
-//    Scene scene = Scene{.rootNode = sceneNode};
-//    entityToMainScenesMap.emplace(singletonEntity, scene);
-//}
 
 void SceneManager::ChangeToScene(Scene scene) {
     currentScene = scene;
@@ -84,14 +78,6 @@ void SceneManager::RemoveNode(SceneNode sceneNode) {
     entitiesRecentlyRemoved.emplace_back(sceneNode.entity);
 }
 
-//void SceneManager::RemoveNode(Entity entity) {
-//    if (entityToSceneNodeMap.count(entity) > 0) {
-//        RemoveNode(entityToSceneNodeMap[entity]);
-//    } else {
-//        Logger::GetInstance()->Warn("Tried to remove non existent entity");
-//    }
-//}
-
 std::vector<Entity> SceneManager::FlushRemovedEntities() {
     std::vector<Entity> removedEntitiesCopy = entitiesRecentlyRemoved;
     entitiesRecentlyRemoved.clear();
@@ -104,7 +90,7 @@ bool SceneManager::IsEntityInScene(Entity entity) const {
 
 Scene SceneManager::LoadSceneFromFile(const std::string &filePath) {
     nlohmann::json sceneJson = JsonFileHelper::LoadJsonFile(filePath);
-    SceneNode rootNode = sceneNodeJsonParser.ParseSceneJson(sceneJson, true);
+    SceneNode rootNode = sceneNodeLoader.ParseSceneJson(sceneJson, true);
     Scene loadedScene = Scene{.rootNode = rootNode};
     ChangeToScene(loadedScene);
     return loadedScene;
@@ -113,8 +99,29 @@ Scene SceneManager::LoadSceneFromFile(const std::string &filePath) {
 Scene SceneManager::LoadSceneFromMemory(const std::string &filePath) {
     const std::string &sceneArchiveJsonString = archiveLoader->LoadAsString(filePath);
     nlohmann::json sceneJson = JsonFileHelper::ConvertStringToJson(sceneArchiveJsonString);
-    SceneNode rootNode = sceneNodeJsonParser.ParseSceneJson(sceneJson, true);
+    SceneNode rootNode = sceneNodeLoader.ParseSceneJson(sceneJson, true);
     Scene loadedScene = Scene{.rootNode = rootNode};
     ChangeToScene(loadedScene);
     return loadedScene;
+}
+
+namespace SceneNodeHelper {
+Transform2DComponent GetCombinedParentsTransforms(SceneManager *sceneManager, ComponentManager *componentManager, Entity entity) {
+    SceneNode sceneNode = sceneManager->GetEntitySceneNode(entity);
+    Transform2DComponent combinedTransform = Transform2DComponent{};
+    Entity currentParent = sceneNode.parent;
+    while (currentParent != NULL_ENTITY) {
+        SceneNode nodeParent = sceneManager->GetEntitySceneNode(currentParent);
+        if (componentManager->HasComponent<Transform2DComponent>(nodeParent.entity)) {
+            Transform2DComponent parentTransform = componentManager->GetComponent<Transform2DComponent>(nodeParent.entity);
+            combinedTransform.position += parentTransform.position;
+            combinedTransform.scale *= parentTransform.scale;
+            combinedTransform.zIndex += parentTransform.zIndex;
+        } else if (componentManager->HasComponent<Transform3DComponent>(nodeParent.entity)) {
+            // TODO: implement...
+        }
+        currentParent = nodeParent.parent;
+    }
+    return combinedTransform;
+}
 }
