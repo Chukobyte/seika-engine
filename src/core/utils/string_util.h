@@ -8,10 +8,9 @@ struct TextLines {
     std::vector<std::string> lines = {};
 };
 
-class StringUtil {
-  public:
-    static std::vector<std::string> Split(const std::string &text, char sep = ' ');
-    static TextLines ConvertIntoWordWrappedLines(const std::string& text, bool wordWrap, unsigned int maxCharactersPerLine);
+namespace StringUtil {
+std::vector<std::string> Split(const std::string &text, char sep = ' ');
+TextLines ConvertIntoWordWrappedLines(const std::string& text, bool wordWrap, unsigned int maxCharactersPerLine);
 };
 
 

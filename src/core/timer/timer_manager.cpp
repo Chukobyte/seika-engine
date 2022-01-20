@@ -1,6 +1,6 @@
 #include "timer_manager.h"
 
-TimerManager *TimerManager::instance = nullptr;
+TimerManager::TimerManager(singleton) {}
 
 void TimerManager::Initialize() {
     projectProperties = ProjectProperties::GetInstance();

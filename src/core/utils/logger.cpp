@@ -4,8 +4,6 @@
 #include <bits/stdc++.h>
 #include <glad/glad.h>
 
-Logger *Logger::instance = nullptr;
-
 void Logger::SetLogLevel(LogLevel level) {
     logLevel = level;
 }

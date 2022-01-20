@@ -1,5 +1,4 @@
-#ifndef NODE_TYPE_HELPER_H
-#define NODE_TYPE_HELPER_H
+#pragma once
 
 #include "component/components/node_component.h"
 
@@ -54,5 +53,3 @@ class NodeTypeHelper {
         return false;
     }
 };
-
-#endif //NODE_TYPE_HELPER_H

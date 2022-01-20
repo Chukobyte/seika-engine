@@ -16,6 +16,7 @@
 #include "ecs/system/systems/directional_light_rendering_entity_system.h"
 #include "ecs/system/systems/point_light_rendering_entity_system.h"
 #include "ecs/system/systems/spot_light_rendering_entity_system.h"
+#include "ecs/component/components/texture_cube_component.h"
 
 Game::Game(int argv, char** args) {
     logger = Logger::GetInstance();

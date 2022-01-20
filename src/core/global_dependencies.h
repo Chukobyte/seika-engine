@@ -1,5 +1,4 @@
-#ifndef GLOBAL_DEPENDENCIES_H
-#define GLOBAL_DEPENDENCIES_H
+#pragma once
 
 #include "engine_context.h"
 #include "rendering/render_context.h"
@@ -19,6 +18,7 @@
 
 class EntityComponentOrchestrator;
 
+// TODO: Do away with this...
 class GD {
     /* A singleton that holds global pointers...*/
   private:
@@ -45,5 +45,3 @@ class GD {
 
     void ResetDependencies();
 };
-
-#endif //GLOBAL_DEPENDENCIES_H

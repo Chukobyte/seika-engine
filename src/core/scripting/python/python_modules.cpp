@@ -9,9 +9,12 @@
 #include "../../utils/helper.h"
 #include "../../signal_manager.h"
 #include "../../ecs/system/systems/collision_entity_system.h"
+#include "../../ecs/component/components/sprite_component.h"
+#include "../../ecs/component/components/animated_sprite_component.h"
 #include "../../ecs/component/components/transform3D_component.h"
 #include "../../ecs/component/components/texture_cube_component.h"
 #include "../../ecs/component/components/light3D_component.h"
+#include "../../ecs/component/components/scriptable_class_component.h"
 #include "../../ecs/system/systems/timer_entity_system.h"
 #include "../../ecs/system/systems/text_rendering_entity_system.h"
 

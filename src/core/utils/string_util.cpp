@@ -1,7 +1,8 @@
 #include "string_util.h"
 #include "logger.h"
 
-std::vector<std::string> StringUtil::Split(const std::string &text, char sep) {
+namespace StringUtil {
+std::vector<std::string> Split(const std::string &text, char sep) {
     std::vector<std::string> tokens;
     std::size_t start = 0, end = 0;
     while ((end = text.find(sep, start)) != std::string::npos) {
@@ -12,7 +13,7 @@ std::vector<std::string> StringUtil::Split(const std::string &text, char sep) {
     return tokens;
 }
 
-TextLines StringUtil::ConvertIntoWordWrappedLines(const std::string& text, bool wordWrap, unsigned int maxCharactersPerLine) {
+TextLines ConvertIntoWordWrappedLines(const std::string& text, bool wordWrap, unsigned int maxCharactersPerLine) {
     static Logger *logger = Logger::GetInstance();
     std::vector<std::string> lines = {};
     if (wordWrap && text.length() > maxCharactersPerLine) {
@@ -39,4 +40,5 @@ TextLines StringUtil::ConvertIntoWordWrappedLines(const std::string& text, bool 
         lines.emplace_back(text);
     }
     return TextLines{ lines };
+}
 }
