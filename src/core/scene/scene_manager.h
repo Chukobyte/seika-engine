@@ -17,10 +17,9 @@
 #include "../ecs/component/components/transform2D_component.h"
 #include "scene_node_loader.h"
 
-// TODO: Separate SceneNodeJsonParser into its own file...
 class SceneManager {
   private:
-    std::map<Entity, Scene> entityToMainScenesMap; // Holds singleton scene and current scene
+    std::map<Entity, Scene> entityToMainScenesMap;
     std::map<Entity, SceneNode> entityToSceneNodeMap;
     std::vector<Entity> entitiesRecentlyRemoved;
     SceneNodeLoader sceneNodeLoader;

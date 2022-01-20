@@ -1,5 +1,6 @@
-#ifndef LOGGER_H
-#define LOGGER_H
+#pragma once
+
+#include "singleton.h"
 
 #include <string>
 
@@ -11,21 +12,13 @@ enum _LogLevel {
     LogLevel_ERROR = 3,
 };
 
-class Logger {
+class Logger : public Singleton<Logger> {
   private:
-    static Logger *instance;
-    Logger() {}
     void LogEntry(const std::string &logLevelPrefix, const std::string &logMessage) const;
   public:
+    Logger(singleton) {}
 
     LogLevel logLevel = LogLevel_INFO;
-
-    static Logger* GetInstance() {
-        if (!instance) {
-            instance = new Logger();
-        }
-        return instance;
-    }
 
     void SetLogLevel(LogLevel level);
 
@@ -39,5 +32,3 @@ class Logger {
 
     void LogOpenGLError(const std::string &context) const;
 };
-
-#endif //LOGGER_H

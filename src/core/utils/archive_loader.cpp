@@ -6,15 +6,6 @@
 #include "file_helper.h"
 #include "logger.h"
 
-ArchiveLoader *ArchiveLoader::instance = nullptr;
-
-ArchiveLoader *ArchiveLoader::GetInstance() {
-    if (!instance) {
-        instance = new ArchiveLoader();
-    }
-    return instance;
-}
-
 void ArchiveLoader::ReadArchive(const std::string &filePath) {
     assert(FileHelper::DoesFileExist(filePath) && "Archive file doesn't exist!");
     ClearArchive();
