@@ -14,6 +14,7 @@
 #include "../timer/timer_manager.h"
 #include "../animation/animation.h"
 #include "../ecs/node_type_helper.h"
+#include "../ecs/component/components/transform2D_component.h"
 #include "scene_node_loader.h"
 
 // TODO: Separate SceneNodeJsonParser into its own file...

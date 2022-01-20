@@ -1,4 +1,5 @@
 #include "entity_component_orchestrator.h"
+#include "component/components/scriptable_class_component.h"
 
 EntityComponentOrchestrator::EntityComponentOrchestrator(EntityManager *entityManagerP, EntitySystemManager *entitySystemManagerP, ComponentManager *componentManagerP, SceneManager *sceneManagerP)
     : entityManager(entityManagerP), entitySystemManager(entitySystemManagerP), componentManager(componentManagerP), sceneManager(sceneManagerP) {

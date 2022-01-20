@@ -1,4 +1,5 @@
 #include "scene_manager.h"
+#include "../ecs/component/components/transform3D_component.h"
 
 SceneManager::SceneManager(SceneContext *vSceneContext, EntityManager *vEntityManager, ComponentManager *vComponentManager, AssetManager *vAssetManager) :
     sceneContext(vSceneContext), entityManager(vEntityManager), componentManager(vComponentManager), assetManager(vAssetManager) {

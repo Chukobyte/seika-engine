@@ -5,6 +5,7 @@
 
 #include "../script_context.h"
 #include "python_cache.h"
+#include "../../ecs/component/components/scriptable_class_component.h"
 
 class PythonScriptContext : public ScriptContext {
   private:
