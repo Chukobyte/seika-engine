@@ -1,5 +1,4 @@
-#ifndef PYTHON_SCRIPT_CONTEXT_H
-#define PYTHON_SCRIPT_CONTEXT_H
+#pragma once
 
 #include <map>
 
@@ -12,9 +11,11 @@ class PythonScriptContext : public ScriptContext {
     CPyInstance *pyInstance = nullptr;
     PythonCache *pythonCache = nullptr;
     CPyObject startFunctionName;
+    CPyObject processFunctionName;
     CPyObject physicsProcessFunctionName;
     CPyObject endFunctionName;
     ComponentManager *componentManager = nullptr;
+
   public:
     ~PythonScriptContext() override {
         delete pyInstance;
@@ -31,6 +32,7 @@ class PythonScriptContext : public ScriptContext {
 
         pythonCache = PythonCache::GetInstance();
         startFunctionName = PyUnicode_FromString("_start");
+        processFunctionName = PyUnicode_FromString("_process");
         physicsProcessFunctionName = PyUnicode_FromString("_physics_process");
         endFunctionName = PyUnicode_FromString("_end");
         componentManager = GD::GetContainer()->componentManager;
@@ -53,11 +55,22 @@ class PythonScriptContext : public ScriptContext {
             if (PyObject_HasAttr(pythonCache->GetClassInstance(entity), endFunctionName)) {
                 PyObject_CallMethod(pythonCache->GetClassInstance(entity), "_end", nullptr);
             }
+
             pythonCache->RemoveClassInstance(entity);
         }
     }
 
-    // TODO: Place physics_process and process candidates into vector
+    void Process(const Entity entity, const double deltaTime) override {
+        PyGILState_STATE pyGilStateState = PyGILState_Ensure();
+        {
+            if (PyObject_HasAttr(pythonCache->GetClassInstance(entity), processFunctionName)) {
+                CPyObject processCallValue = PyObject_CallMethod(pythonCache->GetClassInstance(entity), "_process", "(f)", deltaTime);
+            }
+        }
+        PyGILState_Release(pyGilStateState);
+        PyErr_Print();
+    }
+
     void PhysicsProcess(const Entity entity, const double deltaTime) override {
         PyGILState_STATE pyGilStateState = PyGILState_Ensure();
         {
@@ -81,7 +94,19 @@ class PythonScriptContext : public ScriptContext {
         CPyObject processCallValue = PyObject_CallMethod(pythonCache->GetClassInstance(subscriberEntity), subscriberFunctionName.c_str(), "O", pyArgs);
     }
 
+    bool EntityHasProcessFunction(Entity entity) override {
+        if (pythonCache->HasActiveInstance(entity) && PyObject_HasAttr(pythonCache->GetClassInstance(entity), processFunctionName)) {
+            return true;
+        }
+        return false;
+    }
+
+    bool EntityHasPhysicsProcessFunction(Entity entity) override {
+        if (pythonCache->HasActiveInstance(entity) && PyObject_HasAttr(pythonCache->GetClassInstance(entity), physicsProcessFunctionName)) {
+            return true;
+        }
+        return false;
+    }
+
     void Destroy() override {}
 };
-
-#endif //PYTHON_SCRIPT_CONTEXT_H

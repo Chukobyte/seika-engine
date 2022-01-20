@@ -1,7 +1,9 @@
-#ifndef SCRIPT_ENTITY_SYSTEM_H
-#define SCRIPT_ENTITY_SYSTEM_H
+#pragma once
 
 #include "../entity_system.h"
+
+#include <algorithm>
+
 #include "../../../scripting/script_context.h"
 #include "../../component/components/transform2D_component.h"
 #include "../../component/components/text_label_component.h"
@@ -9,6 +11,8 @@
 class ScriptEntitySystem : public EntitySystem {
   private:
     ScriptContext *activeScriptContext = nullptr;
+    std::vector<Entity> processEntities = {};
+    std::vector<Entity> physicsProcessEntities = {};
   public:
     std::unordered_map<const char*, ScriptContext*> scriptContexts;
 
@@ -28,6 +32,8 @@ class ScriptEntitySystem : public EntitySystem {
         EntitySystem::OnEntityDestroyed(entity);
         assert(activeScriptContext != nullptr && "No active script context!");
         activeScriptContext->DeleteEntityInstance(entity);
+        processEntities.erase(std::remove(processEntities.begin(), processEntities.end(), entity), processEntities.end());
+        physicsProcessEntities.erase(std::remove(physicsProcessEntities.begin(), physicsProcessEntities.end(), entity), physicsProcessEntities.end());
     }
 
     template<typename T>
@@ -63,11 +69,24 @@ class ScriptEntitySystem : public EntitySystem {
     void CallStartOnEntityInstance(const Entity entity) {
         assert(activeScriptContext != nullptr && "No active script context!");
         activeScriptContext->CallStartOnEntityInstance(entity);
+        if (activeScriptContext->EntityHasProcessFunction(entity)) {
+            processEntities.emplace_back(entity);
+        }
+        if (activeScriptContext->EntityHasPhysicsProcessFunction(entity)) {
+            physicsProcessEntities.emplace_back(entity);
+        }
+    }
+
+    void Process(float deltaTime) override {
+        assert(activeScriptContext != nullptr && "No active script context!");
+        for (Entity entity : processEntities) {
+            activeScriptContext->Process(entity, deltaTime);
+        }
     }
 
     void PhysicsProcess(float deltaTime) override {
         assert(activeScriptContext != nullptr && "No active script context!");
-        for (Entity entity : entities) {
+        for (Entity entity : physicsProcessEntities) {
             activeScriptContext->PhysicsProcess(entity, deltaTime);
         }
         activeScriptContext->FlushStdOutBuffer();
@@ -77,7 +96,4 @@ class ScriptEntitySystem : public EntitySystem {
         assert(activeScriptContext != nullptr && "No active script context!");
         activeScriptContext->ReceiveSubscribedSignal(subscriberEntity, subscriberFunctionName, args);
     }
-
 };
-
-#endif //SCRIPT_ENTITY_SYSTEM_H

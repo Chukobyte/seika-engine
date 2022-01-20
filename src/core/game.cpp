@@ -144,7 +144,7 @@ void Game::InitializeECS() {
     textRenderingSystemSignature.set(entityComponentOrchestrator->GetComponentType<TextLabelComponent>(), true);
     entityComponentOrchestrator->SetSystemSignature<TextRenderingEntitySystem>(textRenderingSystemSignature);
 
-    ScriptEntitySystem *scriptEntitySystem = entityComponentOrchestrator->RegisterSystem<ScriptEntitySystem>(EntitySystemHook::PHYSICS_PROCESS);
+    ScriptEntitySystem *scriptEntitySystem = entityComponentOrchestrator->RegisterSystem<ScriptEntitySystem>(EntitySystemHook::PROCESS | EntitySystemHook::PHYSICS_PROCESS);
     scriptEntitySystem->InstallScriptContext<PythonScriptContext>();
     ComponentSignature scriptSystemSignature;
     scriptSystemSignature.set(entityComponentOrchestrator->GetComponentType<ScriptableClassComponent>(), true);

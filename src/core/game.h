@@ -1,5 +1,4 @@
-#ifndef GAME_H
-#define GAME_H
+#pragma once
 
 #include "utils/logger.h"
 #include "engine_context.h"
@@ -40,6 +39,3 @@ class Game {
     void Render();
     bool IsRunning();
 };
-
-
-#endif //GAME_H
