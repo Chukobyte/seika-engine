@@ -13,9 +13,6 @@ Scene SceneManager::GetCurrentScene() {
 }
 
 SceneNode SceneManager::GetEntitySceneNode(Entity entity) {
-    if (!HasEntitySceneNode(entity)) {
-        Logger::GetInstance()->Error("Doesn't have entity " + std::to_string(entity));
-    }
     assert(HasEntitySceneNode(entity) && "Tried to get scene node that doesn't exist!");
     return entityToSceneNodeMap[entity];
 }
